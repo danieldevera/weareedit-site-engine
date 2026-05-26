@@ -119,7 +119,7 @@ class EDIT_Output_Buffer {
             // social proof close to the conversion point. Star uses brand
             // yellow; rating bold white; count light grey. Linked to
             // /criticas-google/ so a click leads to the full review wall.
-            . 'body.page-template-page-home .hero-reviews{display:inline-flex;align-items:center;gap:8px;color:#c8c8c8 !important;text-decoration:none !important;font-size:13px;margin:14px 0 24px;align-self:flex-start;text-underline-offset:5px;text-decoration-thickness:2px;}'
+            . 'body.page-template-page-home .hero-reviews{display:flex;width:fit-content;margin:14px auto 28px;align-items:center;gap:8px;color:#c8c8c8 !important;text-decoration:none !important;font-size:13px;text-underline-offset:5px;text-decoration-thickness:2px;}'
             . 'body.page-template-page-home .hero-reviews:hover,body.page-template-page-home .hero-reviews:hover *{text-decoration:underline !important;text-decoration-color:#fff !important;text-decoration-thickness:2px !important;text-underline-offset:5px !important;}'
             . 'body.page-template-page-home .hero-reviews .hr-star{color:#ffdd06 !important;font-size:16px;position:relative;top:-1px;}'
             . 'body.page-template-page-home .hero-reviews .hr-rating{color:#fff !important;font-weight:700;font-size:14px;}'
@@ -432,17 +432,20 @@ HTML;
                 '<a$1class="btn btn-yellow swipe-cta"$2><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Ver todos os Cursos</span></a>',
                 $html
             ) ?? $html;
-            // Reviews score injected directly below the "Ver todos os Cursos"
-            // CTA — anchors a real social-proof number close to the action.
-            // Pulls the same 4.1/67 numbers used in the AggregateRating schema
-            // (class-structured-data.php) — keep in lockstep when those change.
-            // Runs AFTER the swipe-cta rewrite (which adds the swipe-label
-            // span this str_replace targets).
-            $html = str_replace(
-                '<span class="swipe-label">Ver todos os Cursos</span></a>',
-                '<span class="swipe-label">Ver todos os Cursos</span></a><a class="hero-reviews wow animate__fadeInUp" data-wow-duration="1s" href="' . esc_url( home_url( '/criticas-google/' ) ) . '" aria-label="Avaliações Google — 4.1 de 5 baseado em 67 reviews"><span class="hr-star">&#x2605;</span><span class="hr-rating">4.1</span><span class="hr-sep">/</span><span class="hr-count">67 reviews no</span><span class="g-wordmark" aria-hidden="true"><span class="g-G">G</span><span class="g-o1">o</span><span class="g-o2">o</span><span class="g-g">g</span><span class="g-l">l</span><span class="g-e">e</span></span></a>',
-                $html
-            );
+            // Reviews score — must render OUTSIDE the `<div class="btn
+            // btn-slide …">` wrapper that contains the CTA, otherwise it
+            // visually nests inside the yellow button. Injected as a
+            // sibling between the CTA container and the corporate-row.
+            // Targets the corporate-row opening (rewritten just above) so
+            // the reviews block lands in the correct DOM position.
+            // Idempotency guard: skip if already injected.
+            if ( strpos( $html, 'class="hero-reviews ' ) === false ) {
+                $html = str_replace(
+                    '<div class="hero-corporate-row',
+                    '<a class="hero-reviews wow animate__fadeInUp" data-wow-duration="1s" href="' . esc_url( home_url( '/criticas-google/' ) ) . '" aria-label="Avaliações Google — 4.1 de 5 baseado em 67 reviews"><span class="hr-star">&#x2605;</span><span class="hr-rating">4.1</span><span class="hr-sep">/</span><span class="hr-count">67 reviews no</span><span class="g-wordmark" aria-hidden="true"><span class="g-G">G</span><span class="g-o1">o</span><span class="g-o2">o</span><span class="g-g">g</span><span class="g-l">l</span><span class="g-e">e</span></span></a><div class="hero-corporate-row',
+                    $html
+                );
+            }
         }
 
         // 2. Fix relative /wp-content/ src paths missing the domain

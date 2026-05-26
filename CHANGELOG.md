@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.5.64 — 2026-05-26
+- **Fix: reviews score block was rendering INSIDE the CTA's yellow box.** Root cause: injection landed it as a sibling of the swipe-cta anchor, but BOTH live inside the theme's `<div class="btn btn-slide ...">` wrapper. That wrapper was containing the reviews visually inside the button bounds. Changed injection target from `<span class="swipe-label">…</span></a>` (inside the wrapper) to `<div class="hero-corporate-row` (outside the wrapper). Reviews block now sits between the CTA container and the corporate-row, as a true sibling.
+- CSS updated: `display: flex` + `width: fit-content` + `margin: 14px auto 28px` → reviews block centers horizontally to match the CTA above. Dropped the inert `align-self: flex-start` (parent wasn't a flex container, was a no-op).
+- Idempotency guard via `class="hero-reviews ` check.
+
 ## v1.5.63 — 2026-05-26
 - **Homepage reviews score: hover underline made visible.** Bumped from 1px rgba(255,255,255,0.55) → 2px solid #fff at 5px offset. Applied to all descendants so the multi-color Google wordmark also underlines together.
 - **/criticas-google/ campus cards: removed both "Ver todas as críticas →" CTAs** (Lisboa + Porto). Cards now stop at the address line — cleaner, no double click-out.
