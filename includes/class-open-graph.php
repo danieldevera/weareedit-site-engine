@@ -10,30 +10,14 @@ class EDIT_Open_Graph {
 
     public static function init() {
         $settings = get_option( 'edit_seo_fix_settings', [] );
-        // Rank Math handles OG tags — skip unless admin has forced output
+        // Rank Math handles OG tags — skip unless admin has forced output.
+        // The og:type override for course/in-company/criticas pages is
+        // handled via in-place str_replace in class-output-buffer.php
+        // (appending a second tag was a no-op: FB/LinkedIn use first-seen).
         if ( defined( 'RANK_MATH_VERSION' ) && empty( $settings['force_meta_output'] ) ) {
-            // Still fix og:type even when Rank Math is active —
-            // Rank Math incorrectly outputs "article" for course post types.
-            add_action( 'wp_head', [ __CLASS__, 'fix_og_type_for_courses' ], 99 );
             return;
         }
         add_action( 'wp_head', [ __CLASS__, 'output_og_tags' ], 2 );
-    }
-
-    /**
-     * Override Rank Math's og:type on course pages.
-     * Rank Math outputs og:type="article" for custom post types — courses are not articles.
-     * We output a second og:type="website" tag at priority 99 (after Rank Math).
-     * Most social crawlers (Facebook, LinkedIn) use the last declared value.
-     */
-    public static function fix_og_type_for_courses() {
-        $settings   = get_option( 'edit_seo_fix_settings', [] );
-        $raw        = $settings['course_post_types'] ?? 'formacao,curso,course';
-        $post_types = array_filter( array_map( 'trim', explode( ',', $raw ) ) );
-
-        if ( ! is_singular( $post_types ) ) return;
-
-        echo '<meta property="og:type" content="website" />' . "\n";
     }
 
     public static function output_og_tags() {

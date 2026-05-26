@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.5.67 — 2026-05-26
+- **Schema bundle (3 wins from the audit roadmap):**
+  1. **Homepage Organization schema enriched.** Added `founder` (Daniel Devera as `Person` with Wikidata Q139907903 in `sameAs`), appended Wikidata Q139907765 to the Organization's `sameAs`, added `alternateName` aliases (`EDIT.`, `weareedit`, `Devera Co. Lda`). Closes the homepage → Wikidata → Daniel LLM-traversal chain — single highest-impact GEO fix per the audit.
+  2. **Fix duplicate `og:type` on non-post pages.** Rank Math emits `og:type=article` for every CPT (courses, in-company, criticas); the plugin used to *append* a second `og:type=website` tag (no-op — FB/LinkedIn use first-seen). Now replaces in-place via output buffer on any non-`post` singular. Real blog posts keep `og:type=article`.
+  3. **AggregateRating + Review[] JSON-LD on `/criticas-google/`.** Page previously shipped only BreadcrumbList. Now emits a full graph: Organization with 4.1/67 AggregateRating, 4 Review nodes for the visible quotes (publisher=Google for policy compliance), plus two EducationalOrganization sub-nodes for the Lisboa (4.2/36) + Porto (4.0/31) campus split with their addresses.
+  4. **/criticas-google/ og:image added** (page previously had none — social shares looked broken). Uses the brand SHARE-EDIT.jpg at 1200×630.
+
 ## v1.5.66 — 2026-05-26
 - **`/criticas-google/` hero — Iter 2 (Quote-led) shipped.** Replaces the old centered "★ Críticas verificadas no Google" eyebrow + "O que dizem os nossos alunos." H1 + grey subtitle. New structure mirrors the locked homepage hero:
   - Google source pill (G logo + "Críticas verificadas no Google" + ↗) — matches homepage DGERT pill placement

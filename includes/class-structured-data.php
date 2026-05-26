@@ -113,6 +113,44 @@ class EDIT_Structured_Data {
                 ];
             }
 
+            // Append the EDIT. Wikidata entity (Q139907765) to sameAs so LLMs
+            // and Google KG can resolve the homepage → Wikidata → Daniel chain.
+            $wikidata_org = 'https://www.wikidata.org/wiki/Q139907765';
+            if ( ! isset( $entity['sameAs'] ) || ! is_array( $entity['sameAs'] ) ) {
+                $entity['sameAs'] = [];
+            }
+            if ( ! in_array( $wikidata_org, $entity['sameAs'], true ) ) {
+                $entity['sameAs'][] = $wikidata_org;
+            }
+
+            // Founder — closes the Person link chain. Carries Daniel's
+            // Wikidata Q139907903 in his sameAs so the graph is self-contained
+            // (Google KG / LLMs can lift the founder relationship directly
+            // from the homepage without crawling /equipa/daniel-devera/).
+            if ( ! isset( $entity['founder'] ) ) {
+                $entity['founder'] = [
+                    '@type'    => 'Person',
+                    '@id'      => 'https://weareedit.io/#daniel-devera',
+                    'name'     => 'Daniel Devera',
+                    'givenName'  => 'Daniel',
+                    'familyName' => 'Devera',
+                    'jobTitle' => 'Founder',
+                    'worksFor' => [ '@id' => $entity['@id'] ?? 'https://weareedit.io/#organization' ],
+                    'sameAs'   => [
+                        'https://www.wikidata.org/wiki/Q139907903',
+                        'https://www.linkedin.com/in/danieldevera/',
+                    ],
+                ];
+            }
+
+            // alternateName aliases that mirror Wikidata. Helps LLMs resolve
+            // the legal entity name ("Devera Co. Lda") and brand short-form ("EDIT.").
+            if ( ! isset( $entity['alternateName'] ) ) {
+                $entity['alternateName'] = [ 'EDIT.', 'weareedit', 'Devera Co. Lda' ];
+            } elseif ( is_string( $entity['alternateName'] ) ) {
+                $entity['alternateName'] = array_unique( [ $entity['alternateName'], 'EDIT.', 'Devera Co. Lda' ] );
+            }
+
             break; // Only one Organization entity expected per page.
         }
         unset( $entity );

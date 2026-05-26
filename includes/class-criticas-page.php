@@ -28,6 +28,120 @@ class EDIT_Criticas_Page {
         add_shortcode( self::SHORTCODE, [ __CLASS__, 'render_shortcode' ] );
         add_action( 'admin_init',         [ __CLASS__, 'ensure_page_exists' ] );
         add_action( 'wp_enqueue_scripts', [ __CLASS__, 'enqueue_assets' ] );
+        add_action( 'wp_head',            [ __CLASS__, 'emit_reviews_schema' ], 8 );
+    }
+
+    /**
+     * Emit JSON-LD for /criticas-google/: AggregateRating (4.1/67) +
+     * Review[] for the four featured reviews. Numbers MUST match the
+     * homepage Organization AggregateRating (class-structured-data.php)
+     * and the visible page content (Google policy: schema must reflect
+     * what users see). Reviews carry publisher=Google to denote third-
+     * party source and stay within Google's structured-data policy.
+     */
+    public static function emit_reviews_schema() {
+        if ( ! is_page( self::SLUG ) ) return;
+
+        $org_id   = home_url( '/#organization' );
+        $page_url = home_url( '/' . self::SLUG . '/' );
+
+        $featured_reviews = [
+            [ 'author' => 'Santiago Santos',         'rating' => 5, 'body' => 'Concluí recentemente o Bootcamp online "Advanced Artificial Inteligence" com a professora Naiara Back, recomendo!' ],
+            [ 'author' => 'Cristiana Vilaça Ferreira', 'rating' => 5, 'body' => 'Óptima referência no mercado de trabalho, fazendo a diferença num CV! Super recomendo.' ],
+            [ 'author' => 'Inês Ávila Rebelo',       'rating' => 5, 'body' => 'Escola com boas condições e equipa administrativa muito simpática e prestável. Recomendo a EDIT., principalmente pelos tutores — profissionais bastante experientes com verdadeiro gosto em ensinar.' ],
+            [ 'author' => 'Ana Vitorino',            'rating' => 5, 'body' => 'Muito bons tutores, sempre prestáveis e atenciosos. Escola bem preparada e com boas condições. Gostei da experiência e recomendo.' ],
+        ];
+
+        $reviews_jsonld = [];
+        foreach ( $featured_reviews as $r ) {
+            $reviews_jsonld[] = [
+                '@type'        => 'Review',
+                'itemReviewed' => [ '@id' => $org_id ],
+                'reviewRating' => [
+                    '@type'       => 'Rating',
+                    'ratingValue' => $r['rating'],
+                    'bestRating'  => 5,
+                    'worstRating' => 1,
+                ],
+                'author'       => [ '@type' => 'Person', 'name' => $r['author'] ],
+                'publisher'    => [ '@type' => 'Organization', 'name' => 'Google' ],
+                'reviewBody'   => $r['body'],
+                'inLanguage'   => 'pt-PT',
+            ];
+        }
+
+        $graph = [
+            '@context' => 'https://schema.org',
+            '@graph'   => [
+                [
+                    '@type'           => [ 'EducationalOrganization', 'Organization' ],
+                    '@id'             => $org_id,
+                    'name'            => 'EDIT. - Disruptive Digital Education',
+                    'url'             => home_url( '/' ),
+                    'aggregateRating' => [
+                        '@type'       => 'AggregateRating',
+                        'ratingValue' => '4.1',
+                        'reviewCount' => 67,
+                        'bestRating'  => 5,
+                        'worstRating' => 1,
+                    ],
+                    'review' => $reviews_jsonld,
+                ],
+                // Campus split as separate LocalBusiness nodes — keeps the
+                // Lisboa 4.2/36 and Porto 4.0/31 ratings machine-readable.
+                [
+                    '@type'           => 'EducationalOrganization',
+                    '@id'             => $page_url . '#campus-lisboa',
+                    'name'            => 'EDIT. Lisboa',
+                    'parentOrganization' => [ '@id' => $org_id ],
+                    'address' => [
+                        '@type'           => 'PostalAddress',
+                        'streetAddress'   => 'Av. Aquilino Ribeiro Machado, Nº 8',
+                        'postalCode'      => '1800-399',
+                        'addressLocality' => 'Lisboa',
+                        'addressCountry'  => 'PT',
+                    ],
+                    'aggregateRating' => [
+                        '@type'       => 'AggregateRating',
+                        'ratingValue' => '4.2',
+                        'reviewCount' => 36,
+                        'bestRating'  => 5,
+                        'worstRating' => 1,
+                    ],
+                ],
+                [
+                    '@type'           => 'EducationalOrganization',
+                    '@id'             => $page_url . '#campus-porto',
+                    'name'            => 'EDIT. Porto',
+                    'parentOrganization' => [ '@id' => $org_id ],
+                    'address' => [
+                        '@type'           => 'PostalAddress',
+                        'streetAddress'   => 'R. do Alferes Malheiro, Nº 226',
+                        'postalCode'      => '4000-057',
+                        'addressLocality' => 'Porto',
+                        'addressCountry'  => 'PT',
+                    ],
+                    'aggregateRating' => [
+                        '@type'       => 'AggregateRating',
+                        'ratingValue' => '4.0',
+                        'reviewCount' => 31,
+                        'bestRating'  => 5,
+                        'worstRating' => 1,
+                    ],
+                ],
+            ],
+        ];
+
+        echo "\n<script type=\"application/ld+json\" class=\"edit-criticas-reviews-schema\">"
+             . wp_json_encode( $graph, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE )
+             . "</script>\n";
+
+        // og:image — Rank Math doesn't set one for this page (audit flagged).
+        // Reuses the brand's default share image (1200×630, proper FB/LinkedIn AR).
+        echo '<meta property="og:image" content="https://weareedit.io/wp-content/uploads/2018/12/SHARE-EDIT.jpg" />' . "\n";
+        echo '<meta property="og:image:width" content="1200" />' . "\n";
+        echo '<meta property="og:image:height" content="630" />' . "\n";
+        echo '<meta name="twitter:image" content="https://weareedit.io/wp-content/uploads/2018/12/SHARE-EDIT.jpg" />' . "\n";
     }
 
     public static function enqueue_assets() {

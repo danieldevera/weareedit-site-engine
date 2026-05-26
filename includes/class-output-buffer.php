@@ -352,6 +352,20 @@ HTML;
             $html
         );
 
+        // 1aa. Rank Math emits og:type=article for every singular CPT (course
+        // pages, /formacao-in-company/, /criticas-google/ etc.). These are
+        // NOT articles in the OG sense — they're pages/services/reviews.
+        // FB + LinkedIn use FIRST-seen og:type so appending a second tag was
+        // a no-op (audit found this 2026-05-26). Replace in-place. Only
+        // applied on non-`post` singulars so real blog posts stay og:type=article.
+        if ( ! is_singular( 'post' ) ) {
+            $html = str_replace(
+                '<meta property="og:type" content="article" />',
+                '<meta property="og:type" content="website" />',
+                $html
+            );
+        }
+
         // 1b. DGERT "Entidade Formadora Certificada" badge — site-wide refresh
         // to the new schools' artwork in two color variants:
         //   - white (positive)  → footer (dark background)
