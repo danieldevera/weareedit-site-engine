@@ -337,6 +337,17 @@ HTML;
             $html
         );
 
+        // 1a. Plugin was renamed edit-seo-fix → weareedit-site-engine at
+        // v1.5.55 (2026-05-26). Any hardcoded references to the old plugin
+        // folder (in theme code, Customizer custom HTML, code-snippet plugins,
+        // widget HTML) now point to a 404. Universal rewrite catches all of
+        // them — incl. the floating WhatsApp button SVG.
+        $html = str_replace(
+            '/wp-content/plugins/edit-seo-fix/',
+            '/wp-content/plugins/weareedit-site-engine/',
+            $html
+        );
+
         // 1b. DGERT "Entidade Formadora Certificada" badge — site-wide refresh
         // to the new schools' artwork in two color variants:
         //   - white (positive)  → footer (dark background)
@@ -406,16 +417,6 @@ HTML;
                 '<div class="hero-corporate-row wow animate__fadeInUp" data-wow-duration="1s"><span class="hc-line"></span><a class="hero-corporate" href="' . esc_url( home_url( '/formacao-in-company/' ) ) . '" aria-label="Clientes Corporativos — Formação à medida para Empresas"><span class="hc-main">Clientes Corporativos</span><span class="hc-sep">·</span><span class="hc-sub">Formação à Medida</span><span class="hc-arrow" aria-hidden="true">&#x2197;</span></a><span class="hc-line"></span></div>',
                 $html
             );
-            // Reviews score injected directly below the "Ver todos os Cursos"
-            // CTA — anchors a real social-proof number close to the action.
-            // Replaces the iter-3 "Inscrições abertas…" scarcity microcopy.
-            // Pulls the same 4.1/67 numbers used in the AggregateRating schema
-            // (class-structured-data.php) — keep in lockstep when those change.
-            $html = str_replace(
-                '<span class="swipe-label">Ver todos os Cursos</span></a>',
-                '<span class="swipe-label">Ver todos os Cursos</span></a><a class="hero-reviews wow animate__fadeInUp" data-wow-duration="1s" href="' . esc_url( home_url( '/criticas-google/' ) ) . '" aria-label="Avaliações Google — 4.1 de 5 baseado em 67 reviews"><span class="hr-star">&#x2605;</span><span class="hr-rating">4.1</span><span class="hr-sep">/</span><span class="hr-count">67 reviews no</span><span class="g-wordmark" aria-hidden="true"><span class="g-G">G</span><span class="g-o1">o</span><span class="g-o2">o</span><span class="g-g">g</span><span class="g-l">l</span><span class="g-e">e</span></span></a>',
-                $html
-            );
             // Hero CTA — add `swipe-cta` class to the button and wrap the
             // label in a span, plus inject 3 coloured swipe layers. Hover
             // plays a sequenced pink→teal→black sweep (CSS in
@@ -423,11 +424,25 @@ HTML;
             // no longer matches the regex (class becomes "btn btn-yellow
             // swipe-cta" and the label is wrapped in a span), so re-runs are
             // naturally idempotent.
+            // MUST run BEFORE the reviews-block injection below — that
+            // injection's str_replace targets the swipe-label span, which
+            // only exists after this rewrite fires.
             $html = preg_replace(
                 '#<a([^>]*?)class="btn btn-yellow"([^>]*?)>Ver todos os Cursos</a>#',
                 '<a$1class="btn btn-yellow swipe-cta"$2><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Ver todos os Cursos</span></a>',
                 $html
             ) ?? $html;
+            // Reviews score injected directly below the "Ver todos os Cursos"
+            // CTA — anchors a real social-proof number close to the action.
+            // Pulls the same 4.1/67 numbers used in the AggregateRating schema
+            // (class-structured-data.php) — keep in lockstep when those change.
+            // Runs AFTER the swipe-cta rewrite (which adds the swipe-label
+            // span this str_replace targets).
+            $html = str_replace(
+                '<span class="swipe-label">Ver todos os Cursos</span></a>',
+                '<span class="swipe-label">Ver todos os Cursos</span></a><a class="hero-reviews wow animate__fadeInUp" data-wow-duration="1s" href="' . esc_url( home_url( '/criticas-google/' ) ) . '" aria-label="Avaliações Google — 4.1 de 5 baseado em 67 reviews"><span class="hr-star">&#x2605;</span><span class="hr-rating">4.1</span><span class="hr-sep">/</span><span class="hr-count">67 reviews no</span><span class="g-wordmark" aria-hidden="true"><span class="g-G">G</span><span class="g-o1">o</span><span class="g-o2">o</span><span class="g-g">g</span><span class="g-l">l</span><span class="g-e">e</span></span></a>',
+                $html
+            );
         }
 
         // 2. Fix relative /wp-content/ src paths missing the domain
