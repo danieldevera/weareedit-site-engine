@@ -1,0 +1,49 @@
+name: Build release zip
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Stage plugin folder
+        run: |
+          mkdir -p /tmp/build/weareedit-site-engine
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='*.zip' \
+            --exclude='*.tar.gz' \
+            --exclude='.DS_Store' \
+            --exclude='Thumbs.db' \
+            --exclude='.gitignore' \
+            ./ /tmp/build/weareedit-site-engine/
+
+      - name: Build release zip
+        id: zip
+        run: |
+          cd /tmp/build
+          ZIP_NAME="weareedit-site-engine-${GITHUB_REF_NAME#v}.zip"
+          zip -rq "$ZIP_NAME" weareedit-site-engine
+          echo "zip_path=/tmp/build/$ZIP_NAME" >> "$GITHUB_OUTPUT"
+          echo "zip_name=$ZIP_NAME" >> "$GITHUB_OUTPUT"
+          ls -la "$ZIP_NAME"
+
+      - name: Create GitHub Release with zip attached
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ steps.zip.outputs.zip_path }}
+          name: ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          body_path: CHANGELOG.md
+          fail_on_unmatched_files: true
+          generate_release_notes: false

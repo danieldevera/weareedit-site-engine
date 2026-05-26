@@ -1,0 +1,31 @@
+/* EDIT. SEO Fix — Admin Styles */
+
+.edit-seo-audit-summary {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    padding: 16px 20px;
+    margin: 16px 0;
+}
+
+.edit-seo-audit-summary h2 {
+    margin-top: 0;
+}
+
+.edit-seo-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.edit-seo-badge--critical { background: #d63638; color: #fff; }
+.edit-seo-badge--high     { background: #f0a500; color: #fff; }
+.edit-seo-badge--medium   { background: #2271b1; color: #fff; }
+.edit-seo-badge--low      { background: #787c82; color: #fff; }
+.edit-seo-badge--fixed        { background: #00a32a; color: #fff; }
+.edit-seo-badge--manual       { background: #8c5200; color: #fff; }
+.edit-seo-badge--needs-config { background: #d63638; color: #fff; }

@@ -1,0 +1,221 @@
+<?php
+/**
+ * Plugin Name: weareedit.io Site Engine
+ * Plugin URI:  https://github.com/danieldevera/weareedit-site-engine
+ * Description: Custom site engine for weareedit.io — SEO (meta tags, OG, schema.org, sitemap, hreflang), GEO/LLM optimization (llms.txt, AI crawler rules, Wikidata-linked Person/Organization schema), brand customization (hero typography, dot accents, CTA hover animations), Google Reviews aggregation, output-buffer HTML rewrites, virtual pages, WP Rocket cache integration, and one-time data fixes.
+ * Version:     1.5.55
+ * Author:      Daniel Devera
+ * License:     GPL-2.0+
+ * Text Domain: weareedit-site-engine
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
+define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.55' );
+define( 'WEAREDIT_SITE_ENGINE_PATH', plugin_dir_path( __FILE__ ) );
+define( 'WEAREDIT_SITE_ENGINE_URL', plugin_dir_url( __FILE__ ) );
+
+/**
+ * One-click updates via Plugin Update Checker (PUC) — polls GitHub releases.
+ * Tag a release on https://github.com/danieldevera/weareedit-site-engine as
+ * `vX.Y.Z` and WP Admin will offer a one-click update within ~12h (or instantly
+ * via "Verificar atualizações" on the plugin row).
+ */
+require_once WEAREDIT_SITE_ENGINE_PATH . 'vendor/plugin-update-checker/plugin-update-checker.php';
+$weareedit_site_engine_update_checker = \YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
+    'https://github.com/danieldevera/weareedit-site-engine/',
+    __FILE__,
+    'weareedit-site-engine'
+);
+$weareedit_site_engine_update_checker->setBranch( 'main' );
+// Use GitHub Releases as the canonical source (matches the GH Action that
+// auto-builds the release zip on every `vX.Y.Z` tag push).
+$weareedit_site_engine_update_checker->getVcsApi()->enableReleaseAssets();
+
+/**
+ * After this plugin is updated via WP Admin (or auto-update), flush the
+ * caches so CSS / HTML rewrites take effect without a manual cache purge.
+ * Covers WP Rocket, WP core object cache, and the cached pages dir if
+ * present. Guarded so it only runs when THIS plugin was updated.
+ */
+add_action( 'upgrader_process_complete', function ( $upgrader, $options ) {
+    if ( ( $options['action'] ?? '' ) !== 'update' || ( $options['type'] ?? '' ) !== 'plugin' ) return;
+    if ( ! in_array( plugin_basename( __FILE__ ), $options['plugins'] ?? [], true ) ) return;
+
+    // WP Rocket page cache
+    if ( function_exists( 'rocket_clean_domain' ) ) rocket_clean_domain();
+    // WP Rocket minified assets (CSS / JS), so the injected <style> blocks refresh
+    if ( function_exists( 'rocket_clean_minify' ) ) rocket_clean_minify();
+    // Core object cache
+    if ( function_exists( 'wp_cache_flush' ) ) wp_cache_flush();
+}, 10, 2 );
+
+// Load all modules
+require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-meta-tags.php';
+require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-open-graph.php';
+require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-twitter-cards.php';
+require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-canonical.php';
+require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-sitemap.php';
+require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-image-alt.php';
+require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-script-optimizer.php';
+require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-structured-data.php';
+require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-hreflang.php';
+require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-analytics-dedup.php';
+require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-output-buffer.php';
+require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-tracking.php';
+require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-course-schema.php';
+require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-cheque-formacao.php';
+require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-404-redirects.php';
+require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-security.php';
+require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-llms-txt-cleanup.php';
+require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-title-spacing.php';
+require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-bfcache-rerender.php';
+require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-wellknown-ai.php';
+require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-criticas-page.php';
+require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-admin-panel.php';
+
+/**
+ * Bootstrap all SEO fix modules.
+ */
+function weareedit_site_engine_init() {
+    EDIT_Meta_Tags::init();
+    EDIT_Open_Graph::init();
+    EDIT_Twitter_Cards::init();
+    EDIT_Canonical::init();
+    EDIT_Sitemap::init();
+    EDIT_Image_Alt::init();
+    EDIT_Script_Optimizer::init();
+    EDIT_Structured_Data::init();
+    EDIT_Hreflang::init();
+    EDIT_Analytics_Dedup::init();
+    EDIT_Output_Buffer::init();
+    EDIT_Tracking::init();
+    EDIT_Course_Schema::init();
+    EDIT_Cheque_Formacao::init();
+    EDIT_404_Redirects::init();
+    EDIT_Security::init();
+    EDIT_LLMS_Txt_Cleanup::init();
+    EDIT_Title_Spacing::init();
+    EDIT_BFCache_Rerender::init();
+    EDIT_Wellknown_AI::init();
+    EDIT_Criticas_Page::init();
+    EDIT_Admin_Panel::init();
+}
+add_action( 'init', 'weareedit_site_engine_init' );
+
+/**
+ * Activation: flush rewrite rules so sitemap endpoint works.
+ */
+function weareedit_site_engine_activate() {
+    EDIT_Sitemap::register_endpoint();
+    EDIT_Criticas_Page::ensure_page_exists();
+    flush_rewrite_rules();
+    // Store default settings
+    if ( ! get_option( 'edit_seo_fix_settings' ) ) {
+        add_option( 'edit_seo_fix_settings', [
+            'default_description'   => 'EDIT. é uma escola de educação digital disruptiva em Portugal, com cursos em UX/UI Design, Inteligência Artificial, Data Science, Marketing Digital, Programação e Gestão de Negócios.',
+            'og_site_name'          => 'EDIT. - Disruptive Digital Education',
+            'twitter_handle'        => '@weareedit',
+            'primary_language'      => 'pt-PT',
+            'defer_scripts'         => true,
+            'preload_fonts'         => true,
+            'fix_image_alts'        => true,
+            'fix_duplicate_ga'      => true,
+            'primary_ga_id'         => 'G-R11CP4ELEH',
+            'sitemap_entries'       => 1000,
+            'fix_output_buffer'     => true,
+        ] );
+    }
+}
+register_activation_hook( __FILE__, 'weareedit_site_engine_activate' );
+
+/**
+ * Deactivation: flush rewrite rules.
+ */
+function weareedit_site_engine_deactivate() {
+    flush_rewrite_rules();
+}
+register_deactivation_hook( __FILE__, 'weareedit_site_engine_deactivate' );
+
+/**
+ * One-time AJAX handler: write robots.txt to disk with AI crawler rules.
+ * Fires once when triggered from the admin, then removes itself.
+ */
+add_action( 'wp_ajax_edit_seo_write_robots', function () {
+    if ( ! current_user_can( 'manage_options' ) ) {
+        wp_send_json_error( 'Unauthorized' );
+    }
+    check_ajax_referer( 'edit_seo_robots', 'nonce' );
+
+    $robots_content  = "# robots.txt \xe2\x80\x94 weareedit.io\n";
+    $robots_content .= "# Updated by weareedit.io Site Engine plugin\n\n";
+    $robots_content .= "User-agent: *\n";
+    $robots_content .= "Allow: /\n\n";
+    $robots_content .= "Sitemap: https://weareedit.io/sitemap_index.xml\n\n";
+    $robots_content .= "# AI Search Crawlers\n";
+    $robots_content .= "User-agent: GPTBot\n";
+    $robots_content .= "Allow: /\n\n";
+    $robots_content .= "User-agent: ChatGPT-User\n";
+    $robots_content .= "Allow: /\n\n";
+    $robots_content .= "User-agent: PerplexityBot\n";
+    $robots_content .= "Allow: /\n\n";
+    $robots_content .= "User-agent: ClaudeBot\n";
+    $robots_content .= "Allow: /\n\n";
+    $robots_content .= "User-agent: anthropic-ai\n";
+    $robots_content .= "Allow: /\n\n";
+    $robots_content .= "User-agent: Google-Extended\n";
+    $robots_content .= "Allow: /\n\n";
+    $robots_content .= "User-agent: Amazonbot\n";
+    $robots_content .= "Allow: /\n\n";
+    $robots_content .= "User-agent: Applebot\n";
+    $robots_content .= "Allow: /\n";
+
+    $path   = ABSPATH . 'robots.txt';
+    $result = file_put_contents( $path, $robots_content );
+
+    if ( $result !== false ) {
+        wp_send_json_success( 'robots.txt updated successfully (' . $result . ' bytes written)' );
+    } else {
+        wp_send_json_error( 'Failed to write ' . $path . ' — check file permissions' );
+    }
+} );
+
+/**
+ * One-time fix: remove noindex from the Videos page (post 59504).
+ * Rank Math Free has no UI to remove noindex — this deletes the meta directly.
+ * Runs once, then marks itself done via an option flag.
+ */
+add_action( 'admin_init', function () {
+    if ( get_option( 'edit_seo_fix_videos_noindex_removed' ) ) return;
+    $robots = get_post_meta( 59504, 'rank_math_robots', true );
+    if ( is_array( $robots ) ) {
+        $robots = array_filter( $robots, fn( $v ) => $v !== 'noindex' );
+        update_post_meta( 59504, 'rank_math_robots', array_values( $robots ) );
+    }
+    update_option( 'edit_seo_fix_videos_noindex_removed', true );
+} );
+
+/**
+ * One-time fix: remove noindex from the FAQs page (post 50128).
+ * Rank Math Free/Pro Advanced tab not accessible — delete the meta directly.
+ * Runs once, then marks itself done via an option flag.
+ */
+add_action( 'admin_init', function () {
+    if ( get_option( 'edit_seo_fix_faqs_noindex_removed' ) ) return;
+    $robots = get_post_meta( 50128, 'rank_math_robots', true );
+    if ( is_array( $robots ) ) {
+        $robots = array_filter( $robots, fn( $v ) => $v !== 'noindex' );
+        update_post_meta( 50128, 'rank_math_robots', array_values( $robots ) );
+    }
+    update_option( 'edit_seo_fix_faqs_noindex_removed', true );
+} );
+
+/**
+ * Nonce endpoint so the robots.txt writer can verify the request.
+ */
+add_action( 'wp_ajax_edit_seo_get_robots_nonce', function () {
+    if ( ! current_user_can( 'manage_options' ) ) wp_die( 'No' );
+    wp_send_json_success( wp_create_nonce( 'edit_seo_robots' ) );
+} );

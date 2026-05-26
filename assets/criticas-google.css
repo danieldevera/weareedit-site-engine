@@ -1,0 +1,137 @@
+/* EDIT. — Críticas Google page styles. Enqueued only on /criticas-google/.
+   Iteration A — Editorial Light. White-dominant, refined, yellow as accent.
+   Page flow:
+     1. Hero       → white, eyebrow + big H1 + grey subtitle
+     2. Statbar    → white, massive 4.1 + stars + meta. Horizontal.
+     3. Alumni CTA → yellow strip, copy + two dark buttons
+     4. Cards      → confirmed "perfect" design (unchanged from v1.5.9)
+     5. Footer note → future review sources */
+
+.cg-page{margin:0;padding:0;background:#fff;color:#1d1d1f;font-family:inherit;color-scheme:light;}
+.cg-page section,.cg-page .cg-quote,.cg-page .cg-alumni-videos__item{color-scheme:light;}
+
+/* ── 1. Hero — dark with video background, matches homepage hero ──── */
+.cg-hero{background:#000;color:#fff;text-align:center;padding:144px 40px 96px;margin:0;position:relative;overflow:hidden;}
+.cg-hero__video{position:absolute;right:0;top:0;left:0;bottom:0;width:100%;height:100%;object-fit:cover;opacity:0.55;z-index:0;pointer-events:none;}
+.cg-hero__content{position:relative;z-index:1;}
+.cg-hero__eyebrow{font-size:13px;color:#f5d100;text-transform:uppercase;letter-spacing:0.15em;font-weight:700;margin:0 0 24px;}
+.cg-hero__eyebrow span{color:#fff;}
+.cg-hero h1{font-size:clamp(48px,6vw,88px);font-weight:800;letter-spacing:-0.03em;line-height:1;color:#fff;max-width:900px;margin:0 auto;font-family:inherit;}
+.cg-hero p{font-size:20px;color:rgba(255,255,255,0.78);margin:28px auto 0;max-width:580px;line-height:1.5;font-family:inherit;}
+
+/* ── 2. Statbar — horizontal, big number + meta ───────────────────── */
+.cg-statbar{background:#fff;border-top:1px solid #e5e5e7;border-bottom:1px solid #e5e5e7;padding:56px 40px;display:flex;justify-content:center;align-items:center;gap:56px;flex-wrap:wrap;margin:0;}
+.cg-statbar__main{display:flex;flex-direction:column;align-items:center;gap:12px;}
+.cg-statbar__num{font-size:clamp(72px,9vw,120px);font-weight:800;color:#1d1d1f;letter-spacing:-0.04em;line-height:0.9;font-family:inherit;}
+.cg-statbar__stars{color:#f5d100;font-size:32px;letter-spacing:4px;line-height:1;}
+.cg-statbar__meta{font-size:16px;color:#6e6e73;line-height:1.7;text-align:left;}
+.cg-statbar__meta strong{color:#1d1d1f;font-weight:700;}
+
+/* ── 3. Alumni CTA — postcard style with Google G logo ─────────────── */
+.cg-alumni-banner{background:#fff;padding:56px 40px;margin:0;}
+.cg-alumni-banner__card{background:#f5d100;padding:56px 48px;max-width:980px;margin:0 auto;position:relative;}
+.cg-alumni-banner__quote-mark{position:absolute;top:20px;left:32px;font-size:120px;color:#1d1d1f;opacity:0.08;line-height:1;font-family:Georgia,"Times New Roman",serif;font-weight:800;pointer-events:none;}
+.cg-alumni-banner__sticker{position:absolute;top:-20px;right:32px;background:#1d1d1f;color:#f5d100;font-weight:800;font-size:14px;padding:14px 18px;text-transform:uppercase;letter-spacing:0.08em;transform:rotate(6deg);box-shadow:0 4px 0 #f5d100,0 4px 0 1px #1d1d1f;font-family:inherit;}
+.cg-alumni-banner__inner{position:relative;z-index:1;text-align:center;}
+.cg-alumni-banner__eyebrow{display:inline-flex;align-items:center;gap:8px;justify-content:center;font-size:12px;text-transform:uppercase;letter-spacing:0.15em;font-weight:700;color:#1d1d1f;opacity:0.7;margin-bottom:18px;font-family:inherit;}
+.cg-alumni-banner__eyebrow svg{flex-shrink:0;}
+.cg-alumni-banner__title{font-size:clamp(32px,4vw,44px);font-weight:800;color:#1d1d1f;letter-spacing:-0.025em;line-height:1.05;margin:0 0 14px;font-family:inherit;}
+.cg-alumni-banner__title strong{display:inline-block;position:relative;font-weight:800;}
+.cg-alumni-banner__title strong::after{content:'';position:absolute;left:-2px;right:-2px;bottom:4px;height:8px;background:rgba(29,29,31,0.18);z-index:-1;transform:skewX(-2deg);}
+.cg-alumni-banner__sub{font-size:17px;color:#1d1d1f;opacity:0.8;line-height:1.5;max-width:540px;margin:0 auto 28px;font-family:inherit;}
+.cg-alumni-banner__buttons{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+.cg-alumni-banner__btn{background:#1d1d1f;color:#f5d100;text-decoration:none;padding:16px 28px;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:0.06em;transition:transform 0.15s;font-family:inherit;}
+.cg-alumni-banner__btn:hover{transform:translateY(-2px);background:#1d1d1f;color:#f5d100;text-decoration:none;}
+.cg-alumni-banner__footnote{font-size:12px;color:#1d1d1f;opacity:0.6;margin-top:18px;font-family:inherit;}
+
+/* ── 3.5 Quote carousel — Editorial Type design ──────────────────── */
+.cg-quotes{background:#fafafa;padding:96px 40px;margin:0;}
+.cg-quotes__inner{max-width:1280px;margin:0 auto;}
+.cg-quotes__head{text-align:center;margin-bottom:64px;}
+.cg-quotes__eyebrow{font-size:13px;color:#f5d100;text-transform:uppercase;letter-spacing:0.15em;font-weight:700;margin-bottom:16px;font-family:inherit;}
+.cg-quotes__eyebrow span{color:#1d1d1f;}
+.cg-quotes__title{font-size:clamp(32px,4vw,56px);font-weight:800;letter-spacing:-0.025em;color:#1d1d1f;line-height:1;font-family:inherit;margin:0;}
+
+.cg-quotes__swiper{position:relative;overflow:hidden;}
+.cg-quotes__swiper .swiper-wrapper{align-items:stretch;}
+/* Theme's global .swiper-slide rule forces background:#000;height:500px;padding:30px;text-align:center —
+   need to override every one of those explicitly inside our carousel. */
+.cg-quotes__swiper .swiper-slide{height:auto !important;background:transparent !important;padding:0 !important;text-align:left;font-size:inherit;display:flex;box-sizing:border-box;}
+
+.cg-quote{padding:8px 0 0 20px;border-left:4px solid #f5d100;display:flex;flex-direction:column;gap:24px;flex:1;}
+.cg-quote__num{font-size:12px;color:#86868b;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;font-family:inherit;}
+.cg-quote__text{font-size:clamp(18px,1.5vw,22px);line-height:1.4;color:#1d1d1f;font-weight:500;letter-spacing:-0.005em;flex-grow:1;font-family:inherit;margin:0;}
+.cg-quote__attrib{display:flex;align-items:center;gap:16px;}
+.cg-quote__stars{color:#f5d100;font-size:16px;letter-spacing:2px;line-height:1;flex-shrink:0;}
+.cg-quote__attrib-inner{display:flex;flex-direction:column;gap:2px;}
+.cg-quote__name{font-size:14px;font-weight:700;color:#1d1d1f;letter-spacing:-0.01em;}
+.cg-quote__role{font-size:12px;color:#6e6e73;}
+
+.cg-quotes__nav{display:flex;justify-content:center;align-items:center;margin-top:56px;gap:0;}
+.cg-quotes__arrow{width:48px;height:48px;border:1px solid #d2d2d7;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#fff;font-size:18px;color:#1d1d1f;transition:background 0.15s,color 0.15s,border-color 0.15s;font-family:inherit;padding:0;}
+.cg-quotes__arrow:hover{background:#1d1d1f;color:#f5d100;border-color:#1d1d1f;}
+.cg-quotes__arrow.swiper-button-disabled{opacity:0.3;cursor:default;}
+.cg-quotes__counter{display:flex;align-items:center;padding:0 20px;font-size:14px;color:#6e6e73;font-weight:700;letter-spacing:0.08em;font-family:inherit;min-width:80px;justify-content:center;}
+.cg-quotes__current{color:#1d1d1f;}
+
+/* ── 3.6 Alumni videos — thumbnails + on-page modal lightbox ─────── */
+.cg-alumni-videos{background:#fff;padding:96px 40px;margin:0;}
+.cg-alumni-videos__inner{max-width:1280px;margin:0 auto;}
+.cg-alumni-videos__head{text-align:center;margin-bottom:48px;}
+.cg-alumni-videos__eyebrow{font-size:13px;color:#f5d100;text-transform:uppercase;letter-spacing:0.15em;font-weight:700;margin-bottom:16px;font-family:inherit;}
+.cg-alumni-videos__title{font-size:clamp(28px,3.4vw,40px);font-weight:800;letter-spacing:-0.02em;color:#1d1d1f;line-height:1.1;margin:0;font-family:inherit;}
+.cg-alumni-videos__sub{font-size:17px;color:#6e6e73;margin-top:14px;line-height:1.5;font-family:inherit;}
+.cg-alumni-videos__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+
+/* Thumbnail = button that opens the modal */
+.cg-alumni-video{position:relative;background:#000;border:0;padding:0;cursor:pointer;overflow:hidden;display:block;width:100%;aspect-ratio:16/9;font-family:inherit;}
+.cg-alumni-video img{width:100%;height:100%;object-fit:cover;display:block;opacity:0.92;transition:opacity 0.2s,transform 0.3s;}
+.cg-alumni-video:hover img{opacity:1;transform:scale(1.03);}
+.cg-alumni-video__play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:76px;height:76px;border-radius:50%;background:#f5d100;color:#1d1d1f;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;padding-left:6px;box-shadow:0 6px 32px rgba(0,0,0,0.4);transition:transform 0.2s, background 0.2s;}
+.cg-alumni-video:hover .cg-alumni-video__play{transform:translate(-50%,-50%) scale(1.08);background:#fff;}
+
+/* Modal lightbox */
+.cg-alumni-modal{position:fixed;inset:0;background:rgba(0,0,0,0.94);z-index:99999;display:flex;align-items:center;justify-content:center;padding:40px;opacity:0;transition:opacity 0.25s;}
+.cg-alumni-modal[hidden]{display:none;}
+.cg-alumni-modal.is-open{opacity:1;}
+.cg-alumni-modal__close{position:absolute;top:24px;right:24px;width:44px;height:44px;background:transparent;border:1px solid rgba(255,255,255,0.35);color:#fff;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:background 0.15s,border-color 0.15s;font-family:inherit;padding:0;line-height:1;}
+.cg-alumni-modal__close:hover{background:rgba(255,255,255,0.12);border-color:#fff;}
+.cg-alumni-modal__inner{width:100%;max-width:1100px;}
+.cg-alumni-modal__player{position:relative;padding-bottom:56.25%;height:0;background:#000;}
+.cg-alumni-modal__player iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;}
+
+/* ── 4. Cards — locked-in design (unchanged from v1.5.9) ─────────── */
+.cg-campuses{background:#fff;padding:72px 20px;display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:1140px;margin:0 auto;box-sizing:border-box;}
+.cg-campus{background:#fff;border:1px solid #e5e5e7;border-radius:4px;padding:36px 32px;display:flex;flex-direction:column;transition:border-color 0.15s;}
+.cg-campus:hover{border-color:#1d1d1f;}
+.cg-campus__brand{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.cg-campus__logo{width:22px;height:22px;flex-shrink:0;}
+.cg-campus__brand-text{font-size:12px;color:#86868b;text-transform:uppercase;letter-spacing:0.08em;font-weight:600;}
+.cg-campus__name{font-size:32px;font-weight:800;margin:0 0 18px;letter-spacing:-0.02em;color:#1d1d1f;font-family:inherit;line-height:1.1;}
+.cg-campus__rating-row{display:flex;align-items:baseline;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+.cg-campus__stars{color:#f5d100;font-size:22px;letter-spacing:2px;line-height:1;}
+.cg-campus__rating-num{font-size:24px;font-weight:800;color:#1d1d1f;font-family:inherit;}
+.cg-campus__count{font-size:15px;color:#6e6e73;}
+.cg-campus__address{font-size:15px;color:#424245;margin:16px 0 28px;line-height:1.5;}
+.cg-campus__cta{display:inline-block;background:#f5d100;color:#1d1d1f;text-decoration:none;padding:14px 24px;border-radius:0;font-weight:700;font-size:13px;text-align:center;margin-top:auto;text-transform:uppercase;letter-spacing:0.06em;transition:background 0.15s,color 0.15s;font-family:inherit;}
+.cg-campus__cta:hover{background:#1d1d1f;color:#f5d100;text-decoration:none;}
+
+/* ── 5. Footer note ────────────────────────────────────────────── */
+.cg-future{background:#fff;font-size:13px;color:#86868b;text-align:center;margin:0;padding:0 20px 72px;letter-spacing:0.02em;}
+
+/* ── Mobile ────────────────────────────────────────────────────── */
+@media (max-width:720px){
+  .cg-hero{padding:96px 24px 40px;}
+  .cg-statbar{padding:40px 24px;gap:24px;flex-direction:column;}
+  .cg-statbar__meta{text-align:center;}
+  .cg-alumni-banner{padding:20px 24px;gap:14px;}
+  .cg-alumni-banner__text{font-size:16px;}
+  .cg-campuses{grid-template-columns:1fr;padding:48px 20px;}
+  .cg-quotes{padding:64px 20px;}
+  .cg-quotes__head{margin-bottom:40px;}
+  .cg-quote{padding:8px 0 0 16px;}
+  .cg-alumni-videos{padding:64px 20px;}
+  .cg-alumni-videos__grid{grid-template-columns:1fr;gap:20px;}
+  .cg-alumni-modal{padding:20px;}
+  .cg-alumni-modal__close{top:16px;right:16px;}
+}

@@ -1,0 +1,20 @@
+# Build artefacts
+*.zip
+*.tar.gz
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# WordPress runtime garbage (in case anything leaks)
+*.log
+debug.log
+
+# Composer / PHP — vendor is committed because PUC ships pre-built
+/composer.lock
