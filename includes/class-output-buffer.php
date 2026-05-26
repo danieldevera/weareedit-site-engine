@@ -103,15 +103,32 @@ class EDIT_Output_Buffer {
             // Subtitle H2 only ("Escola especializada em Digital...") →
             // left-align, original size, yellow.
             . 'body.page-template-page-home .hero h2,body.page-template-page-home .hero h2 font,body.page-template-page-home .hero h2 *{text-align:left !important;font-size:32px !important;line-height:1.3 !important;color:#ffdd06 !important;margin-left:0 !important;padding-left:0 !important;max-width:none !important;}'
-            // "Clientes Corporativos | Formação à medida..." — now a
-            // trust pill linked to /formacao-in-company/. Matches the DGERT
-            // pill aesthetic (smaller text, arrow ↗, hover opacity).
-            . 'body.page-template-page-home .hero a.hero-corporate{color:#c8c8c8 !important;line-height:1.3 !important;display:flex;flex-wrap:wrap;align-items:center;justify-content:center !important;text-align:center !important;gap:0;text-decoration:none !important;transition:opacity 0.2s ease;}'
+            // "Clientes Corporativos · Formação à Medida" — Option B section
+            // divider treatment in iter 3 register: uppercase, tracked, with
+            // thin horizontal lines flanking the pill. Acts as a section
+            // heading for the corporate-client logos directly below.
+            . 'body.page-template-page-home .hero .hero-corporate-row{display:flex;align-items:center;gap:18px;max-width:900px;margin:0 auto;padding:0 8px;}'
+            . 'body.page-template-page-home .hero .hero-corporate-row .hc-line{flex:1;height:1px;background:rgba(255,255,255,0.18);}'
+            . 'body.page-template-page-home .hero a.hero-corporate{color:#c8c8c8 !important;line-height:1.3 !important;display:inline-flex;flex-wrap:nowrap;align-items:center;gap:0;text-decoration:none !important;transition:opacity 0.2s ease;white-space:nowrap;text-transform:uppercase;letter-spacing:0.18em;}'
             . 'body.page-template-page-home .hero a.hero-corporate:hover{opacity:0.78;}'
-            . 'body.page-template-page-home .hero a.hero-corporate .hc-main{font-size:16px !important;font-weight:400 !important;letter-spacing:-0.005em !important;color:#c8c8c8 !important;}'
-            . 'body.page-template-page-home .hero a.hero-corporate .hc-sep{font-size:16px !important;font-weight:300 !important;opacity:0.5;margin:0 10px;color:#c8c8c8 !important;}'
-            . 'body.page-template-page-home .hero a.hero-corporate .hc-sub{font-size:16px !important;font-weight:400 !important;color:#c8c8c8 !important;}'
-            . 'body.page-template-page-home .hero a.hero-corporate .hc-arrow{font-size:12px !important;margin-left:8px;opacity:0.6 !important;color:#c8c8c8 !important;}'
+            . 'body.page-template-page-home .hero a.hero-corporate .hc-main{font-size:12px !important;font-weight:600 !important;color:#c8c8c8 !important;}'
+            . 'body.page-template-page-home .hero a.hero-corporate .hc-sep{font-size:12px !important;font-weight:400 !important;opacity:0.4;margin:0 12px;color:#c8c8c8 !important;}'
+            . 'body.page-template-page-home .hero a.hero-corporate .hc-sub{font-size:12px !important;font-weight:600 !important;color:#c8c8c8 !important;}'
+            . 'body.page-template-page-home .hero a.hero-corporate .hc-arrow{font-size:11px !important;margin-left:8px;opacity:0.6 !important;color:#c8c8c8 !important;position:relative;top:-1px;letter-spacing:0;}'
+            // Reviews score block directly below the CTA. Real numbers anchor
+            // social proof close to the conversion point. Star uses brand
+            // yellow; rating bold white; count light grey. Linked to
+            // /criticas-google/ so a click leads to the full review wall.
+            . 'body.page-template-page-home .hero-reviews{display:inline-flex;align-items:center;gap:8px;color:#c8c8c8 !important;text-decoration:none !important;font-size:13px;margin:14px 0 24px;transition:opacity 0.2s ease;align-self:flex-start;}'
+            . 'body.page-template-page-home .hero-reviews:hover{opacity:0.78;}'
+            . 'body.page-template-page-home .hero-reviews .hr-star{color:#ffdd06 !important;font-size:16px;position:relative;top:-1px;}'
+            . 'body.page-template-page-home .hero-reviews .hr-rating{color:#fff !important;font-weight:700;font-size:14px;}'
+            . 'body.page-template-page-home .hero-reviews .hr-sep{opacity:0.4;margin:0 2px;}'
+            . 'body.page-template-page-home .hero-reviews .hr-count{color:#c8c8c8 !important;}'
+            // Larger corporate-client logos — bumped to 72px so they read at
+            // a distance and balance the new section-divider treatment above.
+            . 'body.page-template-page-home .logos-flex-container{align-items:center;gap:32px;}'
+            . 'body.page-template-page-home .logos-flex-item img{max-height:72px !important;height:auto !important;width:auto !important;max-width:100% !important;object-fit:contain;}'
             // Hero CTA "Ver todos os Cursos" — sequenced 3-layer swipe:
             //   1. pink (#f92869) swipes L→R       [0.00s start, 0.15s travel]
             //   2. teal (#60c5b3) swipes R→L       [0.15s start, 0.15s travel]
@@ -376,7 +393,17 @@ HTML;
             // ("Formação à medida para Empresas") — styled in inject_global_overrides().
             $html = str_replace(
                 '<p><b>Clientes Corporativos | Formação à medida para Empresas</b></p>',
-                '<a class="hero-corporate wow animate__fadeInUp" data-wow-duration="1s" href="' . esc_url( home_url( '/formacao-in-company/' ) ) . '" aria-label="Clientes Corporativos — Formação à medida para Empresas"><span class="hc-main">Clientes Corporativos</span><span class="hc-sep">|</span><span class="hc-sub">Formação à medida para Empresas</span><span class="hc-arrow" aria-hidden="true">&#x2197;</span></a>',
+                '<div class="hero-corporate-row wow animate__fadeInUp" data-wow-duration="1s"><span class="hc-line"></span><a class="hero-corporate" href="' . esc_url( home_url( '/formacao-in-company/' ) ) . '" aria-label="Clientes Corporativos — Formação à medida para Empresas"><span class="hc-main">Clientes Corporativos</span><span class="hc-sep">·</span><span class="hc-sub">Formação à Medida</span><span class="hc-arrow" aria-hidden="true">&#x2197;</span></a><span class="hc-line"></span></div>',
+                $html
+            );
+            // Reviews score injected directly below the "Ver todos os Cursos"
+            // CTA — anchors a real social-proof number close to the action.
+            // Replaces the iter-3 "Inscrições abertas…" scarcity microcopy.
+            // Pulls the same 4.1/67 numbers used in the AggregateRating schema
+            // (class-structured-data.php) — keep in lockstep when those change.
+            $html = str_replace(
+                '<span class="swipe-label">Ver todos os Cursos</span></a>',
+                '<span class="swipe-label">Ver todos os Cursos</span></a><a class="hero-reviews wow animate__fadeInUp" data-wow-duration="1s" href="' . esc_url( home_url( '/criticas-google/' ) ) . '" aria-label="Avaliações Google — 4.1 de 5 baseado em 67 reviews"><span class="hr-star">&#x2605;</span><span class="hr-rating">4.1</span><span class="hr-sep">/</span><span class="hr-count">67 reviews no Google</span></a>',
                 $html
             );
             // Hero CTA — add `swipe-cta` class to the button and wrap the
