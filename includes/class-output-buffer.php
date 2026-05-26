@@ -86,6 +86,15 @@ class EDIT_Output_Buffer {
             // teal dot for "Transformation." (Bootcamp + Workshop class colours).
             . 'body.page-template-page-home .hero h1 .h1-dot-pink{color:#f92869 !important;}'
             . 'body.page-template-page-home .hero h1 .h1-dot-teal{color:#60c5b3 !important;}'
+            // DGERT trust pill — small inline badge above the H1. Logo (40px)
+            // + text + ↗ external-link glyph. Reuses the white DGERT badge
+            // already in the plugin assets. Opacity hover (matches existing
+            // .dgert-cert-link rule on the footer badge).
+            . 'body.page-template-page-home .dgert-hero-pill{display:inline-flex;align-items:center;gap:12px;text-decoration:none;color:#fff !important;margin:0 0 24px 0;transition:opacity 0.2s ease;align-self:flex-start;}'
+            . 'body.page-template-page-home .dgert-hero-pill:hover{opacity:0.78;}'
+            . 'body.page-template-page-home .dgert-hero-pill img{height:40px !important;width:auto !important;display:block;border:none;}'
+            . 'body.page-template-page-home .dgert-hero-pill-text{font-size:14px !important;font-weight:500 !important;letter-spacing:0.01em;color:#fff !important;}'
+            . 'body.page-template-page-home .dgert-hero-pill-arrow{font-size:12px !important;margin-left:4px;opacity:0.6;color:#fff !important;}'
             . 'body.page-template-page-home .hero .sub-heading{display:none !important;}'
             // Widen hero container + force column to full width so the big H1
             // has horizontal room to render without word-wrapping.
@@ -342,6 +351,17 @@ HTML;
             $html = str_replace(
                 'Future Proof<br><span style="color:#ffdd06;font-weight:1000;">Education',
                 'Future Proof<span class="h1-dot h1-dot-pink">.</span><br>Transformation<span class="h1-dot h1-dot-teal">.</span>',
+                $html
+            );
+            // DGERT trust pill — injected above the H1, clickable, links to the
+            // verified DGERT registry. Reuses the existing white DGERT badge
+            // already shipped in assets/. Styled in inject_global_overrides()
+            // under `.dgert-hero-pill`. The locked-hero H1 markup is unique
+            // ("wow animate__fadeInUp " + Future Proof) so the replace is safe.
+            $dgert_badge_url = WEAREDIT_SITE_ENGINE_URL . 'assets/dgert-entidade-formadora-branco.png';
+            $html = str_replace(
+                '<h1 class="wow animate__fadeInUp " data-wow-duration="1s">Future Proof',
+                '<a class="dgert-hero-pill" href="https://www.dgert.gov.pt/entidades-formadoras-certificadas" target="_blank" rel="noopener noreferrer" aria-label="DGERT — Entidade Formadora Certificada"><img src="' . esc_url( $dgert_badge_url ) . '" alt="DGERT" loading="eager"><span class="dgert-hero-pill-text">Entidade Formadora Certificada</span><span class="dgert-hero-pill-arrow" aria-hidden="true">&#x2197;</span></a><h1 class="wow animate__fadeInUp " data-wow-duration="1s">Future Proof',
                 $html
             );
             // H2 subtitle: let it wrap naturally into ~2 lines at the
