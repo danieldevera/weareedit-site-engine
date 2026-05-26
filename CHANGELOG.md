@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.5.66 — 2026-05-26
+- **`/criticas-google/` hero — Iter 2 (Quote-led) shipped.** Replaces the old centered "★ Críticas verificadas no Google" eyebrow + "O que dizem os nossos alunos." H1 + grey subtitle. New structure mirrors the locked homepage hero:
+  - Google source pill (G logo + "Críticas verificadas no Google" + ↗) — matches homepage DGERT pill placement
+  - Big yellow opening quote mark (Georgia serif, brand yellow `#f5d100`)
+  - Italic H1 quote (`Mudei de carreira em 6 meses.`) with brand-pink dot accent matching homepage H1 dot pattern
+  - Attribution: student name (white bold) + course + campus + employer
+  - Dual CTA: yellow primary "Ler todas as 67 críticas" (anchors to `#criticas` section) + ghost secondary "Deixar uma crítica" (opens Lisboa Google reviews in new tab)
+  - Reviews score below CTAs: `★ 4.1 / 67 reviews no Google` (multi-color wordmark) — same component as homepage
+- All hero typography left-aligned in 1600px container, matching the locked homepage hero. Mobile breakpoint: CTAs stack vertically, quote scales down to 38px, quote-mark to 96px.
+- The cg-statbar section directly below the hero (added in v1.5.63) provides the secondary numeric anchor.
+
 ## v1.5.65 — 2026-05-26
 - **Homepage hero CTA + reviews block: left-aligned** to match the approved design (iter 3). Theme defaults centered them via `.hero-btn-container`; overridden with `text-align:left` + `display:block`. Reviews block margin changed from `14px auto 28px` to `14px 0 28px 0`. Corporate-row + logo strip remain centered (unchanged).
 

@@ -10,14 +10,51 @@
 .cg-page{margin:0;padding:0;background:#fff;color:#1d1d1f;font-family:inherit;color-scheme:light;}
 .cg-page section,.cg-page .cg-quote,.cg-page .cg-alumni-videos__item{color-scheme:light;}
 
-/* ── 1. Hero — dark with video background, matches homepage hero ──── */
-.cg-hero{background:#000;color:#fff;text-align:center;padding:144px 40px 96px;margin:0;position:relative;overflow:hidden;}
-.cg-hero__video{position:absolute;right:0;top:0;left:0;bottom:0;width:100%;height:100%;object-fit:cover;opacity:0.55;z-index:0;pointer-events:none;}
-.cg-hero__content{position:relative;z-index:1;}
-.cg-hero__eyebrow{font-size:13px;color:#f5d100;text-transform:uppercase;letter-spacing:0.15em;font-weight:700;margin:0 0 24px;}
-.cg-hero__eyebrow span{color:#fff;}
-.cg-hero h1{font-size:clamp(48px,6vw,88px);font-weight:800;letter-spacing:-0.03em;line-height:1;color:#fff;max-width:900px;margin:0 auto;font-family:inherit;}
-.cg-hero p{font-size:20px;color:rgba(255,255,255,0.78);margin:28px auto 0;max-width:580px;line-height:1.5;font-family:inherit;}
+/* ── 1. Hero — quote-led, matches homepage hero UI logic ───────────── */
+.cg-hero{background:#000;color:#fff;text-align:left;padding:144px 60px 96px;margin:0;position:relative;overflow:hidden;}
+.cg-hero__video{position:absolute;right:0;top:0;left:0;bottom:0;width:100%;height:100%;object-fit:cover;opacity:0.45;z-index:0;pointer-events:none;}
+.cg-hero__content{position:relative;z-index:1;max-width:1600px;margin:0 auto;}
+
+/* Source pill — matches the homepage DGERT pill pattern */
+.cg-hero__source{display:inline-flex;align-items:center;gap:12px;color:#fff !important;text-decoration:none !important;margin:0 0 28px;transition:opacity 0.2s ease;}
+.cg-hero__source:hover{opacity:0.78;}
+.cg-hero__source svg.cg-campus__logo{width:32px;height:32px;}
+.cg-hero__source-text{font-size:14px;font-weight:500;letter-spacing:0.01em;color:#fff;}
+.cg-hero__source-arrow{font-size:12px;opacity:0.6;color:#fff;}
+
+/* Big yellow opening quote mark */
+.cg-hero__quote-mark{font-size:clamp(120px,15vw,200px);line-height:0.45;color:#f5d100;font-family:Georgia,"Times New Roman",serif;font-weight:700;margin:0 0 12px;opacity:0.95;}
+
+/* H1 as quote — italic + pink dot accent (matches homepage H1 dot pattern) */
+.cg-hero__quote{font-size:clamp(48px,7vw,110px);font-weight:500;letter-spacing:-0.02em;line-height:1.04;color:#fff;font-style:italic;margin:0 0 20px;max-width:1400px;font-family:inherit;}
+.cg-hero__quote-dot{color:#f92869;font-style:normal;}
+
+/* Attribution under the quote */
+.cg-hero__attribution{font-size:17px;color:#c8c8c8;line-height:1.6;margin:0 0 36px;font-family:inherit;}
+.cg-hero__author{color:#fff;font-weight:700;font-size:18px;display:block;margin-bottom:2px;}
+.cg-hero__author-meta{color:#c8c8c8;opacity:0.85;}
+
+/* Dual CTA row */
+.cg-hero__cta-row{display:flex;gap:12px;margin:0 0 14px;align-items:center;flex-wrap:wrap;}
+.cg-hero__cta-primary{display:inline-block;background:#ffdd06 !important;color:#000 !important;text-decoration:none !important;padding:16px 32px;font-size:15px;font-weight:600;transition:opacity 0.2s ease;}
+.cg-hero__cta-primary:hover{opacity:0.9;}
+.cg-hero__cta-secondary{display:inline-block;background:transparent !important;color:#fff !important;text-decoration:none !important;padding:15px 32px;font-size:15px;font-weight:500;border:1px solid rgba(255,255,255,0.4);transition:border-color 0.2s ease,background 0.2s ease;}
+.cg-hero__cta-secondary:hover{border-color:rgba(255,255,255,0.8);background:rgba(255,255,255,0.04) !important;}
+
+/* Reviews score below CTAs — same pattern as homepage hero-reviews */
+.cg-hero__reviews{display:flex;width:fit-content;margin:14px 0 0;align-items:center;gap:8px;color:#c8c8c8 !important;text-decoration:none !important;font-size:13px;text-underline-offset:5px;text-decoration-thickness:2px;font-family:inherit;}
+.cg-hero__reviews:hover,.cg-hero__reviews:hover *{text-decoration:underline !important;text-decoration-color:#fff !important;text-decoration-thickness:2px !important;text-underline-offset:5px !important;}
+.cg-hero__reviews-star{color:#ffdd06 !important;font-size:16px;position:relative;top:-1px;}
+.cg-hero__reviews-rating{color:#fff !important;font-weight:700;font-size:14px;}
+.cg-hero__reviews-sep{opacity:0.4;margin:0 2px;}
+.cg-hero__reviews-count{color:#c8c8c8;margin-right:4px;}
+.cg-hero__reviews-gw{display:inline-flex;align-items:baseline;gap:0;font-family:"Helvetica Neue",Arial,sans-serif;font-weight:500;font-size:15px;line-height:1;letter-spacing:-0.005em;}
+.cg-hero__reviews-gw .g-G{color:#4285F4 !important;}
+.cg-hero__reviews-gw .g-o1{color:#EA4335 !important;}
+.cg-hero__reviews-gw .g-o2{color:#FBBC04 !important;}
+.cg-hero__reviews-gw .g-g{color:#4285F4 !important;}
+.cg-hero__reviews-gw .g-l{color:#34A853 !important;}
+.cg-hero__reviews-gw .g-e{color:#EA4335 !important;}
 
 /* ── 2. Statbar — horizontal, big number + meta ───────────────────── */
 .cg-statbar{background:#fff;border-top:1px solid #e5e5e7;border-bottom:1px solid #e5e5e7;padding:56px 40px;display:flex;justify-content:center;align-items:center;gap:56px;flex-wrap:wrap;margin:0;}
@@ -131,7 +168,13 @@
 
 /* ── Mobile ────────────────────────────────────────────────────── */
 @media (max-width:720px){
-  .cg-hero{padding:96px 24px 40px;}
+  .cg-hero{padding:96px 24px 56px;}
+  .cg-hero__quote-mark{font-size:96px;line-height:0.5;}
+  .cg-hero__quote{font-size:38px;line-height:1.08;}
+  .cg-hero__attribution{font-size:15px;}
+  .cg-hero__author{font-size:16px;}
+  .cg-hero__cta-row{flex-direction:column;align-items:stretch;}
+  .cg-hero__cta-primary,.cg-hero__cta-secondary{text-align:center;}
   .cg-statbar{padding:40px 24px;gap:24px;flex-direction:column;}
   .cg-statbar__meta{text-align:center;}
   .cg-alumni-banner{padding:20px 24px;gap:14px;}

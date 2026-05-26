@@ -123,9 +123,28 @@ class EDIT_Criticas_Page {
       <source src="/wp-content/uploads/2026/03/waves-sequence-compressed.mp4" type="video/mp4">
     </video>
     <div class="cg-hero__content">
-      <p class="cg-hero__eyebrow">&starf; <span>Críticas verificadas no Google</span></p>
-      <h1>O que dizem os nossos alunos.</h1>
-      <p>67 avaliações reais nos campus de Lisboa e Porto. Sem filtros, sem retoques &mdash; apenas a opinião de quem passou por aqui.</p>
+      <a class="cg-hero__source" href="{$url_lisboa}" target="_blank" rel="noopener">
+        {$g_logo}
+        <span class="cg-hero__source-text">Críticas verificadas no Google</span>
+        <span class="cg-hero__source-arrow" aria-hidden="true">&#x2197;</span>
+      </a>
+      <div class="cg-hero__quote-mark" aria-hidden="true">&ldquo;</div>
+      <h1 class="cg-hero__quote">Mudei de carreira em 6 meses<span class="cg-hero__quote-dot">.</span></h1>
+      <p class="cg-hero__attribution">
+        <span class="cg-hero__author">Inês Bernardino</span>
+        <span class="cg-hero__author-meta">UX/UI Design Bootcamp · EDIT. Lisboa · Product Designer @ Farfetch</span>
+      </p>
+      <div class="cg-hero__cta-row">
+        <a class="cg-hero__cta-primary" href="#criticas">Ler todas as 67 críticas</a>
+        <a class="cg-hero__cta-secondary" href="{$url_lisboa}" target="_blank" rel="noopener">Deixar uma crítica</a>
+      </div>
+      <a class="cg-hero__reviews" href="{$url_lisboa}" target="_blank" rel="noopener" aria-label="Avaliações Google — 4.1 de 5 baseado em 67 reviews">
+        <span class="cg-hero__reviews-star">&#x2605;</span>
+        <span class="cg-hero__reviews-rating">4.1</span>
+        <span class="cg-hero__reviews-sep">/</span>
+        <span class="cg-hero__reviews-count">67 reviews no</span>
+        <span class="cg-hero__reviews-gw" aria-hidden="true"><span class="g-G">G</span><span class="g-o1">o</span><span class="g-o2">o</span><span class="g-g">g</span><span class="g-l">l</span><span class="g-e">e</span></span>
+      </a>
     </div>
   </section>
 
@@ -145,7 +164,7 @@ class EDIT_Criticas_Page {
     </div>
   </section>
 
-  <section class="cg-quotes" aria-label="Críticas em destaque">
+  <section class="cg-quotes" id="criticas" aria-label="Críticas em destaque">
     <div class="cg-quotes__inner">
       <div class="cg-quotes__head">
         <div class="cg-quotes__eyebrow">&starf; <span>Críticas verificadas no Google</span></div>
