@@ -361,7 +361,7 @@ HTML;
             $dgert_badge_url = WEAREDIT_SITE_ENGINE_URL . 'assets/dgert-entidade-formadora-branco.png';
             $html = str_replace(
                 '<h1 class="wow animate__fadeInUp " data-wow-duration="1s">Future Proof',
-                '<a class="dgert-hero-pill" href="https://www.dgert.gov.pt/entidades-formadoras-certificadas" target="_blank" rel="noopener noreferrer" aria-label="DGERT — Entidade Formadora Certificada"><img src="' . esc_url( $dgert_badge_url ) . '" alt="DGERT" loading="eager"><span class="dgert-hero-pill-text">Entidade Formadora Certificada</span><span class="dgert-hero-pill-arrow" aria-hidden="true">&#x2197;</span></a><h1 class="wow animate__fadeInUp " data-wow-duration="1s">Future Proof',
+                '<a class="dgert-hero-pill wow animate__fadeInUp" data-wow-duration="1s" href="https://www.dgert.gov.pt/entidades-formadoras-certificadas" target="_blank" rel="noopener noreferrer" aria-label="DGERT — Entidade Formadora Certificada"><img src="' . esc_url( $dgert_badge_url ) . '" alt="DGERT" loading="eager"><span class="dgert-hero-pill-text">Entidade Formadora Certificada</span><span class="dgert-hero-pill-arrow" aria-hidden="true">&#x2197;</span></a><h1 class="wow animate__fadeInUp " data-wow-duration="1s">Future Proof',
                 $html
             );
             // H2 subtitle: let it wrap naturally into ~2 lines at the
