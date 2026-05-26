@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.5.63 — 2026-05-26
+- **Homepage reviews score: hover underline made visible.** Bumped from 1px rgba(255,255,255,0.55) → 2px solid #fff at 5px offset. Applied to all descendants so the multi-color Google wordmark also underlines together.
+- **/criticas-google/ campus cards: removed both "Ver todas as críticas →" CTAs** (Lisboa + Porto). Cards now stop at the address line — cleaner, no double click-out.
+- **/criticas-google/ statbar: Google brand row added above the 4.1.** Multi-color G logo + Google wordmark (per-letter spans, brand-exact hex codes). Establishes that the 4.1 rating + 67 reviews come from Google. Visually-hidden "Google Reviews" label for screen readers.
+
 ## v1.5.62 — 2026-05-26
 - Reviews score hover state → simple underline (1px, rgba white 0.55, 4px offset) instead of opacity dim. Lighter, more "this is a link" affordance.
 

@@ -129,7 +129,12 @@ class EDIT_Criticas_Page {
     </div>
   </section>
 
-  <section class="cg-statbar" aria-label="Resumo das avaliações">
+  <section class="cg-statbar" aria-label="Resumo das avaliações no Google">
+    <div class="cg-statbar__brand">
+      {$g_logo}
+      <span class="cg-statbar__brand-wordmark" aria-hidden="true"><span class="g-G">G</span><span class="g-o1">o</span><span class="g-o2">o</span><span class="g-g">g</span><span class="g-l">l</span><span class="g-e">e</span></span>
+      <span class="cg-statbar__brand-sr-only">Google Reviews</span>
+    </div>
     <div class="cg-statbar__main">
       <div class="cg-statbar__num">4.1</div>
       <div class="cg-statbar__stars" aria-hidden="true">★★★★<span style="opacity:0.45;">★</span></div>
@@ -276,7 +281,6 @@ class EDIT_Criticas_Page {
         <span class="cg-campus__count">· 36 críticas</span>
       </div>
       <p class="cg-campus__address">Av. Aquilino Ribeiro Machado, Nº 8<br>1800-399 Lisboa</p>
-      <a class="cg-campus__cta" href="{$url_lisboa}" target="_blank" rel="noopener">Ver todas as críticas →</a>
     </article>
     <article class="cg-campus">
       <div class="cg-campus__brand">{$g_logo}<span class="cg-campus__brand-text">Google · Porto</span></div>
@@ -287,7 +291,6 @@ class EDIT_Criticas_Page {
         <span class="cg-campus__count">· 31 críticas</span>
       </div>
       <p class="cg-campus__address">R. do Alferes Malheiro, Nº 226<br>4000-057 Porto</p>
-      <a class="cg-campus__cta" href="{$url_porto}" target="_blank" rel="noopener">Ver todas as críticas →</a>
     </article>
   </section>
 

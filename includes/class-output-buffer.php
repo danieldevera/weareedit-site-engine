@@ -119,8 +119,8 @@ class EDIT_Output_Buffer {
             // social proof close to the conversion point. Star uses brand
             // yellow; rating bold white; count light grey. Linked to
             // /criticas-google/ so a click leads to the full review wall.
-            . 'body.page-template-page-home .hero-reviews{display:inline-flex;align-items:center;gap:8px;color:#c8c8c8 !important;text-decoration:none !important;font-size:13px;margin:14px 0 24px;align-self:flex-start;text-underline-offset:4px;text-decoration-thickness:1px;transition:text-decoration-color 0.18s ease;}'
-            . 'body.page-template-page-home .hero-reviews:hover{text-decoration:underline !important;text-decoration-color:rgba(255,255,255,0.55) !important;}'
+            . 'body.page-template-page-home .hero-reviews{display:inline-flex;align-items:center;gap:8px;color:#c8c8c8 !important;text-decoration:none !important;font-size:13px;margin:14px 0 24px;align-self:flex-start;text-underline-offset:5px;text-decoration-thickness:2px;}'
+            . 'body.page-template-page-home .hero-reviews:hover,body.page-template-page-home .hero-reviews:hover *{text-decoration:underline !important;text-decoration-color:#fff !important;text-decoration-thickness:2px !important;text-underline-offset:5px !important;}'
             . 'body.page-template-page-home .hero-reviews .hr-star{color:#ffdd06 !important;font-size:16px;position:relative;top:-1px;}'
             . 'body.page-template-page-home .hero-reviews .hr-rating{color:#fff !important;font-weight:700;font-size:14px;}'
             . 'body.page-template-page-home .hero-reviews .hr-sep{opacity:0.4;margin:0 2px;}'
