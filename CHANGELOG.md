@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.5.68 — 2026-05-26
+- **WP Rocket Shield** — new defensive integration (`class-wp-rocket-shield.php`). Registers safe exclusions BEFORE the user toggles "Atrasar JavaScript" or "Remover CSS não usado", so the hero animations, the swipe-cta CTA hover, the reviews block, and the third-party stack (jQuery, GTM, Cookiebot, FB Pixel, LinkedIn Insight, Hotjar, Clarity, InLinks, WOW.js, WhatsApp button) don't break when those toggles flip. Four WP Rocket filters wired:
+  - `rocket_rucss_excluded_inline_css` — protects our injected inline `<style>` from Remove-Unused-CSS analysis (otherwise hover rules get stripped).
+  - `rocket_delay_js_exclusions` — adds the standard "must run before user interaction" allow-list.
+  - `rocket_excluded_inline_js_content` — protects inline `dataLayer`/`gtag`/Cookiebot bootstraps.
+  - `rocket_exclude_js` — skips this plugin's own JS from any optimisation pass.
+- Auto-detects WP Rocket; no-op if not active. Zero impact on sites without WP Rocket.
+
 ## v1.5.67 — 2026-05-26
 - **Schema bundle (3 wins from the audit roadmap):**
   1. **Homepage Organization schema enriched.** Added `founder` (Daniel Devera as `Person` with Wikidata Q139907903 in `sameAs`), appended Wikidata Q139907765 to the Organization's `sameAs`, added `alternateName` aliases (`EDIT.`, `weareedit`, `Devera Co. Lda`). Closes the homepage → Wikidata → Daniel LLM-traversal chain — single highest-impact GEO fix per the audit.
