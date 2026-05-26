@@ -103,12 +103,15 @@ class EDIT_Output_Buffer {
             // Subtitle H2 only ("Escola especializada em Digital...") →
             // left-align, original size, yellow.
             . 'body.page-template-page-home .hero h2,body.page-template-page-home .hero h2 font,body.page-template-page-home .hero h2 *{text-align:left !important;font-size:32px !important;line-height:1.3 !important;color:#ffdd06 !important;margin-left:0 !important;padding-left:0 !important;max-width:none !important;}'
-            // "Clientes Corporativos | Formação à medida..." p →
-            // primary part (Clientes Corporativos) larger, sub-text smaller.
-            . 'body.page-template-page-home .hero p.hero-corporate{color:#c8c8c8 !important;line-height:1.3 !important;display:flex;flex-wrap:wrap;align-items:center;justify-content:center !important;text-align:center !important;gap:0;}'
-            . 'body.page-template-page-home .hero p.hero-corporate .hc-main{font-size:20px !important;font-weight:400 !important;letter-spacing:-0.005em !important;color:#c8c8c8 !important;}'
-            . 'body.page-template-page-home .hero p.hero-corporate .hc-sep{font-size:20px !important;font-weight:300 !important;opacity:0.5;margin:0 10px;color:#c8c8c8 !important;}'
-            . 'body.page-template-page-home .hero p.hero-corporate .hc-sub{font-size:20px !important;font-weight:400 !important;color:#c8c8c8 !important;}'
+            // "Clientes Corporativos | Formação à medida..." — now a
+            // trust pill linked to /formacao-in-company/. Matches the DGERT
+            // pill aesthetic (smaller text, arrow ↗, hover opacity).
+            . 'body.page-template-page-home .hero a.hero-corporate{color:#c8c8c8 !important;line-height:1.3 !important;display:flex;flex-wrap:wrap;align-items:center;justify-content:center !important;text-align:center !important;gap:0;text-decoration:none !important;transition:opacity 0.2s ease;}'
+            . 'body.page-template-page-home .hero a.hero-corporate:hover{opacity:0.78;}'
+            . 'body.page-template-page-home .hero a.hero-corporate .hc-main{font-size:16px !important;font-weight:400 !important;letter-spacing:-0.005em !important;color:#c8c8c8 !important;}'
+            . 'body.page-template-page-home .hero a.hero-corporate .hc-sep{font-size:16px !important;font-weight:300 !important;opacity:0.5;margin:0 10px;color:#c8c8c8 !important;}'
+            . 'body.page-template-page-home .hero a.hero-corporate .hc-sub{font-size:16px !important;font-weight:400 !important;color:#c8c8c8 !important;}'
+            . 'body.page-template-page-home .hero a.hero-corporate .hc-arrow{font-size:12px !important;margin-left:8px;opacity:0.6 !important;color:#c8c8c8 !important;}'
             // Hero CTA "Ver todos os Cursos" — sequenced 3-layer swipe:
             //   1. pink (#f92869) swipes L→R       [0.00s start, 0.15s travel]
             //   2. teal (#60c5b3) swipes R→L       [0.15s start, 0.15s travel]
@@ -373,7 +376,7 @@ HTML;
             // ("Formação à medida para Empresas") — styled in inject_global_overrides().
             $html = str_replace(
                 '<p><b>Clientes Corporativos | Formação à medida para Empresas</b></p>',
-                '<p class="hero-corporate"><span class="hc-main">Clientes Corporativos</span><span class="hc-sep">|</span><span class="hc-sub">Formação à medida para Empresas</span></p>',
+                '<a class="hero-corporate wow animate__fadeInUp" data-wow-duration="1s" href="' . esc_url( home_url( '/formacao-in-company/' ) ) . '" aria-label="Clientes Corporativos — Formação à medida para Empresas"><span class="hc-main">Clientes Corporativos</span><span class="hc-sep">|</span><span class="hc-sub">Formação à medida para Empresas</span><span class="hc-arrow" aria-hidden="true">&#x2197;</span></a>',
                 $html
             );
             // Hero CTA — add `swipe-cta` class to the button and wrap the
