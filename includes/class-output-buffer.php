@@ -124,7 +124,17 @@ class EDIT_Output_Buffer {
             . 'body.page-template-page-home .hero-reviews .hr-star{color:#ffdd06 !important;font-size:16px;position:relative;top:-1px;}'
             . 'body.page-template-page-home .hero-reviews .hr-rating{color:#fff !important;font-weight:700;font-size:14px;}'
             . 'body.page-template-page-home .hero-reviews .hr-sep{opacity:0.4;margin:0 2px;}'
-            . 'body.page-template-page-home .hero-reviews .hr-count{color:#c8c8c8 !important;}'
+            . 'body.page-template-page-home .hero-reviews .hr-count{color:#c8c8c8 !important;margin-right:4px;}'
+            // Google wordmark — multi-colour rendering matching Google's
+            // brand palette (Blue/Red/Yellow/Blue/Green/Red across G-o-o-g-l-e).
+            // Used as a source attribution inside the reviews score block.
+            . 'body.page-template-page-home .hero-reviews .g-wordmark{display:inline-flex;align-items:baseline;gap:0;font-family:"Helvetica Neue",Arial,sans-serif;font-weight:500;font-size:15px;line-height:1;letter-spacing:-0.005em;}'
+            . 'body.page-template-page-home .hero-reviews .g-wordmark .g-G{color:#4285F4 !important;}'
+            . 'body.page-template-page-home .hero-reviews .g-wordmark .g-o1{color:#EA4335 !important;}'
+            . 'body.page-template-page-home .hero-reviews .g-wordmark .g-o2{color:#FBBC04 !important;}'
+            . 'body.page-template-page-home .hero-reviews .g-wordmark .g-g{color:#4285F4 !important;}'
+            . 'body.page-template-page-home .hero-reviews .g-wordmark .g-l{color:#34A853 !important;}'
+            . 'body.page-template-page-home .hero-reviews .g-wordmark .g-e{color:#EA4335 !important;}'
             // Larger corporate-client logos — bumped to 72px so they read at
             // a distance and balance the new section-divider treatment above.
             . 'body.page-template-page-home .logos-flex-container{align-items:center;gap:32px;}'
@@ -403,7 +413,7 @@ HTML;
             // (class-structured-data.php) — keep in lockstep when those change.
             $html = str_replace(
                 '<span class="swipe-label">Ver todos os Cursos</span></a>',
-                '<span class="swipe-label">Ver todos os Cursos</span></a><a class="hero-reviews wow animate__fadeInUp" data-wow-duration="1s" href="' . esc_url( home_url( '/criticas-google/' ) ) . '" aria-label="Avaliações Google — 4.1 de 5 baseado em 67 reviews"><span class="hr-star">&#x2605;</span><span class="hr-rating">4.1</span><span class="hr-sep">/</span><span class="hr-count">67 reviews no Google</span></a>',
+                '<span class="swipe-label">Ver todos os Cursos</span></a><a class="hero-reviews wow animate__fadeInUp" data-wow-duration="1s" href="' . esc_url( home_url( '/criticas-google/' ) ) . '" aria-label="Avaliações Google — 4.1 de 5 baseado em 67 reviews"><span class="hr-star">&#x2605;</span><span class="hr-rating">4.1</span><span class="hr-sep">/</span><span class="hr-count">67 reviews no</span><span class="g-wordmark" aria-hidden="true"><span class="g-G">G</span><span class="g-o1">o</span><span class="g-o2">o</span><span class="g-g">g</span><span class="g-l">l</span><span class="g-e">e</span></span></a>',
                 $html
             );
             // Hero CTA — add `swipe-cta` class to the button and wrap the

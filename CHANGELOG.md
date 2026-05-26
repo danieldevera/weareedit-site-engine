@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.5.60 — 2026-05-26
+- Reviews score block: "Google" → multi-color Google wordmark (G blue, o red, o yellow, g blue, l green, e red). Per-letter `<span>` markup with brand-exact hex codes. Replaces the plain word "Google" at the end of `★ 4.1 / 67 reviews no Google`.
+
 ## v1.5.59 — 2026-05-26
 - **Hero bottom section — Iter 3 (Magazine Editorial) shipped.** Three coordinated changes:
   1. **Corporate-clients pill** → section-divider register (Option B + iter 3): uppercase, tracked, separator `·` instead of `|`, flanked by thin horizontal lines that act as a section heading for the logo strip below.
