@@ -91,6 +91,9 @@ class EDIT_WP_Rocket_Shield {
             'hasFocus',
             'sticky___w5zBW',
             'postTypeSearch',
+            // Visible breadcrumbs (v1.5.93) — inline CSS in class-breadcrumbs.php.
+            // Without this, RUCSS strips the <style id="edit-breadcrumbs-css">.
+            'edit-breadcrumbs',
         ] );
     }
 
@@ -127,6 +130,12 @@ class EDIT_WP_Rocket_Shield {
             '.headerMobile__search.open',
             '.headerMobile__search.hidden',
             '.ais-InstantSearch__root',
+            // Breadcrumbs visible bar — keep external + inline rules
+            '.edit-breadcrumbs',
+            '.edit-breadcrumbs ol',
+            '.edit-breadcrumbs li',
+            '.edit-breadcrumbs a',
+            '.edit-breadcrumbs [aria-current="page"]',
             '.resultadosPesquisa',
             '.resultadosPesquisa.aberto',
             '.keywordSearch',
