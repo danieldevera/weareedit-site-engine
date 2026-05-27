@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class EDIT_Criticas_Page {
 
     const SLUG       = 'criticas-google';
-    const TITLE      = 'Críticas no Google';
+    const TITLE      = 'Avaliações no Google';
     const OPTION_KEY = 'edit_seo_fix_criticas_page_id';
     const SHORTCODE  = 'edit_criticas_google_reviews';
 
@@ -212,7 +212,7 @@ class EDIT_Criticas_Page {
     }
 
     private static function set_rank_math_meta( int $page_id ): void {
-        update_post_meta( $page_id, 'rank_math_title',       'Críticas Google — EDIT. Disruptive Digital Education' );
+        update_post_meta( $page_id, 'rank_math_title',       'Avaliações Google — EDIT. Disruptive Digital Education' );
         update_post_meta( $page_id, 'rank_math_description', '67 avaliações verificadas dos alunos da EDIT. nos campus de Lisboa (4.2/5) e Porto (4.0/5). Avaliação média 4.1 no Google.' );
         update_post_meta( $page_id, 'rank_math_robots',      [ 'index', 'follow' ] );
     }
@@ -239,7 +239,7 @@ class EDIT_Criticas_Page {
     <div class="cg-hero__content">
       <a class="cg-hero__source" href="{$url_lisboa}" target="_blank" rel="noopener">
         {$g_logo}
-        <span class="cg-hero__source-text">Críticas verificadas no Google</span>
+        <span class="cg-hero__source-text">Avaliações verificadas no Google</span>
         <span class="cg-hero__source-arrow" aria-hidden="true">&#x2197;</span>
       </a>
       <div class="cg-hero__quote-mark" aria-hidden="true">&ldquo;</div>
@@ -249,8 +249,8 @@ class EDIT_Criticas_Page {
         <span class="cg-hero__author-meta">UX/UI Design Bootcamp · EDIT. Lisboa · Product Designer @ Farfetch</span>
       </p>
       <div class="cg-hero__cta-row">
-        <a class="cg-hero__cta-primary" href="#criticas">Ler todas as 67 críticas</a>
-        <a class="cg-hero__cta-secondary" href="{$url_lisboa}" target="_blank" rel="noopener">Deixar uma crítica</a>
+        <a class="cg-hero__cta-primary" href="#criticas">Ler todas as 67 avaliações</a>
+        <a class="cg-hero__cta-secondary" href="{$url_lisboa}" target="_blank" rel="noopener">Deixar uma avaliação</a>
       </div>
       <a class="cg-hero__reviews" href="{$url_lisboa}" target="_blank" rel="noopener" aria-label="Avaliações Google — 4.1 de 5 baseado em 67 reviews">
         <span class="cg-hero__reviews-star">&#x2605;</span>
@@ -278,10 +278,10 @@ class EDIT_Criticas_Page {
     </div>
   </section>
 
-  <section class="cg-quotes" id="criticas" aria-label="Críticas em destaque">
+  <section class="cg-quotes" id="criticas" aria-label="Avaliações em destaque">
     <div class="cg-quotes__inner">
       <div class="cg-quotes__head">
-        <div class="cg-quotes__eyebrow">&starf; <span>Críticas verificadas no Google</span></div>
+        <div class="cg-quotes__eyebrow">&starf; <span>Avaliações verificadas no Google</span></div>
         <h2 class="cg-quotes__title">A história, em primeira pessoa.</h2>
       </div>
       <div class="swiper cg-quotes__swiper">
@@ -294,7 +294,7 @@ class EDIT_Criticas_Page {
                 <div class="cg-quote__stars" aria-label="5 de 5 estrelas">★★★★★</div>
                 <div class="cg-quote__attrib-inner">
                   <div class="cg-quote__name">Santiago Santos</div>
-                  <div class="cg-quote__role">Crítica verificada &middot; Google</div>
+                  <div class="cg-quote__role">Avaliação verificada &middot; Google</div>
                 </div>
               </div>
             </article>
@@ -307,7 +307,7 @@ class EDIT_Criticas_Page {
                 <div class="cg-quote__stars" aria-label="5 de 5 estrelas">★★★★★</div>
                 <div class="cg-quote__attrib-inner">
                   <div class="cg-quote__name">Cristiana Vilaça Ferreira</div>
-                  <div class="cg-quote__role">Local Guide &middot; 14 críticas</div>
+                  <div class="cg-quote__role">Local Guide &middot; 14 avaliações</div>
                 </div>
               </div>
             </article>
@@ -320,7 +320,7 @@ class EDIT_Criticas_Page {
                 <div class="cg-quote__stars" aria-label="5 de 5 estrelas">★★★★★</div>
                 <div class="cg-quote__attrib-inner">
                   <div class="cg-quote__name">Inês Ávila Rebelo</div>
-                  <div class="cg-quote__role">Crítica verificada &middot; Google</div>
+                  <div class="cg-quote__role">Avaliação verificada &middot; Google</div>
                 </div>
               </div>
             </article>
@@ -333,7 +333,7 @@ class EDIT_Criticas_Page {
                 <div class="cg-quote__stars" aria-label="5 de 5 estrelas">★★★★★</div>
                 <div class="cg-quote__attrib-inner">
                   <div class="cg-quote__name">Ana Vitorino</div>
-                  <div class="cg-quote__role">Crítica verificada &middot; Google</div>
+                  <div class="cg-quote__role">Avaliação verificada &middot; Google</div>
                 </div>
               </div>
             </article>
@@ -341,9 +341,9 @@ class EDIT_Criticas_Page {
         </div>
       </div>
       <div class="cg-quotes__nav">
-        <button class="cg-quotes__arrow cg-quotes__arrow--prev" aria-label="Crítica anterior">&larr;</button>
+        <button class="cg-quotes__arrow cg-quotes__arrow--prev" aria-label="Avaliação anterior">&larr;</button>
         <div class="cg-quotes__counter"><span class="cg-quotes__current">01</span>&nbsp;/&nbsp;04</div>
-        <button class="cg-quotes__arrow cg-quotes__arrow--next" aria-label="Próxima crítica">&rarr;</button>
+        <button class="cg-quotes__arrow cg-quotes__arrow--next" aria-label="Próxima avaliação">&rarr;</button>
       </div>
     </div>
   </section>
@@ -391,7 +391,7 @@ class EDIT_Criticas_Page {
       <div class="cg-alumni-banner__inner">
         <div class="cg-alumni-banner__eyebrow">
           <svg width="16" height="16" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>
-          <span>Já és aluno EDIT.? &nbsp;·&nbsp; Crítica no Google</span>
+          <span>Já és aluno EDIT.? &nbsp;·&nbsp; Avaliação no Google</span>
         </div>
         <h2 class="cg-alumni-banner__title">Conta-nos a tua <strong>história</strong>.</h2>
         <p class="cg-alumni-banner__sub">Demora menos de um minuto e a tua opinião fica para sempre.</p>
@@ -399,7 +399,7 @@ class EDIT_Criticas_Page {
           <a class="cg-alumni-banner__btn" href="{$url_lisboa}" target="_blank" rel="noopener">Avaliar Lisboa &rarr;</a>
           <a class="cg-alumni-banner__btn" href="{$url_porto}" target="_blank" rel="noopener">Avaliar Porto &rarr;</a>
         </div>
-        <div class="cg-alumni-banner__footnote">Críticas verificadas no Google &middot; 100% honestas</div>
+        <div class="cg-alumni-banner__footnote">Avaliações verificadas no Google &middot; 100% honestas</div>
       </div>
     </div>
   </section>
@@ -411,7 +411,7 @@ class EDIT_Criticas_Page {
       <div class="cg-campus__rating-row">
         <span class="cg-campus__stars" aria-hidden="true">★★★★<span style="opacity:0.45;">★</span></span>
         <span class="cg-campus__rating-num">4.2</span>
-        <span class="cg-campus__count">· 36 críticas</span>
+        <span class="cg-campus__count">· 36 avaliações</span>
       </div>
       <p class="cg-campus__address">Av. Aquilino Ribeiro Machado, Nº 8<br>1800-399 Lisboa</p>
     </article>
@@ -421,7 +421,7 @@ class EDIT_Criticas_Page {
       <div class="cg-campus__rating-row">
         <span class="cg-campus__stars" aria-hidden="true">★★★★<span style="opacity:0.45;">★</span></span>
         <span class="cg-campus__rating-num">4.0</span>
-        <span class="cg-campus__count">· 31 críticas</span>
+        <span class="cg-campus__count">· 31 avaliações</span>
       </div>
       <p class="cg-campus__address">R. do Alferes Malheiro, Nº 226<br>4000-057 Porto</p>
     </article>

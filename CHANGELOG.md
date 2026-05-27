@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.5.81 — 2026-05-27
+- **/criticas-google/ terminology — "crítica/críticas" → "avaliação/avaliações"** throughout the page (PT-PT natural term for reviews). All user-visible labels swapped: hero source pill, CTA buttons, attribution lines, aria-labels, campus card counts, alumni banner footnote. URL slug + CSS class names + file paths preserved (no SEO/code impact). 13 string replacements total.
+
 ## v1.5.80 — 2026-05-27
 - **Homepage Google Reviews badge removed.** The white "G Google ★★★★★ 4.1/5 · 67 avaliações verificadas" pill below the stats row was redundant — the hero already carries the reviews score (with the multi-color Google wordmark) from v1.5.59+. Course-page badge injection stays (those pages don't have the hero reviews block).
 
