@@ -22,16 +22,19 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class EDIT_Breadcrumbs {
 
     /**
-     * CPT slug → human label (PT-PT). The label drives both the archive name
-     * and the intermediate breadcrumb item for that CPT's singles.
+     * CPT slug → [label, archive URL]. The URL is hardcoded because most of these
+     * CPTs in the formacao theme don't have `has_archive` enabled — /formacao/,
+     * /eventos/, /noticias/, etc. are static WordPress Pages with the same slugs,
+     * not WP_Query CPT archives. get_post_type_archive_link() returns empty for
+     * those, so we fall back to a fixed URL.
      */
-    const CPT_LABELS = [
-        'formacao'    => 'Formação',
-        'eventos'     => 'Eventos',
-        'noticias'    => 'Notícias',
-        'post'        => 'Notícias',
-        'entrevistas' => 'Entrevistas',
-        'profissoes'  => 'Profissões',
+    const CPT_INFO = [
+        'formacao'    => [ 'label' => 'Formação',    'url' => '/formacao/' ],
+        'eventos'     => [ 'label' => 'Eventos',     'url' => '/eventos/' ],
+        'noticias'    => [ 'label' => 'Notícias',    'url' => '/noticias/' ],
+        'post'        => [ 'label' => 'Notícias',    'url' => '/noticias/' ],
+        'entrevistas' => [ 'label' => 'Entrevistas', 'url' => '/entrevistas/' ],
+        'profissoes'  => [ 'label' => 'Profissões',  'url' => '/profissoes/' ],
     ];
 
     public static function init() {
@@ -106,11 +109,12 @@ class EDIT_Breadcrumbs {
             if ( ! $post instanceof WP_Post ) return $trail;
 
             $pt = $post->post_type;
-            if ( isset( self::CPT_LABELS[ $pt ] ) ) {
-                $archive_url = get_post_type_archive_link( $pt );
-                if ( $archive_url ) {
-                    $trail[] = [ 'name' => self::CPT_LABELS[ $pt ], 'url' => $archive_url ];
-                }
+            if ( isset( self::CPT_INFO[ $pt ] ) ) {
+                $info = self::CPT_INFO[ $pt ];
+                $trail[] = [
+                    'name' => $info['label'],
+                    'url'  => home_url( $info['url'] ),
+                ];
             }
 
             // Page parent hierarchy (for nested pages like /escola/sobre/).
@@ -135,11 +139,18 @@ class EDIT_Breadcrumbs {
         if ( is_post_type_archive() ) {
             $pt = get_query_var( 'post_type' );
             if ( is_array( $pt ) ) $pt = reset( $pt );
-            $label = self::CPT_LABELS[ $pt ] ?? post_type_archive_title( '', false );
-            $trail[] = [
-                'name' => $label,
-                'url'  => get_post_type_archive_link( $pt ),
-            ];
+            if ( isset( self::CPT_INFO[ $pt ] ) ) {
+                $info = self::CPT_INFO[ $pt ];
+                $trail[] = [
+                    'name' => $info['label'],
+                    'url'  => home_url( $info['url'] ),
+                ];
+            } else {
+                $trail[] = [
+                    'name' => post_type_archive_title( '', false ),
+                    'url'  => get_post_type_archive_link( $pt ),
+                ];
+            }
             return $trail;
         }
 
