@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.5.86 — 2026-05-27
+- **Fix /avaliacoes-google/ rendering broken** after v1.5.85 rename. Three causes:
+  1. **CSS file URL mangled** by another plugin (`drag-and-drop-multiple-file-upload-contact-form-7`)'s buggy URL filter — it intercepted `wp_enqueue_style` calls and prepended its own plugin path + the FS path, turning the URL into garbage. Fix: build the URL via `site_url() + basename(WEAREDIT_SITE_ENGINE_PATH)` instead of `WEAREDIT_SITE_ENGINE_URL` — bypasses the broken filter.
+  2. **Page title + Rank Math meta** still said "Críticas Google" — v1.5.85's migration only renamed `post_name`. Expanded to also update `post_title` (if still references "Crítica") and refresh `rank_math_title` + `rank_math_description` post meta.
+  3. **Stale WP Rocket cache** — migration now calls `rocket_clean_domain()` + `rocket_clean_minify()` at the end so old cached HTML doesn't keep serving the old URL/title references.
+
 ## v1.5.85 — 2026-05-27
 - **URL rename: `/criticas-google/` → `/avaliacoes-google/`** to match the terminology shipped in v1.5.81. Three-part migration:
   1. **SLUG constant** in `class-criticas-page.php` updated to `'avaliacoes-google'`. Kept old slug as `OLD_SLUG` constant for migration + redirect lookup.

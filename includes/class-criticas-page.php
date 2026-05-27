@@ -42,7 +42,8 @@ class EDIT_Criticas_Page {
 
     /**
      * One-time migration: rename the existing WP page from /criticas-google/
-     * to /avaliacoes-google/. Idempotent via MIGRATED_FLAG option.
+     * to /avaliacoes-google/, and refresh its title + Rank Math meta to
+     * match the new terminology. Idempotent via MIGRATED_FLAG option.
      */
     public static function migrate_slug_from_criticas() {
         if ( get_option( self::MIGRATED_FLAG ) ) return;
@@ -51,19 +52,37 @@ class EDIT_Criticas_Page {
         $page_id = (int) get_option( self::OPTION_KEY );
         $post    = $page_id ? get_post( $page_id ) : null;
 
-        // Fall back to looking up by the old slug.
+        // Fall back to looking up by either slug.
         if ( ! $post || $post->post_status !== 'publish' ) {
             $post = get_page_by_path( self::OLD_SLUG, OBJECT, 'page' );
         }
+        if ( ! $post || $post->post_status !== 'publish' ) {
+            $post = get_page_by_path( self::SLUG, OBJECT, 'page' );
+        }
 
-        if ( $post && $post->post_status === 'publish' && $post->post_name === self::OLD_SLUG ) {
-            wp_update_post( [
-                'ID'        => $post->ID,
-                'post_name' => self::SLUG,
-            ] );
+        if ( $post && $post->post_status === 'publish' ) {
+            $update = [ 'ID' => $post->ID ];
+            // Only rename slug if it's still on the old one.
+            if ( $post->post_name === self::OLD_SLUG ) {
+                $update['post_name'] = self::SLUG;
+            }
+            // Refresh title if it still references the old terminology.
+            if ( stripos( $post->post_title, 'Crítica' ) !== false ) {
+                $update['post_title'] = self::TITLE;
+            }
+            if ( count( $update ) > 1 ) {
+                wp_update_post( $update );
+            }
+            // Refresh Rank Math title + description meta with new wording.
+            update_post_meta( $post->ID, 'rank_math_title',       'Avaliações Google — EDIT. Disruptive Digital Education' );
+            update_post_meta( $post->ID, 'rank_math_description', '67 avaliações verificadas dos alunos da EDIT. nos campus de Lisboa (4.2/5) e Porto (4.0/5). Avaliação média 4.1 no Google.' );
             update_option( self::OPTION_KEY, $post->ID );
             // Force a rewrite flush so the new slug resolves immediately.
             flush_rewrite_rules();
+            // Purge WP Rocket so stale cached pages don't serve the old
+            // slug references / title in OG tags etc.
+            if ( function_exists( 'rocket_clean_domain' ) ) rocket_clean_domain();
+            if ( function_exists( 'rocket_clean_minify' ) ) rocket_clean_minify();
         }
 
         update_option( self::MIGRATED_FLAG, 1 );
@@ -198,9 +217,17 @@ class EDIT_Criticas_Page {
 
     public static function enqueue_assets() {
         if ( ! is_page( self::SLUG ) ) return;
+        // Another plugin (drag-and-drop-multiple-file-upload-contact-form-7)
+        // has a buggy URL filter that mangles `plugin_dir_url()`-based asset
+        // URLs when they go through wp_enqueue_style — turning the path into
+        // a Frankenstein with the FS path embedded mid-URL. Bypass by passing
+        // a literal site-relative URL built from site_url() instead of
+        // WEAREDIT_SITE_ENGINE_URL. Other plugin's filter doesn't touch this
+        // form. (Audit 2026-05-27)
+        $css_url = site_url( '/wp-content/plugins/' . basename( WEAREDIT_SITE_ENGINE_PATH ) . '/assets/criticas-google.css' );
         wp_enqueue_style(
             'edit-seo-fix-criticas-google',
-            WEAREDIT_SITE_ENGINE_URL . 'assets/criticas-google.css',
+            $css_url,
             [],
             WEAREDIT_SITE_ENGINE_VERSION
         );
