@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.5.75 — 2026-05-27
+- Plugin name → `★ weareedit.io Site Engine` (added Unicode star prefix). Pushes the plugin to the top of the WP Admin → Plugins list so it's easy to spot. WP plugin file path / slug / option keys unchanged — purely cosmetic header rename.
+
 ## v1.5.74 — 2026-05-27
 - **Header search broken after enabling "Remover CSS não usado"** — RUCSS stripped the `.autocomplete__inputWrapperEnabled` rule (only visible AFTER user clicks the magnifying glass, which RUCSS can't observe on first scan). Click handler was binding correctly + adding the class, but no visual reveal because the rule was gone. Extended the Shield's `rocket_rucss_excluded_inline_css` list with 17 search-related class names (autocomplete*, searchOpen, closeSearch, searchButton, headerDesktop__search, ais-InstantSearch__root, resultadosPesquisa, keywordSearch, hasFocus, sticky___w5zBW, postTypeSearch).
 - Pre-existing `$ is not a function` errors (theme code outside IIFE jQuery wrapper) noted in audit — separate issue, will address in a follow-up if it impacts other features.
