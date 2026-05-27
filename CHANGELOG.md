@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.5.77 — 2026-05-27
+- **Header search FULLY rescued** — two theme bugs bypassed via plugin:
+  1. **CSS:** `.headerDesktop__search` had `width:0` + a `.sticky___w5zBW` ancestor selector to expand. But the theme has THREE `<header>` tags and `$('header').addClass('sticky___w5zBW')` lands the class on a header that isn't an ancestor of the desktop search container. Fix: `:has(.autocomplete__inputWrapperEnabled)` CSS rule forces the container open regardless of which header got the class. Fallback for older browsers via `.autocomplete.searchOpen .autocomplete__inputWrapper{opacity:1}`.
+  2. **JS:** the theme's inline `fetch2()` (called by `onkeyup` on the search input) was defined inside a broken IIFE failing with "$ is not a function" — so typing threw `fetch2 is not defined`. Replaced with a clean working version registered globally in `<head>` before the input renders.
+- RUCSS toggle can now be re-enabled safely — search has been fixed at the source, not via RUCSS-safelisting symptoms.
+
 ## v1.5.76 — 2026-05-27
 - **Search fix — proper RUCSS filter.** v1.5.74 used `rocket_rucss_excluded_inline_css` which only protects INLINE `<style>` blocks. The `.autocomplete__inputWrapperEnabled` rule lives in an EXTERNAL stylesheet, so RUCSS was still stripping it. Added `rocket_rucss_safelist` filter — covers external stylesheets. Listed all reveal-on-click selectors (autocomplete*, search*, headerDesktop__search, hero classes as defensive safelist).
 - **After update:** clear WP Rocket cache + "Limpar CSS usado" (Clear Used CSS) — RUCSS needs to re-scan with the new safelist or it'll keep serving the stripped CSS from its cache.

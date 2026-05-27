@@ -3,7 +3,7 @@
  * Plugin Name: ★ weareedit.io Site Engine
  * Plugin URI:  https://github.com/danieldevera/weareedit-site-engine
  * Description: Custom site engine for weareedit.io — SEO (meta tags, OG, schema.org, sitemap, hreflang), GEO/LLM optimization (llms.txt, AI crawler rules, Wikidata-linked Person/Organization schema), brand customization (hero typography, dot accents, CTA hover animations), Google Reviews aggregation, output-buffer HTML rewrites, virtual pages, WP Rocket cache integration, and one-time data fixes.
- * Version:     1.5.76
+ * Version:     1.5.77
  * Author:      Daniel Devera
  * License:     GPL-2.0+
  * Text Domain: weareedit-site-engine
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.76' );
+define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.77' );
 define( 'WEAREDIT_SITE_ENGINE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WEAREDIT_SITE_ENGINE_URL', plugin_dir_url( __FILE__ ) );
 
@@ -33,6 +33,67 @@ $weareedit_site_engine_update_checker->setBranch( 'main' );
 // Use GitHub Releases as the canonical source (matches the GH Action that
 // auto-builds the release zip on every `vX.Y.Z` tag push).
 $weareedit_site_engine_update_checker->getVcsApi()->enableReleaseAssets();
+
+/**
+ * Header search rescue — two patches for theme bugs discovered 2026-05-27:
+ *
+ *   1. CSS: `.headerDesktop__search` has `width:0` by default and only
+ *      expands to 100% when `.sticky___w5zBW` is on an ancestor. The
+ *      theme's menu.js adds that class to `<header>`, but there are
+ *      THREE <header> tags on the page and the class lands on one that
+ *      isn't an ancestor of the desktop search container — so the
+ *      container never expands and the search input stays invisible.
+ *      Fix: when the wrapper has `.autocomplete__inputWrapperEnabled`,
+ *      force any `.headerDesktop__search` open via :has() selector.
+ *
+ *   2. JS: the theme's inline `fetch2()` function (called on each keyup
+ *      of the search input) is defined inside a broken IIFE that fails
+ *      with "$ is not a function". So typing in the search box throws
+ *      `fetch2 is not defined`. Replace with a working version at the
+ *      top of <head> so it's globally available before the input renders.
+ */
+add_action( 'wp_head', function () {
+    if ( is_admin() ) return;
+    ?>
+<style id="weareedit-search-rescue">
+  /* Force the desktop search container open whenever the input wrapper
+     is in its "Enabled" state (set by menu.js on click). Bypasses the
+     broken `.sticky___w5zBW` ancestor selector on multi-header pages. */
+  .headerDesktop__search:has(.autocomplete__inputWrapperEnabled){width:100% !important;}
+  /* Fallback for browsers without :has() (older Safari, older Firefox) —
+     use direct class targeting. The .autocomplete__inputWrapperEnabled
+     class lands on the wrapper, then we hope the JS also adds searchOpen
+     to .autocomplete.compact (which it does). */
+  .autocomplete.searchOpen .autocomplete__inputWrapper{opacity:1 !important;animation:none !important;}
+</style>
+<script id="weareedit-search-fetch2">
+/* Working fetch2() — replaces the broken theme version. Called by the
+   search input's onkeyup="fetch2()" attribute. */
+(function () {
+    if ( typeof window.fetch2 === 'function' ) return; // theme version somehow loaded — defer to it
+    window.fetch2 = function () {
+        if ( typeof jQuery !== 'function' ) return;
+        var $ = jQuery;
+        var isDesktop = $( window ).width() > 991;
+        var sel = isDesktop ? '.keywordSearch.desktop' : '.keywordSearch.mobile';
+        var content = $( sel ).val();
+        if ( ! content || content.length < 3 ) {
+            $( '.resultadosPesquisa' ).removeClass( 'aberto' ).empty();
+            return;
+        }
+        $.ajax({
+            url: '/wp-admin/admin-ajax.php',
+            type: 'post',
+            data: { action: 'data_fetch', keyword: content },
+            success: function ( html ) {
+                $( '.resultadosPesquisa' ).addClass( 'aberto' ).html( html );
+            }
+        });
+    };
+})();
+</script>
+    <?php
+}, 5 );
 
 /**
  * Hero visibility safety net — inline JS in <head> that strips WOW.js's
