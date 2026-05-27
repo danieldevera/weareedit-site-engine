@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.5.76 — 2026-05-27
+- **Search fix — proper RUCSS filter.** v1.5.74 used `rocket_rucss_excluded_inline_css` which only protects INLINE `<style>` blocks. The `.autocomplete__inputWrapperEnabled` rule lives in an EXTERNAL stylesheet, so RUCSS was still stripping it. Added `rocket_rucss_safelist` filter — covers external stylesheets. Listed all reveal-on-click selectors (autocomplete*, search*, headerDesktop__search, hero classes as defensive safelist).
+- **After update:** clear WP Rocket cache + "Limpar CSS usado" (Clear Used CSS) — RUCSS needs to re-scan with the new safelist or it'll keep serving the stripped CSS from its cache.
+
 ## v1.5.75 — 2026-05-27
 - Plugin name → `★ weareedit.io Site Engine` (added Unicode star prefix). Pushes the plugin to the top of the WP Admin → Plugins list so it's easy to spot. WP plugin file path / slug / option keys unchanged — purely cosmetic header rename.
 

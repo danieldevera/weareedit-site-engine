@@ -24,6 +24,12 @@ class EDIT_WP_Rocket_Shield {
         //    states that RUCSS can't observe as "used" on first crawl.
         add_filter( 'rocket_rucss_excluded_inline_css', [ __CLASS__, 'protect_inline_css' ] );
 
+        // 1b. Safelist of CSS selectors for RUCSS. Unlike (1) which only
+        //     covers inline <style>, this covers EXTERNAL stylesheets too —
+        //     the theme's autocomplete/search reveal rules live in an
+        //     external CSS file that RUCSS strips otherwise.
+        add_filter( 'rocket_rucss_safelist',               [ __CLASS__, 'rucss_safelist' ] );
+
         // 2. Add safe-by-default delay-JS exclusions. Anything matching
         //    one of these patterns is allowed to run before user interaction.
         add_filter( 'rocket_delay_js_exclusions',          [ __CLASS__, 'delay_js_exclusions' ] );
@@ -85,6 +91,61 @@ class EDIT_WP_Rocket_Shield {
             'hasFocus',
             'sticky___w5zBW',
             'postTypeSearch',
+        ] );
+    }
+
+    /**
+     * RUCSS safelist — CSS selectors that the Remove-Unused-CSS analyser
+     * must KEEP, even if it can't observe them as "used" on first scan.
+     * Covers external stylesheets (theme + plugins). The corresponding
+     * filter for inline-only is protect_inline_css() above.
+     *
+     * Reveal-on-click states (search overlay, mobile menu, modals) are
+     * the classic RUCSS false-positive surface — RUCSS doesn't see them
+     * in the initial DOM, so it strips them. Listed explicitly here.
+     */
+    public static function rucss_safelist( array $safelist ): array {
+        return array_merge( $safelist, [
+            // Header search reveal-on-click — confirmed RUCSS stripped this
+            // (audit 2026-05-27: click handler bound + class added on click,
+            // but no visual reveal because the rule was gone).
+            '.autocomplete',
+            '.autocomplete__inputWrapper',
+            '.autocomplete__inputWrapperEnabled',
+            '.autocomplete__container',
+            '.autocomplete__button',
+            '.autocomplete__input',
+            '.autocomplete.compact',
+            '.autocomplete.compact.hasFocus',
+            '.autocomplete.compact.searchOpen',
+            '.searchOpen',
+            '.closeSearch',
+            '.searchButton',
+            '.searchButton__inner',
+            '.headerDesktop__search',
+            '.headerMobile__search',
+            '.headerMobile__search.open',
+            '.headerMobile__search.hidden',
+            '.ais-InstantSearch__root',
+            '.resultadosPesquisa',
+            '.resultadosPesquisa.aberto',
+            '.keywordSearch',
+            '.hasFocus',
+            '.sticky___w5zBW',
+            '.postTypeSearch',
+            // Defensive — protect our locked hero classes here too in case
+            // RUCSS treats injected inline CSS as external in some scenarios.
+            '.dgert-hero-pill',
+            '.h1-dot',
+            '.h1-dot-pink',
+            '.h1-dot-teal',
+            '.hero-corporate-row',
+            '.hero-corporate',
+            '.hero-reviews',
+            '.g-wordmark',
+            '.swipe-cta',
+            '.swipe-layer',
+            '.swipe-label',
         ] );
     }
 
