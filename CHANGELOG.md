@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.5.84 — 2026-05-27
+- **Search speed: 9.2s → ~250ms (real fix).** v1.5.82 replaced the handler but kept WP_Query's default `'s'` behaviour which does `LIKE %term%` against `post_title`, `post_content`, AND `post_excerpt` for every post type. The post_content scan is what was taking 9.2 s. Added a `posts_search` filter that overrides the SQL to LIKE on `post_title` only when our internal `weareedit_title_only` query arg is set. Other searches on the site (Google, other plugins) unaffected — the filter no-ops unless our arg is present.
+- Also disabled `update_post_meta_cache` + `update_post_term_cache` on the query (search results only need title + permalink, no need to hydrate every post's meta).
+
 ## v1.5.83 — 2026-05-27
 - **Homepage "Formação" carousel aligned to viewport left edge.** Cards were inheriting bootstrap container padding so they started indented from the screen edge. Now zero left padding/margin on `.courses-boxes-home .courses-container` → `.row` → `.col-md-12` → `.swiper-boxes`. Cards scroll flush against the left.
 

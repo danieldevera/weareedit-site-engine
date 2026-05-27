@@ -41,6 +41,26 @@ class EDIT_Search_Ajax {
         // Run late on `init` so the theme + other plugins have registered
         // their handlers before we wipe them.
         add_action( 'init', [ __CLASS__, 'replace_data_fetch_handler' ], 999 );
+        // Title-only search filter — applied only when our handler runs
+        // (audit 2026-05-27: WP_Query with default 's' scanned title +
+        // content + excerpt across 8 post types and took ~9.2s. Limiting
+        // to post_title cuts response time to ~150-400ms because content
+        // LIKE is the slow part).
+        add_filter( 'posts_search', [ __CLASS__, 'title_only_search' ], 10, 2 );
+    }
+
+    /**
+     * Override WP_Query's search SQL to LIKE post_title only, but only
+     * when our `weareedit_title_only` query arg is set. Other searches
+     * on the site (Google, other plugins) get the default behaviour.
+     */
+    public static function title_only_search( $search, $wp_query ) {
+        if ( ! $wp_query->get( 'weareedit_title_only' ) ) return $search;
+        global $wpdb;
+        $term = $wp_query->get( 's' );
+        if ( ! $term ) return $search;
+        $like = '%' . $wpdb->esc_like( $term ) . '%';
+        return $wpdb->prepare( " AND {$wpdb->posts}.post_title LIKE %s ", $like );
     }
 
     public static function replace_data_fetch_handler() {
@@ -63,14 +83,18 @@ class EDIT_Search_Ajax {
         } );
 
         $query = new WP_Query( [
-            's'                   => $keyword,
-            'post_type'           => array_values( $post_types ),
-            'post_status'         => 'publish',
-            'posts_per_page'      => self::MAX_RESULTS,
-            'ignore_sticky_posts' => true,
-            'no_found_rows'       => true,
-            'orderby'             => 'date',
-            'order'               => 'DESC',
+            's'                      => $keyword,
+            'post_type'              => array_values( $post_types ),
+            'post_status'            => 'publish',
+            'posts_per_page'         => self::MAX_RESULTS,
+            'ignore_sticky_posts'    => true,
+            'no_found_rows'          => true,
+            'update_post_meta_cache' => false,
+            'update_post_term_cache' => false,
+            'orderby'                => 'date',
+            'order'                  => 'DESC',
+            // Triggers title_only_search() filter above — cuts 9.2s → ~250ms
+            'weareedit_title_only'   => true,
         ] );
 
         if ( ! $query->have_posts() ) {
