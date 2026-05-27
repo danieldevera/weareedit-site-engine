@@ -136,7 +136,7 @@ class EDIT_Search_Ajax {
      * Friendly label per post type — matches what the theme rendered as
      * <div class="postTypeSearch"> so visuals are consistent.
      */
-    private static function get_post_type_label( string $post_type ): string {
+    public static function get_post_type_label( string $post_type ): string {
         $map = [
             'post'        => 'Notícias',
             'page'        => 'Página',

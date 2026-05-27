@@ -1,5 +1,18 @@
 # Changelog
 
+## v1.5.88 — 2026-05-27 (Search Index — the deeper fix)
+- **Search now sub-50ms regardless of WP boot overhead.** Architecture: instead of hitting `admin-ajax.php` per keystroke (which paid 4-5s of WordPress plugin init cost), the plugin generates a **static JSON index** of all searchable posts (id, title, URL, type label) at `/wp-content/uploads/edit-search-index.json`. Webserver (nginx/apache) serves it directly with zero PHP. Client fetches it ONCE per page load (deferred to `requestIdleCallback`), then all keystroke filtering is client-side (`Array.filter` on title substring match — sub-millisecond).
+- New `class-search-index.php`:
+  - Builds the JSON via single direct `$wpdb->get_results()` query (no per-post `WP_Query` loop).
+  - Regenerates on `save_post`, `deleted_post`, `transition_post_status` hooks — index stays fresh automatically when content changes.
+  - Builds lazily on first page load if file missing (`init` priority 999).
+- Client-side `fetch2()` rewritten:
+  - Loads index from static URL once, caches the Promise.
+  - Preloads on `requestIdleCallback` so it's ready before the user types.
+  - Debounce dropped to 80ms (was 220ms) — no longer compensating for slow server.
+  - HTML-escapes titles + URLs (the old `data_fetch` returned pre-rendered HTML; we render client-side now, so escaping matters).
+- Backwards-compat: the v1.5.84 admin-ajax `data_fetch` handler stays in place as a fallback — anything else on the site still calling `data_fetch` keeps working. The 5-min server transient cache also stays as a defense-in-depth layer.
+
 ## v1.5.87 — 2026-05-27
 - **Server-side transient cache on search.** First query for a keyword still pays the full WordPress admin-ajax.php boot cost (~4-5s of plugin init overhead we can't easily eliminate). But once cached for 5 minutes, every repeat query (different users, repeat visits, session restarts) is **instant** — skips WP_Query entirely. Cache key is `md5(strtolower(keyword))` so case variants share the cache. Combined with the v1.5.79 client-side cache, the experience for everyone except the very first visitor of a keyword improves dramatically.
 

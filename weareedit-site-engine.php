@@ -3,7 +3,7 @@
  * Plugin Name: * weareedit.io Site Engine
  * Plugin URI:  https://github.com/danieldevera/weareedit-site-engine
  * Description: Custom site engine for weareedit.io — SEO (meta tags, OG, schema.org, sitemap, hreflang), GEO/LLM optimization (llms.txt, AI crawler rules, Wikidata-linked Person/Organization schema), brand customization (hero typography, dot accents, CTA hover animations), Google Reviews aggregation, output-buffer HTML rewrites, virtual pages, WP Rocket cache integration, and one-time data fixes.
- * Version:     1.5.87
+ * Version:     1.5.88
  * Author:      Daniel Devera
  * License:     GPL-2.0+
  * Text Domain: weareedit-site-engine
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.87' );
+define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.88' );
 define( 'WEAREDIT_SITE_ENGINE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WEAREDIT_SITE_ENGINE_URL', plugin_dir_url( __FILE__ ) );
 
@@ -67,15 +67,51 @@ add_action( 'wp_head', function () {
   .autocomplete.searchOpen .autocomplete__inputWrapper{opacity:1 !important;animation:none !important;}
 </style>
 <script id="weareedit-search-fetch2">
-/* Working fetch2() — replaces the broken theme version. Called by the
-   search input's onkeyup="fetch2()" attribute. Debounced 220ms +
-   cancels stale in-flight requests so results don't arrive out of
-   order. Per-session cache so re-typing same query is instant. */
+/* Search-as-you-type via STATIC JSON INDEX. No admin-ajax.php call,
+   no WP boot overhead — the index lives as a static file at
+   /wp-content/uploads/edit-search-index.json, fetched ONCE per page
+   load (deferred to browser idle time), then all filtering is
+   client-side. Sub-millisecond response per keystroke regardless
+   of WP overhead. Index regenerates server-side on post save. */
 (function () {
     if ( typeof window.fetch2 === 'function' ) return;
+    var INDEX_URL = <?php echo wp_json_encode( EDIT_Search_Index::get_index_url() ); ?>;
+    var indexPromise = null;
     var debounceTimer = null;
-    var currentRequest = null;
-    var cache = {};
+
+    function loadIndex() {
+        if ( indexPromise ) return indexPromise;
+        indexPromise = fetch( INDEX_URL, { credentials: 'same-origin' } )
+            .then( function ( r ) { return r.ok ? r.json() : []; } )
+            .catch( function () { return []; } );
+        return indexPromise;
+    }
+    // Preload on idle so the first user keystroke has the index ready.
+    if ( 'requestIdleCallback' in window ) {
+        requestIdleCallback( loadIndex, { timeout: 3000 } );
+    } else {
+        setTimeout( loadIndex, 1500 );
+    }
+
+    function escapeHtml( s ) {
+        return String( s ).replace( /[&<>"']/g, function ( c ) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ c ];
+        } );
+    }
+
+    function render( matches, $list ) {
+        if ( ! matches.length ) { $list.removeClass( 'aberto' ).empty(); return; }
+        var html = '';
+        for ( var i = 0; i < matches.length; i++ ) {
+            var m = matches[ i ];
+            html += '<h2><a href="' + escapeHtml( m.u ) + '">'
+                 +    '<font color="#ffffff">' + escapeHtml( m.t ) + '</font>'
+                 +    '<font color="#ffffff"><div class="postTypeSearch">' + escapeHtml( m.l ) + '</div></font>'
+                 +  '</a></h2>';
+        }
+        $list.addClass( 'aberto' ).html( html );
+    }
+
     window.fetch2 = function () {
         if ( debounceTimer ) clearTimeout( debounceTimer );
         debounceTimer = setTimeout( function () {
@@ -83,32 +119,20 @@ add_action( 'wp_head', function () {
             var $ = jQuery;
             var isDesktop = $( window ).width() > 991;
             var sel = isDesktop ? '.keywordSearch.desktop' : '.keywordSearch.mobile';
-            var content = ( $( sel ).val() || '' ).trim();
-            if ( content.length < 3 ) {
-                $( '.resultadosPesquisa' ).removeClass( 'aberto' ).empty();
-                return;
-            }
-            if ( cache[ content ] !== undefined ) {
-                $( '.resultadosPesquisa' ).addClass( 'aberto' ).html( cache[ content ] );
-                return;
-            }
-            if ( currentRequest && currentRequest.abort ) {
-                currentRequest.abort();
-            }
-            currentRequest = $.ajax({
-                url: '/wp-admin/admin-ajax.php',
-                type: 'post',
-                data: { action: 'data_fetch', keyword: content },
-                success: function ( html ) {
-                    cache[ content ] = html;
-                    $( '.resultadosPesquisa' ).addClass( 'aberto' ).html( html );
-                    currentRequest = null;
-                },
-                error: function ( jqXHR, textStatus ) {
-                    if ( textStatus !== 'abort' ) currentRequest = null;
+            var content = ( $( sel ).val() || '' ).trim().toLowerCase();
+            var $list = $( '.resultadosPesquisa' );
+            if ( content.length < 3 ) { $list.removeClass( 'aberto' ).empty(); return; }
+            loadIndex().then( function ( index ) {
+                if ( ! Array.isArray( index ) ) { render( [], $list ); return; }
+                var matches = [];
+                for ( var i = 0; i < index.length && matches.length < 8; i++ ) {
+                    if ( index[ i ].t.toLowerCase().indexOf( content ) !== -1 ) {
+                        matches.push( index[ i ] );
+                    }
                 }
-            });
-        }, 220 );
+                render( matches, $list );
+            } );
+        }, 80 );
     };
 })();
 </script>
@@ -172,6 +196,7 @@ require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-wellknown-ai.php';
 require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-criticas-page.php';
 require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-wp-rocket-shield.php';
 require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-search-ajax.php';
+require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-search-index.php';
 require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-admin-panel.php';
 
 /**
@@ -201,6 +226,7 @@ function weareedit_site_engine_init() {
     EDIT_Criticas_Page::init();
     EDIT_WP_Rocket_Shield::init();
     EDIT_Search_Ajax::init();
+    EDIT_Search_Index::init();
     EDIT_Admin_Panel::init();
 }
 add_action( 'init', 'weareedit_site_engine_init' );
