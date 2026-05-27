@@ -259,7 +259,36 @@ class EDIT_Output_Buffer {
             $html = self::inject_criticas_content( $html );
         }
 
+        // /marketing-digital/ pillar — same theme-template issue as criticas.
+        if ( class_exists( 'EDIT_Marketing_Digital_Page' ) && is_page( EDIT_Marketing_Digital_Page::SLUG ) ) {
+            $html = self::inject_marketing_digital_content( $html );
+        }
+
         echo $html;
+    }
+
+    private static function inject_marketing_digital_content( string $html ): string {
+        if ( strpos( $html, 'class="md-pillar"' ) !== false ) return $html;
+
+        $content = EDIT_Marketing_Digital_Page::render_shortcode();
+        if ( ! $content ) return $html;
+
+        // Strip the wrong entry-header (theme pulls "Bootcamp" or similar
+        // from a different post — same bug as /avaliacoes-google/).
+        $stripped = preg_replace(
+            '#<header class="entry-header">\s*<h1[^>]*>[^<]+</h1>\s*</header><!-- \.entry-header -->#s',
+            '',
+            $html,
+            1
+        );
+        if ( $stripped !== null ) $html = $stripped;
+
+        return preg_replace(
+            '#(<div class="entry-content">)\s*(</div><!-- \.entry-content -->)#',
+            '$1' . $content . '$2',
+            $html,
+            1
+        ) ?? $html;
     }
 
     private static function inject_criticas_content( string $html ): string {
