@@ -43,6 +43,12 @@ class EDIT_Breadcrumbs {
 
         // Emit our own schema in wp_head (priority 7 — after edit-profiles' priority 6).
         add_action( 'wp_head', [ __CLASS__, 'emit_schema' ], 7 );
+
+        // Inline CSS for the visual breadcrumb bar.
+        add_action( 'wp_head', [ __CLASS__, 'emit_styles' ], 8 );
+
+        // Inject visual HTML into the output buffer (after the theme's </header> + #masthead).
+        add_filter( 'weareedit_site_engine_output_buffer', [ __CLASS__, 'inject_html' ], 5 );
     }
 
     /**
@@ -94,6 +100,77 @@ class EDIT_Breadcrumbs {
         echo "\n<script type=\"application/ld+json\">"
            . wp_json_encode( $schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES )
            . "</script>\n";
+    }
+
+    /**
+     * Inline CSS for the visual bar. Kept small + scoped — under 1KB minified.
+     */
+    public static function emit_styles(): void {
+        if ( is_admin() || is_feed() || is_404() ) return;
+        if ( is_front_page() || is_home() ) return;
+        if ( self::should_skip_visual() ) return;
+        ?>
+<style id="edit-breadcrumbs-css">
+.edit-breadcrumbs{background:#0a0a0a;border-bottom:1px solid rgba(255,255,255,.06);padding:14px 60px;font-size:13px;line-height:1.4;color:rgba(255,255,255,.55);font-family:inherit}
+.edit-breadcrumbs ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:0}
+.edit-breadcrumbs li{display:inline-flex;align-items:center}
+.edit-breadcrumbs li:not(:last-child)::after{content:'›';color:rgba(255,255,255,.35);margin:0 10px;font-size:14px}
+.edit-breadcrumbs a{color:rgba(255,255,255,.7);text-decoration:none;transition:color .15s ease}
+.edit-breadcrumbs a:hover{color:#ffdd06}
+.edit-breadcrumbs [aria-current="page"]{color:#fff;font-weight:500}
+@media (max-width:768px){.edit-breadcrumbs{padding:10px 20px;font-size:12px}.edit-breadcrumbs li:not(:last-child)::after{margin:0 6px}}
+</style>
+        <?php
+    }
+
+    /**
+     * Inject visible breadcrumb HTML right before the theme's masthead/hero wrapper.
+     * Anchor: `<!-- #masthead -->` comment emitted by the formacao theme's header.php.
+     */
+    public static function inject_html( string $html ): string {
+        if ( is_admin() || is_feed() || is_404() ) return $html;
+        if ( is_front_page() || is_home() ) return $html;
+        if ( self::should_skip_visual() ) return $html;
+
+        $bc = self::render_html();
+        if ( $bc === '' ) return $html;
+
+        // Theme emits `</header>\n<!-- #masthead -->` right before the hero on
+        // single + archive pages. Inject our HTML after that comment so it lands
+        // between the sticky nav and the dark hero band.
+        $anchor = '<!-- #masthead -->';
+        $pos    = strpos( $html, $anchor );
+        if ( $pos === false ) return $html;
+
+        return substr_replace( $html, $anchor . "\n" . $bc, $pos, strlen( $anchor ) );
+    }
+
+    /**
+     * Render the visible breadcrumb HTML. Last item is the current page (no link).
+     */
+    private static function render_html(): string {
+        $items = self::build_trail();
+        if ( count( $items ) < 2 ) return '';
+
+        $last = count( $items ) - 1;
+        $out  = '<nav class="edit-breadcrumbs" aria-label="Breadcrumb"><ol>';
+        foreach ( $items as $i => $it ) {
+            if ( $i === $last ) {
+                $out .= '<li><span aria-current="page">' . esc_html( $it['name'] ) . '</span></li>';
+            } else {
+                $out .= '<li><a href="' . esc_url( $it['url'] ) . '">' . esc_html( $it['name'] ) . '</a></li>';
+            }
+        }
+        $out .= '</ol></nav>';
+        return $out;
+    }
+
+    /**
+     * Visual breadcrumbs are skipped on /equipa/* (edit-profiles' template has
+     * its own hero treatment we shouldn't disrupt with a bar above it).
+     */
+    private static function should_skip_visual(): bool {
+        return is_singular( 'equipa' ) || is_post_type_archive( 'equipa' );
     }
 
     /**

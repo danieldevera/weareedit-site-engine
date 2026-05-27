@@ -239,6 +239,10 @@ class EDIT_Output_Buffer {
 
         $html = self::process( $html );
 
+        // Extension point — other classes (e.g. EDIT_Breadcrumbs) hook here to
+        // inject content after the core process() pass.
+        $html = apply_filters( 'weareedit_site_engine_output_buffer', $html );
+
         // Inject TOC on formacao CPT single pages (template doesn't use the_content())
         if ( is_singular( 'formacao' ) ) {
             $html = self::inject_formacao_toc( $html );
