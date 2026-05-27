@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.5.87 — 2026-05-27
+- **Server-side transient cache on search.** First query for a keyword still pays the full WordPress admin-ajax.php boot cost (~4-5s of plugin init overhead we can't easily eliminate). But once cached for 5 minutes, every repeat query (different users, repeat visits, session restarts) is **instant** — skips WP_Query entirely. Cache key is `md5(strtolower(keyword))` so case variants share the cache. Combined with the v1.5.79 client-side cache, the experience for everyone except the very first visitor of a keyword improves dramatically.
+
 ## v1.5.86 — 2026-05-27
 - **Fix /avaliacoes-google/ rendering broken** after v1.5.85 rename. Three causes:
   1. **CSS file URL mangled** by another plugin (`drag-and-drop-multiple-file-upload-contact-form-7`)'s buggy URL filter — it intercepted `wp_enqueue_style` calls and prepended its own plugin path + the FS path, turning the URL into garbage. Fix: build the URL via `site_url() + basename(WEAREDIT_SITE_ENGINE_PATH)` instead of `WEAREDIT_SITE_ENGINE_URL` — bypasses the broken filter.

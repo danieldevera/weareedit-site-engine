@@ -70,11 +70,27 @@ class EDIT_Search_Ajax {
         add_action( 'wp_ajax_nopriv_data_fetch', [ __CLASS__, 'handle' ] );
     }
 
+    /**
+     * Transient cache TTL — keeps results in DB for 5 minutes so repeat
+     * queries are instant. New content added during the window won't show
+     * until cache expires; for autocomplete that's an acceptable trade-off.
+     */
+    const CACHE_TTL = 300;
+
     public static function handle() {
         $keyword = isset( $_POST['keyword'] ) ? sanitize_text_field( wp_unslash( $_POST['keyword'] ) ) : '';
 
         // Match the theme's existing 3-char threshold so client + server agree.
         if ( strlen( $keyword ) < 3 ) {
+            wp_die();
+        }
+
+        // Server-side cache. Repeats of the same query (different users, same
+        // session, repeat visits) hit the transient and skip WP_Query entirely.
+        $cache_key = 'edit_search_v1_' . md5( strtolower( $keyword ) );
+        $cached    = get_transient( $cache_key );
+        if ( $cached !== false ) {
+            echo $cached;
             wp_die();
         }
 
@@ -93,20 +109,26 @@ class EDIT_Search_Ajax {
             'update_post_term_cache' => false,
             'orderby'                => 'date',
             'order'                  => 'DESC',
-            // Triggers title_only_search() filter above — cuts 9.2s → ~250ms
+            // Triggers title_only_search() filter above — cuts content LIKE scan.
             'weareedit_title_only'   => true,
         ] );
 
-        if ( ! $query->have_posts() ) {
-            wp_die();
+        ob_start();
+        if ( $query->have_posts() ) {
+            while ( $query->have_posts() ) {
+                $query->the_post();
+                $label = self::get_post_type_label( get_post_type() );
+                self::render_result( get_permalink(), get_the_title(), $label );
+            }
+            wp_reset_postdata();
         }
+        $html = ob_get_clean();
 
-        while ( $query->have_posts() ) {
-            $query->the_post();
-            $label = self::get_post_type_label( get_post_type() );
-            self::render_result( get_permalink(), get_the_title(), $label );
-        }
-        wp_reset_postdata();
+        // Cache even empty results — a query that returns nothing should
+        // also be instant on the second call.
+        set_transient( $cache_key, $html, self::CACHE_TTL );
+
+        echo $html;
         wp_die();
     }
 
