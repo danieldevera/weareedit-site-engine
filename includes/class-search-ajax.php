@@ -80,8 +80,9 @@ class EDIT_Search_Ajax {
     public static function handle() {
         $keyword = isset( $_POST['keyword'] ) ? sanitize_text_field( wp_unslash( $_POST['keyword'] ) ) : '';
 
-        // Match the theme's existing 3-char threshold so client + server agree.
-        if ( strlen( $keyword ) < 3 ) {
+        // 2-char minimum — covers common course-name abbreviations like
+        // AI, UX, ML, DS. Lowered from 3 in v1.5.89.
+        if ( strlen( $keyword ) < 2 ) {
             wp_die();
         }
 

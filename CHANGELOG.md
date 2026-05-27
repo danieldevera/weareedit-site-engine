@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.5.89 — 2026-05-27
+- Search minimum query length 3 → **2 chars**. Common course-name abbreviations (AI, UX, ML, DS, IA) now trigger results. Lowered in both client-side `fetch2()` and the server-side admin-ajax fallback.
+
 ## v1.5.88 — 2026-05-27 (Search Index — the deeper fix)
 - **Search now sub-50ms regardless of WP boot overhead.** Architecture: instead of hitting `admin-ajax.php` per keystroke (which paid 4-5s of WordPress plugin init cost), the plugin generates a **static JSON index** of all searchable posts (id, title, URL, type label) at `/wp-content/uploads/edit-search-index.json`. Webserver (nginx/apache) serves it directly with zero PHP. Client fetches it ONCE per page load (deferred to `requestIdleCallback`), then all keystroke filtering is client-side (`Array.filter` on title substring match — sub-millisecond).
 - New `class-search-index.php`:
