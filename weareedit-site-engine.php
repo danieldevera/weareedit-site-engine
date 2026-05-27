@@ -3,7 +3,7 @@
  * Plugin Name: * weareedit.io Site Engine
  * Plugin URI:  https://github.com/danieldevera/weareedit-site-engine
  * Description: Custom site engine for weareedit.io — SEO (meta tags, OG, schema.org, sitemap, hreflang), GEO/LLM optimization (llms.txt, AI crawler rules, Wikidata-linked Person/Organization schema), brand customization (hero typography, dot accents, CTA hover animations), Google Reviews aggregation, output-buffer HTML rewrites, virtual pages, WP Rocket cache integration, and one-time data fixes.
- * Version:     1.5.78
+ * Version:     1.5.79
  * Author:      Daniel Devera
  * License:     GPL-2.0+
  * Text Domain: weareedit-site-engine
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.78' );
+define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.79' );
 define( 'WEAREDIT_SITE_ENGINE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WEAREDIT_SITE_ENGINE_URL', plugin_dir_url( __FILE__ ) );
 
@@ -68,27 +68,47 @@ add_action( 'wp_head', function () {
 </style>
 <script id="weareedit-search-fetch2">
 /* Working fetch2() — replaces the broken theme version. Called by the
-   search input's onkeyup="fetch2()" attribute. */
+   search input's onkeyup="fetch2()" attribute. Debounced 220ms +
+   cancels stale in-flight requests so results don't arrive out of
+   order. Per-session cache so re-typing same query is instant. */
 (function () {
-    if ( typeof window.fetch2 === 'function' ) return; // theme version somehow loaded — defer to it
+    if ( typeof window.fetch2 === 'function' ) return;
+    var debounceTimer = null;
+    var currentRequest = null;
+    var cache = {};
     window.fetch2 = function () {
-        if ( typeof jQuery !== 'function' ) return;
-        var $ = jQuery;
-        var isDesktop = $( window ).width() > 991;
-        var sel = isDesktop ? '.keywordSearch.desktop' : '.keywordSearch.mobile';
-        var content = $( sel ).val();
-        if ( ! content || content.length < 3 ) {
-            $( '.resultadosPesquisa' ).removeClass( 'aberto' ).empty();
-            return;
-        }
-        $.ajax({
-            url: '/wp-admin/admin-ajax.php',
-            type: 'post',
-            data: { action: 'data_fetch', keyword: content },
-            success: function ( html ) {
-                $( '.resultadosPesquisa' ).addClass( 'aberto' ).html( html );
+        if ( debounceTimer ) clearTimeout( debounceTimer );
+        debounceTimer = setTimeout( function () {
+            if ( typeof jQuery !== 'function' ) return;
+            var $ = jQuery;
+            var isDesktop = $( window ).width() > 991;
+            var sel = isDesktop ? '.keywordSearch.desktop' : '.keywordSearch.mobile';
+            var content = ( $( sel ).val() || '' ).trim();
+            if ( content.length < 3 ) {
+                $( '.resultadosPesquisa' ).removeClass( 'aberto' ).empty();
+                return;
             }
-        });
+            if ( cache[ content ] !== undefined ) {
+                $( '.resultadosPesquisa' ).addClass( 'aberto' ).html( cache[ content ] );
+                return;
+            }
+            if ( currentRequest && currentRequest.abort ) {
+                currentRequest.abort();
+            }
+            currentRequest = $.ajax({
+                url: '/wp-admin/admin-ajax.php',
+                type: 'post',
+                data: { action: 'data_fetch', keyword: content },
+                success: function ( html ) {
+                    cache[ content ] = html;
+                    $( '.resultadosPesquisa' ).addClass( 'aberto' ).html( html );
+                    currentRequest = null;
+                },
+                error: function ( jqXHR, textStatus ) {
+                    if ( textStatus !== 'abort' ) currentRequest = null;
+                }
+            });
+        }, 220 );
     };
 })();
 </script>

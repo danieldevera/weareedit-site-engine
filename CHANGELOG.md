@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.5.79 — 2026-05-27
+- **Search faster — debounce + cancel-stale + cache.** The v1.5.77 `fetch2()` fired an AJAX request on EVERY keyup, which caused results to lag behind typing (wp-admin-ajax.php is ~300-500ms per call). Now:
+  - **Debounced 220ms** — no AJAX fires until typing pauses.
+  - **Cancels stale in-flight requests** when a new one starts → no out-of-order results.
+  - **Per-session cache** keyed by query string — re-typing the same query renders instantly.
+
 ## v1.5.78 — 2026-05-27
 - Plugin name `★` → `*` (Unicode star U+2605 sorted BELOW letters in WP's plugin list, ASCII asterisk U+002A sorts BEFORE letters). Bubbles to the top now.
 
