@@ -251,7 +251,7 @@ class EDIT_Output_Buffer {
 
         // /criticas-google/ page — theme's default page template renders an
         // empty entry-content div. Fill it with the shortcode-rendered HTML.
-        if ( is_page( 'criticas-google' ) && class_exists( 'EDIT_Criticas_Page' ) ) {
+        if ( class_exists( 'EDIT_Criticas_Page' ) && is_page( EDIT_Criticas_Page::SLUG ) ) {
             $html = self::inject_criticas_content( $html );
         }
 
@@ -321,8 +321,9 @@ class EDIT_Output_Buffer {
     private static function build_reviews_badge_html( string $context = 'compact' ): string {
         $rating = '4.1';
         $count  = 67;
-        // /criticas-google/ page is auto-created by EDIT_Criticas_Page on activation.
-        $url    = home_url( '/criticas-google/' );
+        // The reviews page is auto-created by EDIT_Criticas_Page on activation.
+        $slug   = class_exists( 'EDIT_Criticas_Page' ) ? EDIT_Criticas_Page::SLUG : 'avaliacoes-google';
+        $url    = home_url( '/' . $slug . '/' );
 
         $a_rating = esc_attr( $rating );
         $a_url    = esc_url( $url );
@@ -516,7 +517,7 @@ HTML;
             if ( strpos( $html, 'class="hero-reviews ' ) === false ) {
                 $html = str_replace(
                     '<div class="hero-corporate-row',
-                    '<a class="hero-reviews wow animate__fadeInUp" data-wow-duration="1s" href="' . esc_url( home_url( '/criticas-google/' ) ) . '" aria-label="Avaliações Google — 4.1 de 5 baseado em 67 reviews"><span class="hr-star">&#x2605;</span><span class="hr-rating">4.1</span><span class="hr-sep">/</span><span class="hr-count">67 reviews no</span><span class="g-wordmark" aria-hidden="true"><span class="g-G">G</span><span class="g-o1">o</span><span class="g-o2">o</span><span class="g-g">g</span><span class="g-l">l</span><span class="g-e">e</span></span></a><div class="hero-corporate-row',
+                    '<a class="hero-reviews wow animate__fadeInUp" data-wow-duration="1s" href="' . esc_url( home_url( '/' . ( class_exists( 'EDIT_Criticas_Page' ) ? EDIT_Criticas_Page::SLUG : 'avaliacoes-google' ) . '/' ) ) . '" aria-label="Avaliações Google — 4.1 de 5 baseado em 67 reviews"><span class="hr-star">&#x2605;</span><span class="hr-rating">4.1</span><span class="hr-sep">/</span><span class="hr-count">67 reviews no</span><span class="g-wordmark" aria-hidden="true"><span class="g-G">G</span><span class="g-o1">o</span><span class="g-o2">o</span><span class="g-g">g</span><span class="g-l">l</span><span class="g-e">e</span></span></a><div class="hero-corporate-row',
                     $html
                 );
             }

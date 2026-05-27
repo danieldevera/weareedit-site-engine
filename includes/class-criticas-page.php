@@ -19,16 +19,68 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class EDIT_Criticas_Page {
 
-    const SLUG       = 'criticas-google';
-    const TITLE      = 'Avaliações no Google';
-    const OPTION_KEY = 'edit_seo_fix_criticas_page_id';
-    const SHORTCODE  = 'edit_criticas_google_reviews';
+    const SLUG          = 'avaliacoes-google'; // Renamed from 'criticas-google' at v1.5.85
+    const OLD_SLUG      = 'criticas-google';   // Kept for 301 redirect + DB migration
+    const TITLE         = 'Avaliações no Google';
+    const OPTION_KEY    = 'edit_seo_fix_criticas_page_id';
+    const SHORTCODE     = 'edit_criticas_google_reviews';
+    const MIGRATED_FLAG = 'edit_seo_fix_avaliacoes_slug_migrated';
 
     public static function init() {
         add_shortcode( self::SHORTCODE, [ __CLASS__, 'render_shortcode' ] );
+        // Migration runs BEFORE ensure_page_exists so the old page is
+        // renamed to the new slug before the existence check looks for it.
+        add_action( 'admin_init',         [ __CLASS__, 'migrate_slug_from_criticas' ], 5 );
         add_action( 'admin_init',         [ __CLASS__, 'ensure_page_exists' ] );
         add_action( 'wp_enqueue_scripts', [ __CLASS__, 'enqueue_assets' ] );
         add_action( 'wp_head',            [ __CLASS__, 'emit_reviews_schema' ], 8 );
+        // 301 redirect from old slug to new slug. Preserves any inbound
+        // links from Google search results, social shares, schema URL
+        // references baked into third-party indexes.
+        add_action( 'template_redirect',  [ __CLASS__, 'redirect_old_slug' ] );
+    }
+
+    /**
+     * One-time migration: rename the existing WP page from /criticas-google/
+     * to /avaliacoes-google/. Idempotent via MIGRATED_FLAG option.
+     */
+    public static function migrate_slug_from_criticas() {
+        if ( get_option( self::MIGRATED_FLAG ) ) return;
+
+        // Try the tracked page ID first.
+        $page_id = (int) get_option( self::OPTION_KEY );
+        $post    = $page_id ? get_post( $page_id ) : null;
+
+        // Fall back to looking up by the old slug.
+        if ( ! $post || $post->post_status !== 'publish' ) {
+            $post = get_page_by_path( self::OLD_SLUG, OBJECT, 'page' );
+        }
+
+        if ( $post && $post->post_status === 'publish' && $post->post_name === self::OLD_SLUG ) {
+            wp_update_post( [
+                'ID'        => $post->ID,
+                'post_name' => self::SLUG,
+            ] );
+            update_option( self::OPTION_KEY, $post->ID );
+            // Force a rewrite flush so the new slug resolves immediately.
+            flush_rewrite_rules();
+        }
+
+        update_option( self::MIGRATED_FLAG, 1 );
+    }
+
+    /**
+     * 301 redirect /criticas-google/* → /avaliacoes-google/*. Catches
+     * trailing slash variants and any pagination/query-string suffixes.
+     */
+    public static function redirect_old_slug() {
+        $request = isset( $_SERVER['REQUEST_URI'] ) ? (string) $_SERVER['REQUEST_URI'] : '';
+        if ( $request === '' ) return;
+        if ( preg_match( '#^/' . preg_quote( self::OLD_SLUG, '#' ) . '(/.*)?$#', $request, $m ) ) {
+            $tail = $m[1] ?? '/';
+            wp_safe_redirect( home_url( '/' . self::SLUG . $tail ), 301 );
+            exit;
+        }
     }
 
     /**

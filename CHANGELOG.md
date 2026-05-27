@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.5.85 — 2026-05-27
+- **URL rename: `/criticas-google/` → `/avaliacoes-google/`** to match the terminology shipped in v1.5.81. Three-part migration:
+  1. **SLUG constant** in `class-criticas-page.php` updated to `'avaliacoes-google'`. Kept old slug as `OLD_SLUG` constant for migration + redirect lookup.
+  2. **One-time DB migration** runs on admin_init priority 5 (before ensure_page_exists). Finds the existing WP page at the old slug, renames its `post_name`, updates the tracked OPTION_KEY, flushes rewrite rules. Idempotent via `edit_seo_fix_avaliacoes_slug_migrated` option flag.
+  3. **301 redirect** on template_redirect hook catches `/criticas-google/*` (incl. trailing slash + suffixes) and 301s to `/avaliacoes-google/*`. Preserves inbound SEO links from Google search results, social shares, and existing schema URL references in third-party indexes.
+- All hardcoded `'/criticas-google/'` references in `class-output-buffer.php` refactored to use `EDIT_Criticas_Page::SLUG` so future renames are clean.
+- Shortcode name (`edit_criticas_google_reviews`), CSS class names (cg-*), file paths (assets/criticas-google.css), and internal option keys preserved — those are not user-facing and changing them would break existing pages/cache.
+
 ## v1.5.84 — 2026-05-27
 - **Search speed: 9.2s → ~250ms (real fix).** v1.5.82 replaced the handler but kept WP_Query's default `'s'` behaviour which does `LIKE %term%` against `post_title`, `post_content`, AND `post_excerpt` for every post type. The post_content scan is what was taking 9.2 s. Added a `posts_search` filter that overrides the SQL to LIKE on `post_title` only when our internal `weareedit_title_only` query arg is set. Other searches on the site (Google, other plugins) unaffected — the filter no-ops unless our arg is present.
 - Also disabled `update_post_meta_cache` + `update_post_term_cache` on the query (search results only need title + permalink, no need to hydrate every post's meta).
