@@ -1,0 +1,121 @@
+<?php
+/**
+ * Search AJAX — replaces the theme's slow + incomplete `data_fetch` handler.
+ *
+ * Why this exists (audit 2026-05-27):
+ *   - Theme's data_fetch handler returned 0 bytes for the query "Daniel Devera"
+ *     even though /equipa/daniel-devera/ exists. The team profile post type
+ *     wasn't included in its search.
+ *   - Each AJAX call took ~9 SECONDS. Front-end debouncing can't compensate
+ *     for a server response that slow; the backend itself was the bottleneck.
+ *
+ * Replacement strategy:
+ *   - Remove all existing handlers for wp_ajax_data_fetch at 'init' (priority 999)
+ *   - Register our own that uses a single WP_Query across all relevant CPTs
+ *   - Output HTML in the same shape the theme's front-end expects
+ *     (.resultadosPesquisa .postTypeSearch markup)
+ */
+
+if ( ! defined( 'ABSPATH' ) ) exit;
+
+class EDIT_Search_Ajax {
+
+    /**
+     * Post types our search includes. Add more here if a new CPT needs to
+     * appear in the autocomplete dropdown.
+     */
+    const POST_TYPES = [
+        'post',           // Notícias / blog
+        'page',
+        'formacao',       // Courses (bootcamp, workshop, curso intensivo, etc.)
+        'eventos',
+        'noticias',
+        'equipa',         // Team profiles — KEY MISSING ONE in the original handler
+        'entrevistas',
+        'profissoes',
+    ];
+
+    const MAX_RESULTS = 8;
+
+    public static function init() {
+        // Run late on `init` so the theme + other plugins have registered
+        // their handlers before we wipe them.
+        add_action( 'init', [ __CLASS__, 'replace_data_fetch_handler' ], 999 );
+    }
+
+    public static function replace_data_fetch_handler() {
+        remove_all_actions( 'wp_ajax_data_fetch' );
+        remove_all_actions( 'wp_ajax_nopriv_data_fetch' );
+        add_action( 'wp_ajax_data_fetch',        [ __CLASS__, 'handle' ] );
+        add_action( 'wp_ajax_nopriv_data_fetch', [ __CLASS__, 'handle' ] );
+    }
+
+    public static function handle() {
+        $keyword = isset( $_POST['keyword'] ) ? sanitize_text_field( wp_unslash( $_POST['keyword'] ) ) : '';
+
+        // Match the theme's existing 3-char threshold so client + server agree.
+        if ( strlen( $keyword ) < 3 ) {
+            wp_die();
+        }
+
+        $post_types = array_filter( self::POST_TYPES, function ( $pt ) {
+            return post_type_exists( $pt );
+        } );
+
+        $query = new WP_Query( [
+            's'                   => $keyword,
+            'post_type'           => array_values( $post_types ),
+            'post_status'         => 'publish',
+            'posts_per_page'      => self::MAX_RESULTS,
+            'ignore_sticky_posts' => true,
+            'no_found_rows'       => true,
+            'orderby'             => 'date',
+            'order'               => 'DESC',
+        ] );
+
+        if ( ! $query->have_posts() ) {
+            wp_die();
+        }
+
+        while ( $query->have_posts() ) {
+            $query->the_post();
+            $label = self::get_post_type_label( get_post_type() );
+            self::render_result( get_permalink(), get_the_title(), $label );
+        }
+        wp_reset_postdata();
+        wp_die();
+    }
+
+    /**
+     * Friendly label per post type — matches what the theme rendered as
+     * <div class="postTypeSearch"> so visuals are consistent.
+     */
+    private static function get_post_type_label( string $post_type ): string {
+        $map = [
+            'post'        => 'Notícias',
+            'page'        => 'Página',
+            'formacao'    => 'Formação',
+            'eventos'     => 'Evento',
+            'noticias'    => 'Notícias',
+            'equipa'      => 'Equipa',
+            'entrevistas' => 'Entrevistas',
+            'profissoes'  => 'Profissões',
+        ];
+        return $map[ $post_type ] ?? ucfirst( $post_type );
+    }
+
+    /**
+     * One result row. Markup matches the structure the theme's CSS targets
+     * (.resultadosPesquisa h2 a, .postTypeSearch). The original handler
+     * emitted obsolete <font color="#ffffff"> tags; we keep them only
+     * because the existing CSS selectors expect the `color` attribute.
+     */
+    private static function render_result( string $url, string $title, string $label ) {
+        printf(
+            '<h2><a href="%s"><font color="#ffffff">%s</font><font color="#ffffff"><div class="postTypeSearch">%s</div></font></a></h2>',
+            esc_url( $url ),
+            esc_html( $title ),
+            esc_html( $label )
+        );
+    }
+}
