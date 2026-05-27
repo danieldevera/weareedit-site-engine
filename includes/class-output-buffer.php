@@ -287,16 +287,11 @@ class EDIT_Output_Buffer {
         // Idempotency guard — never double-inject if upstream rewrites somehow re-trigger.
         if ( strpos( $html, 'edit-google-reviews-badge' ) !== false ) return $html;
 
-        if ( is_front_page() ) {
-            // Inject between the stats row and the in-company section. The
-            // row-in_company div sits inside the existing bootstrap container,
-            // so the badge inherits that width without an extra wrapper.
-            $badge  = self::build_reviews_badge_html( 'home' );
-            $anchor = '<div class="row is-flex v-center row-in_company">';
-            if ( $badge !== '' && strpos( $html, $anchor ) !== false ) {
-                return str_replace( $anchor, $badge . $anchor, $html );
-            }
-        } elseif ( is_singular( 'formacao' ) ) {
+        // Homepage: hero now carries the reviews score (v1.5.59+, locked
+        // v1.5.65). This secondary badge below the stats row is redundant
+        // and was removed 2026-05-27. The Course-page injection below
+        // stays — those pages don't have the hero reviews block.
+        if ( is_singular( 'formacao' ) ) {
             // Inject between the description block and the "Visão Geral" section.
             // The class suffix varies (bootcamp/curso variants), so match on the
             // stable prefix `<section class="visao-geral` with strpos+substr_replace.

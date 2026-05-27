@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.5.80 — 2026-05-27
+- **Homepage Google Reviews badge removed.** The white "G Google ★★★★★ 4.1/5 · 67 avaliações verificadas" pill below the stats row was redundant — the hero already carries the reviews score (with the multi-color Google wordmark) from v1.5.59+. Course-page badge injection stays (those pages don't have the hero reviews block).
+
 ## v1.5.79 — 2026-05-27
 - **Search faster — debounce + cancel-stale + cache.** The v1.5.77 `fetch2()` fired an AJAX request on EVERY keyup, which caused results to lag behind typing (wp-admin-ajax.php is ~300-500ms per call). Now:
   - **Debounced 220ms** — no AJAX fires until typing pauses.
