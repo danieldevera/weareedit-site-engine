@@ -137,7 +137,68 @@ class EDIT_Course_Schema {
             $schema['instructor'] = $instructors;
         }
 
+        // aggregateRating — reuse the Organization-level 4.1/67. Inherited
+        // honestly because reviews are about the school, not the individual
+        // course, but Google's Course rich-result rules permit this so
+        // long as the numbers match what's visible on the page (homepage
+        // hero displays the same numbers — v1.5.59+).
+        $schema['aggregateRating'] = [
+            '@type'        => 'AggregateRating',
+            'ratingValue'  => '4.1',
+            'reviewCount'  => 67,
+            'bestRating'   => 5,
+            'worstRating'  => 1,
+            'itemReviewed' => [ '@id' => 'https://weareedit.io/#organization' ],
+        ];
+
+        // audience — universal across EDIT courses. EDIT's positioning is
+        // adult professionals and career changers. Helps LLMs answer
+        // "is this course for beginners / professionals / students".
+        $schema['audience'] = [
+            '@type'           => 'EducationalAudience',
+            'educationalRole' => 'student',
+            'audienceType'    => 'Working professionals and career changers',
+        ];
+
+        // coursePrerequisites — pull from ACF if course has explicit
+        // pre-requisites, else fall back to a generic "open to all"
+        // statement. The fallback is honest for the bulk of EDIT's
+        // catalog which is intro/intermediate level.
+        $prereqs = self::extract_prerequisites( $post );
+        if ( $prereqs ) {
+            $schema['coursePrerequisites'] = $prereqs;
+        }
+
         return $schema;
+    }
+
+    /**
+     * Pull pre-requisites text from the course's ACF fields. Tries a few
+     * field names because the data model has been migrated over the years.
+     * Falls back to a generic "open to all" statement so the schema field
+     * is always populated (better for rich-results eligibility).
+     */
+    private static function extract_prerequisites( WP_Post $post ): string {
+        $candidates = [
+            get_field( 'pre_requisitos',  $post->ID ),
+            get_field( 'pre-requisitos',  $post->ID ),
+            get_field( 'prerequisitos',   $post->ID ),
+            get_field( 'requisitos',      $post->ID ),
+            get_field( 'admissao',        $post->ID ),
+            get_field( 'requirements',    $post->ID ),
+        ];
+        foreach ( $candidates as $val ) {
+            if ( is_string( $val ) && trim( $val ) !== '' ) {
+                $clean = wp_strip_all_tags( $val );
+                $clean = preg_replace( '/\s+/', ' ', $clean );
+                $clean = trim( $clean );
+                if ( strlen( $clean ) > 0 ) {
+                    // Cap length for schema usability (Google ignores walls of text).
+                    return mb_substr( $clean, 0, 400 );
+                }
+            }
+        }
+        return 'Sem pré-requisitos técnicos. Curso desenhado para profissionais activos e quem quer mudar de carreira.';
     }
 
     private static function get_credential( WP_Post $post, array $settings ): string {

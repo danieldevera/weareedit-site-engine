@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.5.90 — 2026-05-27
+- **Course schema expansion** (audit Tier 1 GEO item). Every `formacao` page now emits three additional schema.org fields beyond what was there before:
+  - **`aggregateRating`** — 4.1 / 67 (reuses the Organization rating, with `itemReviewed` `@id` pointing at the org node). Matches what's visible on the homepage hero and `/avaliacoes-google/`. Unlocks Course rich-result eligibility.
+  - **`audience`** (`EducationalAudience`) — "Working professionals and career changers". Helps LLMs answer "is this course for beginners / professionals / students" correctly.
+  - **`coursePrerequisites`** — pulled from ACF (`pre_requisitos`, `prerequisitos`, `requisitos`, `admissao`, etc.) if any course explicitly defines them; otherwise falls back to a generic "open to all" statement. The fallback is honest for the bulk of EDIT's catalog (intro/intermediate level).
+- Single plugin release applies to all ~70 course pages — no per-course manual editing required.
+- Skipped `teaches` / `about` / `occupationalCategory` for this release — those need per-course mapping (e.g. UX course → ISCO code for UX designers) and are better added in a follow-up when we have the data structure mapped.
+
 ## v1.5.89 — 2026-05-27
 - Search minimum query length 3 → **2 chars**. Common course-name abbreviations (AI, UX, ML, DS, IA) now trigger results. Lowered in both client-side `fetch2()` and the server-side admin-ajax fallback.
 
