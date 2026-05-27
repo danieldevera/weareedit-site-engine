@@ -3,7 +3,7 @@
  * Plugin Name: weareedit.io Site Engine
  * Plugin URI:  https://github.com/danieldevera/weareedit-site-engine
  * Description: Custom site engine for weareedit.io — SEO (meta tags, OG, schema.org, sitemap, hreflang), GEO/LLM optimization (llms.txt, AI crawler rules, Wikidata-linked Person/Organization schema), brand customization (hero typography, dot accents, CTA hover animations), Google Reviews aggregation, output-buffer HTML rewrites, virtual pages, WP Rocket cache integration, and one-time data fixes.
- * Version:     1.5.68
+ * Version:     1.5.74
  * Author:      Daniel Devera
  * License:     GPL-2.0+
  * Text Domain: weareedit-site-engine
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.68' );
+define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.74' );
 define( 'WEAREDIT_SITE_ENGINE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WEAREDIT_SITE_ENGINE_URL', plugin_dir_url( __FILE__ ) );
 
@@ -33,6 +33,21 @@ $weareedit_site_engine_update_checker->setBranch( 'main' );
 // Use GitHub Releases as the canonical source (matches the GH Action that
 // auto-builds the release zip on every `vX.Y.Z` tag push).
 $weareedit_site_engine_update_checker->getVcsApi()->enableReleaseAssets();
+
+/**
+ * Hero visibility safety net — inline JS in <head> that strips WOW.js's
+ * inline `style.visibility="hidden"` from the homepage hero's H1, H2,
+ * DGERT pill, corporate divider, and reviews block. iOS Safari has been
+ * observed (audit 2026-05-26) keeping these elements hidden even when
+ * !important stylesheet rules try to override the inline style. The JS
+ * runs both immediately and on DOMContentLoaded to catch both timings.
+ */
+add_action( 'wp_head', function () {
+    if ( ! is_front_page() ) return;
+    ?>
+<script>(function(){function s(){var l=document.querySelectorAll('.hero h1, .hero h2, .hero .dgert-hero-pill, .hero .hero-corporate-row, .hero .hero-reviews, .hero .swipe-cta');for(var i=0;i<l.length;i++){l[i].style.visibility='visible';l[i].style.opacity='1';l[i].style.transform='none';}}s();if(document.readyState!=='loading'){s();}else{document.addEventListener('DOMContentLoaded',s);}setTimeout(s,200);setTimeout(s,1000);})();</script>
+    <?php
+}, 100 );
 
 /**
  * After this plugin is updated via WP Admin (or auto-update), flush the

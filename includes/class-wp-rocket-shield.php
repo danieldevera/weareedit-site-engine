@@ -63,6 +63,28 @@ class EDIT_WP_Rocket_Shield {
             'cg-hero__quote',
             'cg-hero__reviews',
             'cg-statbar__brand',
+            // Header search overlay — class only used AFTER user clicks the
+            // magnifying glass icon, which RUCSS can't detect on first scan,
+            // so it strips the rule. Without these the search reveal silently
+            // breaks (audit 2026-05-27).
+            'autocomplete',
+            'autocomplete__inputWrapper',
+            'autocomplete__inputWrapperEnabled',
+            'autocomplete__container',
+            'autocomplete__button',
+            'autocomplete__input',
+            'searchOpen',
+            'closeSearch',
+            'searchButton',
+            'searchButton__inner',
+            'headerDesktop__search',
+            'headerMobile__search',
+            'ais-InstantSearch__root',
+            'resultadosPesquisa',
+            'keywordSearch',
+            'hasFocus',
+            'sticky___w5zBW',
+            'postTypeSearch',
         ] );
     }
 

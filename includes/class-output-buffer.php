@@ -86,6 +86,13 @@ class EDIT_Output_Buffer {
             // teal dot for "Transformation." (Bootcamp + Workshop class colours).
             . 'body.page-template-page-home .hero h1 .h1-dot-pink{color:#f92869 !important;}'
             . 'body.page-template-page-home .hero h1 .h1-dot-teal{color:#60c5b3 !important;}'
+            // UNIVERSAL hero visibility safety net — applies on desktop AND mobile.
+            // WOW.js sets inline `style.visibility="hidden"` on .wow elements; this
+            // is supposed to be overridden by !important stylesheet rules per spec,
+            // but iOS Safari has been observed honouring the inline style anyway
+            // (audit 2026-05-26). Target the elements DIRECTLY (not via .wow class)
+            // so the override doesn\'t depend on class matching.
+            . 'body.page-template-page-home .hero h1,body.page-template-page-home .hero h2,body.page-template-page-home .hero .dgert-hero-pill,body.page-template-page-home .hero .hero-corporate-row,body.page-template-page-home .hero-reviews{visibility:visible !important;opacity:1 !important;}'
             // DGERT trust pill — small inline badge above the H1. Logo (40px)
             // + text + ↗ external-link glyph. Reuses the white DGERT badge
             // already in the plugin assets. Opacity hover (matches existing
@@ -163,6 +170,53 @@ class EDIT_Output_Buffer {
             . 'body.page-template-page-home .btn-yellow.swipe-cta:hover .swipe-teal{transform:translateX(0);}'
             . 'body.page-template-page-home .btn-yellow.swipe-cta:hover .swipe-black{transform:translateX(0);}'
             . 'body.page-template-page-home .btn-yellow.swipe-cta:hover .swipe-label{color:#ffdd06 !important;}'
+            // ────────────────────────────────────────────────────────────
+            // MOBILE — fixes for hero on viewports ≤ 768px (audit 2026-05-26).
+            // Root cause of "invisible H1/H2/DGERT pill on mobile": the theme
+            // applies `visibility:hidden` via WOW.js .wow class and the init
+            // sometimes mistimes on mobile (URL bar collapse / short viewport
+            // means the elements never trigger). Force visibility back ON for
+            // the homepage hero wow elements specifically — animation still
+            // plays via animate__fadeInUp, just guaranteed to land visible.
+            // ────────────────────────────────────────────────────────────
+            . '@media (max-width:768px){'
+            // Safety net — force homepage hero .wow elements visible even if WOW.js doesn\'t fire.
+            // animate.css's @keyframes fadeInUp starts at opacity:0 + translate3d(0,100%,0).
+            // If the animation never plays (mistimed on mobile / URL bar collapse / JS error),
+            // elements stay invisible. Force ALL four possible hide-states off.
+            . 'body.page-template-page-home .hero .wow,body.page-template-page-home .hero .wow.animate__fadeInUp,body.page-template-page-home .hero h1.wow,body.page-template-page-home .hero h2.wow,body.page-template-page-home .dgert-hero-pill.wow{visibility:visible !important;opacity:1 !important;transform:none !important;animation:none !important;animation-name:none !important;}'
+            // H1: clamp scales down so "Transformation." fits in 375px viewport.
+            // At 375px, 9vw = 33.75px which is the floor we want to avoid overflow.
+            . 'body.page-template-page-home .hero h1{font-size:clamp(32px,9vw,64px) !important;line-height:1.04 !important;letter-spacing:-0.02em !important;margin-bottom:18px !important;word-break:break-word;}'
+            // H2: shrink to 18-22px so it fits ~3 lines and doesn\'t crowd the CTA
+            . 'body.page-template-page-home .hero h2,body.page-template-page-home .hero h2 font,body.page-template-page-home .hero h2 *{font-size:18px !important;line-height:1.35 !important;margin-bottom:24px !important;}'
+            // DGERT pill — smaller logo + tighter gap on mobile
+            . 'body.page-template-page-home .dgert-hero-pill{margin-bottom:16px !important;gap:8px !important;}'
+            . 'body.page-template-page-home .dgert-hero-pill img{height:28px !important;}'
+            . 'body.page-template-page-home .dgert-hero-pill-text{font-size:12px !important;}'
+            . 'body.page-template-page-home .dgert-hero-pill-arrow{font-size:10px !important;}'
+            // CTA + reviews stay left-aligned (already overridden in v1.5.65) — just smaller padding
+            . 'body.page-template-page-home .hero .hero-btn-container .btn-yellow{padding:14px 24px !important;font-size:14px !important;}'
+            . 'body.page-template-page-home .hero-reviews{font-size:12px !important;flex-wrap:wrap;margin:12px 0 24px 0 !important;}'
+            . 'body.page-template-page-home .hero-reviews .hr-rating{font-size:13px !important;}'
+            . 'body.page-template-page-home .hero-reviews .g-wordmark{font-size:13px !important;}'
+            // Corporate-clients section divider — let it wrap on mobile. The single-line
+            // 'CLIENTES CORPORATIVOS · FORMAÇÃO À MEDIDA ↗' was getting truncated.
+            . 'body.page-template-page-home .hero .hero-corporate-row{flex-wrap:wrap;justify-content:center;gap:8px;padding:0 16px;}'
+            . 'body.page-template-page-home .hero .hero-corporate-row .hc-line{display:none;}'
+            . 'body.page-template-page-home .hero a.hero-corporate{white-space:normal !important;flex-wrap:wrap;justify-content:center;line-height:1.5 !important;}'
+            . 'body.page-template-page-home .hero a.hero-corporate .hc-main,body.page-template-page-home .hero a.hero-corporate .hc-sub{font-size:11px !important;letter-spacing:0.12em !important;}'
+            . 'body.page-template-page-home .hero a.hero-corporate .hc-sep{margin:0 8px;}'
+            // Logos — force-wrap on mobile. Theme's flex may be set in an
+            // unreachable stylesheet; explicit display:flex + !important
+            // on every property to guarantee wrapping + sizing.
+            . 'body.page-template-page-home .logos-flex-container{display:flex !important;flex-wrap:wrap !important;justify-content:center !important;align-items:center !important;gap:16px 20px !important;padding:0 16px !important;max-width:100% !important;width:100% !important;margin:0 auto !important;list-style:none !important;box-sizing:border-box !important;}'
+            . 'body.page-template-page-home .logos-flex-item{flex:0 0 auto !important;margin:0 !important;padding:0 !important;list-style:none !important;}'
+            . 'body.page-template-page-home .logos-flex-item img{max-height:32px !important;max-width:90px !important;width:auto !important;height:auto !important;display:block !important;}'
+            // Hero padding — tighter top/bottom on mobile + side padding override
+            . 'body.page-template-page-home .hero{padding:80px 20px 48px !important;}'
+            . 'body.page-template-page-home .hero .container{padding-left:0 !important;padding-right:0 !important;max-width:100% !important;}'
+            . '}'
             . "</style>\n";
     }
 

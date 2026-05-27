@@ -1,5 +1,35 @@
 # Changelog
 
+## v1.5.74 — 2026-05-27
+- **Header search broken after enabling "Remover CSS não usado"** — RUCSS stripped the `.autocomplete__inputWrapperEnabled` rule (only visible AFTER user clicks the magnifying glass, which RUCSS can't observe on first scan). Click handler was binding correctly + adding the class, but no visual reveal because the rule was gone. Extended the Shield's `rocket_rucss_excluded_inline_css` list with 17 search-related class names (autocomplete*, searchOpen, closeSearch, searchButton, headerDesktop__search, ais-InstantSearch__root, resultadosPesquisa, keywordSearch, hasFocus, sticky___w5zBW, postTypeSearch).
+- Pre-existing `$ is not a function` errors (theme code outside IIFE jQuery wrapper) noted in audit — separate issue, will address in a follow-up if it impacts other features.
+
+## v1.5.73 — 2026-05-26
+- **Mobile hero visibility — brute-force JS safety net.** Despite v1.5.69/72's `visibility:visible !important` + `opacity:1 !important` in CSS, iOS Safari was still honouring WOW.js's inline `style.visibility="hidden"` per-element. CSS spec says `!important` in stylesheet wins over plain inline style — but observed behaviour says otherwise on mobile WebKit. Added an inline `<script>` in `<head>` that strips `style.visibility/opacity/transform` on `.hero h1, .hero h2, .hero .dgert-hero-pill, .hero .hero-corporate-row, .hero .hero-reviews, .hero .swipe-cta`. Runs immediately + on DOMContentLoaded + at 200ms + at 1000ms — to catch WOW.js whenever it fires.
+- Also extended the CSS override to target elements directly (not via `.wow` class) on all viewports, in case WOW.js is hiding things on desktop too in some edge case.
+
+## v1.5.72 — 2026-05-26
+- **Mobile: H1 + DGERT pill STILL invisible after v1.5.69's visibility override.** Root cause #2: animate.css's `@keyframes fadeInUp` starts at `opacity: 0` + `transform: translate3d(0, 100%, 0)`. Disabling animation-name alone doesn't reset opacity. Now forcing ALL four hide-states off: `visibility:visible`, `opacity:1`, `transform:none`, `animation:none`. Targets `.wow`, `h1.wow`, `h2.wow`, and `.dgert-hero-pill.wow` explicitly.
+
+## v1.5.71 — 2026-05-26
+- **Mobile: corporate logos were getting cut off** because the theme's `display:flex` on `.logos-flex-container` was paired with an unreachable rule that kept `flex-wrap:nowrap`. The v1.5.69 wrap override didn't have enough specificity. Hardened with `!important` on every flex property + explicit `display:flex`. Logos now wrap into 2-3 rows on mobile, each capped at 32px height × 90px width.
+
+## v1.5.70 — 2026-05-26
+- **Mobile H1 overflow fixed.** "Transformation." was extending past the right edge on iPhone 14/15 widths. Scaled H1 from `clamp(40px,11vw,72px)` → `clamp(32px,9vw,64px)` and added `word-break:break-word` as a safety net. Hero side padding tightened to 20px (was theme default ~40px) for more usable text width on narrow viewports.
+
+## v1.5.69 — 2026-05-26
+- **Homepage hero — mobile fixes (audit screenshot 2026-05-26):**
+  - **H1/H2/DGERT pill invisible on mobile** — root cause: theme's WOW.js sets `.wow { visibility: hidden; }` until animation fires, and on short mobile viewports the trigger sometimes misses. Force `visibility: visible !important` on hero `.wow` elements as a safety net so they always land visible (animation still plays via animate.css but never blocks render).
+  - **H1** scaled down on mobile: `clamp(40px, 11vw, 72px)` (was clamp(64px, 9.5vw, 152px) which forced 64px min and crowded the viewport).
+  - **H2** sub-text: 18px on mobile (was 32px desktop) so it fits ~3 lines without overwhelming the CTA below.
+  - **DGERT pill** logo bumped down to 28px (from 40px), tighter gap, smaller text.
+  - **Corporate-clients divider** — "CLIENTES CORPORATIVOS · FORMAÇÃO À MEDIDA" was truncated on mobile. Now wraps; horizontal flanking lines are hidden on mobile (re-enabled at desktop).
+  - **CTA** padding + font reduced on mobile (14px 24px / 14px) so it doesn't stretch full-width.
+  - **Reviews score** wraps if needed; slightly smaller font.
+  - **Corporate logos** drop from 72px max-height to 36px on mobile, wrap into multi-row, gap 20px.
+  - **Hero padding** reduced 144px → 80px top, 96px → 48px bottom on mobile.
+- All changes scoped to `@media (max-width:768px)` — desktop locked hero remains unchanged.
+
 ## v1.5.68 — 2026-05-26
 - **WP Rocket Shield** — new defensive integration (`class-wp-rocket-shield.php`). Registers safe exclusions BEFORE the user toggles "Atrasar JavaScript" or "Remover CSS não usado", so the hero animations, the swipe-cta CTA hover, the reviews block, and the third-party stack (jQuery, GTM, Cookiebot, FB Pixel, LinkedIn Insight, Hotjar, Clarity, InLinks, WOW.js, WhatsApp button) don't break when those toggles flip. Four WP Rocket filters wired:
   - `rocket_rucss_excluded_inline_css` — protects our injected inline `<style>` from Remove-Unused-CSS analysis (otherwise hover rules get stripped).
