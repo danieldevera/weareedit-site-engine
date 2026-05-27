@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.5.83 — 2026-05-27
+- **Homepage "Formação" carousel aligned to viewport left edge.** Cards were inheriting bootstrap container padding so they started indented from the screen edge. Now zero left padding/margin on `.courses-boxes-home .courses-container` → `.row` → `.col-md-12` → `.swiper-boxes`. Cards scroll flush against the left.
+
 ## v1.5.82 — 2026-05-27
 - **Search backend rebuilt — fast + comprehensive.** Audit caught the real cause of slow search: the theme's `data_fetch` AJAX handler took **9.4 SECONDS per request** and didn't include the team profile (`equipa`) post type, so "Daniel Devera" returned zero results. Front-end debouncing couldn't compensate for that backend slowness.
 - New `class-search-ajax.php` removes all existing handlers for `wp_ajax_data_fetch` / `wp_ajax_nopriv_data_fetch` at `init` priority 999 and registers a clean replacement. Uses one `WP_Query` with `'s'` across 8 relevant post types (post, page, formacao, eventos, noticias, equipa, entrevistas, profissoes), limits to 8 results, output markup matches the theme's existing CSS selectors. Expected response time: 100–400 ms instead of 9.4 s.

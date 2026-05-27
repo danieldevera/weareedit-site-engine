@@ -86,6 +86,13 @@ class EDIT_Output_Buffer {
             // teal dot for "Transformation." (Bootcamp + Workshop class colours).
             . 'body.page-template-page-home .hero h1 .h1-dot-pink{color:#f92869 !important;}'
             . 'body.page-template-page-home .hero h1 .h1-dot-teal{color:#60c5b3 !important;}'
+            // Homepage "Formação" cards carousel — align to the LEFT EDGE of
+            // the viewport (instead of inheriting bootstrap container padding).
+            // The cards still scroll horizontally, just start flush left.
+            . 'body.page-template-page-home .courses-boxes-home .courses-container{padding-left:0 !important;margin-left:0 !important;}'
+            . 'body.page-template-page-home .courses-boxes-home .courses-container .row{margin-left:0 !important;margin-right:0 !important;}'
+            . 'body.page-template-page-home .courses-boxes-home .courses-container .col-md-12{padding-left:0 !important;padding-right:0 !important;}'
+            . 'body.page-template-page-home .courses-boxes-home .swiper-boxes{padding-left:0 !important;margin-left:0 !important;}'
             // UNIVERSAL hero visibility safety net — applies on desktop AND mobile.
             // WOW.js sets inline `style.visibility="hidden"` on .wow elements; this
             // is supposed to be overridden by !important stylesheet rules per spec,
