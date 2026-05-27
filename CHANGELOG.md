@@ -1,5 +1,8 @@
 # Changelog
 
+## v1.5.78 — 2026-05-27
+- Plugin name `★` → `*` (Unicode star U+2605 sorted BELOW letters in WP's plugin list, ASCII asterisk U+002A sorts BEFORE letters). Bubbles to the top now.
+
 ## v1.5.77 — 2026-05-27
 - **Header search FULLY rescued** — two theme bugs bypassed via plugin:
   1. **CSS:** `.headerDesktop__search` had `width:0` + a `.sticky___w5zBW` ancestor selector to expand. But the theme has THREE `<header>` tags and `$('header').addClass('sticky___w5zBW')` lands the class on a header that isn't an ancestor of the desktop search container. Fix: `:has(.autocomplete__inputWrapperEnabled)` CSS rule forces the container open regardless of which header got the class. Fallback for older browsers via `.autocomplete.searchOpen .autocomplete__inputWrapper{opacity:1}`.
