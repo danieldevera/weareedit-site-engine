@@ -248,14 +248,25 @@ class EDIT_Output_Buffer {
             // The theme opens the Fale connosco panel via $('#falaConnosco').addClass('open')
             // + html.scroll-disabled. Replicate that DOM op directly so we
             // don't depend on hash-change listeners or jQuery binding order.
+            //
+            // Close handler — the theme's close button removes 'open' from the
+            // panel but doesn't always remove 'scroll-disabled' from <html>,
+            // leaving the page un-scrollable. Pair the open with our own close
+            // listener on .close and .overlay-side-filter inside #falaConnosco.
             . "<script>document.addEventListener('DOMContentLoaded',function(){"
+            . "var panel=document.getElementById('falaConnosco');"
+            . "function closeContact(){if(panel){panel.classList.remove('open');}document.documentElement.classList.remove('scroll-disabled');}"
             . "document.querySelectorAll('[data-contact=\"true\"]:not(a)').forEach(function(b){"
             . "b.addEventListener('click',function(e){"
             . "e.preventDefault();"
-            . "var p=document.getElementById('falaConnosco');"
-            . "if(p){p.classList.add('open');document.documentElement.classList.add('scroll-disabled');}"
+            . "if(panel){panel.classList.add('open');document.documentElement.classList.add('scroll-disabled');}"
             . "});"
-            . "});});</script>\n";
+            . "});"
+            . "if(panel){"
+            . "panel.querySelectorAll('.close,.overlay-side-filter').forEach(function(c){c.addEventListener('click',closeContact);});"
+            . "document.addEventListener('keydown',function(e){if(e.key==='Escape'&&panel.classList.contains('open'))closeContact();});"
+            . "}"
+            . "});</script>\n";
     }
 
     public static function start_buffer() {
