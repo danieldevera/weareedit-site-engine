@@ -244,12 +244,17 @@ class EDIT_Output_Buffer {
             . 'body.page-template-page-home .hero .container{padding-left:0 !important;padding-right:0 !important;max-width:100% !important;}'
             . '}'
             . "</style>\n"
-            // Bridge: pillar CTAs are <button data-contact="true"> elements,
-            // not <a.headerDesktop__contact>, so the theme's existing click
-            // handler never fires on them. Replicate the hash trigger here.
+            // Bridge: pillar CTAs are <button data-contact="true"> elements.
+            // The theme opens the Fale connosco panel via $('#falaConnosco').addClass('open')
+            // + html.scroll-disabled. Replicate that DOM op directly so we
+            // don't depend on hash-change listeners or jQuery binding order.
             . "<script>document.addEventListener('DOMContentLoaded',function(){"
             . "document.querySelectorAll('[data-contact=\"true\"]:not(a)').forEach(function(b){"
-            . "b.addEventListener('click',function(e){e.preventDefault();window.location.hash='form-newsletter';});"
+            . "b.addEventListener('click',function(e){"
+            . "e.preventDefault();"
+            . "var p=document.getElementById('falaConnosco');"
+            . "if(p){p.classList.add('open');document.documentElement.classList.add('scroll-disabled');}"
+            . "});"
             . "});});</script>\n";
     }
 
