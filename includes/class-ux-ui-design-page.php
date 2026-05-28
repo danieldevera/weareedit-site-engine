@@ -240,23 +240,10 @@ class EDIT_UX_UI_Design_Page {
                 <?php foreach ( self::CATALOG as $group => $slugs ) : ?>
                     <div class="md-group">
                         <h3 class="md-group__title"><?php echo esc_html( $group ); ?></h3>
-                        <div class="md-grid">
-                            <?php foreach ( $slugs as $slug ) :
-                                $post = get_page_by_path( $slug, OBJECT, 'formacao' );
-                                if ( ! $post ) continue;
-                                $title = wp_strip_all_tags( get_the_title( $post ) );
-                                $url   = get_permalink( $post );
-                                $excerpt = wp_strip_all_tags( get_the_excerpt( $post ) );
-                                $excerpt = $excerpt ? mb_substr( $excerpt, 0, 120 ) . '…' : '';
-                            ?>
-                                <a class="md-card" href="<?php echo esc_url( $url ); ?>">
-                                    <h4 class="md-card__title"><?php echo esc_html( $title ); ?></h4>
-                                    <?php if ( $excerpt ) : ?>
-                                        <p class="md-card__excerpt"><?php echo esc_html( $excerpt ); ?></p>
-                                    <?php endif; ?>
-                                    <span class="md-card__arrow">→</span>
-                                </a>
-                            <?php endforeach; ?>
+                        <div class="md-grid course-cards">
+                            <?php foreach ( $slugs as $slug ) {
+                                echo EDIT_Pillar_Courses::render_card( $slug );
+                            } ?>
                         </div>
                     </div>
                 <?php endforeach; ?>
