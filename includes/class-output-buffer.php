@@ -305,6 +305,11 @@ class EDIT_Output_Buffer {
             $html = self::inject_pillar_content( $html, EDIT_UX_UI_Design_Page::class );
         }
 
+        // /curso-inteligencia-artificial/ pillar — same pattern.
+        if ( class_exists( 'EDIT_Inteligencia_Artificial_Page' ) && is_page( EDIT_Inteligencia_Artificial_Page::SLUG ) ) {
+            $html = self::inject_pillar_content( $html, EDIT_Inteligencia_Artificial_Page::class );
+        }
+
         echo $html;
     }
 
