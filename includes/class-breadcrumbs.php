@@ -111,16 +111,18 @@ class EDIT_Breadcrumbs {
         if ( is_front_page() || is_home() ) return;
         ?>
 <style id="edit-breadcrumbs-css">
-.edit-breadcrumbs{background:#0a0a0a;border-bottom:1px solid rgba(255,255,255,.06);padding:24px 60px 14px;font-size:13px;line-height:1.4;color:rgba(255,255,255,.55);font-family:inherit;position:relative;z-index:1}
+.edit-breadcrumbs{background:#0a0a0a;border-bottom:1px solid rgba(255,255,255,.06);padding:16px 60px 14px;font-size:13px;line-height:1.4;color:rgba(255,255,255,.55);font-family:inherit;position:relative;z-index:1}
 .edit-breadcrumbs ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:0}
 .edit-breadcrumbs li{display:inline-flex;align-items:center}
 .edit-breadcrumbs li:not(:last-child)::after{content:'›';color:rgba(255,255,255,.35);margin:0 10px;font-size:14px}
-.edit-breadcrumbs a{color:rgba(255,255,255,.7);text-decoration:none;transition:color .15s ease}
-.edit-breadcrumbs a:hover{color:#ffdd06}
-.edit-breadcrumbs li:first-child a{color:#ffdd06}
-.edit-breadcrumbs li:first-child a:hover{color:#fff}
-.edit-breadcrumbs [aria-current="page"]{color:#fff;font-weight:500}
-@media (max-width:768px){.edit-breadcrumbs{padding:18px 20px 10px;font-size:12px}.edit-breadcrumbs li:not(:last-child)::after{margin:0 6px}}
+.edit-breadcrumbs a{text-decoration:none;transition:opacity .15s ease;font-weight:500}
+.edit-breadcrumbs a:hover{opacity:.75}
+.edit-breadcrumbs [aria-current="page"]{font-weight:700}
+.edit-breadcrumbs li:nth-child(1) > *{color:#ffdd06}
+.edit-breadcrumbs li:nth-child(2) > *{color:#60c5b3}
+.edit-breadcrumbs li:nth-child(3) > *{color:#f92869}
+.edit-breadcrumbs li:nth-child(4) > *{color:#4a9eff}
+@media (max-width:768px){.edit-breadcrumbs{padding:12px 20px 10px;font-size:12px}.edit-breadcrumbs li:not(:last-child)::after{margin:0 6px}}
 </style>
         <?php
     }
