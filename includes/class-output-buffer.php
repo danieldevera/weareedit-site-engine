@@ -321,6 +321,11 @@ class EDIT_Output_Buffer {
             $html = self::inject_pillar_content( $html, EDIT_Inteligencia_Artificial_Page::class );
         }
 
+        // /curso-programacao/ pillar — same pattern.
+        if ( class_exists( 'EDIT_Programacao_Page' ) && is_page( EDIT_Programacao_Page::SLUG ) ) {
+            $html = self::inject_pillar_content( $html, EDIT_Programacao_Page::class );
+        }
+
         echo $html;
     }
 
