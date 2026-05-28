@@ -57,18 +57,13 @@ html { scroll-behavior: smooth; }
 .md-faq__a a { color:#ffdd06; }
 .md-faq__a strong { color:#fff; }
 
-/* Tutores section */
-.md-tutores { padding:80px 60px; max-width:1280px; margin:0 auto; }
-.md-tutores__lede { font-size:17px; line-height:1.5; color:rgba(255,255,255,.7); max-width:680px; margin:0 0 40px; }
-.md-tutores__grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(220px, 1fr)); gap:24px; }
-.md-tutor-card { display:flex; flex-direction:column; text-decoration:none; color:#fff; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:8px; overflow:hidden; transition:background .2s, border-color .2s, transform .2s; }
-.md-tutor-card:hover { background:rgba(255,221,6,.06); border-color:#ffdd06; transform:translateY(-2px); }
-.md-tutor-card__photo { aspect-ratio:1/1; background-size:cover; background-position:center; background-color:#161616; filter:grayscale(100%); transition:filter .25s ease; }
-.md-tutor-card:hover .md-tutor-card__photo { filter:grayscale(0%); }
-.md-tutor-card__meta { padding:18px 20px 22px; }
-.md-tutor-card__name { font-size:17px; font-weight:600; line-height:1.3; margin:0 0 6px; color:#fff; }
-.md-tutor-card__cargo { font-size:13px; line-height:1.4; color:rgba(255,255,255,.65); margin:0; }
-.md-tutor-card__cargo span { color:#ffdd06; }
+/* Tutores section — uses theme card classes (.tutores .persons-grid .adaptImage
+   .person-card etc.) so the cards inherit the existing /equipa/ styling. Only
+   the section wrapper + headline need scoped rules. */
+.md-tutores-section { padding:80px 0; }
+.md-tutores-section .container { max-width:1280px; margin:0 auto; padding:0 60px; }
+.md-tutores-section .md-section-title { margin-bottom:32px; }
+.md-tutores-section .md-tutores__lede { font-size:17px; line-height:1.5; color:rgba(255,255,255,.7); max-width:680px; margin:0 0 48px; }
 
 /* Final CTA */
 .md-final-cta { padding:80px 60px; max-width:920px; margin:0 auto; text-align:center; }
@@ -83,9 +78,9 @@ html { scroll-behavior: smooth; }
     .md-hero__lede { font-size:17px; }
     .md-catalog,
     .md-faq,
-    .md-tutores,
     .md-final-cta { padding:60px 24px; }
-    .md-tutores__grid { grid-template-columns:repeat(2, 1fr); gap:16px; }
+    .md-tutores-section { padding:60px 0; }
+    .md-tutores-section .container { padding:0 24px; }
     .md-grid { grid-template-columns:1fr; }
     .md-faq__q { font-size:16px; padding:20px 24px; padding-right:50px; }
 }

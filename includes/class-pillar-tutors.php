@@ -33,23 +33,46 @@ class EDIT_Pillar_Tutors {
 
         ob_start();
         ?>
-        <div class="md-tutores">
-            <h2 class="md-section-title">Tutores <span>em destaque</span></h2>
-            <p class="md-tutores__lede"><?php echo esc_html( $section_title ); ?></p>
-            <div class="md-tutores__grid">
-                <?php foreach ( $tutors as $t ) : ?>
-                    <a class="md-tutor-card" href="<?php echo esc_url( $t['url'] ); ?>">
-                        <div class="md-tutor-card__photo" style="background-image:url('<?php echo esc_url( $t['photo'] ); ?>');"></div>
-                        <div class="md-tutor-card__meta">
-                            <h4 class="md-tutor-card__name"><?php echo esc_html( $t['name'] ); ?></h4>
-                            <?php if ( $t['cargo'] ) : ?>
-                                <p class="md-tutor-card__cargo"><?php echo esc_html( $t['cargo'] ); ?><?php if ( $t['empresa'] ) : ?> · <span><?php echo esc_html( $t['empresa'] ); ?></span><?php endif; ?></p>
-                            <?php endif; ?>
+        <section class="tutores md-tutores-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h2 class="md-section-title">Tutores <span>em destaque</span></h2>
+                    </div>
+                    <div class="col-md-8">
+                        <p class="md-tutores__lede"><?php echo esc_html( $section_title ); ?></p>
+                    </div>
+                </div>
+                <div class="row persons-grid">
+                    <?php foreach ( $tutors as $t ) : ?>
+                        <div class="col-md-3 col-sm-6 col-sm-offset-0 col-xs-12 col-xs-offset-0">
+                            <a href="<?php echo esc_url( $t['url'] ); ?>">
+                                <div class="adaptImage">
+                                    <div class="adaptImage__inner">
+                                        <div class="adaptImage__aspect" style="padding-bottom:145%;">
+                                            <img class="adaptImage__image" src="<?php echo esc_url( $t['photo'] ); ?>" alt="<?php echo esc_attr( $t['name'] ); ?>" loading="lazy">
+                                        </div>
+                                        <div class="person-card">
+                                            <div class="person-card-content">
+                                                <div class="text">
+                                                    <h3 class="name"><?php echo esc_html( $t['name'] ); ?></h3>
+                                                    <?php if ( $t['cargo'] ) : ?>
+                                                        <h4 class="job"><?php echo esc_html( $t['cargo'] ); ?></h4>
+                                                    <?php endif; ?>
+                                                    <?php if ( $t['empresa'] ) : ?>
+                                                        <h4 class="company"><?php echo esc_html( $t['empresa'] ); ?></h4>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
                         </div>
-                    </a>
-                <?php endforeach; ?>
+                    <?php endforeach; ?>
+                </div>
             </div>
-        </div>
+        </section>
         <?php
         return ob_get_clean();
     }
