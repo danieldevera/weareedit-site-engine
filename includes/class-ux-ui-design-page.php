@@ -228,7 +228,7 @@ class EDIT_UX_UI_Design_Page {
                     </div>
                     <div class="md-hero__cta">
                         <a class="md-btn md-btn--primary" href="#catalogo">Ver os 12 cursos</a>
-                        <a class="md-btn md-btn--ghost" data-contact="true" href="#">Falar com um consultor</a>
+                        <button type="button" class="md-btn md-btn--ghost swipe-cta" data-contact="true"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Falar com um consultor</span></button>
                     </div>
                 </div>
             </div>
@@ -275,7 +275,7 @@ class EDIT_UX_UI_Design_Page {
             <div class="md-final-cta">
                 <h2>Pronto para a próxima formação em <span>UX/UI Design</span>?</h2>
                 <p>Os nossos consultores ajudam-te a escolher o percurso certo — Foundations, Curso completo ou Bootcamp Figma — e a tirar partido do Cheque Formação + Digital antes de 30 de Junho 2026.</p>
-                <a class="md-btn md-btn--primary md-btn--lg" data-contact="true" href="#">Falar com um consultor</a>
+                <button type="button" class="md-btn md-btn--primary md-btn--lg swipe-cta" data-contact="true"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Falar com um consultor</span></button>
             </div>
         </section>
         <?php

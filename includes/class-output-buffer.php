@@ -178,6 +178,21 @@ class EDIT_Output_Buffer {
             . 'body.page-template-page-home .btn-yellow.swipe-cta:hover .swipe-black{transform:translateX(0);}'
             . 'body.page-template-page-home .btn-yellow.swipe-cta:hover .swipe-label{color:#ffdd06 !important;}'
             // ────────────────────────────────────────────────────────────
+            // SITE-WIDE swipe-cta (locked in 2026-05-28 v1.5.112). Same
+            // 3-layer pink → teal → black animation as the homepage CTA,
+            // but available on ANY button across the site (pillar pages,
+            // future course CTAs, etc.). HP rules above are more specific
+            // (body prefix + .btn-yellow) so they continue to win there.
+            // ────────────────────────────────────────────────────────────
+            . '.swipe-cta{position:relative;overflow:hidden;z-index:0;isolation:isolate;cursor:pointer;border:0;font-family:inherit;}'
+            . '.swipe-cta .swipe-layer{position:absolute;inset:-2px;pointer-events:none;will-change:transform;}'
+            . '.swipe-cta .swipe-pink{background:#f92869;transform:translateX(-105%);transition:transform 0.18s cubic-bezier(0.33,1,0.68,1);z-index:1;}'
+            . '.swipe-cta .swipe-teal{background:#60c5b3;transform:translateX(105%);transition:transform 0.22s cubic-bezier(0.65,0,0.35,1) 0.18s;z-index:2;}'
+            . '.swipe-cta .swipe-black{background:#000;transform:translateX(-105%);transition:transform 0.25s cubic-bezier(0.33,1,0.68,1) 0.40s;z-index:3;}'
+            . '.swipe-cta .swipe-label{position:relative;z-index:4;transition:color 0.18s ease 0.50s;display:inline-flex;align-items:center;}'
+            . '.swipe-cta:hover .swipe-pink,.swipe-cta:hover .swipe-teal,.swipe-cta:hover .swipe-black{transform:translateX(0);}'
+            . '.swipe-cta:hover .swipe-label{color:#ffdd06;}'
+            // ────────────────────────────────────────────────────────────
             // MOBILE — fixes for hero on viewports ≤ 768px (audit 2026-05-26).
             // Root cause of "invisible H1/H2/DGERT pill on mobile": the theme
             // applies `visibility:hidden` via WOW.js .wow class and the init

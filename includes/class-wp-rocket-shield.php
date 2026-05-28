@@ -94,6 +94,14 @@ class EDIT_WP_Rocket_Shield {
             // Visible breadcrumbs (v1.5.93) — inline CSS in class-breadcrumbs.php.
             // Without this, RUCSS strips the <style id="edit-breadcrumbs-css">.
             'edit-breadcrumbs',
+            // Site-wide swipe-cta animation (locked in v1.5.112). Pillar pages
+            // and other non-homepage CTAs need the global swipe rules kept.
+            'swipe-cta',
+            'swipe-layer',
+            'swipe-pink',
+            'swipe-teal',
+            'swipe-black',
+            'swipe-label',
         ] );
     }
 
