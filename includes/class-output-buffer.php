@@ -265,20 +265,28 @@ class EDIT_Output_Buffer {
 
         // /marketing-digital/ pillar — same theme-template issue as criticas.
         if ( class_exists( 'EDIT_Marketing_Digital_Page' ) && is_page( EDIT_Marketing_Digital_Page::SLUG ) ) {
-            $html = self::inject_marketing_digital_content( $html );
+            $html = self::inject_pillar_content( $html, EDIT_Marketing_Digital_Page::class );
+        }
+
+        // /data-science/ pillar — same pattern.
+        if ( class_exists( 'EDIT_Data_Science_Page' ) && is_page( EDIT_Data_Science_Page::SLUG ) ) {
+            $html = self::inject_pillar_content( $html, EDIT_Data_Science_Page::class );
         }
 
         echo $html;
     }
 
-    private static function inject_marketing_digital_content( string $html ): string {
+    /**
+     * Shared injector for pillar pages — both /marketing-digital/ and
+     * /data-science/ use the same theme-template workaround: strip the wrong
+     * entry-header H1, then fill the empty entry-content with the shortcode.
+     */
+    private static function inject_pillar_content( string $html, string $class ): string {
         if ( strpos( $html, 'class="md-pillar"' ) !== false ) return $html;
 
-        $content = EDIT_Marketing_Digital_Page::render_shortcode();
+        $content = $class::render_shortcode();
         if ( ! $content ) return $html;
 
-        // Strip the wrong entry-header (theme pulls "Bootcamp" or similar
-        // from a different post — same bug as /avaliacoes-google/).
         $stripped = preg_replace(
             '#<header class="entry-header">\s*<h1[^>]*>[^<]+</h1>\s*</header><!-- \.entry-header -->#s',
             '',
