@@ -33,32 +33,32 @@ html { scroll-behavior: smooth; }
 .md-section-title { font-size:clamp(36px,5vw,56px); line-height:1.1; font-weight:700; margin:0 0 48px; letter-spacing:-.01em; }
 .md-section-title span { color:#ffdd06; }
 
-/* Catalog */
-.md-catalog { padding:80px 60px; max-width:1280px; margin:0 auto; }
-.md-group { margin:0 0 64px; }
-.md-group__title { font-size:22px; font-weight:600; color:#ffdd06; margin:0 0 24px; text-transform:uppercase; letter-spacing:.1em; }
+/* Catalog
+   Headings sit in a 1280px centered band; the card rows below use the theme's
+   own .filter-result > .container > .row wrapper, which already self-centers
+   and gives each .course .col-md-4 the same archive grid (3-per-row desktop). */
+.md-catalog { padding:80px 0 60px; }
+.md-catalog__heading { max-width:1280px; margin:0 auto; padding:0 60px; }
+.md-group { margin:0 0 24px; }
+.md-group__heading { max-width:1280px; margin:0 auto 16px; padding:0 60px; }
+.md-group__title { font-size:22px; font-weight:600; color:#ffdd06; margin:0; text-transform:uppercase; letter-spacing:.1em; }
 
-/* Course-box cards — scoped copy of theme's /formacao/ card styling so the
-   cards render correctly on pillar pages (theme CSS is archive-scoped). */
-.md-pillar .course-cards { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:16px; }
-.md-pillar .course { position:relative; }
-.md-pillar .course-box { display:flex; flex-direction:column; justify-content:space-between; min-height:300px; padding:28px 24px; border-radius:6px; text-decoration:none; background-size:cover; background-position:center; background-repeat:no-repeat; color:#000; transition:transform .25s ease; box-sizing:border-box; }
-.md-pillar .course-box:hover { transform:translateY(-4px); }
-.md-pillar .course-box.text-black { color:#000; }
-.md-pillar .course-box.text-black .course-time,
-.md-pillar .course-box.text-black .course-title,
-.md-pillar .course-box.text-black .course-view { color:#000; }
-.md-pillar .course-box .course-icon { margin:0 0 20px; }
-.md-pillar .course-box .course-icon img { width:40px; height:40px; display:block; filter:brightness(0); }
-.md-pillar .course-box .course-text { flex:1; display:flex; flex-direction:column; }
-.md-pillar .course-box .course-time { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; margin:0 0 10px; }
-.md-pillar .course-box .course-title { font-size:21px; font-weight:700; line-height:1.22; margin:0 0 16px; }
-.md-pillar .course-box .course-view { margin-top:auto; font-size:13px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; }
-.md-pillar .course-box .course-view span { padding-bottom:3px; border-bottom:2px solid currentColor; }
+/* Compress the theme's .filter-result vertical rhythm so stacked groups don't
+   leave 150-180px of dead space between sections. */
+.md-pillar .md-group .filter-result { margin:0 0 8px; padding:0; }
+.md-pillar .md-group .filter-result .container { padding-left:60px; padding-right:60px; }
+
+/* Match /formacao/'s tall card aspect ratio. The theme's archive-only rule
+   (.page-template-page-formacao .filter-result .course-box.text-black { height:0; padding-bottom:90% })
+   doesn't fire on pillar pages because the body class differs — recreate it. */
+.md-pillar .filter-result .course-box.text-black,
+.md-pillar .filter-result .course-box.text-white { height:0; padding-bottom:90%; }
 @media (max-width:768px) {
-    .md-pillar .course-cards { grid-template-columns:1fr; gap:14px; }
-    .md-pillar .course-box { min-height:220px; padding:22px 20px; }
-    .md-pillar .course-box .course-title { font-size:18px; }
+    .md-pillar .filter-result .course-box.text-black,
+    .md-pillar .filter-result .course-box.text-white { padding-bottom:100%; }
+    .md-pillar .md-group .filter-result .container { padding-left:24px; padding-right:24px; }
+    .md-catalog__heading,
+    .md-group__heading { padding-left:24px; padding-right:24px; }
 }
 
 /* Legacy md-card kept for any leftover refs but no longer the primary card */
@@ -120,11 +120,10 @@ html { scroll-behavior: smooth; }
     .md-hero { padding:80px 24px 60px; }
     .md-hero__title { font-size:clamp(40px,11vw,64px); }
     .md-hero__lede { font-size:17px; }
-    .md-catalog,
+    .md-catalog { padding:60px 0 40px; }
     .md-faq,
     .md-final-cta { padding:60px 24px; }
     .md-tutores-section { padding:60px 0; }
     .md-tutores-section .container { padding:0 24px; }
-    .md-grid { grid-template-columns:1fr; }
     .md-faq__q { font-size:16px; padding:20px 24px; padding-right:50px; }
 }

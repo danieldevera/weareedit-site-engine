@@ -3,7 +3,7 @@
  * Plugin Name: * weareedit.io Site Engine
  * Plugin URI:  https://github.com/danieldevera/weareedit-site-engine
  * Description: Custom site engine for weareedit.io — SEO (meta tags, OG, schema.org, sitemap, hreflang), GEO/LLM optimization (llms.txt, AI crawler rules, Wikidata-linked Person/Organization schema), brand customization (hero typography, dot accents, CTA hover animations), Google Reviews aggregation, output-buffer HTML rewrites, virtual pages, WP Rocket cache integration, and one-time data fixes.
- * Version:     1.5.126
+ * Version:     1.5.127
  * Author:      Daniel Devera
  * License:     GPL-2.0+
  * Text Domain: weareedit-site-engine
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.126' );
+define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.127' );
 define( 'WEAREDIT_SITE_ENGINE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WEAREDIT_SITE_ENGINE_URL', plugin_dir_url( __FILE__ ) );
 
@@ -237,6 +237,7 @@ function weareedit_site_engine_init() {
     EDIT_Search_Ajax::init();
     EDIT_Search_Index::init();
     EDIT_Breadcrumbs::init();
+    EDIT_Pillar_Courses::init();
     EDIT_Marketing_Digital_Page::init();
     EDIT_Data_Science_Page::init();
     EDIT_UX_UI_Design_Page::init();

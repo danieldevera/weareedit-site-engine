@@ -249,15 +249,23 @@ class EDIT_Marketing_Digital_Page {
             </div>
 
             <div id="catalogo" class="md-catalog">
-                <h2 class="md-section-title">Catálogo de Formação <span>em Marketing Digital</span></h2>
+                <div class="md-catalog__heading">
+                    <h2 class="md-section-title">Catálogo de Formação <span>em Marketing Digital</span></h2>
+                </div>
                 <?php foreach ( self::CATALOG as $group => $slugs ) : ?>
                     <div class="md-group">
-                        <h3 class="md-group__title"><?php echo esc_html( $group ); ?></h3>
-                        <div class="md-grid course-cards">
-                            <?php foreach ( $slugs as $slug ) {
-                                echo EDIT_Pillar_Courses::render_card( $slug );
-                            } ?>
+                        <div class="md-group__heading">
+                            <h3 class="md-group__title"><?php echo esc_html( $group ); ?></h3>
                         </div>
+                        <section class="filter-result">
+                            <div class="container">
+                                <div class="row">
+                                    <?php foreach ( $slugs as $slug ) {
+                                        echo EDIT_Pillar_Courses::render_card( $slug );
+                                    } ?>
+                                </div>
+                            </div>
+                        </section>
                     </div>
                 <?php endforeach; ?>
             </div>
