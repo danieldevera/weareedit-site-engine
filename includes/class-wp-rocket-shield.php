@@ -102,6 +102,10 @@ class EDIT_WP_Rocket_Shield {
             'swipe-teal',
             'swipe-black',
             'swipe-label',
+            // Pillar cross-links: pill bar on /formacao/ + "Faz parte de" badge
+            // on course singles (v1.5.124, 2026-05-28).
+            'edit-pillar-pillbar',
+            'edit-pillar-faz-parte',
         ] );
     }
 
