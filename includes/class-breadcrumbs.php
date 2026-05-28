@@ -109,6 +109,9 @@ class EDIT_Breadcrumbs {
     public static function emit_styles(): void {
         if ( is_admin() || is_feed() || is_404() ) return;
         if ( is_front_page() || is_home() ) return;
+        // edit-profiles plugin renders its own breadcrumb inline in the
+        // profile hero — emitting ours too creates a visible duplicate.
+        if ( is_singular( 'equipa' ) || is_post_type_archive( 'equipa' ) ) return;
         ?>
 <style id="edit-breadcrumbs-css">
 .edit-breadcrumbs{background:#0a0a0a;border-bottom:1px solid rgba(255,255,255,.06);padding:140px 60px 14px;font-size:13px;line-height:1.4;color:rgba(255,255,255,.55);font-family:inherit;position:relative;z-index:1}
@@ -134,6 +137,7 @@ class EDIT_Breadcrumbs {
     public static function inject_html( string $html ): string {
         if ( is_admin() || is_feed() || is_404() ) return $html;
         if ( is_front_page() || is_home() ) return $html;
+        if ( is_singular( 'equipa' ) || is_post_type_archive( 'equipa' ) ) return $html;
 
         $bc = self::render_html();
         if ( $bc === '' ) return $html;

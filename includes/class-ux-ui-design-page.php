@@ -269,7 +269,7 @@ class EDIT_UX_UI_Design_Page {
                 <div class="md-faq__list">
                     <?php foreach ( self::FAQ as $f ) : ?>
                         <details class="md-faq__item">
-                            <summary class="md-faq__q"><?php echo esc_html( $f['q'] ); ?></summary>
+                            <summary class="md-faq__q"><span class="md-faq__q-text"><?php echo esc_html( $f['q'] ); ?></span></summary>
                             <div class="md-faq__a"><?php echo wp_kses_post( $f['a'] ); ?></div>
                         </details>
                     <?php endforeach; ?>
