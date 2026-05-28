@@ -3,6 +3,13 @@
 
 .md-pillar { background:#0a0a0a; color:#fff; font-family:inherit; }
 
+/* Anchor jump offset — the EDIT. nav is position:fixed, so anchor targets
+   without scroll-margin-top end up hidden under the nav. 120px clears the
+   nav + a little breathing room. */
+.md-pillar #catalogo,
+.md-pillar #faq { scroll-margin-top: 120px; }
+html { scroll-behavior: smooth; }
+
 /* Hero */
 .md-hero { padding:120px 60px 80px; background:#0a0a0a; position:relative; }
 .md-hero__inner { max-width:1280px; margin:0 auto; }
