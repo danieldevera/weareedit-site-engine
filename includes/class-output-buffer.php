@@ -214,16 +214,16 @@ class EDIT_Output_Buffer {
             . 'body.page-template-page-home .hero a.hero-corporate{white-space:normal !important;flex-wrap:wrap;justify-content:center;line-height:1.5 !important;}'
             . 'body.page-template-page-home .hero a.hero-corporate .hc-main,body.page-template-page-home .hero a.hero-corporate .hc-sub{font-size:11px !important;letter-spacing:0.12em !important;}'
             . 'body.page-template-page-home .hero a.hero-corporate .hc-sep{margin:0 8px;}'
-            // Logos — force-wrap on mobile. Theme's flex may be set in an
-            // unreachable stylesheet; explicit display:flex + !important
-            // on every property to guarantee wrapping + sizing.
-            . 'body.page-template-page-home .logos-flex-container{display:flex !important;flex-wrap:wrap !important;justify-content:center !important;align-items:center !important;gap:16px 20px !important;padding:0 16px !important;max-width:100% !important;width:100% !important;margin:0 auto !important;list-style:none !important;box-sizing:border-box !important;}'
-            . 'body.page-template-page-home .logos-flex-item{flex:0 0 auto !important;margin:0 !important;padding:0 !important;list-style:none !important;}'
-            // Fixed height (not max-height) so every logo lands at the SAME
-            // visual height regardless of intrinsic SVG ratio. Without this,
-            // wide logos hit max-width first (shorter) and tall logos hit
-            // max-height first — the wall looks inconsistent.
-            . 'body.page-template-page-home .logos-flex-item img{height:32px !important;width:auto !important;max-width:130px !important;display:block !important;object-fit:contain !important;}'
+            // Logos — 3-column grid on mobile so columns ALIGN across rows.
+            // Flex-wrap with justify-content:center was centering each row
+            // independently, so logos of different widths never lined up.
+            // Grid + justify-items:center gives a proper logo-wall rhythm.
+            . 'body.page-template-page-home .logos-flex-container{display:grid !important;grid-template-columns:repeat(3,1fr) !important;gap:24px 12px !important;padding:0 16px !important;max-width:100% !important;width:100% !important;margin:0 auto !important;list-style:none !important;box-sizing:border-box !important;align-items:center !important;justify-items:center !important;}'
+            . 'body.page-template-page-home .logos-flex-item{margin:0 !important;padding:0 !important;list-style:none !important;display:flex !important;align-items:center !important;justify-content:center !important;}'
+            // Fixed height so every logo lands at the SAME visual height
+            // regardless of intrinsic SVG ratio. Bumped 32→40 so logos read
+            // better on phone-sized viewports.
+            . 'body.page-template-page-home .logos-flex-item img{height:40px !important;width:auto !important;max-width:100% !important;display:block !important;object-fit:contain !important;}'
             // Hero padding — tighter top/bottom on mobile + side padding override
             . 'body.page-template-page-home .hero{padding:80px 20px 48px !important;}'
             . 'body.page-template-page-home .hero .container{padding-left:0 !important;padding-right:0 !important;max-width:100% !important;}'
