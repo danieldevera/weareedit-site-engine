@@ -84,6 +84,15 @@ class EDIT_UX_UI_Design_Page {
         if ( $stored_id ) {
             $post = get_post( $stored_id );
             if ( $post && $post->post_status === 'publish' ) {
+                // Slug drift — class constant changed. Rename the existing
+                // post so it serves at the new URL.
+                if ( $post->post_name !== self::SLUG ) {
+                    wp_update_post( [
+                        'ID'        => $stored_id,
+                        'post_name' => self::SLUG,
+                    ] );
+                    flush_rewrite_rules();
+                }
                 if ( strpos( $post->post_content, $shortcode_token ) === false ) {
                     self::force_update_to_shortcode( $stored_id );
                 }
