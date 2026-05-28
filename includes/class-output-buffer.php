@@ -219,7 +219,11 @@ class EDIT_Output_Buffer {
             // on every property to guarantee wrapping + sizing.
             . 'body.page-template-page-home .logos-flex-container{display:flex !important;flex-wrap:wrap !important;justify-content:center !important;align-items:center !important;gap:16px 20px !important;padding:0 16px !important;max-width:100% !important;width:100% !important;margin:0 auto !important;list-style:none !important;box-sizing:border-box !important;}'
             . 'body.page-template-page-home .logos-flex-item{flex:0 0 auto !important;margin:0 !important;padding:0 !important;list-style:none !important;}'
-            . 'body.page-template-page-home .logos-flex-item img{max-height:32px !important;max-width:90px !important;width:auto !important;height:auto !important;display:block !important;}'
+            // Fixed height (not max-height) so every logo lands at the SAME
+            // visual height regardless of intrinsic SVG ratio. Without this,
+            // wide logos hit max-width first (shorter) and tall logos hit
+            // max-height first — the wall looks inconsistent.
+            . 'body.page-template-page-home .logos-flex-item img{height:32px !important;width:auto !important;max-width:130px !important;display:block !important;object-fit:contain !important;}'
             // Hero padding — tighter top/bottom on mobile + side padding override
             . 'body.page-template-page-home .hero{padding:80px 20px 48px !important;}'
             . 'body.page-template-page-home .hero .container{padding-left:0 !important;padding-right:0 !important;max-width:100% !important;}'
