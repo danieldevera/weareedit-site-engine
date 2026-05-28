@@ -240,7 +240,7 @@ class EDIT_Marketing_Digital_Page {
                     </div>
                     <div class="md-hero__cta">
                         <a class="md-btn md-btn--primary" href="#catalogo">Ver os 16 cursos</a>
-                        <a class="md-btn md-btn--ghost" href="https://weareedit.io/contacto/">Falar com um consultor</a>
+                        <a class="md-btn md-btn--ghost" data-contact="true" href="#">Falar com um consultor</a>
                     </div>
                 </div>
             </div>
@@ -287,7 +287,7 @@ class EDIT_Marketing_Digital_Page {
             <div class="md-final-cta">
                 <h2>Pronto para a próxima formação em <span>Marketing Digital</span>?</h2>
                 <p>Os nossos consultores ajudam-te a escolher o curso certo para os teus objetivos e a tirar partido do Cheque Formação + Digital antes de 30 de Junho 2026.</p>
-                <a class="md-btn md-btn--primary md-btn--lg" href="https://weareedit.io/contacto/">Falar com um consultor</a>
+                <a class="md-btn md-btn--primary md-btn--lg" data-contact="true" href="#">Falar com um consultor</a>
             </div>
         </section>
         <?php
