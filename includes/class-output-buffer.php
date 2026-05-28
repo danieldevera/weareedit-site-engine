@@ -223,7 +223,7 @@ class EDIT_Output_Buffer {
             // Fixed height so every logo lands at the SAME visual height
             // regardless of intrinsic SVG ratio. Bumped 32→40 so logos read
             // better on phone-sized viewports.
-            . 'body.page-template-page-home .logos-flex-item img{height:40px !important;width:auto !important;max-width:100% !important;display:block !important;object-fit:contain !important;}'
+            . 'body.page-template-page-home .logos-flex-item img{height:56px !important;width:auto !important;max-width:100% !important;display:block !important;object-fit:contain !important;}'
             // Hero padding — tighter top/bottom on mobile + side padding override
             . 'body.page-template-page-home .hero{padding:80px 20px 48px !important;}'
             . 'body.page-template-page-home .hero .container{padding-left:0 !important;padding-right:0 !important;max-width:100% !important;}'
