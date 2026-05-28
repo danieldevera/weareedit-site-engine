@@ -19,6 +19,8 @@ class EDIT_Data_Science_Page {
     const OPTION_KEY = 'edit_seo_fix_data_science_page_id';
     const SHORTCODE  = 'edit_data_science_pillar';
 
+    const TUTORS = [ 'carla-geraldes', 'naiara-back', 'daniel-devera', 'mao-barros' ];
+
     const CATALOG = [
         'Bootcamps' => [
             'bootcamp-dataops',
@@ -248,6 +250,8 @@ class EDIT_Data_Science_Page {
                     </div>
                 <?php endforeach; ?>
             </div>
+
+            <?php echo EDIT_Pillar_Tutors::render( self::TUTORS, 'Os tutores da EDIT. são data scientists, analytics leads e engineers em activo em produtos e empresas que processam dados a sério.' ); ?>
 
             <div id="faq" class="md-faq">
                 <h2 class="md-section-title">Perguntas <span>Frequentes</span></h2>

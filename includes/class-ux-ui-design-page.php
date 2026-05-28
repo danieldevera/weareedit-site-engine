@@ -22,6 +22,8 @@ class EDIT_UX_UI_Design_Page {
     const OPTION_KEY = 'edit_seo_fix_ux_ui_design_page_id';
     const SHORTCODE  = 'edit_ux_ui_design_pillar';
 
+    const TUTORS = [ 'mao-barros', 'miguel-rao-vieira', 'daniel-devera', 'naiara-back' ];
+
     const CATALOG = [
         'Bootcamps' => [
             'bootcamp-figma-remote',
@@ -259,6 +261,8 @@ class EDIT_UX_UI_Design_Page {
                     </div>
                 <?php endforeach; ?>
             </div>
+
+            <?php echo EDIT_Pillar_Tutors::render( self::TUTORS, 'Os tutores da EDIT. são UX leads, product designers e research specialists em activo nos produtos digitais que recrutam talento UX em Portugal.' ); ?>
 
             <div id="faq" class="md-faq">
                 <h2 class="md-section-title">Perguntas <span>Frequentes</span></h2>

@@ -20,6 +20,8 @@ class EDIT_Inteligencia_Artificial_Page {
     const OPTION_KEY = 'edit_seo_fix_inteligencia_artificial_page_id';
     const SHORTCODE  = 'edit_inteligencia_artificial_pillar';
 
+    const TUTORS = [ 'naiara-back', 'daniel-devera', 'miguel-rao-vieira', 'catarina-sp-neves' ];
+
     const CATALOG = [
         'Bootcamps' => [
             'bootcamp-advanced-artificial-intelligence',
@@ -251,6 +253,8 @@ class EDIT_Inteligencia_Artificial_Page {
                     </div>
                 <?php endforeach; ?>
             </div>
+
+            <?php echo EDIT_Pillar_Tutors::render( self::TUTORS, 'Os tutores da EDIT. usam IA em projetos reais — desde geração de imagem e vídeo para cinema, a agentes inteligentes para marketing, a UX research assistido por LLMs.' ); ?>
 
             <div id="faq" class="md-faq">
                 <h2 class="md-section-title">Perguntas <span>Frequentes</span></h2>

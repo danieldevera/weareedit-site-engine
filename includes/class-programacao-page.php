@@ -20,6 +20,8 @@ class EDIT_Programacao_Page {
     const OPTION_KEY = 'edit_seo_fix_programacao_page_id';
     const SHORTCODE  = 'edit_programacao_pillar';
 
+    const TUTORS = [ 'daniel-devera', 'naiara-back', 'miguel-rao-vieira', 'mao-barros' ];
+
     const CATALOG = [
         'Cursos' => [
             'curso-online-front-end-engineer',
@@ -248,6 +250,8 @@ class EDIT_Programacao_Page {
                     </div>
                 <?php endforeach; ?>
             </div>
+
+            <?php echo EDIT_Pillar_Tutors::render( self::TUTORS, 'Os tutores da EDIT. são front-end engineers, data engineers e developers em activo — em produtos, agências e em projetos próprios.' ); ?>
 
             <div id="faq" class="md-faq">
                 <h2 class="md-section-title">Perguntas <span>Frequentes</span></h2>

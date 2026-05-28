@@ -26,6 +26,9 @@ class EDIT_Marketing_Digital_Page {
     const OPTION_KEY = 'edit_seo_fix_marketing_digital_page_id';
     const SHORTCODE  = 'edit_marketing_digital_pillar';
 
+    /** Featured tutors for this pillar (equipa slugs). Resolved by EDIT_Pillar_Tutors. */
+    const TUTORS = [ 'catarina-sp-neves', 'daniel-devera', 'naiara-back', 'mao-barros' ];
+
     /**
      * Course catalog — grouped by intensity. Source-of-truth slugs on the
      * formacao CPT. Render-time fetch pulls title + permalink + thumbnail
@@ -271,6 +274,8 @@ class EDIT_Marketing_Digital_Page {
                     </div>
                 <?php endforeach; ?>
             </div>
+
+            <?php echo EDIT_Pillar_Tutors::render( self::TUTORS, 'Os tutores da EDIT. são paid media managers, performance leads e estrategistas em activo nas marcas que recrutam talento digital em Portugal.' ); ?>
 
             <div id="faq" class="md-faq">
                 <h2 class="md-section-title">Perguntas <span>Frequentes</span></h2>
