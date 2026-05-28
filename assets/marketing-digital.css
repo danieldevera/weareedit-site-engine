@@ -37,7 +37,31 @@ html { scroll-behavior: smooth; }
 .md-catalog { padding:80px 60px; max-width:1280px; margin:0 auto; }
 .md-group { margin:0 0 64px; }
 .md-group__title { font-size:22px; font-weight:600; color:#ffdd06; margin:0 0 24px; text-transform:uppercase; letter-spacing:.1em; }
-.md-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:20px; }
+
+/* Course-box cards — scoped copy of theme's /formacao/ card styling so the
+   cards render correctly on pillar pages (theme CSS is archive-scoped). */
+.md-pillar .course-cards { display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:16px; }
+.md-pillar .course { position:relative; }
+.md-pillar .course-box { display:flex; flex-direction:column; justify-content:space-between; min-height:300px; padding:28px 24px; border-radius:6px; text-decoration:none; background-size:cover; background-position:center; background-repeat:no-repeat; color:#000; transition:transform .25s ease; box-sizing:border-box; }
+.md-pillar .course-box:hover { transform:translateY(-4px); }
+.md-pillar .course-box.text-black { color:#000; }
+.md-pillar .course-box.text-black .course-time,
+.md-pillar .course-box.text-black .course-title,
+.md-pillar .course-box.text-black .course-view { color:#000; }
+.md-pillar .course-box .course-icon { margin:0 0 20px; }
+.md-pillar .course-box .course-icon img { width:40px; height:40px; display:block; filter:brightness(0); }
+.md-pillar .course-box .course-text { flex:1; display:flex; flex-direction:column; }
+.md-pillar .course-box .course-time { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.12em; margin:0 0 10px; }
+.md-pillar .course-box .course-title { font-size:21px; font-weight:700; line-height:1.22; margin:0 0 16px; }
+.md-pillar .course-box .course-view { margin-top:auto; font-size:13px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; }
+.md-pillar .course-box .course-view span { padding-bottom:3px; border-bottom:2px solid currentColor; }
+@media (max-width:768px) {
+    .md-pillar .course-cards { grid-template-columns:1fr; gap:14px; }
+    .md-pillar .course-box { min-height:220px; padding:22px 20px; }
+    .md-pillar .course-box .course-title { font-size:18px; }
+}
+
+/* Legacy md-card kept for any leftover refs but no longer the primary card */
 .md-card { display:flex; flex-direction:column; padding:28px 24px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:8px; text-decoration:none; color:#fff; transition:background .2s, border-color .2s, transform .2s; min-height:180px; position:relative; }
 .md-card:hover { background:rgba(255,221,6,.08); border-color:#ffdd06; transform:translateY(-2px); }
 .md-card__title { font-size:18px; font-weight:600; line-height:1.3; margin:0 0 12px; color:#fff; }
@@ -78,6 +102,7 @@ html { scroll-behavior: smooth; }
 .md-tutores-section .container { max-width:1280px; margin:0 auto; padding:0 60px; }
 .md-tutores-section .md-section-title { margin-bottom:32px; }
 .md-tutores-section .md-tutores__lede { font-size:17px; line-height:1.5; color:rgba(255,255,255,.7); max-width:680px; margin:0 0 48px; }
+.md-tutores-section .row.persons-grid { margin-top:24px; }
 
 /* Final CTA */
 .md-final-cta { padding:80px 60px; max-width:920px; margin:0 auto; text-align:center; }
