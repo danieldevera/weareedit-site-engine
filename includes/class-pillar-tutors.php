@@ -63,20 +63,39 @@ class EDIT_Pillar_Tutors {
 
         $pid = $post->ID;
 
-        // Photo via ACF foto field (attachment ID), or featured image fallback.
+        // Photo: try ACF foto (attachment ID OR array OR URL), featured image,
+        // edit-profiles meta 'foto'. Same field name historically stored 3 ways
+        // across edit-profiles plugin versions.
         $photo = '';
         if ( function_exists( 'get_field' ) ) {
-            $foto_id = (int) get_field( 'foto', $pid );
-            if ( $foto_id ) {
-                $url = wp_get_attachment_image_url( $foto_id, 'medium' );
-                if ( $url ) $photo = $url;
+            $foto_val = get_field( 'foto', $pid );
+            if ( is_array( $foto_val ) ) {
+                $photo = ! empty( $foto_val['url'] ) ? $foto_val['url'] : '';
+                if ( ! $photo && ! empty( $foto_val['ID'] ) ) {
+                    $photo = wp_get_attachment_image_url( (int) $foto_val['ID'], 'medium' ) ?: '';
+                }
+            } elseif ( is_numeric( $foto_val ) && $foto_val > 0 ) {
+                $photo = wp_get_attachment_image_url( (int) $foto_val, 'medium' ) ?: '';
+            } elseif ( is_string( $foto_val ) && $foto_val !== '' ) {
+                $photo = $foto_val;
+            }
+        }
+        if ( ! $photo ) {
+            $raw = get_post_meta( $pid, 'foto', true );
+            if ( is_numeric( $raw ) && $raw > 0 ) {
+                $photo = wp_get_attachment_image_url( (int) $raw, 'medium' ) ?: '';
+            } elseif ( is_string( $raw ) && $raw !== '' ) {
+                $photo = $raw;
             }
         }
         if ( ! $photo ) {
             $thumb = get_the_post_thumbnail_url( $pid, 'medium' );
             if ( $thumb ) $photo = $thumb;
         }
-        if ( ! $photo ) return null; // Skip tutors without a photo — would look empty.
+        if ( ! $photo ) {
+            // Last-resort generic placeholder so the card still renders.
+            $photo = 'https://weareedit.io/wp-content/uploads/2024/11/weareedit-perfil-generico-mulher.jpg';
+        }
 
         $cargo = '';
         $empresa = '';
