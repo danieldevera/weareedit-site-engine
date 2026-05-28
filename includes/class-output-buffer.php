@@ -243,7 +243,14 @@ class EDIT_Output_Buffer {
             . 'body.page-template-page-home .hero{padding:80px 20px 48px !important;}'
             . 'body.page-template-page-home .hero .container{padding-left:0 !important;padding-right:0 !important;max-width:100% !important;}'
             . '}'
-            . "</style>\n";
+            . "</style>\n"
+            // Bridge: pillar CTAs are <button data-contact="true"> elements,
+            // not <a.headerDesktop__contact>, so the theme's existing click
+            // handler never fires on them. Replicate the hash trigger here.
+            . "<script>document.addEventListener('DOMContentLoaded',function(){"
+            . "document.querySelectorAll('[data-contact=\"true\"]:not(a)').forEach(function(b){"
+            . "b.addEventListener('click',function(e){e.preventDefault();window.location.hash='form-newsletter';});"
+            . "});});</script>\n";
     }
 
     public static function start_buffer() {
