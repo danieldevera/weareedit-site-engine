@@ -273,6 +273,11 @@ class EDIT_Output_Buffer {
             $html = self::inject_pillar_content( $html, EDIT_Data_Science_Page::class );
         }
 
+        // /ux-ui-design/ pillar — same pattern.
+        if ( class_exists( 'EDIT_UX_UI_Design_Page' ) && is_page( EDIT_UX_UI_Design_Page::SLUG ) ) {
+            $html = self::inject_pillar_content( $html, EDIT_UX_UI_Design_Page::class );
+        }
+
         echo $html;
     }
 
