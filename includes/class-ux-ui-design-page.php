@@ -14,7 +14,10 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class EDIT_UX_UI_Design_Page {
 
-    const SLUG       = 'ux-ui-design';
+    // Initially tried 'ux-ui-design' but WP _wp_old_slug auto-301'd to the
+    // legacy /profissoes/ux-ui-designer/ post. Switched to 'curso-uxui-design'
+    // which matches the site's existing course slug convention (curso-uxui-*).
+    const SLUG       = 'curso-uxui-design';
     const TITLE      = 'UX/UI Design — Formação Especializada na EDIT.';
     const OPTION_KEY = 'edit_seo_fix_ux_ui_design_page_id';
     const SHORTCODE  = 'edit_ux_ui_design_pillar';
