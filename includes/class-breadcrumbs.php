@@ -35,6 +35,7 @@ class EDIT_Breadcrumbs {
         'post'        => [ 'label' => 'Notícias',    'url' => '/noticias/' ],
         'entrevistas' => [ 'label' => 'Entrevistas', 'url' => '/entrevistas/' ],
         'profissoes'  => [ 'label' => 'Profissões',  'url' => '/profissoes/' ],
+        'equipa'      => [ 'label' => 'Equipa',      'url' => '/equipa/' ],
     ];
 
     public static function init() {
@@ -108,7 +109,6 @@ class EDIT_Breadcrumbs {
     public static function emit_styles(): void {
         if ( is_admin() || is_feed() || is_404() ) return;
         if ( is_front_page() || is_home() ) return;
-        if ( self::should_skip_visual() ) return;
         ?>
 <style id="edit-breadcrumbs-css">
 .edit-breadcrumbs{background:#0a0a0a;border-bottom:1px solid rgba(255,255,255,.06);padding:100px 60px 14px;font-size:13px;line-height:1.4;color:rgba(255,255,255,.55);font-family:inherit;position:relative;z-index:1}
@@ -130,7 +130,6 @@ class EDIT_Breadcrumbs {
     public static function inject_html( string $html ): string {
         if ( is_admin() || is_feed() || is_404() ) return $html;
         if ( is_front_page() || is_home() ) return $html;
-        if ( self::should_skip_visual() ) return $html;
 
         $bc = self::render_html();
         if ( $bc === '' ) return $html;
@@ -163,14 +162,6 @@ class EDIT_Breadcrumbs {
         }
         $out .= '</ol></nav>';
         return $out;
-    }
-
-    /**
-     * Visual breadcrumbs are skipped on /equipa/* (edit-profiles' template has
-     * its own hero treatment we shouldn't disrupt with a bar above it).
-     */
-    private static function should_skip_visual(): bool {
-        return is_singular( 'equipa' ) || is_post_type_archive( 'equipa' );
     }
 
     /**
