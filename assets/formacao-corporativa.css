@@ -1,4 +1,5 @@
-/* Formação Corporativa — /formacao-corporativa/
+/* Formação Digital para Empresas — /formacao-digital-para-empresas/
+   (renamed from /formacao-corporativa/ at v1.5.139; old slug 301-redirects)
    B2B sales surface, chunk 1: hero + stats + value props + FAQ + final CTA.
    Visual language echoes the 5 pillar pages but tuned for enterprise buyers
    (more white space, fewer dark gradients, more "executive" typography). */
@@ -37,11 +38,26 @@ html { scroll-behavior:smooth; }
 .fc-hero__lede { font-size:20px; line-height:1.5; color:rgba(255,255,255,.85); max-width:820px; margin:0 0 36px; font-weight:400; }
 .fc-hero__lede strong { color:#fff; font-weight:600; }
 
-/* Hero logo wall — directly under headline, big trust signal */
-.fc-hero__logos { display:flex; flex-wrap:wrap; align-items:center; gap:32px 48px; list-style:none; padding:0; margin:0 0 44px; max-width:980px; }
+/* Hero logo wall — directly under headline, big trust signal.
+   Larger sizing post-v1.5.139 per user feedback. */
+.fc-hero__logos { display:flex; flex-wrap:wrap; align-items:center; gap:36px 56px; list-style:none; padding:0; margin:0 0 28px; max-width:1100px; }
 .fc-hero__logo-item { flex:0 0 auto; display:flex; align-items:center; }
-.fc-hero__logo-item img { max-height:42px; width:auto; max-width:140px; opacity:.78; filter:brightness(0) invert(1); transition:opacity .2s ease; }
-.fc-hero__logo-item img:hover { opacity:1; }
+.fc-hero__logo-item img { max-height:64px; width:auto; max-width:200px; opacity:.85; filter:brightness(0) invert(1); transition:opacity .2s ease, transform .2s ease; }
+.fc-hero__logo-item img:hover { opacity:1; transform:translateY(-1px); }
+
+/* Trust line — second tier of social proof below the logos.
+   4 chips: Google reviews (linked), DGERT, SIFIDE, response-time. */
+.fc-hero__trust { display:flex; flex-wrap:wrap; align-items:center; gap:10px 18px; margin:0 0 36px; max-width:1100px; }
+.fc-trust { display:inline-flex; align-items:center; gap:6px; font-size:14px; color:rgba(255,255,255,.78); font-weight:500; letter-spacing:.01em; text-decoration:none; line-height:1; padding:6px 0; transition:color .2s ease; }
+.fc-trust:hover { color:#fff; }
+.fc-trust__icon { display:inline-flex; width:18px; height:18px; align-items:center; justify-content:center; border-radius:50%; background:rgba(255,221,6,.18); color:#ffdd06; font-size:11px; font-weight:700; flex-shrink:0; }
+.fc-trust__divider { width:1px; height:14px; background:rgba(255,255,255,.18); flex-shrink:0; }
+.fc-trust--reviews .fc-trust__star { color:#ffdd06; font-size:15px; line-height:1; }
+.fc-trust--reviews .fc-trust__rating { color:#fff; font-weight:700; }
+.fc-trust--reviews .fc-trust__sep { opacity:.4; }
+.fc-trust--reviews .fc-trust__count { margin-right:2px; }
+.fc-trust--reviews .fc-trust__google { display:inline-flex; align-items:baseline; gap:0; font-family:"Helvetica Neue",Arial,sans-serif; font-weight:500; font-size:14px; line-height:1; letter-spacing:-.005em; }
+.fc-trust--reviews:hover { text-decoration:underline; text-decoration-color:rgba(255,255,255,.4); text-underline-offset:5px; }
 
 .fc-hero__cta { display:flex; flex-wrap:wrap; gap:16px; align-items:center; }
 
@@ -134,8 +150,12 @@ html { scroll-behavior:smooth; }
     .fc-hero { padding:80px 24px 48px; }
     .fc-hero__title { font-size:clamp(32px,8.5vw,52px); }
     .fc-hero__lede { font-size:17px; }
-    .fc-hero__logos { gap:24px 32px; }
-    .fc-hero__logo-item img { max-height:32px; max-width:110px; }
+    .fc-hero__logos { gap:24px 36px; margin:0 0 20px; }
+    .fc-hero__logo-item img { max-height:42px; max-width:140px; }
+    .fc-hero__trust { gap:8px 12px; margin:0 0 28px; }
+    .fc-trust { font-size:12px; }
+    .fc-trust__icon { width:16px; height:16px; font-size:10px; }
+    .fc-trust__divider { display:none; }
     .fc-stats { padding:32px 24px; }
     .fc-stats__inner { grid-template-columns:repeat(2, 1fr); gap:24px; }
     .fc-stat__number { font-size:36px; }

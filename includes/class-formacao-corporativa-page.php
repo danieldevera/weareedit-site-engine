@@ -25,8 +25,9 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class EDIT_Formacao_Corporativa_Page {
 
-    const SLUG       = 'formacao-corporativa';
-    const TITLE      = 'Formação Corporativa para Empresas Líderes em Portugal — EDIT.';
+    const SLUG       = 'formacao-digital-para-empresas';
+    const OLD_SLUG   = 'formacao-corporativa'; // pre-v1.5.139, kept for 301
+    const TITLE      = 'Formação Digital para Empresas — EDIT. forma equipas em Portugal';
     const OPTION_KEY = 'edit_seo_fix_formacao_corporativa_page_id';
     const SHORTCODE  = 'edit_formacao_corporativa_pillar';
 
@@ -177,6 +178,20 @@ class EDIT_Formacao_Corporativa_Page {
         add_action( 'admin_init',          [ __CLASS__, 'ensure_page_exists' ] );
         add_action( 'wp_enqueue_scripts',  [ __CLASS__, 'enqueue_assets' ] );
         add_action( 'wp_head',             [ __CLASS__, 'emit_schema' ], 8 );
+        add_action( 'template_redirect',   [ __CLASS__, 'redirect_old_slug' ], 1 );
+    }
+
+    /**
+     * Defensive 301 from /formacao-corporativa/* → /formacao-digital-para-empresas/*
+     * for any stray links pointing to the original slug (pre-v1.5.139).
+     */
+    public static function redirect_old_slug(): void {
+        $request = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '';
+        if ( preg_match( '#^/' . preg_quote( self::OLD_SLUG, '#' ) . '(/.*)?$#', $request, $m ) ) {
+            $tail = $m[1] ?? '/';
+            wp_safe_redirect( home_url( '/' . self::SLUG . $tail ), 301 );
+            exit;
+        }
     }
 
     public static function ensure_page_exists() {
@@ -186,6 +201,11 @@ class EDIT_Formacao_Corporativa_Page {
         if ( $stored_id ) {
             $post = get_post( $stored_id );
             if ( $post && $post->post_status === 'publish' ) {
+                // Slug-drift migration: rename if the stored page still
+                // carries the old slug (from before v1.5.139).
+                if ( $post->post_name === self::OLD_SLUG ) {
+                    wp_update_post( [ 'ID' => $post->ID, 'post_name' => self::SLUG ] );
+                }
                 if ( strpos( $post->post_content, $shortcode_token ) === false ) {
                     self::force_update_to_shortcode( $stored_id );
                 }
@@ -200,6 +220,17 @@ class EDIT_Formacao_Corporativa_Page {
                 self::force_update_to_shortcode( $existing->ID );
             }
             return $existing->ID;
+        }
+
+        // Adopt + migrate a page still living at the OLD slug.
+        $legacy = get_page_by_path( self::OLD_SLUG );
+        if ( $legacy ) {
+            wp_update_post( [ 'ID' => $legacy->ID, 'post_name' => self::SLUG ] );
+            update_option( self::OPTION_KEY, $legacy->ID );
+            if ( strpos( $legacy->post_content, $shortcode_token ) === false ) {
+                self::force_update_to_shortcode( $legacy->ID );
+            }
+            return $legacy->ID;
         }
 
         $page_id = wp_insert_post( [
@@ -234,9 +265,9 @@ class EDIT_Formacao_Corporativa_Page {
     }
 
     private static function set_rank_math_meta( int $page_id ): void {
-        update_post_meta( $page_id, 'rank_math_title',         'Formação Corporativa Portugal | EDIT. — Pfizer, Adidas, FNAC, Galp formam aqui' );
-        update_post_meta( $page_id, 'rank_math_description',   'Formação corporativa DGERT-certificada para equipas. Marketing Digital, UX/UI, Data, IA, Desenvolvimento. SIFIDE + Cheque Formação elegível. Programas customizados in-house ou remote.' );
-        update_post_meta( $page_id, 'rank_math_focus_keyword', 'formação corporativa' );
+        update_post_meta( $page_id, 'rank_math_title',         'Formação Digital para Empresas | EDIT. — Pfizer, Adidas, FNAC, Galp formam aqui' );
+        update_post_meta( $page_id, 'rank_math_description',   'Formação digital para empresas, DGERT-certificada. Marketing Digital, UX/UI, Data, IA, Desenvolvimento. SIFIDE + Cheque Formação elegível. Programas customizados in-house ou remote em Portugal.' );
+        update_post_meta( $page_id, 'rank_math_focus_keyword', 'formação digital para empresas' );
         update_post_meta( $page_id, 'rank_math_robots',        [ 'index', 'follow' ] );
     }
 
@@ -320,10 +351,26 @@ class EDIT_Formacao_Corporativa_Page {
                     <ul class="fc-hero__logos" aria-label="Empresas que formam com a EDIT.">
                         <?php foreach ( self::CLIENTS as $c ) : ?>
                             <li class="fc-hero__logo-item">
-                                <img src="<?php echo esc_url( $c['logo'] ); ?>" alt="<?php echo esc_attr( $c['name'] ); ?>" loading="lazy" width="160" height="48">
+                                <img src="<?php echo esc_url( $c['logo'] ); ?>" alt="<?php echo esc_attr( $c['name'] ); ?>" loading="lazy" width="200" height="64">
                             </li>
                         <?php endforeach; ?>
                     </ul>
+
+                    <div class="fc-hero__trust" aria-label="Credenciais de confiança">
+                        <a class="fc-trust fc-trust--reviews" href="https://weareedit.io/avaliacoes-google/" aria-label="Avaliações Google — 4.1 de 5 baseado em 67 reviews">
+                            <span class="fc-trust__star">★</span>
+                            <span class="fc-trust__rating">4.1</span>
+                            <span class="fc-trust__sep">/</span>
+                            <span class="fc-trust__count">67 reviews no</span>
+                            <span class="fc-trust__google" aria-hidden="true"><span style="color:#4285F4">G</span><span style="color:#EA4335">o</span><span style="color:#FBBC04">o</span><span style="color:#4285F4">g</span><span style="color:#34A853">l</span><span style="color:#EA4335">e</span></span>
+                        </a>
+                        <span class="fc-trust__divider" aria-hidden="true"></span>
+                        <span class="fc-trust"><span class="fc-trust__icon" aria-hidden="true">✓</span>DGERT nº 18391</span>
+                        <span class="fc-trust__divider" aria-hidden="true"></span>
+                        <span class="fc-trust"><span class="fc-trust__icon" aria-hidden="true">€</span>SIFIDE + Cheque Formação</span>
+                        <span class="fc-trust__divider" aria-hidden="true"></span>
+                        <span class="fc-trust"><span class="fc-trust__icon" aria-hidden="true">◷</span>Resposta em 24h úteis</span>
+                    </div>
 
                     <div class="fc-hero__cta">
                         <a class="fc-btn fc-btn--primary fc-btn--lg" href="#proposta">Pedir Proposta Personalizada</a>

@@ -119,6 +119,7 @@ class EDIT_WP_Rocket_Shield {
             'fc-faq',
             'fc-final-cta',
             'fc-btn',
+            'fc-trust',
         ] );
     }
 
