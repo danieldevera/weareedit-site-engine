@@ -37,12 +37,21 @@ class EDIT_Formacao_Corporativa_Page {
      * can reuse the same image URLs (already on CDN, already optimized).
      */
     const CLIENTS = [
-        [ 'name' => 'Pfizer',   'slug' => 'pfizer',   'logo' => 'https://weareedit.io/wp-content/uploads/2023/04/pfizer-header.png' ],
-        [ 'name' => 'FNAC',     'slug' => 'fnac',     'logo' => 'https://weareedit.io/wp-content/uploads/2023/04/fnac-header.png' ],
-        [ 'name' => 'Adidas',   'slug' => 'adidas',   'logo' => 'https://weareedit.io/wp-content/uploads/2023/04/adidas-header.png' ],
-        [ 'name' => 'Galp',     'slug' => 'galp',     'logo' => 'https://weareedit.io/wp-content/uploads/2023/04/galp-header.png' ],
-        [ 'name' => 'Worten',   'slug' => 'worten',   'logo' => 'https://weareedit.io/wp-content/uploads/2023/04/worten-header.png' ],
-        [ 'name' => 'CM Porto', 'slug' => 'cm-porto', 'logo' => 'https://weareedit.io/wp-content/uploads/2023/05/porto-cm-1.png' ],
+        // Row 1 — 6 known clients (logos already on the CDN)
+        [ 'name' => 'Pfizer',     'slug' => 'pfizer',     'logo' => 'https://weareedit.io/wp-content/uploads/2023/04/pfizer-header.png' ],
+        [ 'name' => 'FNAC',       'slug' => 'fnac',       'logo' => 'https://weareedit.io/wp-content/uploads/2023/04/fnac-header.png' ],
+        [ 'name' => 'Adidas',     'slug' => 'adidas',     'logo' => 'https://weareedit.io/wp-content/uploads/2023/04/adidas-header.png' ],
+        [ 'name' => 'Galp',       'slug' => 'galp',       'logo' => 'https://weareedit.io/wp-content/uploads/2023/04/galp-header.png' ],
+        [ 'name' => 'Worten',     'slug' => 'worten',     'logo' => 'https://weareedit.io/wp-content/uploads/2023/04/worten-header.png' ],
+        [ 'name' => 'CM Porto',   'slug' => 'cm-porto',   'logo' => 'https://weareedit.io/wp-content/uploads/2023/05/porto-cm-1.png' ],
+        // Row 2 — placeholder slots; replace `name` + `slug` + `logo` URL
+        // with the next 6 clients to fill the wall.
+        [ 'name' => '[Cliente 7]',  'slug' => 'cliente-07', 'logo' => '' ],
+        [ 'name' => '[Cliente 8]',  'slug' => 'cliente-08', 'logo' => '' ],
+        [ 'name' => '[Cliente 9]',  'slug' => 'cliente-09', 'logo' => '' ],
+        [ 'name' => '[Cliente 10]', 'slug' => 'cliente-10', 'logo' => '' ],
+        [ 'name' => '[Cliente 11]', 'slug' => 'cliente-11', 'logo' => '' ],
+        [ 'name' => '[Cliente 12]', 'slug' => 'cliente-12', 'logo' => '' ],
     ];
 
     /**
@@ -353,6 +362,10 @@ class EDIT_Formacao_Corporativa_Page {
                 if ( strpos( $post->post_content, $shortcode_token ) === false ) {
                     self::force_update_to_shortcode( $stored_id );
                 }
+                // Always re-apply Rank Math meta — idempotent upsert so
+                // title/desc/focus_keyword updates propagate after each
+                // plugin release without needing a manual page edit.
+                self::set_rank_math_meta( $stored_id );
                 return $stored_id;
             }
         }
@@ -493,11 +506,15 @@ class EDIT_Formacao_Corporativa_Page {
                     <p class="fc-hero__lede">DGERT-certificada. <strong>6+ empresas líderes</strong> em Portugal já formaram as suas equipas com a EDIT. Programas customizados em Marketing Digital, UX/UI, Desenvolvimento, Data e Inteligência Artificial.</p>
 
                     <ul class="fc-hero__logos" aria-label="Empresas que formam com a EDIT.">
-                        <?php foreach ( self::CLIENTS as $c ) : ?>
-                            <li class="fc-hero__logo-item">
-                                <a class="fc-hero__logo-link" href="#caso-<?php echo esc_attr( $c['slug'] ); ?>" aria-label="Ver caso de sucesso — <?php echo esc_attr( $c['name'] ); ?>">
-                                    <img src="<?php echo esc_url( $c['logo'] ); ?>" alt="<?php echo esc_attr( $c['name'] ); ?>" loading="lazy" width="240" height="88">
-                                </a>
+                        <?php foreach ( self::CLIENTS as $c ) : $is_slot = empty( $c['logo'] ); ?>
+                            <li class="fc-hero__logo-item<?php echo $is_slot ? ' fc-hero__logo-item--slot' : ''; ?>">
+                                <?php if ( $is_slot ) : ?>
+                                    <span class="fc-hero__logo-slot" aria-label="Slot reservado — <?php echo esc_attr( $c['name'] ); ?>"><?php echo esc_html( $c['name'] ); ?></span>
+                                <?php else : ?>
+                                    <a class="fc-hero__logo-link" href="#caso-<?php echo esc_attr( $c['slug'] ); ?>" aria-label="Ver caso de sucesso — <?php echo esc_attr( $c['name'] ); ?>">
+                                        <img src="<?php echo esc_url( $c['logo'] ); ?>" alt="<?php echo esc_attr( $c['name'] ); ?>" loading="lazy" width="240" height="88">
+                                    </a>
+                                <?php endif; ?>
                             </li>
                         <?php endforeach; ?>
                     </ul>
