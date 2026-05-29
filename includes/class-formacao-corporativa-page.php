@@ -44,14 +44,16 @@ class EDIT_Formacao_Corporativa_Page {
         [ 'name' => 'Galp',       'slug' => 'galp',       'logo' => 'https://weareedit.io/wp-content/uploads/2023/04/galp-header.png' ],
         [ 'name' => 'Worten',     'slug' => 'worten',     'logo' => 'https://weareedit.io/wp-content/uploads/2023/04/worten-header.png' ],
         [ 'name' => 'CM Porto',   'slug' => 'cm-porto',   'logo' => 'https://weareedit.io/wp-content/uploads/2023/05/porto-cm-1.png' ],
-        // Row 2 — placeholder slots; replace `name` + `slug` + `logo` URL
-        // with the next 6 clients to fill the wall.
-        [ 'name' => '[Cliente 7]',  'slug' => 'cliente-07', 'logo' => '' ],
-        [ 'name' => '[Cliente 8]',  'slug' => 'cliente-08', 'logo' => '' ],
-        [ 'name' => '[Cliente 9]',  'slug' => 'cliente-09', 'logo' => '' ],
-        [ 'name' => '[Cliente 10]', 'slug' => 'cliente-10', 'logo' => '' ],
-        [ 'name' => '[Cliente 11]', 'slug' => 'cliente-11', 'logo' => '' ],
-        [ 'name' => '[Cliente 12]', 'slug' => 'cliente-12', 'logo' => '' ],
+        // Row 2 — pulled from /formacao-in-company/ (Daniel 2026-05-29).
+        // 6 highest-B2B-recognition picked from the 9 available; skipped
+        // Cetelem, Cofina Media, Dia for lower brand recognition. Override
+        // by adding them back here if you want all 9.
+        [ 'name' => 'Nestlé',              'slug' => 'nestle',     'logo' => 'https://weareedit.io/wp-content/uploads/2022/04/nestle-logo-1.jpg' ],
+        [ 'name' => 'TAP Air Portugal',    'slug' => 'tap',        'logo' => 'https://weareedit.io/wp-content/uploads/2023/04/tap-air-portugal-1.jpg' ],
+        [ 'name' => 'Altice',              'slug' => 'altice',     'logo' => 'https://weareedit.io/wp-content/uploads/2022/04/altice-logo.jpg' ],
+        [ 'name' => 'Sonae MC',            'slug' => 'sonae-mc',   'logo' => 'https://weareedit.io/wp-content/uploads/2023/04/sonae-mc-1.jpg' ],
+        [ 'name' => 'Santa Casa',          'slug' => 'santa-casa', 'logo' => 'https://weareedit.io/wp-content/uploads/2021/05/santa-casa.jpg' ],
+        [ 'name' => 'Governo de Portugal', 'slug' => 'governo',    'logo' => 'https://weareedit.io/wp-content/uploads/2021/05/governo-de-portugal.jpg' ],
     ];
 
     /**

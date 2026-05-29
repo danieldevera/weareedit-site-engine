@@ -39,17 +39,18 @@ html { scroll-behavior:smooth; }
 .fc-hero__lede strong { color:#fff; font-weight:600; }
 
 /* Hero logo wall — 6-col grid × 2 rows (12 slots).
-   Layout switched to CSS grid at v1.5.143 so the second row of logos sits
-   exactly under the first regardless of individual logo aspect ratio.
-   Placeholder cells render as bracketed text boxes with dashed yellow
-   borders so empty slots are obvious + impossible to miss. */
-.fc-hero__logos { display:grid; grid-template-columns:repeat(6, 1fr); gap:24px 28px; list-style:none; padding:0; margin:0 0 28px; max-width:1200px; }
-.fc-hero__logo-item { display:flex; align-items:center; justify-content:center; min-height:80px; }
-.fc-hero__logo-link { display:inline-flex; align-items:center; justify-content:center; cursor:pointer; line-height:0; width:100%; }
-.fc-hero__logo-link img { max-height:72px; width:auto; max-width:100%; opacity:.85; filter:brightness(0) invert(1); transition:opacity .25s ease, transform .25s ease; will-change:transform; }
-.fc-hero__logo-link:hover img { opacity:1; transform:scale(1.08); }
-.fc-hero__logo-link:focus-visible img { opacity:1; outline:2px solid #ffdd06; outline-offset:6px; border-radius:4px; }
-.fc-hero__logo-slot { display:inline-flex; align-items:center; justify-content:center; width:100%; min-height:56px; padding:12px 14px; border:2px dashed rgba(255,221,6,.32); border-radius:6px; font-size:12px; letter-spacing:.05em; color:rgba(255,221,6,.65); font-weight:600; text-align:center; }
+   v1.5.145: switched from white-silhouette filter to white-card treatment
+   so JPG logos with white backgrounds render correctly alongside the
+   transparent PNGs. Each logo sits in a small white rounded card to
+   guarantee consistent presentation regardless of source format. */
+.fc-hero__logos { display:grid; grid-template-columns:repeat(6, 1fr); gap:18px 18px; list-style:none; padding:0; margin:0 0 28px; max-width:1200px; }
+.fc-hero__logo-item { display:flex; align-items:stretch; justify-content:center; }
+.fc-hero__logo-link { display:flex; align-items:center; justify-content:center; cursor:pointer; line-height:0; width:100%; min-height:70px; background:#fff; border-radius:8px; padding:14px 18px; box-sizing:border-box; transition:transform .25s ease, box-shadow .25s ease; }
+.fc-hero__logo-link img { max-height:42px; width:auto; max-width:100%; object-fit:contain; transition:transform .25s ease; }
+.fc-hero__logo-link:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(255,221,6,.18); }
+.fc-hero__logo-link:hover img { transform:scale(1.05); }
+.fc-hero__logo-link:focus-visible { outline:2px solid #ffdd06; outline-offset:4px; }
+.fc-hero__logo-slot { display:inline-flex; align-items:center; justify-content:center; width:100%; min-height:70px; padding:12px 14px; border:2px dashed rgba(255,221,6,.32); border-radius:8px; font-size:12px; letter-spacing:.05em; color:rgba(255,221,6,.65); font-weight:600; text-align:center; }
 
 /* Trust line — second tier of social proof below the logos.
    4 chips: Google reviews (linked), DGERT, SIFIDE, response-time. */
@@ -245,10 +246,10 @@ html { scroll-behavior:smooth; }
     .fc-hero { padding:80px 24px 48px; }
     .fc-hero__title { font-size:clamp(32px,8.5vw,52px); }
     .fc-hero__lede { font-size:17px; }
-    .fc-hero__logos { grid-template-columns:repeat(3, 1fr); gap:18px 16px; margin:0 0 20px; }
-    .fc-hero__logo-item { min-height:56px; }
-    .fc-hero__logo-link img { max-height:42px; }
-    .fc-hero__logo-slot { min-height:40px; padding:8px 10px; font-size:10px; }
+    .fc-hero__logos { grid-template-columns:repeat(3, 1fr); gap:12px; margin:0 0 20px; }
+    .fc-hero__logo-link { min-height:54px; padding:10px 12px; }
+    .fc-hero__logo-link img { max-height:32px; }
+    .fc-hero__logo-slot { min-height:54px; padding:8px 10px; font-size:10px; }
     .fc-hero__trust { gap:8px 12px; margin:0 0 28px; }
     .fc-trust { font-size:12px; }
     .fc-trust__icon { width:16px; height:16px; font-size:10px; }
