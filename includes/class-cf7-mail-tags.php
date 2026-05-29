@@ -31,14 +31,17 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class EDIT_CF7_Mail_Tags {
 
     public static function init(): void {
-        add_filter( 'wpcf7_mail_components',  [ __CLASS__, 'replace_curly_tokens' ], 10, 3 );
-        add_filter( 'wpcf7_special_mail_tags', [ __CLASS__, 'resolve_special_tag' ], 10, 4 );
+        // Priority 999 — run AFTER any other plugin's wpcf7_mail_components
+        // filter so our token substitution is the last touch before CF7
+        // hands off to wp_mail(). Prevents any other filter from re-
+        // injecting literal {token} placeholders post-substitution.
+        add_filter( 'wpcf7_mail_components',  [ __CLASS__, 'replace_curly_tokens' ], 999, 3 );
+        add_filter( 'wpcf7_special_mail_tags', [ __CLASS__, 'resolve_special_tag' ], 999, 4 );
 
         // Defence in depth — also catch wp_mail() in case any sibling system
         // (e-goi addon, Pipedrive bridge) ships emails outside CF7's flow
-        // with the same {token} placeholders. Late priority so other filters
-        // run first.
-        add_filter( 'wp_mail',                 [ __CLASS__, 'wp_mail_token_pass' ], 99, 1 );
+        // with the same {token} placeholders. Same late priority.
+        add_filter( 'wp_mail',                 [ __CLASS__, 'wp_mail_token_pass' ], 999, 1 );
     }
 
     /**
