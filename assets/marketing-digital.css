@@ -33,6 +33,34 @@ html { scroll-behavior: smooth; }
 .md-section-title { font-size:clamp(36px,5vw,56px); line-height:1.1; font-weight:700; margin:0 0 48px; letter-spacing:-.01em; }
 .md-section-title span { color:#ffdd06; }
 
+/* V2 long-form intro (between hero and catalog).
+   Editorial layout — single column at 880px max for readable line length.
+   Generous vertical rhythm so the body copy doesn't feel like a wall. */
+.md-intro { padding:96px 60px 32px; }
+.md-intro__inner { max-width:880px; margin:0 auto; }
+.md-intro__eyebrow { font-size:12px; letter-spacing:.2em; color:#ffdd06; font-weight:600; margin:0 0 18px; text-transform:uppercase; }
+.md-intro__title { font-size:clamp(32px,4.5vw,48px); line-height:1.1; font-weight:700; margin:0 0 28px; letter-spacing:-.01em; color:#fff; }
+.md-intro__title span { color:#ffdd06; }
+.md-intro__lead { font-size:19px; line-height:1.6; color:rgba(255,255,255,.85); margin:0 0 56px; font-weight:400; }
+.md-intro__blocks { display:flex; flex-direction:column; gap:48px; }
+.md-intro__block { display:flex; flex-direction:column; gap:14px; }
+.md-intro__block-title { font-size:24px; font-weight:700; line-height:1.25; margin:0; color:#fff; padding-left:18px; border-left:3px solid #ffdd06; }
+.md-intro__block-body { font-size:16px; line-height:1.7; color:rgba(255,255,255,.78); }
+.md-intro__block-body strong { color:#fff; font-weight:600; }
+.md-intro__block-body ul { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px; }
+.md-intro__block-body ul li { padding-left:24px; position:relative; }
+.md-intro__block-body ul li::before { content:'✓'; color:#ffdd06; position:absolute; left:0; top:0; font-weight:700; }
+.md-intro__cta-lead { font-size:17px; line-height:1.65; color:rgba(255,255,255,.7); margin:56px 0 0; padding-top:32px; border-top:1px solid rgba(255,255,255,.08); font-style:italic; }
+
+@media (max-width:768px) {
+    .md-intro { padding:64px 24px 16px; }
+    .md-intro__lead { font-size:17px; margin:0 0 40px; }
+    .md-intro__blocks { gap:36px; }
+    .md-intro__block-title { font-size:21px; padding-left:14px; }
+    .md-intro__block-body { font-size:15px; }
+    .md-intro__cta-lead { font-size:15px; margin:40px 0 0; }
+}
+
 /* Catalog
    Headings sit in a 1280px centered band; the card rows below use the theme's
    own .filter-result > .container > .row wrapper, which already self-centers

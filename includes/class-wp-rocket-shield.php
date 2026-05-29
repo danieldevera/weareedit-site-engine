@@ -122,6 +122,8 @@ class EDIT_WP_Rocket_Shield {
             'fc-trust',
             'fc-caso',
             'fc-casos',
+            // Marketing Digital pillar V2 long-form intro (v1.5.147).
+            'md-intro',
             'fc-lead',
             'fc-field',
             'fc-row',

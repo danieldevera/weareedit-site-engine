@@ -61,6 +61,41 @@ class EDIT_Marketing_Digital_Page {
     ];
 
     /**
+     * V2 long-form intro — sits between the hero and the catalog. Adds
+     * ~500 words of crawlable, B2C-buyer-tuned copy so the pillar ranks
+     * for problem-aware queries (not just brand+keyword). Structure:
+     * lead + 4 sub-sections + CTA paragraph leading into the catalog.
+     *
+     * Schema impact: copy weaves the focus keyword "curso marketing
+     * digital" naturally and includes employer names + salary signals
+     * + tool keywords that LLMs cite when answering career queries.
+     */
+    const INTRO = [
+        'eyebrow'  => 'PORQUÊ MARKETING DIGITAL?',
+        'title'    => 'A formação que liga marketers a marcas <span>em Portugal e no estrangeiro</span>',
+        'lead'     => 'O marketing digital deixou de ser um canal — é o sistema operativo das marcas modernas. Equipas de paid media, performance, growth, conteúdo e analytics gerem orçamentos de 6 e 7 dígitos, decidem o ROI mensal das empresas, e mudam de papel a cada 18 meses. A EDIT. forma a próxima geração desses profissionais com programas DGERT-certificados em Lisboa, Porto e online — leccionados por marketers em activo nas marcas que mais recrutam em Portugal.',
+        'blocks'   => [
+            [
+                'title' => 'O que é hoje o marketing digital',
+                'body'  => 'Em 2026, o marketing digital cobre cinco frentes inseparáveis: <strong>aquisição paga</strong> (Meta Ads, Google Ads, LinkedIn Ads, TikTok Ads), <strong>aquisição orgânica</strong> (SEO, conteúdo, IA generativa), <strong>CRM e retenção</strong> (email, automation, lifecycle), <strong>análise de dados</strong> (GA4, Tag Manager, Looker Studio), e <strong>estratégia integrada</strong> (brand, posicionamento, narrativa). Os profissionais que se destacam dominam pelo menos três destas frentes, não apenas uma. Os nossos programas foram desenhados para construir essa stack horizontal.',
+            ],
+            [
+                'title' => 'Para quem é esta formação',
+                'body'  => 'Os nossos cursos foram desenhados com — e para — três perfis distintos. <strong>Profissionais em transição de carreira</strong> (vindos de publicidade, comunicação, comercial, gestão) que precisam de competências digitais para subir ou mudar de função. <strong>Marketers em activo</strong> que querem especializar-se em paid media, performance, ou growth — com cases reais, não slides. <strong>Founders e líderes de marketing</strong> que precisam de literacia digital suficiente para decidir orçamentos e estratégia sem dependerem por completo de agências externas.',
+            ],
+            [
+                'title' => 'Onde vão trabalhar os alumni',
+                'body'  => 'Os alunos da EDIT. saem para roles em paid media, performance marketing, growth, content strategy, e CRM. <strong>600+ alumni colocados</strong> em marcas como Farfetch, Worten, Sonae, NOS, EDP, FNAC, Adidas e Galp; agências independentes (We Are Social, Wunderman Thompson, OMD); e scale-ups portuguesas (Bolt, Sword Health, Talkdesk). Salários iniciais típicos em 2026: <strong>€25-32K</strong> para junior em paid media ou performance; <strong>€40-55K</strong> para senior com 3-5 anos; <strong>€60-80K+</strong> para Head of Marketing em scale-up.',
+            ],
+            [
+                'title' => 'Porquê a EDIT.',
+                'body'  => '<ul><li><strong>DGERT-certificada (nº 18391)</strong> — todas as formações elegíveis para SIFIDE, POPH, e Cheque Formação + Digital.</li><li><strong>Tutores em activo</strong> — paid media managers e marketing leads nas empresas que recrutam talento digital em Portugal, não académicos.</li><li><strong>Cases reais sobre marcas reais</strong> — trabalhamos com briefs e dados de clientes consentidos, não exemplos fabricados.</li><li><strong>4.1 ★ / 67 reviews no Google</strong> — feedback verificável dos alumni de Lisboa e Porto.</li><li><strong>Disruptive Jobs</strong> — agência de recrutamento própria da EDIT., dedicada a ligar alunos a marcas. Mais do que formação: um pipeline de carreira.</li></ul>',
+            ],
+        ],
+        'cta_lead' => 'Abaixo estão os 16 programas activos em Marketing Digital — Bootcamps intensivos para career-changers, Cursos completos para especialização profunda, e Workshops curtos para upskilling pontual. Todos elegíveis para Cheque Formação + Digital.',
+    ];
+
+    /**
      * FAQ — 6 questions covering the highest-intent searcher concerns
      * (chosen course, duration, financing, placement, format). Renders
      * as visible content AND as FAQPage JSON-LD for rich snippets.
@@ -247,6 +282,24 @@ class EDIT_Marketing_Digital_Page {
                     </div>
                 </div>
             </div>
+
+            <!-- V2 long-form intro (between hero and catalog) ─────────── -->
+            <section class="md-intro">
+                <div class="md-intro__inner">
+                    <p class="md-intro__eyebrow"><?php echo esc_html( self::INTRO['eyebrow'] ); ?></p>
+                    <h2 class="md-intro__title"><?php echo wp_kses_post( self::INTRO['title'] ); ?></h2>
+                    <p class="md-intro__lead"><?php echo wp_kses_post( self::INTRO['lead'] ); ?></p>
+                    <div class="md-intro__blocks">
+                        <?php foreach ( self::INTRO['blocks'] as $b ) : ?>
+                            <div class="md-intro__block">
+                                <h3 class="md-intro__block-title"><?php echo esc_html( $b['title'] ); ?></h3>
+                                <div class="md-intro__block-body"><?php echo wp_kses_post( $b['body'] ); ?></div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <p class="md-intro__cta-lead"><?php echo wp_kses_post( self::INTRO['cta_lead'] ); ?></p>
+                </div>
+            </section>
 
             <div id="catalogo" class="md-catalog">
                 <div class="md-catalog__heading">
