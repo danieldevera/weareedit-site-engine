@@ -43,6 +43,36 @@ class EDIT_CF7_Debug {
 
         // Admin viewer page
         add_action( 'admin_menu', [ __CLASS__, 'register_admin_page' ] );
+
+        // Admin-only reCAPTCHA bypass — when a logged-in administrator
+        // submits any CF7 form, force the spam check to false so private-
+        // browsing sessions (where reCAPTCHA v3 scores near 0) don't get
+        // blocked during QA. Public submissions still go through the full
+        // reCAPTCHA + Akismet + honeypot stack. Runs at priority 100 so it
+        // wins after reCAPTCHA's own wpcf7_spam filter.
+        add_filter( 'wpcf7_spam', [ __CLASS__, 'admin_spam_bypass' ], 100, 2 );
+    }
+
+    /**
+     * If the current request is from a logged-in WP admin, neutralize the
+     * spam flag so reCAPTCHA / Akismet / honeypot can't block the form.
+     * Logged for transparency so we can see when admin bypass fires.
+     */
+    public static function admin_spam_bypass( $spam, $submission = null ) {
+        if ( ! $spam ) return $spam; // nothing to bypass
+        if ( ! is_user_logged_in() ) return $spam;
+        if ( ! current_user_can( 'manage_options' ) ) return $spam;
+
+        $user = wp_get_current_user();
+        self::write( [
+            'event'    => 'admin_spam_bypass',
+            'spam'     => true,
+            'override' => 'forced_to_false',
+            'user'     => $user ? $user->user_login : '',
+            'note'     => 'Admin override: spam flag cleared so reCAPTCHA score below threshold does not block QA submission.',
+        ] );
+
+        return false;
     }
 
     /**
