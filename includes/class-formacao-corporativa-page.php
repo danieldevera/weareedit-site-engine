@@ -37,12 +37,12 @@ class EDIT_Formacao_Corporativa_Page {
      * can reuse the same image URLs (already on CDN, already optimized).
      */
     const CLIENTS = [
-        [ 'name' => 'Pfizer',   'logo' => 'https://weareedit.io/wp-content/uploads/2023/04/pfizer-header.png' ],
-        [ 'name' => 'FNAC',     'logo' => 'https://weareedit.io/wp-content/uploads/2023/04/fnac-header.png' ],
-        [ 'name' => 'Adidas',   'logo' => 'https://weareedit.io/wp-content/uploads/2023/04/adidas-header.png' ],
-        [ 'name' => 'Galp',     'logo' => 'https://weareedit.io/wp-content/uploads/2023/04/galp-header.png' ],
-        [ 'name' => 'Worten',   'logo' => 'https://weareedit.io/wp-content/uploads/2023/04/worten-header.png' ],
-        [ 'name' => 'CM Porto', 'logo' => 'https://weareedit.io/wp-content/uploads/2023/05/porto-cm-1.png' ],
+        [ 'name' => 'Pfizer',   'slug' => 'pfizer',   'logo' => 'https://weareedit.io/wp-content/uploads/2023/04/pfizer-header.png' ],
+        [ 'name' => 'FNAC',     'slug' => 'fnac',     'logo' => 'https://weareedit.io/wp-content/uploads/2023/04/fnac-header.png' ],
+        [ 'name' => 'Adidas',   'slug' => 'adidas',   'logo' => 'https://weareedit.io/wp-content/uploads/2023/04/adidas-header.png' ],
+        [ 'name' => 'Galp',     'slug' => 'galp',     'logo' => 'https://weareedit.io/wp-content/uploads/2023/04/galp-header.png' ],
+        [ 'name' => 'Worten',   'slug' => 'worten',   'logo' => 'https://weareedit.io/wp-content/uploads/2023/04/worten-header.png' ],
+        [ 'name' => 'CM Porto', 'slug' => 'cm-porto', 'logo' => 'https://weareedit.io/wp-content/uploads/2023/05/porto-cm-1.png' ],
     ];
 
     /**
@@ -351,7 +351,9 @@ class EDIT_Formacao_Corporativa_Page {
                     <ul class="fc-hero__logos" aria-label="Empresas que formam com a EDIT.">
                         <?php foreach ( self::CLIENTS as $c ) : ?>
                             <li class="fc-hero__logo-item">
-                                <img src="<?php echo esc_url( $c['logo'] ); ?>" alt="<?php echo esc_attr( $c['name'] ); ?>" loading="lazy" width="200" height="64">
+                                <a class="fc-hero__logo-link" href="#caso-<?php echo esc_attr( $c['slug'] ); ?>" aria-label="Ver caso de sucesso — <?php echo esc_attr( $c['name'] ); ?>">
+                                    <img src="<?php echo esc_url( $c['logo'] ); ?>" alt="<?php echo esc_attr( $c['name'] ); ?>" loading="lazy" width="240" height="88">
+                                </a>
                             </li>
                         <?php endforeach; ?>
                     </ul>

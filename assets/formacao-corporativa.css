@@ -39,11 +39,15 @@ html { scroll-behavior:smooth; }
 .fc-hero__lede strong { color:#fff; font-weight:600; }
 
 /* Hero logo wall — directly under headline, big trust signal.
-   Larger sizing post-v1.5.139 per user feedback. */
-.fc-hero__logos { display:flex; flex-wrap:wrap; align-items:center; gap:36px 56px; list-style:none; padding:0; margin:0 0 28px; max-width:1100px; }
+   Enlarged again at v1.5.140 + anchored so they deep-link to the case
+   studies (Chunk 3). Standard scale hover matches the theme's existing
+   logos-grid pattern (transform:scale(1.1)). */
+.fc-hero__logos { display:flex; flex-wrap:wrap; align-items:center; gap:36px 64px; list-style:none; padding:0; margin:0 0 28px; max-width:1200px; }
 .fc-hero__logo-item { flex:0 0 auto; display:flex; align-items:center; }
-.fc-hero__logo-item img { max-height:64px; width:auto; max-width:200px; opacity:.85; filter:brightness(0) invert(1); transition:opacity .2s ease, transform .2s ease; }
-.fc-hero__logo-item img:hover { opacity:1; transform:translateY(-1px); }
+.fc-hero__logo-link { display:inline-flex; align-items:center; cursor:pointer; line-height:0; }
+.fc-hero__logo-link img { max-height:88px; width:auto; max-width:240px; opacity:.85; filter:brightness(0) invert(1); transition:opacity .25s ease, transform .25s ease; will-change:transform; }
+.fc-hero__logo-link:hover img { opacity:1; transform:scale(1.08); }
+.fc-hero__logo-link:focus-visible img { opacity:1; outline:2px solid #ffdd06; outline-offset:6px; border-radius:4px; }
 
 /* Trust line — second tier of social proof below the logos.
    4 chips: Google reviews (linked), DGERT, SIFIDE, response-time. */
@@ -150,8 +154,8 @@ html { scroll-behavior:smooth; }
     .fc-hero { padding:80px 24px 48px; }
     .fc-hero__title { font-size:clamp(32px,8.5vw,52px); }
     .fc-hero__lede { font-size:17px; }
-    .fc-hero__logos { gap:24px 36px; margin:0 0 20px; }
-    .fc-hero__logo-item img { max-height:42px; max-width:140px; }
+    .fc-hero__logos { gap:24px 40px; margin:0 0 20px; }
+    .fc-hero__logo-link img { max-height:56px; max-width:160px; }
     .fc-hero__trust { gap:8px 12px; margin:0 0 28px; }
     .fc-trust { font-size:12px; }
     .fc-trust__icon { width:16px; height:16px; font-size:10px; }
