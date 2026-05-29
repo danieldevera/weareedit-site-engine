@@ -33,6 +33,47 @@ class EDIT_CF7_Mail_Tags {
     public static function init(): void {
         add_filter( 'wpcf7_mail_components',  [ __CLASS__, 'replace_curly_tokens' ], 10, 3 );
         add_filter( 'wpcf7_special_mail_tags', [ __CLASS__, 'resolve_special_tag' ], 10, 4 );
+
+        // Defence in depth — also catch wp_mail() in case any sibling system
+        // (e-goi addon, Pipedrive bridge) ships emails outside CF7's flow
+        // with the same {token} placeholders. Late priority so other filters
+        // run first.
+        add_filter( 'wp_mail',                 [ __CLASS__, 'wp_mail_token_pass' ], 99, 1 );
+    }
+
+    /**
+     * Final-stage wp_mail interception. If any other system sends a mail
+     * with curly-brace tokens in subject/body/headers, we still substitute.
+     */
+    public static function wp_mail_token_pass( $args ) {
+        if ( ! is_array( $args ) ) return $args;
+        $tokens = self::resolve_workshop_tokens();
+        if ( empty( $tokens ) ) return $args;
+
+        $changed = false;
+        foreach ( [ 'subject', 'message', 'headers' ] as $key ) {
+            if ( ! isset( $args[ $key ] ) ) continue;
+            $original = $args[ $key ];
+            $value    = is_array( $original ) ? implode( "\n", $original ) : (string) $original;
+            foreach ( $tokens as $token => $resolved ) {
+                if ( $resolved === '' ) continue;
+                foreach ( self::token_patterns( $token ) as $regex ) {
+                    $value = preg_replace( $regex, $resolved, $value );
+                }
+            }
+            if ( $value !== ( is_array( $original ) ? implode( "\n", $original ) : (string) $original ) ) {
+                $args[ $key ] = $value;
+                $changed = true;
+            }
+        }
+        if ( $changed ) {
+            self::debug_log( [
+                'event'   => 'wp_mail_tokens_replaced',
+                'subject' => isset( $args['subject'] ) ? mb_substr( (string) $args['subject'], 0, 200 ) : '',
+                'to'      => isset( $args['to'] ) ? ( is_array( $args['to'] ) ? implode( ',', $args['to'] ) : (string) $args['to'] ) : '',
+            ] );
+        }
+        return $args;
     }
 
     /**
@@ -51,27 +92,90 @@ class EDIT_CF7_Mail_Tags {
         $post_id = self::get_form_post_id();
         $tokens  = self::resolve_workshop_tokens();
 
-        // Trace what the resolver saw so we can debug missing substitutions.
-        $body_sample = isset( $components['body'] ) ? mb_substr( (string) $components['body'], 0, 400 ) : '';
+        // Per-token occurrence count BEFORE replacement, across all common
+        // syntaxes (literal {token}, HTML entity encoded variants, with
+        // optional whitespace). This is what tells us *why* a token might
+        // not be substituting.
+        $body         = isset( $components['body'] ) ? (string) $components['body'] : '';
+        $body_length  = strlen( $body );
+        $occurrences  = [];
+        $snippets     = [];
+        foreach ( array_keys( $tokens ) as $token ) {
+            $patterns = self::token_patterns( $token );
+            $occurrences[ $token ] = [];
+            foreach ( $patterns as $label => $regex ) {
+                $count = preg_match_all( $regex, $body, $m );
+                $occurrences[ $token ][ $label ] = (int) $count;
+                if ( $count > 0 && empty( $snippets[ $token ] ) ) {
+                    // Capture 80 chars around the first match for context
+                    $pos = strpos( $body, $m[0][0] );
+                    if ( $pos !== false ) {
+                        $start = max( 0, $pos - 40 );
+                        $snippets[ $token ] = mb_substr( $body, $start, 160 );
+                    }
+                }
+            }
+        }
+
+        // Try to identify which CF7 mail this is (Mail 1 = admin notification,
+        // Mail 2 = auto-reply to submitter). $mail is a WPCF7_Mail instance.
+        $mail_name = '';
+        if ( is_object( $mail ) ) {
+            if ( method_exists( $mail, 'name' ) ) {
+                $mail_name = (string) $mail->name();
+            } elseif ( method_exists( $mail, 'template_name' ) ) {
+                $mail_name = (string) $mail->template_name();
+            } elseif ( property_exists( $mail, 'name' ) ) {
+                $mail_name = (string) $mail->name;
+            }
+        }
+
         self::debug_log( [
             'event'        => 'mailtags_resolver',
             'form_id'      => $contact_form && method_exists( $contact_form, 'id' ) ? (int) $contact_form->id() : 0,
             'form_title'   => $contact_form && method_exists( $contact_form, 'title' ) ? (string) $contact_form->title() : '',
+            'mail_name'    => $mail_name,
+            'recipient'    => isset( $components['recipient'] ) ? (string) $components['recipient'] : '',
+            'subject'      => isset( $components['subject'] ) ? (string) $components['subject'] : '',
             'resolved_post'=> $post_id,
             'tokens'       => $tokens,
-            'body_sample'  => $body_sample,
+            'body_length'  => $body_length,
+            'occurrences'  => $occurrences,
+            'snippets'     => $snippets,
+            'body_sample'  => mb_substr( $body, 0, 4000 ),
         ] );
 
         if ( empty( $tokens ) ) return $components;
 
+        // Defensive replacement — matches literal curly braces AND HTML
+        // entity-encoded variants (&#123;…&#125; / &lcub;…&rcub; / hex),
+        // with optional whitespace inside the braces.
         foreach ( [ 'subject', 'body', 'recipient', 'additional_headers' ] as $key ) {
             if ( ! isset( $components[ $key ] ) || ! is_string( $components[ $key ] ) ) continue;
             foreach ( $tokens as $token => $value ) {
                 if ( $value === '' ) continue;
-                $components[ $key ] = str_replace( '{' . $token . '}', $value, $components[ $key ] );
+                $patterns = self::token_patterns( $token );
+                foreach ( $patterns as $regex ) {
+                    $components[ $key ] = preg_replace( $regex, $value, $components[ $key ] );
+                }
             }
         }
         return $components;
+    }
+
+    /**
+     * Build the regex patterns we'll search for, per token. Covers literal
+     * curly braces and the four common HTML-encoded variants WordPress can
+     * produce when a WYSIWYG editor touches the email template.
+     */
+    private static function token_patterns( string $token ): array {
+        $t = preg_quote( $token, '#' );
+        return [
+            'literal'    => '#\\{\\s*' . $t . '\\s*\\}#u',
+            'entity_dec' => '#&\\#123;\\s*' . $t . '\\s*&\\#125;#u',
+            'entity_hex' => '#&\\#x7[bB];\\s*' . $t . '\\s*&\\#x7[dD];#u',
+            'entity_nam' => '#&lcub;\\s*' . $t . '\\s*&rcub;#u',
+        ];
     }
 
     /**
@@ -116,13 +220,40 @@ class EDIT_CF7_Mail_Tags {
         $tokens['horario_workshop'] = $horario;
 
         // ── Local / Formato ────────────────────────────────────────────
+        // Theme stores localização as an ACF relation field → localizacoes CPT
+        // (per project_formacao_acf_map.md), NOT a regular taxonomy. Try the
+        // ACF relation first; fall back to taxonomy in case some legacy posts
+        // use it that way.
         $local = '';
-        $loc_terms = get_the_terms( $post_id, 'localizacao' );
-        if ( is_array( $loc_terms ) && ! empty( $loc_terms ) ) {
-            $names = array_filter( array_map( function ( $t ) {
-                return isset( $t->name ) ? trim( wp_strip_all_tags( $t->name ) ) : '';
-            }, $loc_terms ) );
-            $local = implode( ', ', $names );
+        if ( function_exists( 'get_field' ) ) {
+            $loc_rel = get_field( 'localizacao', $post_id );
+            if ( $loc_rel ) {
+                $names = [];
+                $list  = is_array( $loc_rel ) ? $loc_rel : [ $loc_rel ];
+                foreach ( $list as $item ) {
+                    if ( is_object( $item ) && isset( $item->post_title ) ) {
+                        $names[] = $item->post_title;
+                    } elseif ( is_numeric( $item ) ) {
+                        $t = get_the_title( (int) $item );
+                        if ( $t ) $names[] = $t;
+                    } elseif ( is_string( $item ) && $item !== '' ) {
+                        $names[] = $item;
+                    }
+                }
+                $names = array_filter( array_map( function ( $n ) {
+                    return trim( wp_strip_all_tags( (string) $n ) );
+                }, $names ) );
+                if ( ! empty( $names ) ) $local = implode( ', ', $names );
+            }
+        }
+        if ( ! $local ) {
+            $loc_terms = get_the_terms( $post_id, 'localizacao' );
+            if ( is_array( $loc_terms ) && ! empty( $loc_terms ) ) {
+                $names = array_filter( array_map( function ( $t ) {
+                    return isset( $t->name ) ? trim( wp_strip_all_tags( $t->name ) ) : '';
+                }, $loc_terms ) );
+                $local = implode( ', ', $names );
+            }
         }
         $tokens['local_workshop'] = $local;
 
