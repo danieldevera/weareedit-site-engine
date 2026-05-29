@@ -36,10 +36,32 @@ class EDIT_CF7_Mail_Tags {
     }
 
     /**
+     * Append a row to the CF7 debug log so we can trace resolver behavior.
+     */
+    private static function debug_log( array $row ): void {
+        if ( class_exists( 'EDIT_CF7_Debug' ) ) {
+            EDIT_CF7_Debug::write( $row );
+        }
+    }
+
+    /**
      * Replace curly-brace tokens in all mail components at send time.
      */
     public static function replace_curly_tokens( $components, $contact_form, $mail ) {
-        $tokens = self::resolve_workshop_tokens();
+        $post_id = self::get_form_post_id();
+        $tokens  = self::resolve_workshop_tokens();
+
+        // Trace what the resolver saw so we can debug missing substitutions.
+        $body_sample = isset( $components['body'] ) ? mb_substr( (string) $components['body'], 0, 400 ) : '';
+        self::debug_log( [
+            'event'        => 'mailtags_resolver',
+            'form_id'      => $contact_form && method_exists( $contact_form, 'id' ) ? (int) $contact_form->id() : 0,
+            'form_title'   => $contact_form && method_exists( $contact_form, 'title' ) ? (string) $contact_form->title() : '',
+            'resolved_post'=> $post_id,
+            'tokens'       => $tokens,
+            'body_sample'  => $body_sample,
+        ] );
+
         if ( empty( $tokens ) ) return $components;
 
         foreach ( [ 'subject', 'body', 'recipient', 'additional_headers' ] as $key ) {
@@ -152,16 +174,33 @@ class EDIT_CF7_Mail_Tags {
         if ( $url ) {
             $id = url_to_postid( $url );
             if ( $id ) $candidates[] = $id;
+
+            // Fallback: parse the slug out of /formacao/<slug>/ and resolve
+            // via get_page_by_path against the formacao CPT. Handles cases
+            // where url_to_postid doesn't match due to query-var quirks.
+            if ( preg_match( '#/formacao/([^/?#]+)#', $url, $m ) ) {
+                $post = get_page_by_path( $m[1], OBJECT, 'formacao' );
+                if ( $post instanceof WP_Post ) $candidates[] = (int) $post->ID;
+            }
         }
 
         if ( ! empty( $_SERVER['HTTP_REFERER'] ) ) {
             $ref = wp_unslash( $_SERVER['HTTP_REFERER'] );
             $id  = url_to_postid( $ref );
             if ( $id ) $candidates[] = $id;
+            if ( preg_match( '#/formacao/([^/?#]+)#', $ref, $m ) ) {
+                $post = get_page_by_path( $m[1], OBJECT, 'formacao' );
+                if ( $post instanceof WP_Post ) $candidates[] = (int) $post->ID;
+            }
         }
 
         foreach ( $candidates as $id ) {
             if ( $id && get_post_type( $id ) === 'formacao' ) return (int) $id;
+        }
+        // Last resort — return the first candidate regardless of CPT so the
+        // resolver still surfaces something (debug log shows what was used).
+        foreach ( $candidates as $id ) {
+            if ( $id ) return (int) $id;
         }
         return 0;
     }

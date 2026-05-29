@@ -90,7 +90,7 @@ class EDIT_CF7_Debug {
         return $file;
     }
 
-    private static function write( array $row ): void {
+    public static function write( array $row ): void {
         $path = self::log_path();
         $row  = array_merge( [
             'ts'   => gmdate( 'c' ),
