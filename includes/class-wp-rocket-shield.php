@@ -106,6 +106,14 @@ class EDIT_WP_Rocket_Shield {
             // on course singles (v1.5.124, 2026-05-28).
             'edit-pillar-pillbar',
             'edit-pillar-faz-parte',
+            // Formação Corporativa B2B redesign (v1.5.136, 2026-05-29).
+            'fc-pillar',
+            'fc-hero',
+            'fc-stats',
+            'fc-prop',
+            'fc-faq',
+            'fc-final-cta',
+            'fc-btn',
         ] );
     }
 

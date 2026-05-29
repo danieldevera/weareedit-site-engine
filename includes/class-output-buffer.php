@@ -356,6 +356,11 @@ class EDIT_Output_Buffer {
             $html = self::inject_pillar_content( $html, EDIT_Programacao_Page::class );
         }
 
+        // /formacao-corporativa/ B2B redesign — same template-empty workaround.
+        if ( class_exists( 'EDIT_Formacao_Corporativa_Page' ) && is_page( EDIT_Formacao_Corporativa_Page::SLUG ) ) {
+            $html = self::inject_pillar_content( $html, EDIT_Formacao_Corporativa_Page::class );
+        }
+
         echo $html;
     }
 
