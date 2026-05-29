@@ -129,10 +129,10 @@ html { scroll-behavior:smooth; }
 .fc-faq__q { display:grid; grid-template-columns:80px 1fr 40px; align-items:center; gap:24px; max-width:1280px; margin:0 auto; padding:28px 60px; cursor:pointer; list-style:none; }
 .fc-faq__q::-webkit-details-marker { display:none; }
 .fc-faq__q::before { content:counter(fc-faq-counter, decimal-leading-zero); font-size:14px; font-weight:500; color:rgba(255,255,255,.4); letter-spacing:.05em; transition:color .2s ease; }
-.fc-faq__q-text { font-size:22px; font-weight:600; line-height:1.3; color:#fff; transition:color .2s ease; }
+.fc-faq__q-text { font-size:22px; font-weight:600; line-height:1.3; color:#fff; transition:color .2s ease, transform .25s cubic-bezier(0.33,1,0.68,1); }
 .fc-faq__q::after { content:'→'; font-size:20px; color:rgba(255,255,255,.55); transition:transform .25s ease, color .2s ease; justify-self:end; }
 .fc-faq__item:hover .fc-faq__q-text,
-.fc-faq__item[open] .fc-faq__q-text { color:#ffdd06; }
+.fc-faq__item[open] .fc-faq__q-text { color:#ffdd06; transform:translateX(8px); }
 .fc-faq__item:hover .fc-faq__q::before,
 .fc-faq__item[open] .fc-faq__q::before { color:rgba(255,221,6,.7); }
 .fc-faq__item:hover .fc-faq__q::after,
