@@ -122,6 +122,12 @@ class EDIT_WP_Rocket_Shield {
             'fc-trust',
             'fc-caso',
             'fc-casos',
+            'fc-lead',
+            'fc-field',
+            'fc-row',
+            'fc-checks',
+            'fc-radio',
+            'fc-req',
         ] );
     }
 

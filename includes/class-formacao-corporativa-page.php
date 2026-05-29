@@ -332,6 +332,143 @@ class EDIT_Formacao_Corporativa_Page {
         add_action( 'wp_enqueue_scripts',  [ __CLASS__, 'enqueue_assets' ] );
         add_action( 'wp_head',             [ __CLASS__, 'emit_schema' ], 8 );
         add_action( 'template_redirect',   [ __CLASS__, 'redirect_old_slug' ], 1 );
+        add_action( 'rest_api_init',       [ __CLASS__, 'register_rest_route' ] );
+    }
+
+    /**
+     * REST endpoint /wp-json/edit/v1/lead-b2b — receives the B2B lead form
+     * submission, validates, sends 2 emails (admin + auto-reply), logs to
+     * CF7 Debug Log for visibility. Public endpoint (no auth) — protected
+     * by honeypot + nonce + rate-limit transient + email format check.
+     */
+    public static function register_rest_route(): void {
+        register_rest_route( 'edit/v1', '/lead-b2b', [
+            'methods'             => 'POST',
+            'callback'            => [ __CLASS__, 'handle_lead_submission' ],
+            'permission_callback' => '__return_true',
+        ] );
+    }
+
+    public static function handle_lead_submission( WP_REST_Request $request ) {
+        $params = $request->get_params();
+
+        // Honeypot — bot guard. Real users never fill this hidden field.
+        if ( ! empty( $params['website'] ) ) {
+            return new WP_REST_Response( [ 'status' => 'ok' ], 200 ); // fake-ok to confuse bots
+        }
+
+        // Required fields.
+        $required = [
+            'nome'    => 'Nome',
+            'empresa' => 'Empresa',
+            'cargo'   => 'Cargo',
+            'email'   => 'Email',
+            'size'    => 'Nº pessoas a formar',
+        ];
+        $missing = [];
+        foreach ( $required as $key => $label ) {
+            if ( empty( trim( (string) ( $params[ $key ] ?? '' ) ) ) ) $missing[] = $label;
+        }
+        if ( ! empty( $missing ) ) {
+            return new WP_REST_Response( [ 'status' => 'error', 'message' => 'Campos obrigatórios em falta: ' . implode( ', ', $missing ) ], 400 );
+        }
+
+        // Email format check.
+        if ( ! is_email( $params['email'] ) ) {
+            return new WP_REST_Response( [ 'status' => 'error', 'message' => 'Email inválido.' ], 400 );
+        }
+
+        // Rate limit — 5 submissions per IP per hour.
+        $ip = isset( $_SERVER['HTTP_CF_CONNECTING_IP'] ) ? wp_unslash( $_SERVER['HTTP_CF_CONNECTING_IP'] ) : ( $_SERVER['REMOTE_ADDR'] ?? '' );
+        $rl_key = 'fc_lead_rl_' . md5( $ip );
+        $count = (int) get_transient( $rl_key );
+        if ( $count >= 5 ) {
+            return new WP_REST_Response( [ 'status' => 'error', 'message' => 'Demasiadas tentativas. Tente de novo dentro de uma hora.' ], 429 );
+        }
+        set_transient( $rl_key, $count + 1, HOUR_IN_SECONDS );
+
+        // Normalize multi-value fields.
+        $areas = isset( $params['areas'] ) && is_array( $params['areas'] ) ? array_map( 'sanitize_text_field', $params['areas'] ) : [];
+        $data = [
+            'nome'     => sanitize_text_field( $params['nome'] ),
+            'empresa'  => sanitize_text_field( $params['empresa'] ),
+            'cargo'    => sanitize_text_field( $params['cargo'] ),
+            'email'    => sanitize_email( $params['email'] ),
+            'telefone' => sanitize_text_field( $params['telefone'] ?? '' ),
+            'size'     => sanitize_text_field( $params['size'] ),
+            'timeline' => sanitize_text_field( $params['timeline'] ?? '' ),
+            'areas'    => $areas,
+            'formato'  => sanitize_text_field( $params['formato'] ?? '' ),
+            'mensagem' => sanitize_textarea_field( $params['mensagem'] ?? '' ),
+            'ip'       => filter_var( $ip, FILTER_VALIDATE_IP ) ?: '',
+            'ua'       => isset( $_SERVER['HTTP_USER_AGENT'] ) ? mb_substr( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ), 0, 200 ) : '',
+            'ts'       => current_time( 'c' ),
+        ];
+
+        // Send 2 emails (admin notification + user auto-reply).
+        $admin_ok = self::send_admin_mail( $data );
+        $user_ok  = self::send_user_mail( $data );
+
+        // Log to the CF7 Debug Log so we have a single pane of glass.
+        if ( class_exists( 'EDIT_CF7_Debug' ) ) {
+            EDIT_CF7_Debug::write( [
+                'event'      => 'b2b_lead_submit',
+                'form_title' => 'B2B Lead Form (formacao-digital-para-empresas)',
+                'company'    => $data['empresa'],
+                'name'       => $data['nome'],
+                'size'       => $data['size'],
+                'admin_mail' => $admin_ok ? 'sent' : 'failed',
+                'user_mail'  => $user_ok ? 'sent' : 'failed',
+                'ip'         => $data['ip'],
+            ] );
+        }
+
+        return new WP_REST_Response( [
+            'status'  => 'ok',
+            'message' => 'Pedido recebido. Respondemos em 24h úteis.',
+        ], 200 );
+    }
+
+    private static function send_admin_mail( array $d ): bool {
+        $to      = 'geral@edit.com.pt';
+        $subject = '[B2B Lead] ' . $d['empresa'] . ' — ' . $d['nome'];
+        $areas   = empty( $d['areas'] ) ? '—' : implode( ', ', $d['areas'] );
+        $body = '<h2>Novo pedido de proposta corporativa</h2>'
+              . '<table cellpadding="6" cellspacing="0" border="0" style="font-family:Arial,sans-serif;font-size:14px;border-collapse:collapse;">'
+              . '<tr><td><strong>Nome</strong></td><td>' . esc_html( $d['nome'] ) . '</td></tr>'
+              . '<tr><td><strong>Empresa</strong></td><td>' . esc_html( $d['empresa'] ) . '</td></tr>'
+              . '<tr><td><strong>Cargo</strong></td><td>' . esc_html( $d['cargo'] ) . '</td></tr>'
+              . '<tr><td><strong>Email</strong></td><td><a href="mailto:' . esc_attr( $d['email'] ) . '">' . esc_html( $d['email'] ) . '</a></td></tr>'
+              . '<tr><td><strong>Telefone</strong></td><td>' . esc_html( $d['telefone'] ?: '—' ) . '</td></tr>'
+              . '<tr><td><strong>Equipa a formar</strong></td><td>' . esc_html( $d['size'] ) . '</td></tr>'
+              . '<tr><td><strong>Prazo</strong></td><td>' . esc_html( $d['timeline'] ?: '—' ) . '</td></tr>'
+              . '<tr><td><strong>Áreas</strong></td><td>' . esc_html( $areas ) . '</td></tr>'
+              . '<tr><td><strong>Formato</strong></td><td>' . esc_html( $d['formato'] ?: '—' ) . '</td></tr>'
+              . '<tr><td valign="top"><strong>Mensagem</strong></td><td>' . nl2br( esc_html( $d['mensagem'] ?: '—' ) ) . '</td></tr>'
+              . '<tr><td colspan="2" style="padding-top:18px;color:#888;font-size:11px;">Origem: ' . esc_html( home_url( '/' . self::SLUG . '/' ) ) . ' · IP: ' . esc_html( $d['ip'] ) . ' · ' . esc_html( $d['ts'] ) . '</td></tr>'
+              . '</table>';
+        return (bool) wp_mail( $to, $subject, $body, [
+            'Content-Type: text/html; charset=UTF-8',
+            'Reply-To: ' . $d['nome'] . ' <' . $d['email'] . '>',
+        ] );
+    }
+
+    private static function send_user_mail( array $d ): bool {
+        $subject = 'Pedido de proposta recebido — EDIT.';
+        $body = '<div style="font-family:Arial,sans-serif;font-size:15px;color:#1a1a1a;line-height:1.6;max-width:560px;">'
+              . '<p>Olá ' . esc_html( $d['nome'] ) . ',</p>'
+              . '<p>Recebemos o vosso pedido de proposta para <strong>' . esc_html( $d['empresa'] ) . '</strong>. O nosso lead de programas corporativos vai analisar o brief e voltar a contactar-vos em <strong>24 horas úteis</strong> com:</p>'
+              . '<ul><li>Confirmação das áreas + formato escolhidos</li><li>Proposta de duração + agenda preliminar</li><li>Estimativa de investimento + opções SIFIDE / Cheque Formação</li></ul>'
+              . '<p>Para acelerar a resposta, podem partilhar antecipadamente:</p>'
+              . '<ul><li>Material existente sobre as competências atuais da equipa (opcional)</li><li>Ferramentas em uso no dia-a-dia</li><li>Datas indisponíveis para sessões</li></ul>'
+              . '<p>Caso seja urgente, podem ligar directamente para <strong>+351 211 451 200</strong> e referir este pedido.</p>'
+              . '<p>Obrigado pela confiança,<br><strong>Equipa EDIT.</strong><br><a href="https://weareedit.io">weareedit.io</a></p>'
+              . '<hr style="border:0;border-top:1px solid #eee;margin:24px 0;">'
+              . '<p style="font-size:12px;color:#888;">DGERT nº 18391 · 4.1 ★ / 67 reviews Google · SIFIDE + Cheque Formação elegível</p>'
+              . '</div>';
+        return (bool) wp_mail( $d['email'], $subject, $body, [
+            'Content-Type: text/html; charset=UTF-8',
+        ] );
     }
 
     /**
@@ -676,21 +813,148 @@ class EDIT_Formacao_Corporativa_Page {
                 </div>
             </div>
 
-            <!-- FINAL CTA ────────────────────────────────────────────── -->
-            <div id="proposta" class="fc-final-cta">
-                <div class="fc-final-cta__inner">
-                    <h2>Pronto para formar a vossa equipa?</h2>
-                    <p>Submetam o formulário e respondemos em <strong>24h úteis</strong> com uma proposta inicial ou um pedido de chamada de descoberta. Sem compromisso.</p>
-                    <button type="button" class="fc-btn fc-btn--primary fc-btn--lg swipe-cta" data-contact="true">
-                        <span class="swipe-layer swipe-pink"></span>
-                        <span class="swipe-layer swipe-teal"></span>
-                        <span class="swipe-layer swipe-black"></span>
-                        <span class="swipe-label">Pedir Proposta Personalizada</span>
-                    </button>
+            <!-- B2B LEAD FORM (Chunk 5) ──────────────────────────────── -->
+            <div id="proposta" class="fc-lead">
+                <div class="fc-lead__inner">
+                    <div class="fc-lead__col fc-lead__col--copy">
+                        <p class="fc-lead__eyebrow">VAMOS FALAR</p>
+                        <h2 class="fc-lead__title">Pronto para formar a <span>vossa equipa</span>?</h2>
+                        <p class="fc-lead__lede">Submetam o brief e respondemos em <strong>24h úteis</strong> com uma proposta inicial ou pedido de chamada de descoberta. Sem compromisso.</p>
+                        <ul class="fc-lead__bullets">
+                            <li><span class="fc-lead__check" aria-hidden="true">✓</span>Diagnóstico gratuito de 60 minutos</li>
+                            <li><span class="fc-lead__check" aria-hidden="true">✓</span>Proposta customizada em 5 dias úteis</li>
+                            <li><span class="fc-lead__check" aria-hidden="true">✓</span>SIFIDE + Cheque Formação elegível</li>
+                            <li><span class="fc-lead__check" aria-hidden="true">✓</span>DGERT-certificada · 6+ líderes nacionais</li>
+                        </ul>
+                    </div>
+                    <div class="fc-lead__col fc-lead__col--form">
+                        <form class="fc-lead__form" novalidate>
+                            <div class="fc-lead__form-status" role="status" aria-live="polite"></div>
+                            <input type="text" name="website" class="fc-lead__honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+                            <div class="fc-field">
+                                <label for="fc-nome">Nome <span class="fc-req">*</span></label>
+                                <input id="fc-nome" name="nome" type="text" required autocomplete="name">
+                            </div>
+                            <div class="fc-field">
+                                <label for="fc-empresa">Empresa <span class="fc-req">*</span></label>
+                                <input id="fc-empresa" name="empresa" type="text" required autocomplete="organization">
+                            </div>
+                            <div class="fc-field">
+                                <label for="fc-cargo">Cargo / Função <span class="fc-req">*</span></label>
+                                <input id="fc-cargo" name="cargo" type="text" required autocomplete="organization-title">
+                            </div>
+                            <div class="fc-field">
+                                <label for="fc-email">Email corporativo <span class="fc-req">*</span></label>
+                                <input id="fc-email" name="email" type="email" required autocomplete="email">
+                            </div>
+                            <div class="fc-field">
+                                <label for="fc-telefone">Telefone</label>
+                                <input id="fc-telefone" name="telefone" type="tel" autocomplete="tel">
+                            </div>
+                            <div class="fc-row">
+                                <div class="fc-field fc-field--half">
+                                    <label for="fc-size">Nº pessoas a formar <span class="fc-req">*</span></label>
+                                    <select id="fc-size" name="size" required>
+                                        <option value="">Selecionar…</option>
+                                        <option value="6-15">6 a 15</option>
+                                        <option value="16-30">16 a 30</option>
+                                        <option value="31-50">31 a 50</option>
+                                        <option value="50+">Mais de 50</option>
+                                    </select>
+                                </div>
+                                <div class="fc-field fc-field--half">
+                                    <label for="fc-timeline">Prazo desejado</label>
+                                    <select id="fc-timeline" name="timeline">
+                                        <option value="">Selecionar…</option>
+                                        <option value="Este trimestre">Este trimestre</option>
+                                        <option value="Próximo trimestre">Próximo trimestre</option>
+                                        <option value="Próximos 6 meses">Próximos 6 meses</option>
+                                        <option value="Apenas a explorar">Apenas a explorar</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="fc-field">
+                                <span class="fc-field__legend">Áreas de interesse</span>
+                                <div class="fc-checks">
+                                    <label><input type="checkbox" name="areas[]" value="Marketing Digital"> Marketing Digital</label>
+                                    <label><input type="checkbox" name="areas[]" value="UX/UI Design"> UX/UI Design</label>
+                                    <label><input type="checkbox" name="areas[]" value="Desenvolvimento Web"> Desenvolvimento Web</label>
+                                    <label><input type="checkbox" name="areas[]" value="Data & Business"> Data & Business</label>
+                                    <label><input type="checkbox" name="areas[]" value="Inteligência Artificial"> IA</label>
+                                </div>
+                            </div>
+                            <div class="fc-field">
+                                <span class="fc-field__legend">Formato preferido</span>
+                                <div class="fc-radio">
+                                    <label><input type="radio" name="formato" value="in-house"> In-house</label>
+                                    <label><input type="radio" name="formato" value="remote"> Remote</label>
+                                    <label><input type="radio" name="formato" value="hibrido"> Híbrido</label>
+                                    <label><input type="radio" name="formato" value="aberto"> Em aberto</label>
+                                </div>
+                            </div>
+                            <div class="fc-field">
+                                <label for="fc-mensagem">Mensagem / contexto adicional</label>
+                                <textarea id="fc-mensagem" name="mensagem" rows="4" placeholder="Que problema de negócio querem resolver? Que ferramentas usam hoje?"></textarea>
+                            </div>
+                            <button type="submit" class="fc-btn fc-btn--primary fc-btn--lg fc-lead__submit swipe-cta">
+                                <span class="swipe-layer swipe-pink"></span>
+                                <span class="swipe-layer swipe-teal"></span>
+                                <span class="swipe-layer swipe-black"></span>
+                                <span class="swipe-label">Pedir Proposta Personalizada</span>
+                            </button>
+                            <p class="fc-lead__legal">Ao submeter consente o uso dos vossos dados para resposta ao pedido. <a href="<?php echo esc_url( home_url( '/politica-de-privacidade/' ) ); ?>">Política de Privacidade</a>.</p>
+                        </form>
+                    </div>
                 </div>
             </div>
 
         </section>
+        <script>
+        (function(){
+            var form = document.querySelector('.fc-lead__form');
+            if (!form) return;
+            var status = form.querySelector('.fc-lead__form-status');
+            var button = form.querySelector('.fc-lead__submit');
+            var endpoint = '<?php echo esc_url_raw( rest_url( 'edit/v1/lead-b2b' ) ); ?>';
+
+            form.addEventListener('submit', function(e){
+                e.preventDefault();
+
+                // Native validity check first.
+                if (!form.checkValidity()) {
+                    form.reportValidity();
+                    return;
+                }
+
+                status.textContent = '';
+                status.className = 'fc-lead__form-status';
+                button.disabled = true;
+                var label = button.querySelector('.swipe-label');
+                var original = label.textContent;
+                label.textContent = 'A enviar…';
+
+                var fd = new FormData(form);
+                fetch(endpoint, { method:'POST', body: fd, credentials:'same-origin' })
+                    .then(function(r){ return r.json().then(function(d){ return {ok:r.ok, body:d}; }); })
+                    .then(function(res){
+                        if (res.ok && res.body && res.body.status === 'ok') {
+                            form.innerHTML = '<div class="fc-lead__success"><div class="fc-lead__success-icon" aria-hidden="true">✓</div><h3>Recebemos o vosso pedido</h3><p>' + (res.body.message || 'Respondemos em 24h úteis.') + '</p></div>';
+                        } else {
+                            button.disabled = false;
+                            label.textContent = original;
+                            status.textContent = (res.body && res.body.message) ? res.body.message : 'Não foi possível enviar. Tente de novo dentro de momentos.';
+                            status.className = 'fc-lead__form-status fc-lead__form-status--error';
+                        }
+                    })
+                    .catch(function(){
+                        button.disabled = false;
+                        label.textContent = original;
+                        status.textContent = 'Erro de ligação. Tente de novo.';
+                        status.className = 'fc-lead__form-status fc-lead__form-status--error';
+                    });
+            });
+        })();
+        </script>
         <?php
         return ob_get_clean();
     }
