@@ -248,10 +248,27 @@ class EDIT_WP_Rocket_Shield {
             // these, "Diferir execução de JavaScript" delays CF7 past the
             // user's submit click → form falls back to native POST → server
             // returns generic mail_sent_ng error. (Incident 2026-05-29.)
+            //
+            // NOTE: WP Rocket 3.21.3's minify pass rewrites CF7 script URLs
+            // through `/wp-content/cache/min/1/wp-content/plugins/contact-
+            // form-7/...` — so the bare 'contact-form-7' substring still
+            // matches the minified path. Plain regex-safe substrings.
             'contact-form-7',
             'wpcf7',
             '/plugins/contact-form-7/',
+            '/cache/min/1/wp-content/plugins/contact-form-7/',
             'swv',
+            // Companion plugins that intercept the form submit flow. If
+            // these are delayed, they bind too late and the native HTML
+            // submit fires before their handlers — same broken UX.
+            'fix-form-buttons',
+            'edit-fix-form-buttons',
+            'form-buttons.js',
+            'codedropz-uploader',
+            'drag-and-drop-multiple-file-upload-contact-form-7',
+            // Google Site Kit's CF7 event tracking adapter — defers DOM
+            // ready handler that observes form events. Delay safe to skip.
+            'googlesitekit-events-provider-contact-form-7',
             // reCAPTCHA — token must generate before submit fires
             'recaptcha',
             'google.com/recaptcha',
