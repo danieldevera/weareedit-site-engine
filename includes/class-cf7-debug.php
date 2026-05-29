@@ -256,12 +256,22 @@ class EDIT_CF7_Debug {
                             $event  = $row['event'] ?? '';
                             $status = $row['status'] ?? '';
                             $form   = trim( ( $row['form_title'] ?? '' ) . ' #' . ( $row['form_id'] ?? '' ), ' #' );
+                            // Render EVERY non-structural key so new debug
+                            // event types (mailtags_resolver, etc.) surface
+                            // without having to update the viewer.
+                            $skip = [ 'ts', 'event', 'status', 'form_id', 'form_title', 'form_slug', 'ua' ];
                             $detail = [];
-                            foreach ( [ 'message', 'sub_response', 'reason', 'note', 'spam', 'abort', 'page', 'ip' ] as $k ) {
-                                if ( isset( $row[ $k ] ) && $row[ $k ] !== '' && $row[ $k ] !== null && $row[ $k ] !== false ) {
-                                    $val = is_bool( $row[ $k ] ) ? ( $row[ $k ] ? 'true' : 'false' ) : $row[ $k ];
-                                    $detail[] = esc_html( $k ) . ': ' . esc_html( (string) $val );
+                            foreach ( $row as $k => $v ) {
+                                if ( in_array( $k, $skip, true ) ) continue;
+                                if ( $v === '' || $v === null || $v === false ) continue;
+                                if ( is_array( $v ) ) {
+                                    $val = wp_json_encode( $v, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES );
+                                } elseif ( is_bool( $v ) ) {
+                                    $val = $v ? 'true' : 'false';
+                                } else {
+                                    $val = (string) $v;
                                 }
+                                $detail[] = '<strong>' . esc_html( $k ) . ':</strong> ' . esc_html( $val );
                             }
                             ?>
                             <tr>
