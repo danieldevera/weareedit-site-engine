@@ -228,6 +228,13 @@ class EDIT_Formacao_Corporativa_Page {
         ?>
         <section class="fc-pillar">
 
+            <!-- HERO + STATS WRAPPER (shared video background) ───────── -->
+            <div class="fc-herowrap">
+                <video class="fc-herowrap__video" autoplay muted loop playsinline preload="auto" aria-hidden="true">
+                    <source src="https://weareedit.io/wp-content/uploads/2026/03/waves-sequence-compressed.mp4" type="video/mp4">
+                </video>
+                <div class="fc-herowrap__overlay" aria-hidden="true"></div>
+
             <!-- HERO ─────────────────────────────────────────────────── -->
             <div class="fc-hero">
                 <div class="fc-hero__inner">
@@ -262,6 +269,8 @@ class EDIT_Formacao_Corporativa_Page {
                     <?php endforeach; ?>
                 </div>
             </div>
+
+            </div> <!-- /.fc-herowrap -->
 
             <!-- WHY EDIT. FOR B2B ─────────────────────────────────────── -->
             <div class="fc-why">
