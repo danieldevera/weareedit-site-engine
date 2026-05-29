@@ -101,6 +101,150 @@ class EDIT_Formacao_Corporativa_Page {
     ];
 
     /**
+     * Case studies — one card per featured client. Content is INTENTIONALLY
+     * placeholder so Daniel can swap with real testimonials + metrics in
+     * Chunk 4 (no risk of accidental publication of fabricated quotes).
+     * Each entry's id matches the hero logo anchor (#caso-{slug}) so the
+     * logo wall deep-links into the right card.
+     *
+     * Schema markup deferred to Chunk 5 — fake Review schema would trip
+     * Google's structured-data policy.
+     */
+    const CASOS = [
+        [
+            'slug'   => 'pfizer',
+            'name'   => 'Pfizer',
+            'logo'   => 'https://weareedit.io/wp-content/uploads/2023/04/pfizer-header.png',
+            'sector' => 'Farmacêutica',
+            'area'   => 'Data & Business',
+            'format' => 'Remote · Pós-laboral',
+            'year'   => '2024',
+            'quote'  => '[Citação placeholder] Conseguimos capacitar a nossa equipa em técnicas avançadas de análise de dados em apenas algumas semanas, com impacto directo na velocidade de decisão.',
+            'author' => '[Nome do stakeholder] · [Cargo na Pfizer]',
+            'stats'  => [
+                [ 'number' => '—', 'label' => 'Formandos' ],
+                [ 'number' => '—', 'label' => 'Semanas' ],
+                [ 'number' => '—', 'label' => 'NPS' ],
+            ],
+        ],
+        [
+            'slug'   => 'fnac',
+            'name'   => 'FNAC',
+            'logo'   => 'https://weareedit.io/wp-content/uploads/2023/04/fnac-header.png',
+            'sector' => 'Retalho Omnicanal',
+            'area'   => 'Marketing Digital + UX/UI',
+            'format' => 'Híbrido · Lisboa',
+            'year'   => '2024',
+            'quote'  => '[Citação placeholder] A formação foi totalmente adaptada à nossa stack de ferramentas e ao nosso calendário comercial. Resultado: a equipa entrou em produção dois meses antes do esperado.',
+            'author' => '[Nome do stakeholder] · [Cargo na FNAC]',
+            'stats'  => [
+                [ 'number' => '—', 'label' => 'Formandos' ],
+                [ 'number' => '—', 'label' => 'Áreas' ],
+                [ 'number' => '—', 'label' => 'NPS' ],
+            ],
+        ],
+        [
+            'slug'   => 'adidas',
+            'name'   => 'Adidas',
+            'logo'   => 'https://weareedit.io/wp-content/uploads/2023/04/adidas-header.png',
+            'sector' => 'Desporto + E-commerce',
+            'area'   => 'Marketing Digital + IA aplicada',
+            'format' => 'Remote · Intensivo',
+            'year'   => '2024',
+            'quote'  => '[Citação placeholder] Os tutores trouxeram cases reais que validaram o que estamos a construir internamente. A equipa saiu com competências, não só com slides.',
+            'author' => '[Nome do stakeholder] · [Cargo na Adidas]',
+            'stats'  => [
+                [ 'number' => '—', 'label' => 'Formandos' ],
+                [ 'number' => '—', 'label' => 'Horas' ],
+                [ 'number' => '—', 'label' => 'NPS' ],
+            ],
+        ],
+        [
+            'slug'   => 'galp',
+            'name'   => 'Galp',
+            'logo'   => 'https://weareedit.io/wp-content/uploads/2023/04/galp-header.png',
+            'sector' => 'Energia',
+            'area'   => 'Data & Business',
+            'format' => 'In-house · Lisboa',
+            'year'   => '2024',
+            'quote'  => '[Citação placeholder] A capacidade de customizar o conteúdo ao nosso setor regulado foi decisiva — não é uma formação genérica, é o nosso problema com a linguagem certa.',
+            'author' => '[Nome do stakeholder] · [Cargo na Galp]',
+            'stats'  => [
+                [ 'number' => '—', 'label' => 'Formandos' ],
+                [ 'number' => '—', 'label' => 'Semanas' ],
+                [ 'number' => '—', 'label' => 'NPS' ],
+            ],
+        ],
+        [
+            'slug'   => 'worten',
+            'name'   => 'Worten',
+            'logo'   => 'https://weareedit.io/wp-content/uploads/2023/04/worten-header.png',
+            'sector' => 'Retalho de Electrónica',
+            'area'   => 'UX/UI Design',
+            'format' => 'Remote · 12 semanas',
+            'year'   => '2023',
+            'quote'  => '[Citação placeholder] A EDIT. entendeu o ritmo de release da nossa equipa de produto e adaptou a entrega para não bloquear sprints. Raro num parceiro de formação.',
+            'author' => '[Nome do stakeholder] · [Cargo na Worten]',
+            'stats'  => [
+                [ 'number' => '—', 'label' => 'Designers' ],
+                [ 'number' => '—', 'label' => 'Semanas' ],
+                [ 'number' => '—', 'label' => 'NPS' ],
+            ],
+        ],
+        [
+            'slug'   => 'cm-porto',
+            'name'   => 'CM Porto',
+            'logo'   => 'https://weareedit.io/wp-content/uploads/2023/05/porto-cm-1.png',
+            'sector' => 'Sector Público',
+            'area'   => 'Comunicação Digital',
+            'format' => 'In-house · Porto',
+            'year'   => '2023',
+            'quote'  => '[Citação placeholder] Para uma autarquia, a comunicação digital é serviço público. A formação ajudou-nos a chegar aos cidadãos em canais onde estávamos invisíveis.',
+            'author' => '[Nome do stakeholder] · [Cargo na CM Porto]',
+            'stats'  => [
+                [ 'number' => '—', 'label' => 'Formandos' ],
+                [ 'number' => '—', 'label' => 'Áreas' ],
+                [ 'number' => '—', 'label' => 'NPS' ],
+            ],
+        ],
+        // ── Open slots (post-v1.5.142) ───────────────────────────────
+        // Daniel signalled "+ 4" — reserve 4 more cards. Replace the
+        // bracketed labels with real client name + logo URL + content.
+        [
+            'slug' => 'cliente-07', 'name' => '[Cliente 7]', 'logo' => '',
+            'sector' => '[Setor]', 'area' => '[Área]', 'format' => '[Formato]', 'year' => '—',
+            'quote' => '[Citação placeholder — a definir]',
+            'author' => '[Nome · Cargo]',
+            'stats' => [ [ 'number' => '—', 'label' => '—' ], [ 'number' => '—', 'label' => '—' ], [ 'number' => '—', 'label' => '—' ] ],
+            'placeholder_slot' => true,
+        ],
+        [
+            'slug' => 'cliente-08', 'name' => '[Cliente 8]', 'logo' => '',
+            'sector' => '[Setor]', 'area' => '[Área]', 'format' => '[Formato]', 'year' => '—',
+            'quote' => '[Citação placeholder — a definir]',
+            'author' => '[Nome · Cargo]',
+            'stats' => [ [ 'number' => '—', 'label' => '—' ], [ 'number' => '—', 'label' => '—' ], [ 'number' => '—', 'label' => '—' ] ],
+            'placeholder_slot' => true,
+        ],
+        [
+            'slug' => 'cliente-09', 'name' => '[Cliente 9]', 'logo' => '',
+            'sector' => '[Setor]', 'area' => '[Área]', 'format' => '[Formato]', 'year' => '—',
+            'quote' => '[Citação placeholder — a definir]',
+            'author' => '[Nome · Cargo]',
+            'stats' => [ [ 'number' => '—', 'label' => '—' ], [ 'number' => '—', 'label' => '—' ], [ 'number' => '—', 'label' => '—' ] ],
+            'placeholder_slot' => true,
+        ],
+        [
+            'slug' => 'cliente-10', 'name' => '[Cliente 10]', 'logo' => '',
+            'sector' => '[Setor]', 'area' => '[Área]', 'format' => '[Formato]', 'year' => '—',
+            'quote' => '[Citação placeholder — a definir]',
+            'author' => '[Nome · Cargo]',
+            'stats' => [ [ 'number' => '—', 'label' => '—' ], [ 'number' => '—', 'label' => '—' ], [ 'number' => '—', 'label' => '—' ] ],
+            'placeholder_slot' => true,
+        ],
+    ];
+
+    /**
      * 4-step delivery process — what enterprise buyers actually want to
      * see before signing a procurement order. Each step has a duration
      * range so the buyer can estimate timelines for their L&D plan.
@@ -455,10 +599,48 @@ class EDIT_Formacao_Corporativa_Page {
                 </div>
             </div>
 
-            <!-- CASOS DE SUCESSO ─ Chunk 3 placeholder ────────────────── -->
-            <div id="casos" class="fc-placeholder">
-                <div class="fc-placeholder__inner">
-                    <p><em>Casos de Sucesso (Pfizer, Adidas, FNAC, Galp, Worten, CM Porto) — a chegar no Chunk 3.</em></p>
+            <!-- CASOS DE SUCESSO ─────────────────────────────────────── -->
+            <div id="casos" class="fc-casos">
+                <div class="fc-casos__inner">
+                    <p class="fc-casos__eyebrow">CASOS DE SUCESSO</p>
+                    <h2 class="fc-section-title">Equipas que <span>formaram aqui</span></h2>
+                    <p class="fc-casos__lede">Programas reais, com resultados medidos. Cada caso mostra o setor, a área formada, o formato escolhido, e as métricas de impacto que reportamos no final do programa.</p>
+                    <div class="fc-casos__grid">
+                        <?php foreach ( self::CASOS as $caso ) : $is_placeholder = ! empty( $caso['placeholder_slot'] ); ?>
+                            <article id="caso-<?php echo esc_attr( $caso['slug'] ); ?>" class="fc-caso<?php echo $is_placeholder ? ' fc-caso--placeholder' : ''; ?>">
+                                <header class="fc-caso__head">
+                                    <div class="fc-caso__logo">
+                                        <?php if ( ! empty( $caso['logo'] ) ) : ?>
+                                            <img src="<?php echo esc_url( $caso['logo'] ); ?>" alt="<?php echo esc_attr( $caso['name'] ); ?>" loading="lazy" width="240" height="80">
+                                        <?php else : ?>
+                                            <span class="fc-caso__logo-placeholder"><?php echo esc_html( $caso['name'] ); ?></span>
+                                        <?php endif; ?>
+                                    </div>
+                                    <ul class="fc-caso__meta">
+                                        <li><span class="fc-caso__meta-label">Setor</span><?php echo esc_html( $caso['sector'] ); ?></li>
+                                        <li><span class="fc-caso__meta-label">Área</span><?php echo esc_html( $caso['area'] ); ?></li>
+                                        <li><span class="fc-caso__meta-label">Formato</span><?php echo esc_html( $caso['format'] ); ?></li>
+                                        <li><span class="fc-caso__meta-label">Ano</span><?php echo esc_html( $caso['year'] ); ?></li>
+                                    </ul>
+                                </header>
+                                <div class="fc-caso__body">
+                                    <blockquote class="fc-caso__quote">
+                                        <span class="fc-caso__qmark" aria-hidden="true">&ldquo;</span><?php echo esc_html( $caso['quote'] ); ?>
+                                    </blockquote>
+                                    <footer class="fc-caso__attribution">&mdash; <?php echo esc_html( $caso['author'] ); ?></footer>
+                                    <ul class="fc-caso__stats">
+                                        <?php foreach ( $caso['stats'] as $s ) : ?>
+                                            <li class="fc-caso__stat">
+                                                <span class="fc-caso__stat-number"><?php echo esc_html( $s['number'] ); ?></span>
+                                                <span class="fc-caso__stat-label"><?php echo esc_html( $s['label'] ); ?></span>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                    <a class="fc-caso__cta" href="#proposta">Falar sobre uma proposta similar <span aria-hidden="true">→</span></a>
+                                </div>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
             </div>
 

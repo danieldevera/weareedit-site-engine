@@ -120,6 +120,8 @@ class EDIT_WP_Rocket_Shield {
             'fc-final-cta',
             'fc-btn',
             'fc-trust',
+            'fc-caso',
+            'fc-casos',
         ] );
     }
 
