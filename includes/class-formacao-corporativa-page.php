@@ -25,6 +25,16 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class EDIT_Formacao_Corporativa_Page {
 
+    /**
+     * Master visibility switch. Flip to 'publish' to go live, 'draft' to
+     * pause (page returns 404 for public, shortcode/schema/REST/redirects
+     * all skipped, code stays in repo, content stays in DB).
+     *
+     * Current state: PAUSED (Daniel 2026-05-29 — regrouping ideas for the
+     * B2B redesign before going public).
+     */
+    const STATUS     = 'draft';
+
     const SLUG       = 'formacao-digital-para-empresas';
     const OLD_SLUG   = 'formacao-corporativa'; // pre-v1.5.139, kept for 301
     const TITLE      = 'Formação Digital para Empresas — EDIT. forma equipas em Portugal';
@@ -329,12 +339,20 @@ class EDIT_Formacao_Corporativa_Page {
     ];
 
     public static function init() {
-        add_shortcode( self::SHORTCODE,    [ __CLASS__, 'render_shortcode' ] );
+        // Page-status sync runs ALWAYS so flipping STATUS const propagates
+        // to the WP post on next admin_init load.
         add_action( 'admin_init',          [ __CLASS__, 'ensure_page_exists' ] );
-        add_action( 'wp_enqueue_scripts',  [ __CLASS__, 'enqueue_assets' ] );
-        add_action( 'wp_head',             [ __CLASS__, 'emit_schema' ], 8 );
-        add_action( 'template_redirect',   [ __CLASS__, 'redirect_old_slug' ], 1 );
-        add_action( 'rest_api_init',       [ __CLASS__, 'register_rest_route' ] );
+
+        // Public-facing surface is only registered when published. Paused
+        // state (STATUS = 'draft') skips shortcode, schema, asset enqueue,
+        // 301 redirect, and the lead-capture REST endpoint.
+        if ( self::STATUS === 'publish' ) {
+            add_shortcode( self::SHORTCODE,    [ __CLASS__, 'render_shortcode' ] );
+            add_action( 'wp_enqueue_scripts',  [ __CLASS__, 'enqueue_assets' ] );
+            add_action( 'wp_head',             [ __CLASS__, 'emit_schema' ], 8 );
+            add_action( 'template_redirect',   [ __CLASS__, 'redirect_old_slug' ], 1 );
+            add_action( 'rest_api_init',       [ __CLASS__, 'register_rest_route' ] );
+        }
     }
 
     /**
@@ -492,7 +510,13 @@ class EDIT_Formacao_Corporativa_Page {
         $stored_id = (int) get_option( self::OPTION_KEY );
         if ( $stored_id ) {
             $post = get_post( $stored_id );
-            if ( $post && $post->post_status === 'publish' ) {
+            if ( $post && in_array( $post->post_status, [ 'publish', 'draft', 'pending', 'private' ], true ) ) {
+                // Idempotent status sync — flip post to match the STATUS
+                // constant. This is how 'Set the page invisible' propagates:
+                // STATUS='draft' here syncs the WP post to draft on next load.
+                if ( $post->post_status !== self::STATUS ) {
+                    wp_update_post( [ 'ID' => $post->ID, 'post_status' => self::STATUS ] );
+                }
                 // Slug-drift migration: rename if the stored page still
                 // carries the old slug (from before v1.5.139).
                 if ( $post->post_name === self::OLD_SLUG ) {
@@ -512,6 +536,9 @@ class EDIT_Formacao_Corporativa_Page {
         $existing = get_page_by_path( self::SLUG );
         if ( $existing ) {
             update_option( self::OPTION_KEY, $existing->ID );
+            if ( $existing->post_status !== self::STATUS ) {
+                wp_update_post( [ 'ID' => $existing->ID, 'post_status' => self::STATUS ] );
+            }
             if ( strpos( $existing->post_content, $shortcode_token ) === false ) {
                 self::force_update_to_shortcode( $existing->ID );
             }
@@ -521,7 +548,11 @@ class EDIT_Formacao_Corporativa_Page {
         // Adopt + migrate a page still living at the OLD slug.
         $legacy = get_page_by_path( self::OLD_SLUG );
         if ( $legacy ) {
-            wp_update_post( [ 'ID' => $legacy->ID, 'post_name' => self::SLUG ] );
+            wp_update_post( [
+                'ID'          => $legacy->ID,
+                'post_name'   => self::SLUG,
+                'post_status' => self::STATUS,
+            ] );
             update_option( self::OPTION_KEY, $legacy->ID );
             if ( strpos( $legacy->post_content, $shortcode_token ) === false ) {
                 self::force_update_to_shortcode( $legacy->ID );
@@ -533,7 +564,7 @@ class EDIT_Formacao_Corporativa_Page {
             'post_title'     => self::TITLE,
             'post_name'      => self::SLUG,
             'post_content'   => $shortcode_token,
-            'post_status'    => 'publish',
+            'post_status'    => self::STATUS,
             'post_type'      => 'page',
             'post_author'    => get_current_user_id() ?: 1,
             'comment_status' => 'closed',
