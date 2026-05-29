@@ -193,6 +193,36 @@ class EDIT_Output_Buffer {
             . '.swipe-cta:hover .swipe-pink,.swipe-cta:hover .swipe-teal,.swipe-cta:hover .swipe-black{transform:translateX(0);}'
             . '.swipe-cta:hover .swipe-label{color:#ffdd06;}'
             // ────────────────────────────────────────────────────────────
+            // CF7 response output — make errors visible and RED on the
+            // Fala connosco popup + newsletter form. Default CF7 styling
+            // is borderless plain text on a dark bg, which makes the
+            // failure message read as a grey hint instead of an error.
+            // Brand pink (#f92869) reads as urgent against the dark panel;
+            // success state uses brand teal. Targets all CF7 forms site-wide.
+            // ────────────────────────────────────────────────────────────
+            . '.wpcf7-response-output{display:block;margin:18px 0 0 !important;padding:12px 16px !important;border:1px solid !important;border-radius:6px !important;font-size:14px !important;font-weight:600 !important;line-height:1.5 !important;}'
+            . '.wpcf7-response-output:empty{display:none !important;}'
+            . '.wpcf7 form.invalid .wpcf7-response-output,'
+            . '.wpcf7 form.unaccepted .wpcf7-response-output,'
+            . '.wpcf7 form.payment-required .wpcf7-response-output,'
+            . '.wpcf7 form.failed .wpcf7-response-output,'
+            . '.wpcf7 form.aborted .wpcf7-response-output,'
+            . '.wpcf7 form.spam .wpcf7-response-output{color:#f92869 !important;border-color:rgba(249,40,105,.5) !important;background:rgba(249,40,105,.08) !important;}'
+            . '.wpcf7 form.sent .wpcf7-response-output{color:#60c5b3 !important;border-color:rgba(96,197,179,.5) !important;background:rgba(96,197,179,.08) !important;}'
+            . '.wpcf7-not-valid-tip{color:#f92869 !important;font-size:12px !important;font-weight:600 !important;margin-top:4px !important;display:block;}'
+            . '.wpcf7-form-control.wpcf7-not-valid{border-color:#f92869 !important;}'
+            // ────────────────────────────────────────────────────────────
+            // Newsletter form panel — labels had drifted to centered + the
+            // .wpcf7-list-item-label spans were rendering in brand yellow
+            // (invisible on the white panel bg). Force left alignment site-
+            // wide on the side-filter forms (Fala connosco, Newsletter, In
+            // Company, Pedir Info — theme selectors group them) and pin the
+            // checkbox/radio item labels back to black for legibility.
+            // ────────────────────────────────────────────────────────────
+            . '#newsletterForm .filter-content,#newsletterForm .filter-options,#newsletterForm .wpcf7,#newsletterForm .wpcf7-form,#newsletterForm .wpcf7-form p,#newsletterForm .wpcf7-form label,#newsletterForm .interesses,#newsletterForm h3{text-align:left !important;}'
+            . '#newsletterForm .wpcf7-list-item-label,#falaConnosco .wpcf7-list-item-label,#inCompanyForm .wpcf7-list-item-label,#pedirInfo .wpcf7-list-item-label{color:#000 !important;font-weight:500 !important;}'
+            . '#newsletterForm .wpcf7-list-item,#falaConnosco .wpcf7-list-item,#inCompanyForm .wpcf7-list-item,#pedirInfo .wpcf7-list-item{text-align:left !important;}'
+            // ────────────────────────────────────────────────────────────
             // MOBILE — fixes for hero on viewports ≤ 768px (audit 2026-05-26).
             // Root cause of "invisible H1/H2/DGERT pill on mobile": the theme
             // applies `visibility:hidden` via WOW.js .wow class and the init

@@ -167,6 +167,40 @@ class EDIT_WP_Rocket_Shield {
             '.swipe-cta',
             '.swipe-layer',
             '.swipe-label',
+            // Contact Form 7 — form layout, validation states, response box.
+            // RUCSS doesn't see CF7's runtime-applied classes (mail-sent-ok,
+            // mail-sent-ng, validation-errors) on first crawl and would strip
+            // them, leaving error / success messages invisible.
+            '.wpcf7',
+            '.wpcf7-form',
+            '.wpcf7-form-control',
+            '.wpcf7-form-control-wrap',
+            '.wpcf7-text',
+            '.wpcf7-textarea',
+            '.wpcf7-email',
+            '.wpcf7-checkbox',
+            '.wpcf7-radio',
+            '.wpcf7-list-item',
+            '.wpcf7-list-item-label',
+            '.wpcf7-submit',
+            '.wpcf7-spinner',
+            '.has-spinner',
+            '.wpcf7-response-output',
+            '.wpcf7-mail-sent-ok',
+            '.wpcf7-mail-sent-ng',
+            '.wpcf7-validation-errors',
+            '.wpcf7-spam-blocked',
+            '.wpcf7-not-valid-tip',
+            '.wpcf7-not-valid',
+            '.wpcf7-acceptance-missing',
+            // Contact panel (theme) — the side-filter / overlay container that
+            // hosts the Fala connosco form. RUCSS hides reveal-on-click panels.
+            '.side-filter-container',
+            '.side-filter-container.open',
+            '.side-filter',
+            '.overlay-side-filter',
+            '.filter-content',
+            '.scroll-disabled',
         ] );
     }
 
@@ -210,6 +244,20 @@ class EDIT_WP_Rocket_Shield {
             'jscloud.net',
             // WP Rocket's own preload + critical-path scripts
             '/wp-rocket-assets/',
+            // Contact Form 7 — submit handler + validation engine. Without
+            // these, "Diferir execução de JavaScript" delays CF7 past the
+            // user's submit click → form falls back to native POST → server
+            // returns generic mail_sent_ng error. (Incident 2026-05-29.)
+            'contact-form-7',
+            'wpcf7',
+            '/plugins/contact-form-7/',
+            'swv',
+            // reCAPTCHA — token must generate before submit fires
+            'recaptcha',
+            'google.com/recaptcha',
+            'gstatic.com/recaptcha',
+            // Theme's contact panel + form bindings
+            '/themes/weareedit/js/',
             // WhatsApp button (theme-injected)
             'whatsapp',
             // Lottie / WOW.js (theme animation lib that drives the hero fadeInUp)
