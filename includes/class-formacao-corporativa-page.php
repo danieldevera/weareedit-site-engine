@@ -57,6 +57,81 @@ class EDIT_Formacao_Corporativa_Page {
     ];
 
     /**
+     * 5 áreas de formação corporativa. Each links to its pillar page so
+     * we strengthen the topical cluster (B2B page → pillar → courses).
+     * Copy is B2B-tuned (team-level outcomes, not individual learning).
+     */
+    const AREAS = [
+        [
+            'title'  => 'Marketing Digital',
+            'lede'   => 'Performance, growth, paid media e conteúdo. Formamos equipas de marketing para gerir orçamentos de 6 dígitos com confiança e ROI mensurável.',
+            'topics' => [ 'Meta Ads + Google Ads', 'GA4 + Tag Manager', 'Estratégia de conteúdo + IA', 'Email + Automation' ],
+            'slug'   => 'marketing-digital',
+            'icon'   => 'M',
+        ],
+        [
+            'title'  => 'UX/UI Design',
+            'lede'   => 'Investigação, design e validação. Capacitamos product teams para entregar interfaces que clientes adoram e métricas de produto provam.',
+            'topics' => [ 'Figma + sistemas de design', 'UX Research aplicada', 'Design thinking + workshops', 'Acessibilidade + WCAG' ],
+            'slug'   => 'curso-uxui-design',
+            'icon'   => 'U',
+        ],
+        [
+            'title'  => 'Desenvolvimento Web',
+            'lede'   => 'Front-end moderno, back-end pragmático, IA aplicada ao código. Preparamos developers para entregar produtos em produção, não tutoriais.',
+            'topics' => [ 'React + Next.js', 'Node.js + APIs', 'Webflow + low-code', 'AI-assisted development' ],
+            'slug'   => 'curso-programacao',
+            'icon'   => 'D',
+        ],
+        [
+            'title'  => 'Data & Business',
+            'lede'   => 'Da pergunta de negócio ao dashboard accionável. Formamos analistas e líderes para tomar decisões com dados, não com opiniões.',
+            'topics' => [ 'SQL + Python para análise', 'Power BI + Looker Studio', 'Machine Learning aplicado', 'Data storytelling' ],
+            'slug'   => 'data-science',
+            'icon'   => 'B',
+        ],
+        [
+            'title'  => 'Inteligência Artificial',
+            'lede'   => 'Estratégia + execução. Da prompt engineering ao deploy de agentes inteligentes — IA aplicada ao vosso processo de negócio.',
+            'topics' => [ 'LLMs + RAG + agentes', 'IA aplicada a marketing', 'Ética + governance', 'AI-first product design' ],
+            'slug'   => 'curso-inteligencia-artificial',
+            'icon'   => 'A',
+        ],
+    ];
+
+    /**
+     * 4-step delivery process — what enterprise buyers actually want to
+     * see before signing a procurement order. Each step has a duration
+     * range so the buyer can estimate timelines for their L&D plan.
+     */
+    const PROCESS = [
+        [
+            'number' => '01',
+            'title'  => 'Diagnóstico',
+            'time'   => '1–2 semanas',
+            'body'   => 'Sessão de descoberta de 60 minutos com stakeholders + análise dos perfis dos formandos. Definimos resultados esperados, ferramentas em uso, e métricas de impacto.',
+        ],
+        [
+            'number' => '02',
+            'title'  => 'Desenho do Programa',
+            'time'   => '1 semana',
+            'body'   => 'O lead instructor desenha um syllabus customizado ao vosso setor e às ferramentas existentes. Validamos convosco antes do kick-off — sem surpresas.',
+        ],
+        [
+            'number' => '03',
+            'title'  => 'Entrega',
+            'time'   => '4–12 semanas',
+            'body'   => 'Sessões in-house, no nosso campus, ou remoto em tempo real. Projeto final aplicado ao vosso contexto real. Materiais e gravações permanecem com a vossa equipa.',
+        ],
+        [
+            'number' => '04',
+            'title'  => 'Avaliação de Impacto',
+            'time'   => '3 + 6 meses',
+            'body'   => 'Pré/pós-teste, NPS por sessão, seguimento a 3 e 6 meses para medir adoção das competências no dia-a-dia. Relatório final com métricas para o vosso L&D dashboard.',
+        ],
+    ];
+
+    /**
      * "Why EDIT. for B2B" — 4 differentiators that beat the generic copy
      * on the legacy page.
      */
@@ -288,10 +363,53 @@ class EDIT_Formacao_Corporativa_Page {
                 </div>
             </div>
 
-            <!-- ÁREAS + PROCESS + CASOS DE SUCESSO ─ Chunk 2/3 placeholder -->
+            <!-- ÁREAS DE FORMAÇÃO ────────────────────────────────────── -->
+            <div id="areas" class="fc-areas">
+                <div class="fc-areas__inner">
+                    <h2 class="fc-section-title">5 Áreas. <span>1 Programa Customizado.</span></h2>
+                    <p class="fc-areas__lede">Cada área é DGERT-certificada e foi entregue a equipas em mercados regulados (banca, saúde, retalho, energia). Programas podem ser entregues isoladamente ou combinados num multi-área para equipas cross-funcionais.</p>
+                    <div class="fc-areas__grid">
+                        <?php foreach ( self::AREAS as $a ) : ?>
+                            <a class="fc-area" href="<?php echo esc_url( home_url( '/' . $a['slug'] . '/' ) ); ?>">
+                                <div class="fc-area__icon" aria-hidden="true"><?php echo esc_html( $a['icon'] ); ?></div>
+                                <h3 class="fc-area__title"><?php echo esc_html( $a['title'] ); ?></h3>
+                                <p class="fc-area__lede"><?php echo esc_html( $a['lede'] ); ?></p>
+                                <ul class="fc-area__topics">
+                                    <?php foreach ( $a['topics'] as $t ) : ?>
+                                        <li><?php echo esc_html( $t ); ?></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                                <span class="fc-area__cta">Ver área completa <span aria-hidden="true">→</span></span>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROCESS (Como Trabalhamos) ───────────────────────────── -->
+            <div id="processo" class="fc-process">
+                <div class="fc-process__inner">
+                    <p class="fc-process__eyebrow">METODOLOGIA</p>
+                    <h2 class="fc-section-title">Como Entregamos uma <span>Formação que Funciona</span></h2>
+                    <div class="fc-process__steps">
+                        <?php foreach ( self::PROCESS as $step ) : ?>
+                            <div class="fc-step">
+                                <div class="fc-step__number" aria-hidden="true"><?php echo esc_html( $step['number'] ); ?></div>
+                                <div class="fc-step__body">
+                                    <div class="fc-step__time"><?php echo esc_html( $step['time'] ); ?></div>
+                                    <h3 class="fc-step__title"><?php echo esc_html( $step['title'] ); ?></h3>
+                                    <p class="fc-step__desc"><?php echo esc_html( $step['body'] ); ?></p>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CASOS DE SUCESSO ─ Chunk 3 placeholder ────────────────── -->
             <div id="casos" class="fc-placeholder">
                 <div class="fc-placeholder__inner">
-                    <p><em>Áreas de Formação, Processo, Casos de Sucesso — A chegar nos próximos chunks.</em></p>
+                    <p><em>Casos de Sucesso (Pfizer, Adidas, FNAC, Galp, Worten, CM Porto) — a chegar no Chunk 3.</em></p>
                 </div>
             </div>
 

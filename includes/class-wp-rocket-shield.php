@@ -109,8 +109,13 @@ class EDIT_WP_Rocket_Shield {
             // Formação Corporativa B2B redesign (v1.5.136, 2026-05-29).
             'fc-pillar',
             'fc-hero',
+            'fc-herowrap',
             'fc-stats',
             'fc-prop',
+            'fc-area',
+            'fc-areas',
+            'fc-process',
+            'fc-step',
             'fc-faq',
             'fc-final-cta',
             'fc-btn',
