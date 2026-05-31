@@ -56,6 +56,21 @@
         '    <h2 id="edit-newsletter-strip__headline">' + escapeHTML( copy.headline || 'Recebe a próxima edição.' ).replace( /\.$/, '<span class="dot">.</span>' ) + '</h2>',
         '    <p id="edit-newsletter-strip__pitch">' + escapeHTML( copy.pitch || '' ) + '</p>',
         '    <p id="edit-newsletter-strip__social">' + escapeHTML( copy.social || '' ) + '</p>',
+        ( copy.founder_message ?
+        '    <p id="edit-newsletter-strip__founder-msg">' + escapeHTML( copy.founder_message ) + '</p>' : '' ),
+        ( copy.founder_name ?
+        '    <div id="edit-newsletter-strip__founder">' +
+        ( copy.founder_photo ?
+            '<img id="edit-newsletter-strip__founder-photo" src="' + escapeAttr( copy.founder_photo ) + '" alt="' + escapeAttr( copy.founder_name ) + '" width="44" height="44" loading="lazy">' : '' ) +
+        '<div id="edit-newsletter-strip__founder-meta">' +
+            '<span id="edit-newsletter-strip__founder-name">' + escapeHTML( copy.founder_name ) + '</span>' +
+            '<span id="edit-newsletter-strip__founder-role">' + escapeHTML( copy.founder_role || '' ) +
+            ( copy.founder_email ?
+                ' — <a id="edit-newsletter-strip__founder-link" href="mailto:' + escapeAttr( copy.founder_email ) + '">' + escapeHTML( copy.founder_link_label || 'responde direto' ) + ' &rarr;</a>'
+                : '' ) +
+            '</span>' +
+        '</div>' +
+        '    </div>' : '' ),
         '  </div>',
         '  <form id="edit-newsletter-strip__form" novalidate>',
         '    <div id="edit-newsletter-strip__field">',
