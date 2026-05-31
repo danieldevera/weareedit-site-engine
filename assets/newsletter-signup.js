@@ -61,14 +61,13 @@
         ( copy.founder_name ?
         '    <div id="edit-newsletter-strip__founder">' +
         ( copy.founder_photo ?
-            '<img id="edit-newsletter-strip__founder-photo" src="' + escapeAttr( copy.founder_photo ) + '" alt="' + escapeAttr( copy.founder_name ) + '" width="48" height="48" loading="lazy">' : '' ) +
+            '<img id="edit-newsletter-strip__founder-photo" src="' + escapeAttr( copy.founder_photo ) + '" alt="' + escapeAttr( copy.founder_name ) + '" width="64" height="64" loading="lazy">' : '' ) +
         '<div id="edit-newsletter-strip__founder-meta">' +
-            '<span id="edit-newsletter-strip__founder-name">' + escapeHTML( copy.founder_name ) + '</span>' +
             '<span id="edit-newsletter-strip__founder-role">' + escapeHTML( copy.founder_role || '' ) + '</span>' +
+            ( copy.founder_signature ?
+                '<img id="edit-newsletter-strip__founder-signature" src="' + escapeAttr( copy.founder_signature ) + '" alt="' + escapeAttr( copy.founder_name || 'Assinatura' ) + '" loading="lazy">' : '' ) +
         '</div>' +
         '    </div>' : '' ),
-        ( copy.founder_signature ?
-        '    <img id="edit-newsletter-strip__founder-signature" src="' + escapeAttr( copy.founder_signature ) + '" alt="' + escapeAttr( copy.founder_name || 'Assinatura' ) + '" loading="lazy">' : '' ),
         '  </div>',
         '  <form id="edit-newsletter-strip__form" novalidate>',
         '    <div id="edit-newsletter-strip__field">',
