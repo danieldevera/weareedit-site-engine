@@ -1,4 +1,9 @@
 # Changelog
+## v1.5.160 — 2026-05-31 (Animations: more perceivable + smoother fade)
+- **Entrance fade-up:** larger displacement (60px translateY + 0.985 scale) and longer duration (1100ms) so it's clearly perceived during scroll. Threshold raised to fire when strip is genuinely on-screen (15% visibility + 10% bottom rootMargin).
+- **Dot pulse:** more visible heartbeat — scale 1 → 1.38 (was 1.18), faster 1.8s cycle (was 2.4s), with a slight upward bob.
+- **Confetti fade:** pieces hold opacity 1 through 92% of duration, then snap to 0 in the final 8%. Eliminates the lingering "hang" at landing. Adds two-phase physics easing (ease-out climb + ease-in fall) plus rotateX waypoints for paper-flutter feel.
+
 ## v1.5.159 — 2026-05-31 (Confetti: up-then-down arc)
 - Confetti now POPS UP first (180-460px above origin at 35% of animation) then falls to its landing position. New CSS var `--peak` carries the apex height per piece. Animation timing-function switched to `linear` so the keyframe waypoints carry the parabolic arc themselves (ease-out flattened it).
 
