@@ -251,7 +251,7 @@ class EDIT_Newsletter_Signup {
                 'eyebrow'   => 'Newsletter EDIT.',
                 'headline'  => 'Recebe a próxima edição.',
                 'pitch'     => "Notas semanais, entrevistas inéditas com tutores, cursos em pré-lançamento.\nConteúdos de especialidade com a minha Curadoria.",
-                'disclaimer'=> 'Junta-te a +11.000 profissionais digitais portugueses. Sem spam. Cancela quando quiseres.',
+                'disclaimer'=> "Junta-te a +11.000 profissionais digitais portugueses.\nSem spam. Cancela quando quiseres.",
                 'submit'    => 'Subscrever',
                 'placeholder' => 'o.teu.email@dominio.pt',
                 'success'   => 'Subscrito, até breve.',

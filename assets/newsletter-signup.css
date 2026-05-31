@@ -256,6 +256,7 @@
     color: #0a0a0a;
     font-weight: 600;
     margin: 0;
+    white-space: pre-line;
 }
 
 /* Status messages */
