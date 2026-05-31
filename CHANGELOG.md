@@ -1,4 +1,11 @@
 # Changelog
+## v1.5.162 — 2026-05-31 (Success state: left-to-right box reveal + staggered text + delayed confetti)
+- Success box now reveals with a left-to-right wipe (clip-path inset, 680ms easeInOutExpo).
+- Strong title slides up + fades in at 480ms delay (620ms ease).
+- Subscription message slides up + fades in at 660ms delay (staggered ~180ms from title).
+- Confetti now fires at 700ms — AFTER the box reveal completes — so it lands as a payoff to the reveal sequence rather than competing with it.
+- prefers-reduced-motion respected (animations disabled, content visible immediately).
+
 ## v1.5.161 — 2026-05-31 (Success copy: don't promise confirmation email)
 - Success message no longer says "verifica o teu email para confirmar" — welcome automation isn't built yet (Task #16). New copy: `Subscrito. Obrigado — vemo-nos em breve.` Honest and friendly.
 

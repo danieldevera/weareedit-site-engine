@@ -301,8 +301,11 @@
                     } );
                     success.textContent = res.body.message || copy.success || '';
                     strip.setAttribute( 'data-state', 'success' );
-                    // Celebrate. Skip on duplicates (less surprising for returning users).
-                    if ( ! isDup ) fireConfetti();
+                    // Celebrate AFTER the box reveal completes (box wipe is 680ms,
+                    // first text appears at ~480ms). Fire confetti at 700ms so the
+                    // burst lands during/just after text settles — feels like a
+                    // payoff to the reveal sequence rather than competing with it.
+                    if ( ! isDup ) setTimeout( fireConfetti, 700 );
                     return;
                 }
 
