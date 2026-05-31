@@ -1,4 +1,9 @@
 # Changelog
+## v1.5.155 — 2026-05-31 (Newsletter strip: animations)
+- **Entrance fade-up.** Strip starts at `opacity:0; translateY(28px)` — fades in + rises when it enters viewport (IntersectionObserver, 25% threshold). 700ms ease. Matches the site's existing `.wow animate__fadeInUp` pattern.
+- **Pulsing pink dot.** The `.` after "edição" pulses gently (scale 1 → 1.18, 2.4s loop). Subtle attention-draw on the brand mark.
+- **Confetti on success.** ~64 small coloured rectangles erupt from the centre of the strip when subscription succeeds. Brand palette only (yellow / pink / teal / coral / black). 2.2s fall with random rotation. Skipped on duplicate-subscribe (less surprising for returning users) and respects `prefers-reduced-motion`.
+
 ## v1.5.154 — 2026-05-31 (Newsletter: send WP nonce so admin bypass works)
 - The frontend fetch wasn't sending `X-WP-Nonce`, so the REST handler never saw the logged-in admin session even with valid cookies. `is_user_logged_in()` returned false → admin rate-limit bypass (v1.5.153) didn't fire.
 - Fix: pass nonce via `wp_localize_script`, attach as `X-WP-Nonce` header in fetch. Admin testing now bypasses rate limit as intended.

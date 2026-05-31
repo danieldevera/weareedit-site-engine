@@ -127,7 +127,8 @@
 
     function observeImpression() {
         if ( ! ( 'IntersectionObserver' in window ) ) {
-            // Older browsers — just fire view immediately.
+            // Older browsers — fire view immediately + show.
+            strip.classList.add( 'is-in-view' );
             track( 'newsletter_view', { placement: 'hero' } );
             return;
         }
@@ -136,12 +137,61 @@
             entries.forEach( function ( entry ) {
                 if ( entry.isIntersecting && ! fired ) {
                     fired = true;
+                    // Trigger entrance fade-up + fire view event.
+                    strip.classList.add( 'is-in-view' );
                     track( 'newsletter_view', { placement: 'hero' } );
                     io.disconnect();
                 }
             } );
-        }, { threshold: 0.5 } );
+        }, { threshold: 0.25 } );
         io.observe( strip );
+    }
+
+    /* ------------------------------------------------------------- confetti
+       Fires on successful subscription. Spawns ~60 small coloured rectangles
+       from the centre of the strip, each with a random horizontal trajectory
+       and rotation. Cleans itself up after 2.4s. Brand palette only. */
+    function fireConfetti() {
+        if ( window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches ) return;
+
+        var layer = document.createElement( 'div' );
+        layer.id = 'edit-newsletter-strip__confetti';
+        layer.setAttribute( 'aria-hidden', 'true' );
+        strip.appendChild( layer );
+
+        var colors = [ '#ffdd06', '#f92869', '#60c5b3', '#0a0a0a', '#ec8172' ];
+        var rect = strip.getBoundingClientRect();
+        var originX = rect.width * 0.5;
+        var originY = rect.height * 0.3; // upper-middle so pieces look like they erupt from the form
+
+        var pieces = 64;
+        for ( var i = 0; i < pieces; i++ ) {
+            var p = document.createElement( 'span' );
+            p.className = 'edit-confetti-piece';
+            p.style.left = originX + 'px';
+            p.style.top  = originY + 'px';
+            p.style.backgroundColor = colors[ Math.floor( Math.random() * colors.length ) ];
+            // Horizontal travel: -50vw to +50vw randomly
+            var dx = ( Math.random() * 1.2 - 0.6 ) * rect.width;
+            // Vertical travel: 60-110% of strip height + some extra to clear bottom
+            var dy = ( 0.7 + Math.random() * 0.6 ) * rect.height + 60;
+            var rot = ( Math.random() * 6 + 2 ) * 180; // 360-1440deg
+            var delay = Math.random() * 180;          // 0-180ms stagger
+            p.style.setProperty( '--dx',  dx  + 'px' );
+            p.style.setProperty( '--dy',  dy  + 'px' );
+            p.style.setProperty( '--rot', rot + 'deg' );
+            p.style.animationDelay = delay + 'ms';
+            // Some pieces wider (paper rectangles), some round
+            if ( Math.random() < 0.3 ) {
+                p.style.width = '8px';
+                p.style.height = '8px';
+                p.style.borderRadius = '50%';
+            }
+            layer.appendChild( p );
+        }
+
+        // Cleanup after the longest piece finishes (delay 180ms + 2200ms anim).
+        setTimeout( function () { if ( layer.parentNode ) layer.parentNode.removeChild( layer ); }, 2600 );
     }
 
     // -------------------------------------------------------------- form wiring
@@ -222,6 +272,8 @@
                     } );
                     success.textContent = res.body.message || copy.success || '';
                     strip.setAttribute( 'data-state', 'success' );
+                    // Celebrate. Skip on duplicates (less surprising for returning users).
+                    if ( ! isDup ) fireConfetti();
                     return;
                 }
 

@@ -17,6 +17,32 @@
     overflow: hidden;
     font-family: 'SctoGroteskA', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     color: #0a0a0a;
+    /* Entrance fade-up — starts hidden, fires when .is-in-view added by JS. */
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 700ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 700ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+#edit-newsletter-strip.is-in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Pulsing pink dot — gentle 2.4s breath. Calls eye to the brand-mark
+   without becoming distracting. */
+#edit-newsletter-strip__headline .dot {
+    color: #f92869;
+    display: inline-block;
+    animation: edit-dot-pulse 2400ms ease-in-out infinite;
+    transform-origin: center;
+}
+@keyframes edit-dot-pulse {
+    0%, 100% { transform: scale(1);    opacity: 1;    }
+    50%      { transform: scale(1.18); opacity: 0.85; }
+}
+@media (prefers-reduced-motion: reduce) {
+    #edit-newsletter-strip { transition: none; opacity: 1; transform: none; }
+    #edit-newsletter-strip__headline .dot { animation: none; }
 }
 
 @media (max-width: 767px) {
@@ -59,7 +85,7 @@
     color: #0a0a0a;
     margin: 0 0 14px 0;
 }
-#edit-newsletter-strip__headline .dot { color: #f92869; }
+/* .dot styling + pulse animation defined at the top of this file. */
 
 @media (min-width: 768px) {
     #edit-newsletter-strip__headline { font-size: 48px; }
@@ -189,6 +215,30 @@
 }
 #edit-newsletter-strip__status[data-state="success"] { color: #0a0a0a; }
 #edit-newsletter-strip__status[data-state="error"]   { color: #b62929; }
+
+/* Confetti — fires on successful subscription ------------------------ */
+
+#edit-newsletter-strip__confetti {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 10;
+}
+.edit-confetti-piece {
+    position: absolute;
+    top: -20px;
+    width: 10px;
+    height: 14px;
+    opacity: 0;
+    will-change: transform, opacity;
+    animation: edit-confetti-fall 2200ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+@keyframes edit-confetti-fall {
+    0%   { transform: translate3d(0, 0, 0) rotate(0deg);            opacity: 0; }
+    8%   { opacity: 1; }
+    100% { transform: translate3d(var(--dx, 0), var(--dy, 100vh), 0) rotate(var(--rot, 720deg)); opacity: 0.9; }
+}
 
 /* Success state — replaces the form ---------------------------------- */
 
