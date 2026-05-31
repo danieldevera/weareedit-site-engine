@@ -151,21 +151,6 @@
         }
         wireForm();
         observeImpression();
-        hideLegacyFooterCta();
-    }
-
-    // Hide the legacy "Subscrever Newsletter" yellow button in the
-    // secondary footer on pages where the new strip is rendered — avoids
-    // two competing newsletter CTAs on the same page. Pages without the
-    // new strip keep the footer button as their newsletter entrypoint.
-    function hideLegacyFooterCta() {
-        var btns = document.querySelectorAll( 'a.btn-yellow' );
-        for ( var i = 0; i < btns.length; i++ ) {
-            if ( /Subscrever Newsletter/i.test( btns[ i ].textContent || '' ) ) {
-                var container = btns[ i ].closest ? btns[ i ].closest( '.btn-container' ) : null;
-                ( container || btns[ i ].parentNode ).style.display = 'none';
-            }
-        }
     }
 
     // --------------------------------------------------------------- impressions
