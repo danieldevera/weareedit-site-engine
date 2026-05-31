@@ -97,6 +97,7 @@
     color: #0a0a0a;
     margin: 0 0 8px 0;
     max-width: 480px;
+    white-space: pre-line; /* preserve \n in the localized copy as line breaks */
 }
 
 #edit-newsletter-strip__social {

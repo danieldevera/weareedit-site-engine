@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.157 — 2026-05-31 (Newsletter pitch: hard line break between sentences)
+- Inserted \n between the two pitch sentences + added `white-space: pre-line` CSS to the pitch element so the second sentence renders on a new line. Tighter visual hierarchy.
+
 ## v1.5.156 — 2026-05-31 (Newsletter pitch: two-sentence rewrite)
 - Pitch reworked to two sentences: `Notas semanais, entrevistas inéditas com tutores, cursos em pré-lançamento. Conteúdos de especialidade com curadoria do nosso Fundador.` — first sentence lists the three deliverables, second sentence elevates the founder-curated promise.
 
