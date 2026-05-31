@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.5.149 — 2026-05-31 (Newsletter strip placement fix)
+- **Fix:** newsletter signup strip was injecting at the bottom of the homepage instead of immediately after the hero. Root cause: the JS selector `.btn-yellow.swipe-cta` matched the footer "Subscrever Newsletter" CTA as well (it carries the same site-wide class), and the walk-up logic landed in the wrong section.
+- New anchor: `section.hero` directly (verified live on weareedit.io — the locked v1.5.54 hero is a `<section class="hero">` block followed by `.courses-boxes-home`). Strip now appears between hero and the courses grid.
+- Fallback chain preserved: main-content first-section → any first-section.
+
 ## v1.5.148 — 2026-05-31
 - **Newsletter signup CTA — Brevo integration.** New homepage strip captures email subscriptions and posts them to Brevo list `Newsletter · Site organic (2026+)` (ID 4 by default) via the v3 REST API. Single-field form (email only), reuses the locked site-wide `.swipe-cta` button standard (v1.5.112) for the submit button.
 - New `class-newsletter-signup.php`:

@@ -96,21 +96,19 @@
     // ----------------------------------------------------------------- inject
 
     function findInjectionPoint() {
-        // Try the locked v1.5.54 hero first — the "Ver todos os Cursos" CTA
-        // is reliably present as the last element of the hero section.
-        var heroCTA = document.querySelector( '.btn-yellow.swipe-cta' );
-        if ( heroCTA ) {
-            // Walk up to its containing section/div.
-            var node = heroCTA;
-            for ( var i = 0; i < 8 && node && node.parentElement; i++ ) {
-                node = node.parentElement;
-                if ( node.tagName === 'SECTION' || node.classList.contains( 'home-hero' ) ) return node;
-            }
-        }
-        // Fallback: first <section> in the main content.
+        // 1) The locked homepage hero is <section class="hero">. Inject right
+        //    after it so the strip sits between the hero and `.courses-boxes-home`.
+        //    Verified via the live HTML on 2026-05-31.
+        var hero = document.querySelector( 'section.hero' );
+        if ( hero ) return hero;
+
+        // 2) Fallback: find the first <section> inside the main content area.
         var first = document.querySelector( 'main section, #main section, .site-main section, .content section' );
         if ( first ) return first;
-        return null;
+
+        // 3) Last resort: first <section> on the page.
+        var anySection = document.querySelector( 'section' );
+        return anySection || null;
     }
 
     function injectStrip() {
