@@ -183,18 +183,22 @@
 
             // Horizontal travel: full viewport width random
             var dx = ( Math.random() * 1.6 - 0.8 ) * vw * 0.55;
-            // Vertical travel: anywhere from 60% to 110% of remaining viewport height
+            // Vertical travel — pieces shoot UP first then fall.
+            //   --peak  (negative): how high above origin each piece rises
+            //   --dy    (positive): final landing position below origin
+            var peak    = -( 180 + Math.random() * 280 );  // -180 to -460px above origin
             var maxDown = vh - originY + 80;
-            var dy = ( 0.55 + Math.random() * 0.55 ) * maxDown;
+            var dy      = ( 0.55 + Math.random() * 0.55 ) * maxDown;
 
             var rot   = ( Math.random() * 4 + 1.5 ) * 180; // 270-990deg, less spinny
             var delay = Math.random() * 420;               // 0-420ms stagger
             var dur   = 3600 + Math.random() * 1400;       // 3.6-5.0s per piece
 
-            p.style.setProperty( '--dx',  dx  + 'px' );
-            p.style.setProperty( '--dy',  dy  + 'px' );
-            p.style.setProperty( '--rot', rot + 'deg' );
-            p.style.setProperty( '--dur', dur + 'ms' );
+            p.style.setProperty( '--dx',   dx   + 'px' );
+            p.style.setProperty( '--dy',   dy   + 'px' );
+            p.style.setProperty( '--peak', peak + 'px' );
+            p.style.setProperty( '--rot',  rot  + 'deg' );
+            p.style.setProperty( '--dur',  dur  + 'ms' );
             p.style.animationDelay = delay + 'ms';
 
             // Vary shape — paper rectangles, squares, circles, thin strips.

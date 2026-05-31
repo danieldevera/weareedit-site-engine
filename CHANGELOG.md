@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.159 — 2026-05-31 (Confetti: up-then-down arc)
+- Confetti now POPS UP first (180-460px above origin at 35% of animation) then falls to its landing position. New CSS var `--peak` carries the apex height per piece. Animation timing-function switched to `linear` so the keyframe waypoints carry the parabolic arc themselves (ease-out flattened it).
+
 ## v1.5.158 — 2026-05-31 (Confetti: slower, fuller-screen, less rigid)
 - Confetti now fixed to viewport (not clipped to the yellow strip) so pieces spill across the full screen.
 - 110 pieces (was 64). Per-piece duration 3.6-5.0s (was 2.2s). Larger horizontal spread (~55% of viewport width). Less aggressive rotation. Origin jitter so the burst doesn't look like a single point.
