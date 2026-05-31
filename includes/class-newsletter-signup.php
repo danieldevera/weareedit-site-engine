@@ -246,6 +246,7 @@ class EDIT_Newsletter_Signup {
         );
         wp_localize_script( 'edit-newsletter-signup', 'editNewsletter', [
             'restUrl' => esc_url_raw( rest_url( self::REST_NAMESPACE . self::REST_ROUTE ) ),
+            'nonce'   => wp_create_nonce( 'wp_rest' ),
             'copy'    => [
                 'eyebrow'   => 'Newsletter EDIT.',
                 'headline'  => 'Recebe a próxima edição.',

@@ -191,9 +191,14 @@
             var origLabel = labelEl ? labelEl.textContent : '';
             if ( labelEl ) labelEl.textContent = 'A enviar…';
 
+            var headers = { 'Content-Type': 'application/json', 'Accept': 'application/json' };
+            // Send the WP nonce when present — required for is_user_logged_in()
+            // to return true in the REST handler (so the admin bypass kicks in).
+            if ( CFG.nonce ) headers[ 'X-WP-Nonce' ] = CFG.nonce;
+
             fetch( CFG.restUrl, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                headers: headers,
                 credentials: 'same-origin',
                 body: JSON.stringify( {
                     email:      value,

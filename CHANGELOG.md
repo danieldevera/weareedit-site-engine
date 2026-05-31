@@ -1,4 +1,8 @@
 # Changelog
+## v1.5.154 — 2026-05-31 (Newsletter: send WP nonce so admin bypass works)
+- The frontend fetch wasn't sending `X-WP-Nonce`, so the REST handler never saw the logged-in admin session even with valid cookies. `is_user_logged_in()` returned false → admin rate-limit bypass (v1.5.153) didn't fire.
+- Fix: pass nonce via `wp_localize_script`, attach as `X-WP-Nonce` header in fetch. Admin testing now bypasses rate limit as intended.
+
 ## v1.5.153 — 2026-05-31 (Newsletter form: admins bypass rate limit)
 - Logged-in WP admins (`manage_options` capability) now bypass the 5-per-hour-per-IP rate limit on the newsletter signup endpoint. Lets us test the form repeatedly from the same office IP without locking ourselves out. Public visitors still rate-limited.
 
