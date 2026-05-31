@@ -61,7 +61,7 @@
         ( copy.founder_name ?
         '    <div id="edit-newsletter-strip__founder">' +
         ( copy.founder_photo ?
-            '<img id="edit-newsletter-strip__founder-photo" src="' + escapeAttr( copy.founder_photo ) + '" alt="' + escapeAttr( copy.founder_name ) + '" width="64" height="64" loading="lazy">' : '' ) +
+            '<img id="edit-newsletter-strip__founder-photo" src="' + escapeAttr( copy.founder_photo ) + '" alt="' + escapeAttr( copy.founder_name ) + '" width="84" height="84" loading="lazy">' : '' ) +
         '<div id="edit-newsletter-strip__founder-meta">' +
             '<span id="edit-newsletter-strip__founder-role">' + escapeHTML( copy.founder_role || '' ) + '</span>' +
             ( copy.founder_signature ?
