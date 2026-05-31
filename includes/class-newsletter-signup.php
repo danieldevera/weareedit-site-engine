@@ -262,7 +262,7 @@ class EDIT_Newsletter_Signup {
                 'aria_close'=> 'Fechar',
                 'founder_message'    => 'Obrigado por leres até aqui. Em breve vais receber notícias minhas.',
                 'founder_name'       => 'Daniel Devera',
-                'founder_role'       => 'Founder · EDIT.',
+                'founder_role'       => 'Founder',
                 'founder_photo'      => 'https://weareedit.io/wp-content/uploads/2026/05/daniel-devera-sign-off.png',
                 'founder_signature'  => 'https://weareedit.io/wp-content/uploads/2026/05/DANIEL-DEVERA-ASSINATURA.png',
             ],

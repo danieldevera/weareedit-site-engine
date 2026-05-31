@@ -127,10 +127,11 @@
     margin: 0;
 }
 #edit-newsletter-strip__founder-photo {
-    width: 48px;
-    height: 48px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
     object-fit: cover;
+    border: 3px solid #f92869;
     flex-shrink: 0;
 }
 #edit-newsletter-strip__founder-meta {
@@ -153,7 +154,7 @@
     display: block;
     height: auto;
     max-width: 160px;
-    margin: 14px 0 0 0;
+    margin: 2px 0 0 76px;
     opacity: 0.92;
 }
 
