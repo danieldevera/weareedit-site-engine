@@ -73,19 +73,23 @@ class EDIT_Newsletter_Signup {
         }
         $email = sanitize_email( $email );
 
-        // Rate limit per IP (Cloudflare-aware).
+        // Rate limit per IP (Cloudflare-aware). Logged-in admins are exempt
+        // so we can test the form without burning the quota on our own IP.
         $ip = isset( $_SERVER['HTTP_CF_CONNECTING_IP'] )
             ? wp_unslash( $_SERVER['HTTP_CF_CONNECTING_IP'] )
             : ( $_SERVER['REMOTE_ADDR'] ?? '' );
-        $rl_key = 'edit_newsletter_rl_' . md5( $ip );
-        $count  = (int) get_transient( $rl_key );
-        if ( $count >= self::RATE_LIMIT_PER_HOUR ) {
-            return new WP_REST_Response( [
-                'status'  => 'error',
-                'message' => 'Demasiadas tentativas. Tente de novo dentro de uma hora.',
-            ], 429 );
+        $is_admin_user = is_user_logged_in() && current_user_can( 'manage_options' );
+        if ( ! $is_admin_user ) {
+            $rl_key = 'edit_newsletter_rl_' . md5( $ip );
+            $count  = (int) get_transient( $rl_key );
+            if ( $count >= self::RATE_LIMIT_PER_HOUR ) {
+                return new WP_REST_Response( [
+                    'status'  => 'error',
+                    'message' => 'Demasiadas tentativas. Tente de novo dentro de uma hora.',
+                ], 429 );
+            }
+            set_transient( $rl_key, $count + 1, HOUR_IN_SECONDS );
         }
-        set_transient( $rl_key, $count + 1, HOUR_IN_SECONDS );
 
         // Optional first name (form is currently email-only, but support it).
         $first_name = sanitize_text_field( $params['first_name'] ?? '' );

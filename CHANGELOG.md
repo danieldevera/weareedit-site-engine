@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.153 — 2026-05-31 (Newsletter form: admins bypass rate limit)
+- Logged-in WP admins (`manage_options` capability) now bypass the 5-per-hour-per-IP rate limit on the newsletter signup endpoint. Lets us test the form repeatedly from the same office IP without locking ourselves out. Public visitors still rate-limited.
+
 ## v1.5.152 — 2026-05-31 (Homepage About: strip auto-injected links)
 - The about-section paragraphs (`Desde 2011 que a EDIT.…` block on the homepage) were getting their brand keywords (`DGERT`, `UX/UI Design`, `Data Science`, `Inteligência Artificial`, `Marketing Digital`, `Programação`) wrapped in auto-injected `<a>` tags — most likely by InLinks (live since v1.5.20). Daniel asked the paragraph kept as plain prose.
 - New `EDIT_Output_Buffer::strip_about_links()` — inline JS in `<footer>` that strips `<a>` children from `section.about .col-sm-6 p` on the homepage. Runs at DOMContentLoaded + 4 staggered timers (0.5s / 1.5s / 3s / 6s) to catch lazy injection.
