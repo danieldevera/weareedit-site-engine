@@ -149,16 +149,12 @@
     color: rgba(10,10,10,0.65);
     font-weight: 500;
 }
-#edit-newsletter-strip__founder-link {
-    color: #f92869;
-    text-decoration: none;
-    font-weight: 600;
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.18s ease;
-}
-#edit-newsletter-strip__founder-link:hover,
-#edit-newsletter-strip__founder-link:focus {
-    border-bottom-color: #f92869;
+#edit-newsletter-strip__founder-signature {
+    display: block;
+    height: auto;
+    max-width: 160px;
+    margin: 14px 0 0 0;
+    opacity: 0.92;
 }
 
 /* Form column ---------------------------------------------------------- */
