@@ -228,15 +228,17 @@ class EDIT_Newsletter_Signup {
     // ----------------------------------------------------------- Frontend
 
     /**
-     * Map of product typology → strip background colour. Used to make the
-     * strip blend in with the rest of the page's brand colour scheme.
+     * Map of product typology → strip background colour. Mirrors the
+     * accent colour each product uses elsewhere on its own page so the
+     * strip feels native to the brand surface it lives on.
      */
     const TYPOLOGY_COLORS = [
-        'homepage'  => [ 'bg' => '#ffdd06', 'bg2' => '#ffe847' ], // yellow
-        'workshop'  => [ 'bg' => '#60c5b3', 'bg2' => '#7ad6c5' ], // teal
-        'bootcamp'  => [ 'bg' => '#f92869', 'bg2' => '#ff4f86' ], // pink
-        'curso'     => [ 'bg' => '#ec8172', 'bg2' => '#f29a8d' ], // coral
-        'default'   => [ 'bg' => '#ffdd06', 'bg2' => '#ffe847' ],
+        'homepage'        => [ 'bg' => '#ffdd06', 'bg2' => '#ffe847' ], // yellow
+        'workshop'        => [ 'bg' => '#60c5b3', 'bg2' => '#7ad6c5' ], // teal
+        'bootcamp'        => [ 'bg' => '#f92869', 'bg2' => '#ff4f86' ], // pink
+        'curso_remote'    => [ 'bg' => '#0090eb', 'bg2' => '#3aa9f0' ], // blue (Cursos Remote)
+        'curso_presencial'=> [ 'bg' => '#ffdd06', 'bg2' => '#ffe847' ], // yellow (Cursos Presenciais)
+        'default'         => [ 'bg' => '#ffdd06', 'bg2' => '#ffe847' ],
     ];
 
     /** Slug-based typology detection on the `formacao` CPT. */
@@ -245,7 +247,15 @@ class EDIT_Newsletter_Signup {
         $slug = (string) get_post_field( 'post_name', get_queried_object_id() );
         if ( stripos( $slug, 'workshop' ) !== false ) return 'workshop';
         if ( stripos( $slug, 'bootcamp' ) !== false ) return 'bootcamp';
-        if ( stripos( $slug, 'curso' )    !== false ) return 'curso';
+        if ( stripos( $slug, 'curso' ) !== false ) {
+            // Cursos Presenciais live in Lisboa / Porto; Remote cursos
+            // carry "online" or "remote" in the slug. Default to remote
+            // when ambiguous since most cursos are remote-first today.
+            if ( stripos( $slug, 'porto' ) !== false || stripos( $slug, 'lisboa' ) !== false ) {
+                return 'curso_presencial';
+            }
+            return 'curso_remote';
+        }
         return null;
     }
 
