@@ -1,4 +1,10 @@
 # Changelog
+## v1.5.158 — 2026-05-31 (Confetti: slower, fuller-screen, less rigid)
+- Confetti now fixed to viewport (not clipped to the yellow strip) so pieces spill across the full screen.
+- 110 pieces (was 64). Per-piece duration 3.6-5.0s (was 2.2s). Larger horizontal spread (~55% of viewport width). Less aggressive rotation. Origin jitter so the burst doesn't look like a single point.
+- Keyframes interpolated through 40% + 70% waypoints so pieces sway organically rather than tracing a rigid straight line.
+- Cleanup timer extended to 5.6s.
+
 ## v1.5.157 — 2026-05-31 (Newsletter pitch: hard line break between sentences)
 - Inserted \n between the two pitch sentences + added `white-space: pre-line` CSS to the pitch element so the second sentence renders on a new line. Tighter visual hierarchy.
 

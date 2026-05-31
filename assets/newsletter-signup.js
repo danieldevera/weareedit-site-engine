@@ -148,50 +148,75 @@
     }
 
     /* ------------------------------------------------------------- confetti
-       Fires on successful subscription. Spawns ~60 small coloured rectangles
-       from the centre of the strip, each with a random horizontal trajectory
-       and rotation. Cleans itself up after 2.4s. Brand palette only. */
+       Fires on successful subscription. Layer is FIXED to the viewport so
+       pieces can spill across the full screen (not clipped to the strip).
+       Origin = strip centre projected to viewport coords. ~100 pieces, 4-5s
+       fall with sway, brand palette only. */
     function fireConfetti() {
         if ( window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches ) return;
 
         var layer = document.createElement( 'div' );
         layer.id = 'edit-newsletter-strip__confetti';
         layer.setAttribute( 'aria-hidden', 'true' );
-        strip.appendChild( layer );
+        document.body.appendChild( layer );
 
         var colors = [ '#ffdd06', '#f92869', '#60c5b3', '#0a0a0a', '#ec8172' ];
-        var rect = strip.getBoundingClientRect();
-        var originX = rect.width * 0.5;
-        var originY = rect.height * 0.3; // upper-middle so pieces look like they erupt from the form
 
-        var pieces = 64;
+        // Compute strip centre in viewport coordinates (layer is position:fixed,
+        // so children use viewport-relative left/top).
+        var rect    = strip.getBoundingClientRect();
+        var originX = rect.left + rect.width  * 0.5;
+        var originY = rect.top  + rect.height * 0.35;
+
+        var vw = Math.max( document.documentElement.clientWidth,  window.innerWidth  || 0 );
+        var vh = Math.max( document.documentElement.clientHeight, window.innerHeight || 0 );
+
+        var pieces = 110;
         for ( var i = 0; i < pieces; i++ ) {
             var p = document.createElement( 'span' );
             p.className = 'edit-confetti-piece';
-            p.style.left = originX + 'px';
-            p.style.top  = originY + 'px';
+            // Small random origin offset so the burst doesn't look like a single point.
+            var jitter = 40;
+            p.style.left = ( originX + ( Math.random() * jitter * 2 - jitter ) ) + 'px';
+            p.style.top  = ( originY + ( Math.random() * jitter - jitter / 2 ) ) + 'px';
             p.style.backgroundColor = colors[ Math.floor( Math.random() * colors.length ) ];
-            // Horizontal travel: -50vw to +50vw randomly
-            var dx = ( Math.random() * 1.2 - 0.6 ) * rect.width;
-            // Vertical travel: 60-110% of strip height + some extra to clear bottom
-            var dy = ( 0.7 + Math.random() * 0.6 ) * rect.height + 60;
-            var rot = ( Math.random() * 6 + 2 ) * 180; // 360-1440deg
-            var delay = Math.random() * 180;          // 0-180ms stagger
+
+            // Horizontal travel: full viewport width random
+            var dx = ( Math.random() * 1.6 - 0.8 ) * vw * 0.55;
+            // Vertical travel: anywhere from 60% to 110% of remaining viewport height
+            var maxDown = vh - originY + 80;
+            var dy = ( 0.55 + Math.random() * 0.55 ) * maxDown;
+
+            var rot   = ( Math.random() * 4 + 1.5 ) * 180; // 270-990deg, less spinny
+            var delay = Math.random() * 420;               // 0-420ms stagger
+            var dur   = 3600 + Math.random() * 1400;       // 3.6-5.0s per piece
+
             p.style.setProperty( '--dx',  dx  + 'px' );
             p.style.setProperty( '--dy',  dy  + 'px' );
             p.style.setProperty( '--rot', rot + 'deg' );
+            p.style.setProperty( '--dur', dur + 'ms' );
             p.style.animationDelay = delay + 'ms';
-            // Some pieces wider (paper rectangles), some round
-            if ( Math.random() < 0.3 ) {
-                p.style.width = '8px';
+
+            // Vary shape — paper rectangles, squares, circles, thin strips.
+            var shape = Math.random();
+            if ( shape < 0.25 ) {
+                p.style.width  = '6px';
+                p.style.height = '18px';
+            } else if ( shape < 0.5 ) {
+                p.style.width  = '12px';
                 p.style.height = '8px';
+            } else if ( shape < 0.7 ) {
+                p.style.width  = '9px';
+                p.style.height = '9px';
                 p.style.borderRadius = '50%';
             }
+            // else default 10x16
+
             layer.appendChild( p );
         }
 
-        // Cleanup after the longest piece finishes (delay 180ms + 2200ms anim).
-        setTimeout( function () { if ( layer.parentNode ) layer.parentNode.removeChild( layer ); }, 2600 );
+        // Cleanup after the longest piece finishes (delay 420ms + 5000ms anim).
+        setTimeout( function () { if ( layer.parentNode ) layer.parentNode.removeChild( layer ); }, 5600 );
     }
 
     // -------------------------------------------------------------- form wiring
