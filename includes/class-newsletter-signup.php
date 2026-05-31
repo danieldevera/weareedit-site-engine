@@ -239,23 +239,30 @@ class EDIT_Newsletter_Signup {
         'default'   => [ 'bg' => '#ffdd06', 'bg2' => '#ffe847' ],
     ];
 
-    /** True on a `formacao` CPT post whose slug contains "workshop". */
-    private static function is_workshop_page(): bool {
-        if ( ! is_singular( 'formacao' ) ) return false;
-        $slug = get_post_field( 'post_name', get_queried_object_id() );
-        return stripos( (string) $slug, 'workshop' ) !== false;
+    /** Slug-based typology detection on the `formacao` CPT. */
+    private static function detect_formacao_typology(): ?string {
+        if ( ! is_singular( 'formacao' ) ) return null;
+        $slug = (string) get_post_field( 'post_name', get_queried_object_id() );
+        if ( stripos( $slug, 'workshop' ) !== false ) return 'workshop';
+        if ( stripos( $slug, 'bootcamp' ) !== false ) return 'bootcamp';
+        if ( stripos( $slug, 'curso' )    !== false ) return 'curso';
+        return null;
+    }
+
+    /** Whether to render the strip on the current page at all. */
+    private static function should_render(): bool {
+        return is_front_page() || self::detect_formacao_typology() !== null;
     }
 
     /** Resolve the current page's typology key for color mapping. */
     private static function current_typology(): string {
-        if ( is_front_page() )            return 'homepage';
-        if ( self::is_workshop_page() )   return 'workshop';
-        return 'default';
+        if ( is_front_page() ) return 'homepage';
+        return self::detect_formacao_typology() ?? 'default';
     }
 
     public static function enqueue_assets(): void {
-        // Render on homepage + workshop product pages.
-        if ( ! is_front_page() && ! self::is_workshop_page() ) return;
+        // Render on homepage + product pages (workshop / bootcamp / curso).
+        if ( ! self::should_render() ) return;
 
         wp_enqueue_style(
             'edit-newsletter-signup',
