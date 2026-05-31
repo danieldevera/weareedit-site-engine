@@ -55,7 +55,6 @@
         '    <p id="edit-newsletter-strip__eyebrow">' + escapeHTML( copy.eyebrow || 'Newsletter EDIT.' ) + '</p>',
         '    <h2 id="edit-newsletter-strip__headline">' + escapeHTML( copy.headline || 'Recebe a próxima edição.' ).replace( /\.$/, '<span class="dot">.</span>' ) + '</h2>',
         '    <p id="edit-newsletter-strip__pitch">' + escapeHTML( copy.pitch || '' ) + '</p>',
-        '    <p id="edit-newsletter-strip__social">' + escapeHTML( copy.social || '' ) + '</p>',
         ( copy.founder_message ?
         '    <p id="edit-newsletter-strip__founder-msg">' + escapeHTML( copy.founder_message ) + '</p>' : '' ),
         ( copy.founder_name ?
