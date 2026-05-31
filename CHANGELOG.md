@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.5.150 — 2026-05-31 (Newsletter strip: copy + spacing + font)
+- **Copy update.** Pitch line now reads `Notas semanais. Entrevistas inéditas com tutores. Cursos em pré-lançamento, Curated content by our Founder.` — adds the founder-curated promise to differentiate from generic newsletters.
+- **Spacing.** Added 64-112px vertical margin above and below the strip (responsive — 48-72px mobile, 80-112px desktop). Strip no longer feels glued to the hero or the courses grid.
+- **Typography.** Font swapped from `Helvetica Neue` to `SctoGroteskA` (weareedit.io theme font, loaded from `/wp-content/themes/weareedit/css/fonts/`). Inner elements use `inherit` so they pick up the same font automatically. Strip now visually matches the rest of the site.
+
 ## v1.5.149 — 2026-05-31 (Newsletter strip placement fix)
 - **Fix:** newsletter signup strip was injecting at the bottom of the homepage instead of immediately after the hero. Root cause: the JS selector `.btn-yellow.swipe-cta` matched the footer "Subscrever Newsletter" CTA as well (it carries the same site-wide class), and the walk-up logic landed in the wrong section.
 - New anchor: `section.hero` directly (verified live on weareedit.io — the locked v1.5.54 hero is a `<section class="hero">` block followed by `.courses-boxes-home`). Strip now appears between hero and the courses grid.

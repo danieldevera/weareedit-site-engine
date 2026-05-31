@@ -9,10 +9,18 @@
     background: #ffdd06;
     background: linear-gradient(135deg, #ffdd06 0%, #ffe847 100%);
     padding: 56px 24px;
-    margin: 0;
+    /* Generous vertical breathing room from the hero above and the course
+       cards below — section.hero ends tight to the H1/CTA, and
+       .courses-boxes-home opens straight into a grid. Without this,
+       the yellow strip feels glued to neighbouring sections. */
+    margin: 64px 0 96px;
     overflow: hidden;
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'SctoGroteskA', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     color: #0a0a0a;
+}
+
+@media (max-width: 767px) {
+    #edit-newsletter-strip { margin: 48px 0 72px; }
 }
 
 #edit-newsletter-strip__inner {
@@ -25,7 +33,7 @@
 }
 
 @media (min-width: 768px) {
-    #edit-newsletter-strip { padding: 64px 32px; }
+    #edit-newsletter-strip { padding: 64px 32px; margin: 80px 0 112px; }
     #edit-newsletter-strip__inner {
         grid-template-columns: 1.2fr 1fr;
         gap: 48px;
