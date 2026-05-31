@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.156 — 2026-05-31 (Newsletter pitch: two-sentence rewrite)
+- Pitch reworked to two sentences: `Notas semanais, entrevistas inéditas com tutores, cursos em pré-lançamento. Conteúdos de especialidade com curadoria do nosso Fundador.` — first sentence lists the three deliverables, second sentence elevates the founder-curated promise.
+
 ## v1.5.155 — 2026-05-31 (Newsletter strip: animations)
 - **Entrance fade-up.** Strip starts at `opacity:0; translateY(28px)` — fades in + rises when it enters viewport (IntersectionObserver, 25% threshold). 700ms ease. Matches the site's existing `.wow animate__fadeInUp` pattern.
 - **Pulsing pink dot.** The `.` after "edição" pulses gently (scale 1 → 1.18, 2.4s loop). Subtle attention-draw on the brand mark.
