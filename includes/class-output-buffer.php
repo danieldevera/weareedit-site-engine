@@ -58,6 +58,49 @@ class EDIT_Output_Buffer {
 
         // Site-wide CSS overrides for assets the plugin rewrites.
         add_action( 'wp_head',           [ __CLASS__, 'inject_global_overrides' ], 99 );
+
+        // Strip auto-injected <a> tags (InLinks etc.) from the homepage
+        // about-section paragraphs. Plain prose only — no third-party
+        // tools should be turning brand terms into hyperlinks here.
+        add_action( 'wp_footer',         [ __CLASS__, 'strip_about_links' ], 999 );
+    }
+
+    /**
+     * Strip <a> children from the homepage "about" paragraphs (the Desde
+     * 2011 block). InLinks auto-detects keywords like "DGERT", "UX/UI Design",
+     * "Data Science" and wraps them in links — Daniel asked them gone for
+     * this specific paragraph (2026-05-31).
+     *
+     * Runs in <footer> + on multiple delayed timers to catch InLinks' lazy
+     * injection. Selector targets `section.about .col-sm-6 p`.
+     */
+    public static function strip_about_links(): void {
+        if ( ! is_front_page() ) return;
+        ?>
+<script id="weareedit-about-unlink">
+(function(){
+    function unlinkAbout(){
+        var paras = document.querySelectorAll('section.about .col-sm-6 p');
+        for (var i = 0; i < paras.length; i++){
+            var anchors = paras[i].getElementsByTagName('a');
+            // Iterate backwards because we mutate the live HTMLCollection.
+            for (var j = anchors.length - 1; j >= 0; j--){
+                var a = anchors[j];
+                var text = document.createTextNode(a.textContent);
+                a.parentNode.replaceChild(text, a);
+            }
+        }
+    }
+    if (document.readyState !== 'loading') unlinkAbout();
+    else document.addEventListener('DOMContentLoaded', unlinkAbout);
+    // InLinks (and similar) inject lazily — run again on multiple intervals.
+    setTimeout(unlinkAbout, 500);
+    setTimeout(unlinkAbout, 1500);
+    setTimeout(unlinkAbout, 3000);
+    setTimeout(unlinkAbout, 6000);
+})();
+</script>
+        <?php
     }
 
     /**

@@ -1,4 +1,8 @@
 # Changelog
+## v1.5.152 — 2026-05-31 (Homepage About: strip auto-injected links)
+- The about-section paragraphs (`Desde 2011 que a EDIT.…` block on the homepage) were getting their brand keywords (`DGERT`, `UX/UI Design`, `Data Science`, `Inteligência Artificial`, `Marketing Digital`, `Programação`) wrapped in auto-injected `<a>` tags — most likely by InLinks (live since v1.5.20). Daniel asked the paragraph kept as plain prose.
+- New `EDIT_Output_Buffer::strip_about_links()` — inline JS in `<footer>` that strips `<a>` children from `section.about .col-sm-6 p` on the homepage. Runs at DOMContentLoaded + 4 staggered timers (0.5s / 1.5s / 3s / 6s) to catch lazy injection.
+
 ## v1.5.151 — 2026-05-31 (Pitch line full PT translation)
 - Translated mixed-language pitch to full Portuguese: `Notas semanais. Entrevistas inéditas com tutores. Cursos em pré-lançamento. Curadoria do nosso Fundador.` — preserves the founder-curated promise but reads native to PT-PT audience.
 
