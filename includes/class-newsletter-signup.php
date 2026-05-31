@@ -265,7 +265,7 @@ class EDIT_Newsletter_Signup {
                 'founder_role'       => 'Founder · EDIT.',
                 'founder_link_label' => 'responde direto',
                 'founder_email'      => 'daniel.devera@weareedit.io',
-                'founder_photo'      => 'https://weareedit.io/wp-content/uploads/2021/05/Daniel-Devera.png',
+                'founder_photo'      => 'https://weareedit.io/wp-content/uploads/2026/05/daniel-devera-sign-off.png',
             ],
         ] );
     }
