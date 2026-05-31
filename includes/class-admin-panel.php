@@ -68,6 +68,9 @@ class EDIT_Admin_Panel {
                 'sanitize_text_field',
                 (array) ( $input['archive_descriptions'] ?? [] )
             ),
+            // Brevo newsletter integration (v1.5.148+)
+            'brevo_api_key'             => sanitize_text_field( $input['brevo_api_key'] ?? '' ),
+            'brevo_newsletter_list_id'  => absint( $input['brevo_newsletter_list_id'] ?? 4 ),
         ];
     }
 
@@ -230,6 +233,25 @@ class EDIT_Admin_Panel {
                         <td>
                             <input type="text" id="gads_conversion_id" name="edit_seo_fix_settings[gads_conversion_id]" value="<?php echo esc_attr( $settings['gads_conversion_id'] ?? '' ); ?>" class="regular-text" placeholder="AW-XXXXXXXXX">
                             <p class="description">Get from <a href="https://ads.google.com/aw/conversions" target="_blank">Google Ads → Tools → Conversions</a>.</p>
+                        </td>
+                    </tr>
+                </table>
+
+                <h2>Brevo Newsletter Integration</h2>
+                <p class="description">Powers the homepage newsletter signup strip. Adds new subscribers to a Brevo list via the v3 REST API. Key is stored in <code>wp_options</code> — treat as a secret.</p>
+                <table class="form-table">
+                    <tr>
+                        <th><label for="brevo_api_key">Brevo API Key (v3)</label></th>
+                        <td>
+                            <input type="password" id="brevo_api_key" name="edit_seo_fix_settings[brevo_api_key]" value="<?php echo esc_attr( $settings['brevo_api_key'] ?? '' ); ?>" class="regular-text" placeholder="xkeysib-... (from Brevo SMTP & API → Chaves API)" autocomplete="off">
+                            <p class="description">Generate at <a href="https://app.brevo.com/settings/keys/api" target="_blank">Brevo → SMTP &amp; API → Chaves API</a>. Never paste this anywhere public.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="brevo_newsletter_list_id">Newsletter list ID</label></th>
+                        <td>
+                            <input type="number" id="brevo_newsletter_list_id" name="edit_seo_fix_settings[brevo_newsletter_list_id]" value="<?php echo esc_attr( $settings['brevo_newsletter_list_id'] ?? 4 ); ?>" class="small-text" min="1" placeholder="4">
+                            <p class="description">Brevo list ID for new subscribers (default <code>4</code> = <code>Newsletter · Site organic (2026+)</code>). Find at <a href="https://app.brevo.com/contact/list-listing" target="_blank">Brevo → Contatos → Listas</a> — column "ID".</p>
                         </td>
                     </tr>
                 </table>

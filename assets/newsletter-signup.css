@@ -1,0 +1,208 @@
+/* ============================================================================
+   EDIT. — Newsletter Signup Strip
+   Hero-adjacent newsletter capture on the homepage.
+   Reuses the locked .swipe-cta pattern from class-output-buffer.php (v1.5.112).
+   ========================================================================== */
+
+#edit-newsletter-strip {
+    position: relative;
+    background: #ffdd06;
+    background: linear-gradient(135deg, #ffdd06 0%, #ffe847 100%);
+    padding: 56px 24px;
+    margin: 0;
+    overflow: hidden;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #0a0a0a;
+}
+
+#edit-newsletter-strip__inner {
+    max-width: 980px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    align-items: center;
+}
+
+@media (min-width: 768px) {
+    #edit-newsletter-strip { padding: 64px 32px; }
+    #edit-newsletter-strip__inner {
+        grid-template-columns: 1.2fr 1fr;
+        gap: 48px;
+    }
+}
+
+#edit-newsletter-strip__copy { text-align: left; }
+
+#edit-newsletter-strip__eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #0a0a0a;
+    margin: 0 0 10px 0;
+}
+
+#edit-newsletter-strip__headline {
+    font-size: 36px;
+    line-height: 1.05;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: #0a0a0a;
+    margin: 0 0 14px 0;
+}
+#edit-newsletter-strip__headline .dot { color: #f92869; }
+
+@media (min-width: 768px) {
+    #edit-newsletter-strip__headline { font-size: 48px; }
+}
+
+#edit-newsletter-strip__pitch {
+    font-size: 15px;
+    line-height: 1.5;
+    color: #0a0a0a;
+    margin: 0 0 8px 0;
+    max-width: 480px;
+}
+
+#edit-newsletter-strip__social {
+    font-size: 12px;
+    line-height: 1.4;
+    color: rgba(10,10,10,0.65);
+    margin: 4px 0 0 0;
+    font-weight: 600;
+}
+
+/* Form column ---------------------------------------------------------- */
+
+#edit-newsletter-strip__form {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#edit-newsletter-strip__field {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+@media (min-width: 560px) {
+    #edit-newsletter-strip__field {
+        flex-direction: row;
+        gap: 8px;
+    }
+}
+
+#edit-newsletter-strip__email {
+    flex: 1;
+    height: 52px;
+    padding: 0 18px;
+    font-size: 15px;
+    font-family: inherit;
+    color: #0a0a0a;
+    background: #ffffff;
+    border: 2px solid #0a0a0a;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    -webkit-appearance: none;
+    appearance: none;
+}
+#edit-newsletter-strip__email::placeholder {
+    color: rgba(10,10,10,0.40);
+}
+#edit-newsletter-strip__email:focus {
+    border-color: #f92869;
+    box-shadow: 0 0 0 3px rgba(249, 40, 105, 0.15);
+}
+#edit-newsletter-strip__email[aria-invalid="true"] {
+    border-color: #b62929;
+    box-shadow: 0 0 0 3px rgba(182, 41, 41, 0.15);
+}
+
+/* Submit button — reuses site-wide .swipe-cta from output-buffer ----- */
+
+#edit-newsletter-strip__submit {
+    height: 52px;
+    padding: 0 28px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #0a0a0a;
+    background: #0a0a0a;
+    border: 0;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+    min-width: 180px;
+}
+/* .swipe-label color override (default site-wide is the hover color) */
+#edit-newsletter-strip__submit .swipe-label {
+    color: #ffdd06;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+#edit-newsletter-strip__submit:disabled {
+    opacity: 0.5;
+    cursor: wait;
+}
+
+/* Honeypot (hidden) */
+#edit-newsletter-strip__honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+/* Disclaimer */
+#edit-newsletter-strip__disclaimer {
+    font-size: 11px;
+    line-height: 1.4;
+    color: rgba(10,10,10,0.55);
+    margin: 0;
+}
+
+/* Status messages */
+#edit-newsletter-strip__status {
+    min-height: 18px;
+    font-size: 13px;
+    line-height: 1.4;
+    font-weight: 600;
+    margin: 0;
+}
+#edit-newsletter-strip__status[data-state="success"] { color: #0a0a0a; }
+#edit-newsletter-strip__status[data-state="error"]   { color: #b62929; }
+
+/* Success state — replaces the form ---------------------------------- */
+
+#edit-newsletter-strip[data-state="success"] #edit-newsletter-strip__form {
+    display: none;
+}
+#edit-newsletter-strip[data-state="success"] #edit-newsletter-strip__success {
+    display: block;
+}
+#edit-newsletter-strip__success {
+    display: none;
+    padding: 24px;
+    background: #ffffff;
+    border-left: 4px solid #f92869;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #0a0a0a;
+}
+#edit-newsletter-strip__success strong {
+    display: block;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+}

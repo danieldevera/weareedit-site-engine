@@ -1,5 +1,22 @@
 # Changelog
 
+## v1.5.148 — 2026-05-31
+- **Newsletter signup CTA — Brevo integration.** New homepage strip captures email subscriptions and posts them to Brevo list `Newsletter · Site organic (2026+)` (ID 4 by default) via the v3 REST API. Single-field form (email only), reuses the locked site-wide `.swipe-cta` button standard (v1.5.112) for the submit button.
+- New `class-newsletter-signup.php`:
+  - REST endpoint `POST /wp-json/edit/v1/newsletter-signup`. Public, protected by honeypot + email format + per-IP rate limit (5/hour, Cloudflare-aware via `HTTP_CF_CONNECTING_IP`).
+  - Brevo client calls `POST /v3/contacts` with `updateEnabled:true`. Duplicate response (`duplicate_parameter`) is downgraded to soft-success (`Já estás subscrito`) so returning visitors aren't shamed. Existing duplicates get their list-membership refreshed via PUT.
+  - Adds custom attributes `SIGNUP_IP`, `SIGNUP_PLACEMENT`, `SIGNUP_SOURCE` on each contact for analytics segmentation later.
+  - Logs every submission (success or failure) to the existing CF7 Debug Log (Tools → CF7 Debug Log) for single-pane visibility.
+- New `assets/newsletter-signup.js` (~7KB):
+  - Injects `<section id="edit-newsletter-strip">` on `body.home` only, right after the locked hero (anchored to the `.btn-yellow.swipe-cta` "Ver todos os Cursos" CTA). No theme template edits required.
+  - 5 dataLayer events + direct gtag calls: `newsletter_view` (IntersectionObserver at 50%), `newsletter_focus`, `newsletter_submit`, `newsletter_success` (or `newsletter_duplicate`), `newsletter_error`. Belt-and-suspenders for GA4 — works even if GTM `GTM-TSP85L` is not configured to listen.
+  - Vanilla ES5-safe, no dependencies. Skips re-injection on bfcache restore.
+- New `assets/newsletter-signup.css`: yellow-gradient hero-adjacent strip with pink-dot accent on the headline, 52px tall email + submit, swipe-CTA submit reuses site-wide animation, mobile stack at 560px.
+- Admin Panel: new "Brevo Newsletter Integration" section in **Settings → EDIT. SEO Fix** with two fields:
+  - `brevo_api_key` (password input, masked)
+  - `brevo_newsletter_list_id` (number, default 4)
+- Copy locked at: eyebrow `Newsletter EDIT.` + headline `Recebe a próxima edição.` + pitch `Notas semanais. Entrevistas inéditas com tutores. Cursos antes do site público.` + social proof `Junta-te a +11.000 profissionais digitais portugueses.` Tied to the locked weekly+bi-weekly content engine — every promise is deliverable.
+
 ## v1.5.90 — 2026-05-27
 - **Course schema expansion** (audit Tier 1 GEO item). Every `formacao` page now emits three additional schema.org fields beyond what was there before:
   - **`aggregateRating`** — 4.1 / 67 (reuses the Organization rating, with `itemReviewed` `@id` pointing at the org node). Matches what's visible on the homepage hero and `/avaliacoes-google/`. Unlocks Course rich-result eligibility.
