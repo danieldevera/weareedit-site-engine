@@ -245,7 +245,7 @@ class EDIT_Newsletter_Signup {
             'copy'    => [
                 'eyebrow'   => 'Newsletter EDIT.',
                 'headline'  => 'Recebe a próxima edição.',
-                'pitch'     => 'Notas semanais. Entrevistas inéditas com tutores. Cursos em pré-lançamento, Curated content by our Founder.',
+                'pitch'     => 'Notas semanais. Entrevistas inéditas com tutores. Cursos em pré-lançamento. Curadoria do nosso Fundador.',
                 'social'    => 'Junta-te a +11.000 profissionais digitais portugueses.',
                 'disclaimer'=> 'Sem spam. Cancela quando quiseres.',
                 'submit'    => 'Subscrever',

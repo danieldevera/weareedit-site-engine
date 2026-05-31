@@ -1,4 +1,6 @@
 # Changelog
+## v1.5.151 — 2026-05-31 (Pitch line full PT translation)
+- Translated mixed-language pitch to full Portuguese: `Notas semanais. Entrevistas inéditas com tutores. Cursos em pré-lançamento. Curadoria do nosso Fundador.` — preserves the founder-curated promise but reads native to PT-PT audience.
 
 ## v1.5.150 — 2026-05-31 (Newsletter strip: copy + spacing + font)
 - **Copy update.** Pitch line now reads `Notas semanais. Entrevistas inéditas com tutores. Cursos em pré-lançamento, Curated content by our Founder.` — adds the founder-curated promise to differentiate from generic newsletters.
