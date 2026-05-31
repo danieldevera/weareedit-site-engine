@@ -89,7 +89,7 @@
         '    </div>',
         '  </form>',
         '  <div id="edit-newsletter-strip__success" role="status">',
-        '    <strong>' + escapeHTML( copy.success_title || 'Obrigado.' ) + '</strong>',
+        '    <strong>' + escapeHTML( copy.success_title || 'Obrigado!' ) + '</strong>',
         '    <span id="edit-newsletter-strip__success-msg">' + escapeHTML( copy.success || '' ) + '</span>',
         '  </div>',
         '</div>',
