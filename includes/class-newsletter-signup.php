@@ -116,7 +116,7 @@ class EDIT_Newsletter_Signup {
         if ( $result['ok'] ) {
             return new WP_REST_Response( [
                 'status'  => 'ok',
-                'message' => 'Obrigado — verifica o teu email para confirmar a subscrição.',
+                'message' => 'Subscrito. Obrigado — vemo-nos em breve.',
             ], 200 );
         }
 
@@ -255,7 +255,7 @@ class EDIT_Newsletter_Signup {
                 'disclaimer'=> 'Sem spam. Cancela quando quiseres.',
                 'submit'    => 'Subscrever',
                 'placeholder' => 'o.teu.email@dominio.pt',
-                'success'   => 'Subscrito. Verifica o teu email — vais receber confirmação em alguns minutos.',
+                'success'   => 'Subscrito. Obrigado — vemo-nos em breve.',
                 'duplicate' => 'Já estás na lista — obrigado!',
                 'invalid'   => 'Email inválido.',
                 'error'     => 'Algo correu mal. Tenta novamente em instantes.',

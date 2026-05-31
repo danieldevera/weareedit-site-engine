@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.161 — 2026-05-31 (Success copy: don't promise confirmation email)
+- Success message no longer says "verifica o teu email para confirmar" — welcome automation isn't built yet (Task #16). New copy: `Subscrito. Obrigado — vemo-nos em breve.` Honest and friendly.
+
 ## v1.5.160 — 2026-05-31 (Animations: more perceivable + smoother fade)
 - **Entrance fade-up:** larger displacement (60px translateY + 0.985 scale) and longer duration (1100ms) so it's clearly perceived during scroll. Threshold raised to fire when strip is genuinely on-screen (15% visibility + 10% bottom rootMargin).
 - **Dot pulse:** more visible heartbeat — scale 1 → 1.38 (was 1.18), faster 1.8s cycle (was 2.4s), with a slight upward bob.
