@@ -6,8 +6,9 @@
 
 #edit-newsletter-strip {
     position: relative;
+    /* background is set inline by JS based on page typology (homepage = yellow,
+       workshop = teal, etc.) — see EDIT_Newsletter_Signup::TYPOLOGY_COLORS */
     background: #ffdd06;
-    background: linear-gradient(135deg, #ffdd06 0%, #ffe847 100%);
     padding: 40px 24px;
     /* Generous vertical breathing room from the hero above and the course
        cards below — section.hero ends tight to the H1/CTA, and

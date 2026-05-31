@@ -12,9 +12,8 @@
     if ( typeof window.editNewsletter !== 'object' || ! window.editNewsletter ) return;
     var CFG = window.editNewsletter;
 
-    // Only inject on the homepage. The PHP enqueue already gates by is_front_page(),
-    // but belt-and-suspenders against caching mishaps that ship JS to other pages.
-    if ( ! /(^|\s)(home|page-template-page-home)(\s|$)/.test( document.body.className || '' ) ) return;
+    // PHP enqueue is now the source of truth — if the script is loaded, we render.
+    // (Homepage + workshop pages currently; more typologies follow.)
 
     // Avoid double-injection on bfcache restore or SPA-like navigations.
     if ( document.getElementById( 'edit-newsletter-strip' ) ) return;
@@ -49,6 +48,12 @@
     var strip = document.createElement( 'section' );
     strip.id = 'edit-newsletter-strip';
     strip.setAttribute( 'aria-labelledby', 'edit-newsletter-strip__headline' );
+    strip.setAttribute( 'data-typology', CFG.typology || 'homepage' );
+    // Typology-driven background (homepage = yellow, workshop = teal, etc.).
+    if ( CFG.bg && CFG.bg2 ) {
+        strip.style.background = CFG.bg;
+        strip.style.backgroundImage = 'linear-gradient(135deg, ' + CFG.bg + ' 0%, ' + CFG.bg2 + ' 100%)';
+    }
     strip.innerHTML = [
         '<div id="edit-newsletter-strip__inner">',
         '  <div id="edit-newsletter-strip__copy">',
@@ -107,25 +112,39 @@
     // ----------------------------------------------------------------- inject
 
     function findInjectionPoint() {
-        // 1) The locked homepage hero is <section class="hero">. Inject right
-        //    after it so the strip sits between the hero and `.courses-boxes-home`.
-        //    Verified via the live HTML on 2026-05-31.
-        var hero = document.querySelector( 'section.hero' );
-        if ( hero ) return hero;
+        var typology = CFG.typology || 'homepage';
 
-        // 2) Fallback: find the first <section> inside the main content area.
+        // Homepage: between hero and course grid (locked v1.5.182).
+        if ( typology === 'homepage' ) {
+            var hero = document.querySelector( 'section.hero' );
+            if ( hero ) return { node: hero, position: 'after' };
+        }
+
+        // Workshop pages (and other product pages going forward):
+        // sit at the END of the page content, just before the footer.
+        // The formacao theme typically has a global <footer> at the bottom.
+        var footer = document.querySelector( 'footer.footer, footer#footer, footer[role="contentinfo"], body > footer' );
+        if ( footer ) return { node: footer, position: 'before' };
+
+        // Fallback: first <section> inside main content.
         var first = document.querySelector( 'main section, #main section, .site-main section, .content section' );
-        if ( first ) return first;
+        if ( first ) return { node: first, position: 'after' };
 
-        // 3) Last resort: first <section> on the page.
+        // Last resort: first <section> on the page.
         var anySection = document.querySelector( 'section' );
-        return anySection || null;
+        if ( anySection ) return { node: anySection, position: 'after' };
+
+        return null;
     }
 
     function injectStrip() {
         var anchor = findInjectionPoint();
-        if ( anchor && anchor.parentNode ) {
-            anchor.parentNode.insertBefore( strip, anchor.nextSibling );
+        if ( anchor && anchor.node && anchor.node.parentNode ) {
+            if ( anchor.position === 'before' ) {
+                anchor.node.parentNode.insertBefore( strip, anchor.node );
+            } else {
+                anchor.node.parentNode.insertBefore( strip, anchor.node.nextSibling );
+            }
         } else {
             // Hard fallback: append to body so the strip exists somewhere.
             document.body.appendChild( strip );

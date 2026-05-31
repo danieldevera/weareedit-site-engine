@@ -227,9 +227,35 @@ class EDIT_Newsletter_Signup {
 
     // ----------------------------------------------------------- Frontend
 
+    /**
+     * Map of product typology → strip background colour. Used to make the
+     * strip blend in with the rest of the page's brand colour scheme.
+     */
+    const TYPOLOGY_COLORS = [
+        'homepage'  => [ 'bg' => '#ffdd06', 'bg2' => '#ffe847' ], // yellow
+        'workshop'  => [ 'bg' => '#60c5b3', 'bg2' => '#7ad6c5' ], // teal
+        'bootcamp'  => [ 'bg' => '#f92869', 'bg2' => '#ff4f86' ], // pink
+        'curso'     => [ 'bg' => '#ec8172', 'bg2' => '#f29a8d' ], // coral
+        'default'   => [ 'bg' => '#ffdd06', 'bg2' => '#ffe847' ],
+    ];
+
+    /** True on a `formacao` CPT post whose slug contains "workshop". */
+    private static function is_workshop_page(): bool {
+        if ( ! is_singular( 'formacao' ) ) return false;
+        $slug = get_post_field( 'post_name', get_queried_object_id() );
+        return stripos( (string) $slug, 'workshop' ) !== false;
+    }
+
+    /** Resolve the current page's typology key for color mapping. */
+    private static function current_typology(): string {
+        if ( is_front_page() )            return 'homepage';
+        if ( self::is_workshop_page() )   return 'workshop';
+        return 'default';
+    }
+
     public static function enqueue_assets(): void {
-        // Only on homepage. Visitor on /formacao/ etc. doesn't need this code shipped.
-        if ( ! is_front_page() ) return;
+        // Render on homepage + workshop product pages.
+        if ( ! is_front_page() && ! self::is_workshop_page() ) return;
 
         wp_enqueue_style(
             'edit-newsletter-signup',
@@ -244,9 +270,15 @@ class EDIT_Newsletter_Signup {
             WEAREDIT_SITE_ENGINE_VERSION,
             true
         );
+        $typology = self::current_typology();
+        $colors   = self::TYPOLOGY_COLORS[ $typology ] ?? self::TYPOLOGY_COLORS['default'];
+
         wp_localize_script( 'edit-newsletter-signup', 'editNewsletter', [
-            'restUrl' => esc_url_raw( rest_url( self::REST_NAMESPACE . self::REST_ROUTE ) ),
-            'nonce'   => wp_create_nonce( 'wp_rest' ),
+            'restUrl'  => esc_url_raw( rest_url( self::REST_NAMESPACE . self::REST_ROUTE ) ),
+            'nonce'    => wp_create_nonce( 'wp_rest' ),
+            'typology' => $typology,
+            'bg'       => $colors['bg'],
+            'bg2'      => $colors['bg2'],
             'copy'    => [
                 'eyebrow'   => 'Newsletter EDIT.',
                 'headline'  => 'Recebe a próxima edição.',
