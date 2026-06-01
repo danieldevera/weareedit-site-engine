@@ -524,8 +524,13 @@ class EDIT_Newsletter_Picks {
      * Admin "Send test welcome" — sends a copy of the current welcome
      * to the configured test recipient. Same logic as send_welcome_to()
      * but stores the result for the admin status badge.
+     *
+     * Also clears the tutor photo cache so newly-uploaded NL photos
+     * (e.g. hugo-oliveira-vicente-280x280-1.png) are picked up
+     * immediately on the next render — bypassing the 1-hour miss cache.
      */
     public static function send_test_welcome(): array {
+        self::clear_nl_photo_cache();
         $settings  = get_option( 'edit_seo_fix_settings', [] );
         $recipient = (string) ( $settings['welcome_test_recipient'] ?? self::DEFAULT_SENDER_EMAIL );
         $result    = self::send_welcome_to( $recipient, '' );
@@ -533,6 +538,12 @@ class EDIT_Newsletter_Picks {
         update_option( self::OPT_LAST_STATUS,  $result['ok'] ? 'ok' : 'error', false );
         update_option( self::OPT_LAST_MESSAGE, (string) ( $result['message'] ?? '' ), false );
         return $result;
+    }
+
+    /** Wipe every cached NL photo lookup (transients). */
+    private static function clear_nl_photo_cache(): void {
+        global $wpdb;
+        $wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_edit_nl_photo_%' OR option_name LIKE '_transient_timeout_edit_nl_photo_%'" );
     }
 
     /** Backwards-compatibility alias — sync_to_brevo() now sends a test. */
