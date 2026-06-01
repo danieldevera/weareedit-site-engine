@@ -76,6 +76,14 @@ class EDIT_Admin_Panel {
             'welcome_sender_name'       => sanitize_text_field( $input['welcome_sender_name'] ?? 'Daniel Devera from EDIT.' ),
             'welcome_subject'           => sanitize_text_field( $input['welcome_subject'] ?? 'Que bom ter-te por aqui na EDIT.' ),
             'welcome_test_recipient'    => sanitize_email( $input['welcome_test_recipient'] ?? 'daniel.devera@weareedit.io' ),
+            'welcome_eyebrow'           => sanitize_text_field( $input['welcome_eyebrow'] ?? '' ),
+            'welcome_headline'          => sanitize_text_field( $input['welcome_headline'] ?? '' ),
+            'welcome_body_p1'           => sanitize_textarea_field( $input['welcome_body_p1'] ?? '' ),
+            'welcome_body_p2'           => sanitize_textarea_field( $input['welcome_body_p2'] ?? '' ),
+            'welcome_body_p3'           => sanitize_textarea_field( $input['welcome_body_p3'] ?? '' ),
+            'welcome_body_p4'           => sanitize_textarea_field( $input['welcome_body_p4'] ?? '' ),
+            'welcome_section_eyebrow'   => sanitize_text_field( $input['welcome_section_eyebrow'] ?? '' ),
+            'welcome_section_headline'  => sanitize_text_field( $input['welcome_section_headline'] ?? '' ),
             'picks_cron_enabled'        => ! empty( $input['picks_cron_enabled'] ),
         ];
     }

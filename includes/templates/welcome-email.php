@@ -18,6 +18,17 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 $picks_data = isset( $picks_data ) && is_array( $picks_data ) ? $picks_data : [];
 $issue_date = isset( $issue_date ) ? (string) $issue_date : '';
+$copy       = isset( $copy ) && is_array( $copy ) ? $copy : [];
+
+// Apply the pink-dot accent to a string that ends in ".".
+$accent_trailing_dot = static function ( string $text ): string {
+    if ( $text === '' ) return $text;
+    if ( substr( $text, -1 ) === '.' ) {
+        $base = substr( $text, 0, -1 );
+        return esc_html( $base ) . '<span style="color:#f92869;">.</span>';
+    }
+    return esc_html( $text );
+};
 
 /**
  * Render one product card. Position 0/2 = photo-LEFT, 1 = photo-RIGHT.
@@ -134,16 +145,16 @@ $render_card = static function ( array $pick, int $idx ) {
 <!-- GREETING -->
 <table role="presentation" class="container" width="680" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="width:680px;max-width:680px;background-color:#ffffff;">
   <tr><td class="px-md" style="padding:40px 40px 8px 40px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#0a0a0a;">
-    <p style="margin:0;font-size:11px;font-weight:700;color:#f92869;letter-spacing:0.22em;text-transform:uppercase;">Bem-vindo à EDIT.</p>
+    <p style="margin:0;font-size:11px;font-weight:700;color:#f92869;letter-spacing:0.22em;text-transform:uppercase;"><?php echo esc_html( $copy['eyebrow'] ?? 'Bem-vindo à EDIT.' ); ?></p>
   </td></tr>
   <tr><td class="px-md" style="padding:14px 40px 24px 40px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#0a0a0a;">
-    <h1 style="margin:0;font-size:36px;line-height:1.1;font-weight:700;letter-spacing:-0.025em;color:#0a0a0a;">Que bom ter-te por aqui<span style="color:#f92869;">.</span></h1>
+    <h1 style="margin:0;font-size:36px;line-height:1.1;font-weight:700;letter-spacing:-0.025em;color:#0a0a0a;"><?php echo $accent_trailing_dot( $copy['headline'] ?? 'Que bom ter-te por aqui.' ); ?></h1>
   </td></tr>
   <tr><td class="px-md" style="padding:0 40px 24px 40px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#0a0a0a;">
-    <p style="margin:0 0 16px 0;font-size:16px;line-height:1.55;color:#222222;">Sou o Daniel, fundador da EDIT.</p>
-    <p style="margin:0 0 16px 0;font-size:16px;line-height:1.55;color:#222222;">Esta newsletter é onde partilho, em primeira mão, as ideias que estamos a explorar, os tutores que estamos a entrevistar, e os cursos que estão a nascer aqui dentro.</p>
-    <p style="margin:0 0 16px 0;font-size:16px;line-height:1.55;color:#222222;">Uma edição por semana. Sem fluff. Quando responderes a este email, sou eu que leio.</p>
-    <p style="margin:0 0 4px 0;font-size:16px;line-height:1.55;color:#222222;">Deixo-te aqui o que está em destaque agora.</p>
+    <?php foreach ( [ 'body_p1', 'body_p2', 'body_p3', 'body_p4' ] as $k ) : ?>
+      <?php $txt = trim( (string) ( $copy[ $k ] ?? '' ) ); if ( $txt === '' ) continue; ?>
+      <p style="margin:0 0 16px 0;font-size:16px;line-height:1.55;color:#222222;"><?php echo nl2br( esc_html( $txt ) ); ?></p>
+    <?php endforeach; ?>
   </td></tr>
   <tr><td class="px-md" style="padding:8px 40px 48px 40px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
     <table role="presentation" cellpadding="0" cellspacing="0" border="0">
@@ -185,8 +196,8 @@ $render_card = static function ( array $pick, int $idx ) {
 <!-- SECTION HEADING -->
 <table role="presentation" class="container" width="680" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="width:680px;max-width:680px;background-color:#ffffff;">
   <tr><td align="left" class="px-md" style="padding:64px 40px 32px 40px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-    <p style="margin:0 0 8px 0;font-size:11px;font-weight:700;color:#f92869;letter-spacing:0.22em;text-transform:uppercase;">Em destaque agora</p>
-    <h2 class="h2-em" style="margin:0;font-size:30px;line-height:1.1;font-weight:700;letter-spacing:-0.025em;color:#0a0a0a;">As próximas edições<span style="color:#f92869;">.</span></h2>
+    <p style="margin:0 0 8px 0;font-size:11px;font-weight:700;color:#f92869;letter-spacing:0.22em;text-transform:uppercase;"><?php echo esc_html( $copy['section_eyebrow'] ?? 'Em destaque agora' ); ?></p>
+    <h2 class="h2-em" style="margin:0;font-size:30px;line-height:1.1;font-weight:700;letter-spacing:-0.025em;color:#0a0a0a;"><?php echo $accent_trailing_dot( $copy['section_headline'] ?? 'As próximas edições.' ); ?></h2>
   </td></tr>
 </table>
 

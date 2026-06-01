@@ -131,6 +131,62 @@ class EDIT_Email_Engines_Panel {
                         </td>
                     </tr>
                 </table>
+
+                <h3 style="margin-top:24px;">Welcome email copy</h3>
+                <p class="description">Override the text inside the welcome email. Leave a field blank to keep the locked default. Tutor cards (below the body) are auto-pulled from the closest upcoming editions; only the framing copy is editable here.</p>
+                <table class="form-table">
+                    <tr>
+                        <th><label for="welcome_eyebrow">Eyebrow</label></th>
+                        <td>
+                            <input type="text" id="welcome_eyebrow" name="edit_seo_fix_settings[welcome_eyebrow]" value="<?php echo esc_attr( $settings['welcome_eyebrow'] ?? '' ); ?>" class="regular-text" placeholder="Bem-vindo à EDIT.">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="welcome_headline">Headline (H1)</label></th>
+                        <td>
+                            <input type="text" id="welcome_headline" name="edit_seo_fix_settings[welcome_headline]" value="<?php echo esc_attr( $settings['welcome_headline'] ?? '' ); ?>" class="regular-text" placeholder="Que bom ter-te por aqui.">
+                            <p class="description">Trailing <code>.</code> automatically gets the pink accent.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="welcome_body_p1">Body — paragraph 1</label></th>
+                        <td>
+                            <textarea id="welcome_body_p1" name="edit_seo_fix_settings[welcome_body_p1]" rows="2" class="large-text" placeholder="Sou o Daniel, fundador da EDIT."><?php echo esc_textarea( $settings['welcome_body_p1'] ?? '' ); ?></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="welcome_body_p2">Body — paragraph 2</label></th>
+                        <td>
+                            <textarea id="welcome_body_p2" name="edit_seo_fix_settings[welcome_body_p2]" rows="3" class="large-text" placeholder="Esta newsletter é onde partilho, em primeira mão..."><?php echo esc_textarea( $settings['welcome_body_p2'] ?? '' ); ?></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="welcome_body_p3">Body — paragraph 3</label></th>
+                        <td>
+                            <textarea id="welcome_body_p3" name="edit_seo_fix_settings[welcome_body_p3]" rows="3" class="large-text" placeholder="Uma edição por semana. Sem fluff..."><?php echo esc_textarea( $settings['welcome_body_p3'] ?? '' ); ?></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="welcome_body_p4">Body — paragraph 4 (segue)</label></th>
+                        <td>
+                            <textarea id="welcome_body_p4" name="edit_seo_fix_settings[welcome_body_p4]" rows="2" class="large-text" placeholder="Deixo-te aqui o que está em destaque agora."><?php echo esc_textarea( $settings['welcome_body_p4'] ?? '' ); ?></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="welcome_section_eyebrow">Section eyebrow</label></th>
+                        <td>
+                            <input type="text" id="welcome_section_eyebrow" name="edit_seo_fix_settings[welcome_section_eyebrow]" value="<?php echo esc_attr( $settings['welcome_section_eyebrow'] ?? '' ); ?>" class="regular-text" placeholder="Em destaque agora">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="welcome_section_headline">Section headline (H2)</label></th>
+                        <td>
+                            <input type="text" id="welcome_section_headline" name="edit_seo_fix_settings[welcome_section_headline]" value="<?php echo esc_attr( $settings['welcome_section_headline'] ?? '' ); ?>" class="regular-text" placeholder="As próximas edições.">
+                            <p class="description">Trailing <code>.</code> automatically gets the pink accent.</p>
+                        </td>
+                    </tr>
+                </table>
+
                 <p class="description" style="padding:10px 14px;background:#f5f5f5;border-left:3px solid #f92869;margin:8px 0 0 0;font-size:13px;">
                     <strong>Note:</strong> Path B replaces the Brevo "Mensagem de boas-vindas" automation entirely. Leave that
                     automation paused (or delete it) — WP handles welcome sends directly now, with today's freshest picks every time.

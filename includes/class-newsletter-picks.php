@@ -315,8 +315,18 @@ class EDIT_Newsletter_Picks {
         $name  = wp_strip_all_tags( $tutor_post->post_title );
         $url   = get_permalink( $tutor_post );
         $photo = self::FALLBACK_TUTOR_PHOTO;
-        $thumb = get_the_post_thumbnail_url( $tutor_post, 'medium' );
-        if ( $thumb ) $photo = $thumb;
+
+        // Resolution order for the tutor photo:
+        // 1. Newsletter-specific PNG uploaded as `{tutor-slug}-280x280-1` attachment
+        // 2. Featured image on the tutor profile post (medium size)
+        // 3. EDIT. fallback logo
+        $nl_photo = self::resolve_nl_photo_url( (string) $tutor_post->post_name );
+        if ( $nl_photo ) {
+            $photo = $nl_photo;
+        } else {
+            $thumb = get_the_post_thumbnail_url( $tutor_post, 'medium' );
+            if ( $thumb ) $photo = $thumb;
+        }
 
         $role = 'Tutor · EDIT.';
         $acf_role = (string) get_field( 'cargo', $tutor_post->ID );
@@ -328,6 +338,53 @@ class EDIT_Newsletter_Picks {
             'url'   => $url,
             'photo' => $photo,
         ];
+    }
+
+    /**
+     * Find a newsletter-specific tutor photo uploaded as an attachment
+     * with slug `{tutor-slug}-280x280-1`. Returns the full URL or null.
+     * Result cached for 1 day per tutor slug.
+     */
+    private static function resolve_nl_photo_url( string $tutor_slug ): ?string {
+        if ( $tutor_slug === '' ) return null;
+        $cache_key = 'edit_nl_photo_' . md5( $tutor_slug );
+        $cached = get_transient( $cache_key );
+        if ( $cached !== false ) return $cached === '' ? null : $cached;
+
+        $candidates = [
+            $tutor_slug . '-280x280-1',
+            $tutor_slug . '-280x280',
+        ];
+        // Some tutor slugs have multi-part names (e.g. miguel-rao-vieira) but
+        // the uploaded NL file uses a shorter form (miguel-rao-280x280-1).
+        // Try truncating one segment at a time as a fallback.
+        $parts = explode( '-', $tutor_slug );
+        if ( count( $parts ) > 2 ) {
+            $candidates[] = implode( '-', array_slice( $parts, 0, 2 ) ) . '-280x280-1';
+            $candidates[] = implode( '-', array_slice( $parts, 0, 2 ) ) . '-280x280';
+        }
+
+        foreach ( $candidates as $name ) {
+            $found = get_posts( [
+                'post_type'      => 'attachment',
+                'name'           => $name,
+                'post_status'    => 'inherit',
+                'posts_per_page' => 1,
+                'no_found_rows'  => true,
+            ] );
+            if ( ! empty( $found ) ) {
+                $url = wp_get_attachment_url( $found[0]->ID );
+                if ( $url ) {
+                    set_transient( $cache_key, $url, DAY_IN_SECONDS );
+                    return $url;
+                }
+            }
+        }
+
+        // Cache the miss for 1 hour — retry sooner than the hit cache in
+        // case the user uploads the NL photo after this lookup.
+        set_transient( $cache_key, '', HOUR_IN_SECONDS );
+        return null;
     }
 
     private static function format_date_pt( int $ts ): string {
@@ -353,6 +410,7 @@ class EDIT_Newsletter_Picks {
     public static function render_welcome_html(): string {
         $picks      = self::get_current_picks();
         $issue_date = self::today_pt();
+        $copy       = self::welcome_copy();
 
         $template_file = WEAREDIT_SITE_ENGINE_PATH . 'includes/templates/welcome-email.php';
         if ( ! file_exists( $template_file ) ) {
@@ -363,6 +421,28 @@ class EDIT_Newsletter_Picks {
         $picks_data = $picks; // alias for template clarity
         include $template_file;
         return (string) ob_get_clean();
+    }
+
+    /**
+     * Pull editable welcome-email copy from settings, falling back to
+     * the locked defaults when a field is blank.
+     */
+    public static function welcome_copy(): array {
+        $settings = get_option( 'edit_seo_fix_settings', [] );
+        $pick = static function ( $key, $default ) use ( $settings ) {
+            $val = isset( $settings[ $key ] ) ? trim( (string) $settings[ $key ] ) : '';
+            return $val !== '' ? $val : $default;
+        };
+        return [
+            'eyebrow'          => $pick( 'welcome_eyebrow',          'Bem-vindo à EDIT.' ),
+            'headline'         => $pick( 'welcome_headline',         'Que bom ter-te por aqui.' ),
+            'body_p1'          => $pick( 'welcome_body_p1',          'Sou o Daniel, fundador da EDIT.' ),
+            'body_p2'          => $pick( 'welcome_body_p2',          'Esta newsletter é onde partilho, em primeira mão, as ideias que estamos a explorar, os tutores que estamos a entrevistar, e os cursos que estão a nascer aqui dentro.' ),
+            'body_p3'          => $pick( 'welcome_body_p3',          'Uma edição por semana. Sem fluff. Quando responderes a este email, sou eu que leio.' ),
+            'body_p4'          => $pick( 'welcome_body_p4',          'Deixo-te aqui o que está em destaque agora.' ),
+            'section_eyebrow'  => $pick( 'welcome_section_eyebrow',  'Em destaque agora' ),
+            'section_headline' => $pick( 'welcome_section_headline', 'As próximas edições.' ),
+        ];
     }
 
     // ---------------------------------------------------------------- Brevo
