@@ -3,7 +3,7 @@
  * Plugin Name: * weareedit.io Site Engine
  * Plugin URI:  https://github.com/danieldevera/weareedit-site-engine
  * Description: Custom site engine for weareedit.io — SEO (meta tags, OG, schema.org, sitemap, hreflang), GEO/LLM optimization (llms.txt, AI crawler rules, Wikidata-linked Person/Organization schema), brand customization (hero typography, dot accents, CTA hover animations), Google Reviews aggregation, output-buffer HTML rewrites, virtual pages, WP Rocket cache integration, and one-time data fixes.
- * Version:     1.5.212
+ * Version:     1.5.213
  * Author:      Daniel Devera
  * License:     GPL-2.0+
  * Text Domain: weareedit-site-engine
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.212' );
+define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.213' );
 define( 'WEAREDIT_SITE_ENGINE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WEAREDIT_SITE_ENGINE_URL', plugin_dir_url( __FILE__ ) );
 
@@ -291,6 +291,23 @@ function weareedit_site_engine_activate() {
     }
 }
 register_activation_hook( __FILE__, 'weareedit_site_engine_activate' );
+
+/**
+ * Auto-flush PHP opcache after any plugin update so new bytecode is
+ * picked up without a manual Deactivate → Activate cycle. Some hosts
+ * (including weareedit.io's) run opcache.validate_timestamps=0, which
+ * caches old PHP files indefinitely.
+ */
+add_action( 'upgrader_process_complete', function ( $upgrader, $hook_extra ) {
+    if ( empty( $hook_extra['type'] ) || $hook_extra['type'] !== 'plugin' ) return;
+    if ( empty( $hook_extra['plugins'] ) || ! is_array( $hook_extra['plugins'] ) ) return;
+    $ours = false;
+    foreach ( $hook_extra['plugins'] as $slug ) {
+        if ( strpos( (string) $slug, 'weareedit-site-engine' ) !== false ) { $ours = true; break; }
+    }
+    if ( ! $ours ) return;
+    if ( function_exists( 'opcache_reset' ) ) opcache_reset();
+}, 10, 2 );
 
 /**
  * Deactivation: flush rewrite rules.
