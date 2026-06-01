@@ -92,10 +92,12 @@ class EDIT_Newsletter_Picks {
         if ( ! current_user_can( 'manage_options' ) ) wp_die( 'Forbidden' );
         check_admin_referer( 'edit_newsletter_picks_force_sync' );
         self::run_daily_sync();
+        // Redirect back to the new top-level Email Marketing menu, not
+        // the legacy SEO Fix settings page.
         $redirect = add_query_arg( [
-            'page'        => 'edit-seo-fix',
+            'page'         => 'edit-email-engines',
             'picks_synced' => '1',
-        ], admin_url( 'options-general.php' ) );
+        ], admin_url( 'admin.php' ) );
         wp_safe_redirect( $redirect );
         exit;
     }
