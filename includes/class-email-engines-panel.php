@@ -110,25 +110,6 @@ class EDIT_Email_Engines_Panel {
                         </td>
                     </tr>
                     <tr>
-                        <th>Send test welcome</th>
-                        <td>
-                            <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="display:inline;">
-                                <?php wp_nonce_field( 'edit_newsletter_picks_force_sync' ); ?>
-                                <input type="hidden" name="action" value="edit_newsletter_picks_force_sync">
-                                <button type="submit" class="button button-primary">Send test welcome →</button>
-                            </form>
-                            <?php
-                            if ( $synced_flash && class_exists( 'EDIT_Newsletter_Picks' ) ) {
-                                $st = EDIT_Newsletter_Picks::get_last_sync_status();
-                                $ok = ( $st['status'] ?? '' ) === 'ok';
-                                echo '<span style="margin-left:12px;color:' . ( $ok ? '#1e8a4f' : '#b62929' ) . ';font-weight:600;">'
-                                    . ( $ok ? '✓ ' : '✗ ' ) . esc_html( $st['message'] ?? '' ) . '</span>';
-                            }
-                            ?>
-                            <p class="description">Save your changes first, then click. Renders the locked welcome template with today's picks and sends one email to the test recipient via Brevo's transactional API.</p>
-                        </td>
-                    </tr>
-                    <tr>
                         <th>Last send</th>
                         <td>
                             <?php
@@ -143,7 +124,7 @@ class EDIT_Email_Engines_Panel {
                                         . '<strong style="color:' . $color . ';">' . $label . '</strong> &middot; '
                                         . esc_html( $st['message'] ?? '' );
                                 } else {
-                                    echo '<em>Never run yet — save your settings, then click "Send test welcome".</em>';
+                                    echo '<em>Never run yet — save your settings (below), then click "Send test welcome".</em>';
                                 }
                             }
                             ?>
@@ -171,6 +152,31 @@ class EDIT_Email_Engines_Panel {
                 </table>
 
                 <?php submit_button( 'Save changes', 'primary', 'submit', true ); ?>
+            </form>
+
+            <!-- Separate form for the "Send test welcome" action — must
+                 NOT be nested inside the settings form above (HTML doesn't
+                 allow nested forms; the browser collapses them and the
+                 outer form's action steals the submission). -->
+            <hr style="margin:32px 0 24px;border:0;border-top:1px solid #e5e5e5;">
+            <h2 style="margin:0 0 6px 0;">Send test welcome</h2>
+            <p class="description" style="margin:0 0 16px 0;">
+                After saving the settings above, click below to render the locked welcome template with today's picks and send a single email to <code><?php echo esc_html( $settings['welcome_test_recipient'] ?? 'daniel.devera@weareedit.io' ); ?></code> via Brevo's transactional API.
+            </p>
+            <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+                <?php wp_nonce_field( 'edit_newsletter_picks_force_sync' ); ?>
+                <input type="hidden" name="action" value="edit_newsletter_picks_force_sync">
+                <p class="submit">
+                    <button type="submit" class="button button-primary button-large">Send test welcome &rarr;</button>
+                    <?php
+                    if ( $synced_flash && class_exists( 'EDIT_Newsletter_Picks' ) ) {
+                        $st = EDIT_Newsletter_Picks::get_last_sync_status();
+                        $ok = ( $st['status'] ?? '' ) === 'ok';
+                        echo '<span style="margin-left:14px;font-weight:600;color:' . ( $ok ? '#1e8a4f' : '#b62929' ) . ';">'
+                            . ( $ok ? '✓ ' : '✗ ' ) . esc_html( $st['message'] ?? '' ) . '</span>';
+                    }
+                    ?>
+                </p>
             </form>
         </div>
         <?php
