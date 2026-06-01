@@ -199,6 +199,18 @@ class EDIT_Newsletter_Picks {
      */
     private static function get_single_card_pick(): ?array {
         $settings = get_option( 'edit_seo_fix_settings', [] );
+        $mode_raw = $settings['welcome_single_mode'] ?? '<missing>';
+        $title_raw = $settings['welcome_single_title'] ?? '<missing>';
+
+        if ( class_exists( 'EDIT_CF7_Debug' ) ) {
+            EDIT_CF7_Debug::write( [
+                'event'      => 'picks_single_check',
+                'form_title' => 'Picks · single-card check',
+                'mode'       => var_export( $mode_raw, true ),
+                'title'      => is_string( $title_raw ) ? $title_raw : var_export( $title_raw, true ),
+            ] );
+        }
+
         if ( empty( $settings['welcome_single_mode'] ) ) return null;
         $title = trim( (string) ( $settings['welcome_single_title'] ?? '' ) );
         if ( $title === '' ) return null;
