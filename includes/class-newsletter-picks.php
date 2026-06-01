@@ -278,15 +278,10 @@ class EDIT_Newsletter_Picks {
         $date_label = $start_ts ? self::format_date_pt( $start_ts ) : '';
         $tutor      = self::get_first_tutor( $post->ID );
 
-        // Card image lookup order:
-        //   1. course-slug NL card  (e.g. bootcamp-advanced-ai-280x280-1.png)
-        //   2. tutor NL photo       (e.g. naiara-back-280x280-1.png)
-        //   3. tutor featured image
-        //   4. EDIT. fallback logo
-        $card_photo = self::resolve_nl_photo_url( (string) $post->post_name );
-        if ( ! $card_photo ) {
-            $card_photo = $tutor['photo'] ?? self::FALLBACK_TUTOR_PHOTO;
-        }
+        // Locked behaviour: card image = tutor photo (NL-uploaded portrait,
+        // featured image fallback, EDIT. logo last-resort). Course-branded
+        // card images were trialled in v1.5.209 — reverted per Daniel.
+        $tutor_photo = $tutor['photo'] ?? self::FALLBACK_TUTOR_PHOTO;
 
         return [
             'typology'       => $typology,
@@ -299,7 +294,7 @@ class EDIT_Newsletter_Picks {
             'tutor_name'     => $tutor['name'] ?? '',
             'tutor_role'     => $tutor['role'] ?? 'Tutor · EDIT.',
             'tutor_url'      => $tutor['url']  ?? '#',
-            'tutor_photo'    => $card_photo,
+            'tutor_photo'    => $tutor_photo,
         ];
     }
 
