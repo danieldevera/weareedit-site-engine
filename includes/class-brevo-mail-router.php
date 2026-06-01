@@ -186,8 +186,20 @@ class EDIT_Brevo_Mail_Router {
         // Parse headers for sender / Reply-To / CC / BCC / content-type.
         $parsed = self::parse_headers( $headers );
 
-        $sender_email = $parsed['from_email'] ?: (string) ( $settings['welcome_sender_email'] ?? self::DEFAULT_SENDER_EMAIL );
-        $sender_name  = $parsed['from_name']  ?: (string) ( $settings['welcome_sender_name']  ?? self::DEFAULT_SENDER_NAME );
+        // Product inscription forms (CF7) — both Mail 1 (admin
+        // notification) and Mail 2 (user auto-reply) carry the subject
+        // pattern "Pedido de informação / inscrição - <course>". Force
+        // Francisco as the sender on those (override any From header CF7
+        // attached). Everything else uses the welcome_sender_* settings
+        // (Daniel default) or the parsed From header, whichever exists.
+        $is_product_form = stripos( $subject, 'Pedido de' ) === 0;
+        if ( $is_product_form ) {
+            $sender_email = 'francisco.freitas@weareedit.io';
+            $sender_name  = 'Francisco da EDIT.';
+        } else {
+            $sender_email = $parsed['from_email'] ?: (string) ( $settings['welcome_sender_email'] ?? self::DEFAULT_SENDER_EMAIL );
+            $sender_name  = $parsed['from_name']  ?: (string) ( $settings['welcome_sender_name']  ?? self::DEFAULT_SENDER_NAME );
+        }
         $is_html      = stripos( $parsed['content_type'] ?? '', 'html' ) !== false || self::looks_like_html( $message );
 
         $payload = [

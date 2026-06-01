@@ -3,7 +3,7 @@
  * Plugin Name: * weareedit.io Site Engine
  * Plugin URI:  https://github.com/danieldevera/weareedit-site-engine
  * Description: Custom site engine for weareedit.io — SEO (meta tags, OG, schema.org, sitemap, hreflang), GEO/LLM optimization (llms.txt, AI crawler rules, Wikidata-linked Person/Organization schema), brand customization (hero typography, dot accents, CTA hover animations), Google Reviews aggregation, output-buffer HTML rewrites, virtual pages, WP Rocket cache integration, and one-time data fixes.
- * Version:     1.5.224
+ * Version:     1.5.225
  * Author:      Daniel Devera
  * License:     GPL-2.0+
  * Text Domain: weareedit-site-engine
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.224' );
+define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.225' );
 define( 'WEAREDIT_SITE_ENGINE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WEAREDIT_SITE_ENGINE_URL', plugin_dir_url( __FILE__ ) );
 
@@ -71,6 +71,13 @@ add_action( 'wp_head', function () {
      here broke the theme's positioning and stacked the two items). */
   body.single-formacao .headerDesktop__contact,
   body.single-formacao .headerDesktop__inCompany{visibility:visible !important;opacity:1 !important;pointer-events:auto !important;}
+  /* Mobile only — breathing room between the HORÁRIOS / details rows
+     and the sticky product action menu (Remote / Pós-Laboral / Programa
+     / Quero-me inscrever). On the live page the two blocks touch with
+     zero gap; this lifts the action menu off the meta text. */
+  @media (max-width: 768px) {
+    body.single-formacao #info_bar{margin-top:28px !important;}
+  }
 </style>
 <script id="weareedit-search-fetch2">
 /* Search-as-you-type via STATIC JSON INDEX. No admin-ajax.php call,
