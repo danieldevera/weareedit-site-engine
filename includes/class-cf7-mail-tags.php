@@ -51,7 +51,11 @@ class EDIT_CF7_Mail_Tags {
     public static function wp_mail_token_pass( $args ) {
         if ( ! is_array( $args ) ) return $args;
         $tokens = self::resolve_workshop_tokens();
-        if ( empty( $tokens ) ) return $args;
+
+        // Always replace the hardcoded "12 Maio, 2026" placeholder in the
+        // CF7 confirmation hero block with today's date in PT format.
+        // Independent of workshop tokens — runs for every CF7 mail.
+        $today_pt = self::pt_date_today();
 
         $changed = false;
         foreach ( [ 'subject', 'message', 'headers' ] as $key ) {
@@ -63,6 +67,10 @@ class EDIT_CF7_Mail_Tags {
                 foreach ( self::token_patterns( $token ) as $regex ) {
                     $value = preg_replace( $regex, $resolved, $value );
                 }
+            }
+            // Replace literal hardcoded date with today's.
+            if ( $key === 'message' ) {
+                $value = str_replace( '12 Maio, 2026', $today_pt, $value );
             }
             if ( $value !== ( is_array( $original ) ? implode( "\n", $original ) : (string) $original ) ) {
                 $args[ $key ] = $value;
@@ -77,6 +85,17 @@ class EDIT_CF7_Mail_Tags {
             ] );
         }
         return $args;
+    }
+
+    /** Today's date in PT-PT format: e.g. "1 Junho, 2026" */
+    private static function pt_date_today(): string {
+        static $months = [
+            1 => 'Janeiro', 2 => 'Fevereiro', 3 => 'Março',     4 => 'Abril',
+            5 => 'Maio',    6 => 'Junho',     7 => 'Julho',     8 => 'Agosto',
+            9 => 'Setembro', 10 => 'Outubro', 11 => 'Novembro', 12 => 'Dezembro',
+        ];
+        $ts = function_exists( 'current_time' ) ? current_time( 'U' ) : time();
+        return (int) date( 'j', $ts ) . ' ' . $months[ (int) date( 'n', $ts ) ] . ', ' . date( 'Y', $ts );
     }
 
     /**
