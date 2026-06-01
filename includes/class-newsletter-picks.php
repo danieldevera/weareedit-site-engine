@@ -352,6 +352,7 @@ class EDIT_Newsletter_Picks {
         if ( $cached !== false ) return $cached === '' ? null : $cached;
 
         $candidates = [
+            $tutor_slug . '-280x280-1-1', // WP dedup suffix when an earlier version exists
             $tutor_slug . '-280x280-1',
             $tutor_slug . '-280x280',
         ];
@@ -360,8 +361,10 @@ class EDIT_Newsletter_Picks {
         // Try truncating one segment at a time as a fallback.
         $parts = explode( '-', $tutor_slug );
         if ( count( $parts ) > 2 ) {
-            $candidates[] = implode( '-', array_slice( $parts, 0, 2 ) ) . '-280x280-1';
-            $candidates[] = implode( '-', array_slice( $parts, 0, 2 ) ) . '-280x280';
+            $short = implode( '-', array_slice( $parts, 0, 2 ) );
+            $candidates[] = $short . '-280x280-1-1';
+            $candidates[] = $short . '-280x280-1';
+            $candidates[] = $short . '-280x280';
         }
 
         foreach ( $candidates as $name ) {
