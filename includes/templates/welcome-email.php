@@ -163,8 +163,8 @@ $render_card = static function ( array $pick, int $idx ) {
           <a href="https://weareedit.io/equipa/daniel-devera/" style="display:inline-block;text-decoration:none;border:0;"><img src="https://weareedit.io/wp-content/uploads/2026/05/daniel-devera-sign-off.png" alt="Daniel Devera" width="84" height="84" style="display:block;width:84px;height:84px;border-radius:50%;border:3px solid #f92869;box-sizing:border-box;"></a>
         </td>
         <td valign="top" style="padding-top:0;">
-          <a href="https://weareedit.io/equipa/daniel-devera/" style="display:inline-block;text-decoration:none;border:0;"><img src="https://weareedit.io/wp-content/uploads/2026/05/DANIEL-DEVERA-ASSINATURA.png" alt="Daniel Devera" width="180" height="auto" style="display:block;width:180px;height:auto;border:0;margin-top:-30px;"></a>
-          <p style="margin:-6px 0 0 4px;font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#0a0a0a;font-family:'Helvetica Neue',Arial,sans-serif;"><a href="https://weareedit.io/equipa/daniel-devera/" style="color:#0a0a0a;text-decoration:none;">Founder</a></p>
+          <a href="https://weareedit.io/equipa/daniel-devera/" style="display:inline-block;text-decoration:none;border:0;"><img src="<?php echo esc_url( $copy['signature_url'] ?? 'https://weareedit.io/wp-content/uploads/2026/05/DANIEL-DEVERA-ASSINATURA.png' ); ?>" alt="Daniel Devera" width="180" height="auto" style="display:block;width:180px;height:auto;border:0;"></a>
+          <p style="margin:8px 0 0 4px;font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#0a0a0a;font-family:'Helvetica Neue',Arial,sans-serif;"><a href="https://weareedit.io/equipa/daniel-devera/" style="color:#0a0a0a;text-decoration:none;">Founder</a></p>
         </td>
       </tr>
     </table>

@@ -185,6 +185,13 @@ class EDIT_Email_Engines_Panel {
                             <p class="description">Trailing <code>.</code> automatically gets the pink accent.</p>
                         </td>
                     </tr>
+                    <tr>
+                        <th><label for="welcome_signature_url">Signature image URL</label></th>
+                        <td>
+                            <input type="url" id="welcome_signature_url" name="edit_seo_fix_settings[welcome_signature_url]" value="<?php echo esc_attr( $settings['welcome_signature_url'] ?? '' ); ?>" class="large-text" placeholder="https://weareedit.io/wp-content/uploads/2026/05/DANIEL-DEVERA-ASSINATURA.png">
+                            <p class="description">PNG of Daniel's handwritten signature. Upload a <strong>tightly-cropped</strong> version (no top/bottom whitespace) to <a href="<?php echo esc_url( admin_url( 'media-new.php' ) ); ?>" target="_blank">Media → Add New</a>, copy the URL, and paste here. Leave blank to use the default <code>DANIEL-DEVERA-ASSINATURA.png</code>.</p>
+                        </td>
+                    </tr>
                 </table>
 
                 <p class="description" style="padding:10px 14px;background:#f5f5f5;border-left:3px solid #f92869;margin:8px 0 0 0;font-size:13px;">

@@ -84,6 +84,7 @@ class EDIT_Admin_Panel {
             'welcome_body_p4'           => sanitize_textarea_field( $input['welcome_body_p4'] ?? '' ),
             'welcome_section_eyebrow'   => sanitize_text_field( $input['welcome_section_eyebrow'] ?? '' ),
             'welcome_section_headline'  => sanitize_text_field( $input['welcome_section_headline'] ?? '' ),
+            'welcome_signature_url'     => esc_url_raw( $input['welcome_signature_url'] ?? '' ),
             'picks_cron_enabled'        => ! empty( $input['picks_cron_enabled'] ),
         ];
     }

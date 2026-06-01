@@ -442,6 +442,7 @@ class EDIT_Newsletter_Picks {
             'body_p4'          => $pick( 'welcome_body_p4',          'Deixo-te aqui o que está em destaque agora.' ),
             'section_eyebrow'  => $pick( 'welcome_section_eyebrow',  'Em destaque agora' ),
             'section_headline' => $pick( 'welcome_section_headline', 'As próximas edições.' ),
+            'signature_url'    => $pick( 'welcome_signature_url',    'https://weareedit.io/wp-content/uploads/2026/05/DANIEL-DEVERA-ASSINATURA.png' ),
         ];
     }
 
