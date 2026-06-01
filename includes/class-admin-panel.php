@@ -71,6 +71,9 @@ class EDIT_Admin_Panel {
             // Brevo newsletter integration (v1.5.148+)
             'brevo_api_key'             => sanitize_text_field( $input['brevo_api_key'] ?? '' ),
             'brevo_newsletter_list_id'  => absint( $input['brevo_newsletter_list_id'] ?? 4 ),
+            // Welcome email autonomous sync (Task #23, v1.5.189+)
+            'brevo_welcome_template_id' => absint( $input['brevo_welcome_template_id'] ?? 0 ),
+            'picks_cron_enabled'        => ! empty( $input['picks_cron_enabled'] ),
         ];
     }
 
@@ -252,6 +255,67 @@ class EDIT_Admin_Panel {
                         <td>
                             <input type="number" id="brevo_newsletter_list_id" name="edit_seo_fix_settings[brevo_newsletter_list_id]" value="<?php echo esc_attr( $settings['brevo_newsletter_list_id'] ?? 4 ); ?>" class="small-text" min="1" placeholder="4">
                             <p class="description">Brevo list ID for new subscribers (default <code>4</code> = <code>Newsletter · Site organic (2026+)</code>). Find at <a href="https://app.brevo.com/contact/list-listing" target="_blank">Brevo → Contatos → Listas</a> — column "ID".</p>
+                        </td>
+                    </tr>
+                </table>
+
+                <h2>Welcome Email — Autonomous Picks</h2>
+                <p class="description">Daily WP-Cron job renders the locked welcome email template with the closest upcoming Bootcamp + Workshop + Curso, then PUTs the HTML to a Brevo transactional template. New subscribers always see today's fresh picks.</p>
+                <table class="form-table">
+                    <tr>
+                        <th><label for="brevo_welcome_template_id">Brevo welcome template ID</label></th>
+                        <td>
+                            <input type="number" id="brevo_welcome_template_id" name="edit_seo_fix_settings[brevo_welcome_template_id]" value="<?php echo esc_attr( $settings['brevo_welcome_template_id'] ?? 0 ); ?>" class="small-text" min="0" placeholder="0">
+                            <p class="description">Transactional template ID from <a href="https://app.brevo.com/transactional-email/templates" target="_blank">Brevo → Transactional → Templates</a> — column "ID" or the trailing number in the template URL.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Daily auto-sync</th>
+                        <td>
+                            <label>
+                                <input type="checkbox" name="edit_seo_fix_settings[picks_cron_enabled]" value="1" <?php checked( $settings['picks_cron_enabled'] ?? false ); ?>>
+                                Run the cron every day at 06:00 Europe/Lisbon to refresh the welcome template with today's picks
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Manual sync</th>
+                        <td>
+                            <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="display:inline;">
+                                <?php wp_nonce_field( 'edit_newsletter_picks_force_sync' ); ?>
+                                <input type="hidden" name="action" value="edit_newsletter_picks_force_sync">
+                                <button type="submit" class="button">Force sync now</button>
+                            </form>
+                            <?php
+                            if ( isset( $_GET['picks_synced'] ) ) {
+                                $st = class_exists( 'EDIT_Newsletter_Picks' ) ? EDIT_Newsletter_Picks::get_last_sync_status() : [];
+                                $ok = ! empty( $st ) && ( $st['status'] ?? '' ) === 'ok';
+                                echo '<span style="margin-left:12px;color:' . ( $ok ? '#1e8a4f' : '#b62929' ) . ';font-weight:600;">'
+                                    . ( $ok ? '✓ ' : '✗ ' ) . esc_html( $st['message'] ?? '' ) . '</span>';
+                            }
+                            ?>
+                            <p class="description">Runs the same job the cron triggers — useful for testing after changing picks or the template.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Last sync</th>
+                        <td>
+                            <?php
+                            if ( class_exists( 'EDIT_Newsletter_Picks' ) ) {
+                                $st = EDIT_Newsletter_Picks::get_last_sync_status();
+                                if ( ! empty( $st['time'] ) ) {
+                                    $when   = wp_date( 'Y-m-d H:i:s', $st['time'] );
+                                    $ok     = ( $st['status'] ?? '' ) === 'ok';
+                                    $color  = $ok ? '#1e8a4f' : '#b62929';
+                                    $label  = $ok ? 'OK' : 'ERROR';
+                                    echo '<code>' . esc_html( $when ) . '</code> &middot; '
+                                        . '<strong style="color:' . $color . ';">' . $label . '</strong> &middot; '
+                                        . esc_html( $st['message'] ?? '' );
+                                } else {
+                                    echo '<em>Never run yet.</em>';
+                                }
+                            }
+                            ?>
                         </td>
                     </tr>
                 </table>
