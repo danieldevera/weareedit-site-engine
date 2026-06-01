@@ -83,6 +83,17 @@ class EDIT_Admin_Panel {
             'welcome_section_headline'  => sanitize_text_field( $input['welcome_section_headline'] ?? '' ),
             'welcome_signature_url'     => esc_url_raw( $input['welcome_signature_url'] ?? '' ),
             'welcome_pinned_picks'      => sanitize_textarea_field( $input['welcome_pinned_picks'] ?? '' ),
+            // Single-product manual mode (bypasses WP lookups entirely)
+            'welcome_single_mode'             => ! empty( $input['welcome_single_mode'] ),
+            'welcome_single_typology'         => sanitize_text_field( $input['welcome_single_typology'] ?? 'bootcamp' ),
+            'welcome_single_date_label'       => sanitize_text_field( $input['welcome_single_date_label'] ?? '' ),
+            'welcome_single_title'            => sanitize_text_field( $input['welcome_single_title'] ?? '' ),
+            'welcome_single_url'              => esc_url_raw( $input['welcome_single_url'] ?? '' ),
+            'welcome_single_description'      => sanitize_text_field( $input['welcome_single_description'] ?? '' ),
+            'welcome_single_tutor_name'       => sanitize_text_field( $input['welcome_single_tutor_name'] ?? '' ),
+            'welcome_single_tutor_role'       => sanitize_text_field( $input['welcome_single_tutor_role'] ?? 'Tutor · EDIT.' ),
+            'welcome_single_tutor_url'        => esc_url_raw( $input['welcome_single_tutor_url'] ?? '' ),
+            'welcome_single_tutor_photo'      => esc_url_raw( $input['welcome_single_tutor_photo'] ?? '' ),
             'picks_cron_enabled'        => ! empty( $input['picks_cron_enabled'] ),
         ];
     }

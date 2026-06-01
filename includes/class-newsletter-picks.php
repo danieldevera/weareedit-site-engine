@@ -125,8 +125,15 @@ class EDIT_Newsletter_Picks {
      *   ]
      */
     public static function get_current_picks(): array {
-        // 1. Honour any manual pin set in Email Marketing settings — when
-        //    present, those override the auto-pick logic entirely.
+        // 1a. Single-card manual mode — when toggled on, render exactly
+        //     one card built from the explicit settings fields. Bypasses
+        //     WP lookups entirely so the rendered tutor / photo / link
+        //     match what the operator typed, no matter what's in the CPT.
+        $single = self::get_single_card_pick();
+        if ( $single !== null ) return [ $single ];
+
+        // 1b. Honour any manual pin set in Email Marketing settings — when
+        //     present, those override the auto-pick logic entirely.
         $pinned = self::get_pinned_picks();
         if ( ! empty( $pinned ) ) return $pinned;
 
@@ -183,6 +190,35 @@ class EDIT_Newsletter_Picks {
         }
 
         return $picks;
+    }
+
+    /**
+     * Single-product manual card mode. Returns one build_pick-shaped
+     * array when the "welcome_single_mode" toggle is on AND a title is
+     * set. Bypasses every WP lookup — every field comes from settings.
+     */
+    private static function get_single_card_pick(): ?array {
+        $settings = get_option( 'edit_seo_fix_settings', [] );
+        if ( empty( $settings['welcome_single_mode'] ) ) return null;
+        $title = trim( (string) ( $settings['welcome_single_title'] ?? '' ) );
+        if ( $title === '' ) return null;
+
+        $typology = (string) ( $settings['welcome_single_typology'] ?? 'bootcamp' );
+        if ( ! isset( self::TYPOLOGY_COLORS[ $typology ] ) ) $typology = 'bootcamp';
+
+        return [
+            'typology'       => $typology,
+            'typology_label' => self::typology_label( $typology ),
+            'color'          => self::TYPOLOGY_COLORS[ $typology ] ?? '#0a0a0a',
+            'title'          => $title,
+            'description'    => (string) ( $settings['welcome_single_description'] ?? '' ),
+            'url'            => (string) ( $settings['welcome_single_url'] ?? '#' ),
+            'date_label'     => (string) ( $settings['welcome_single_date_label'] ?? '' ),
+            'tutor_name'     => (string) ( $settings['welcome_single_tutor_name'] ?? '' ),
+            'tutor_role'     => (string) ( $settings['welcome_single_tutor_role'] ?? 'Tutor · EDIT.' ),
+            'tutor_url'      => (string) ( $settings['welcome_single_tutor_url'] ?? '#' ),
+            'tutor_photo'    => (string) ( $settings['welcome_single_tutor_photo'] ?? self::FALLBACK_TUTOR_PHOTO ),
+        ];
     }
 
     /**

@@ -194,6 +194,83 @@ class EDIT_Email_Engines_Panel {
                     </tr>
                 </table>
 
+                <h3 style="margin-top:24px;">Single-card manual mode</h3>
+                <p class="description" style="padding:10px 14px;background:#fff8d6;border-left:3px solid #f92869;margin:0 0 16px 0;">
+                    When enabled, the welcome email renders <strong>exactly one card</strong> built from the fields below — no WP lookups, no auto-pick, no override list. Every field is what you type here. Use this when you need full control over a single send.
+                </p>
+                <table class="form-table">
+                    <tr>
+                        <th>Enable single-card mode</th>
+                        <td>
+                            <label>
+                                <input type="checkbox" name="edit_seo_fix_settings[welcome_single_mode]" value="1" <?php checked( $settings['welcome_single_mode'] ?? false ); ?>>
+                                Override everything above and render one manual card
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="welcome_single_typology">Typology / accent colour</label></th>
+                        <td>
+                            <select id="welcome_single_typology" name="edit_seo_fix_settings[welcome_single_typology]">
+                                <?php $sel = $settings['welcome_single_typology'] ?? 'bootcamp'; ?>
+                                <option value="bootcamp"         <?php selected( $sel, 'bootcamp' ); ?>>Bootcamp (pink)</option>
+                                <option value="workshop"         <?php selected( $sel, 'workshop' ); ?>>Workshop (teal)</option>
+                                <option value="curso_remote"     <?php selected( $sel, 'curso_remote' ); ?>>Curso Remote (blue)</option>
+                                <option value="curso_presencial" <?php selected( $sel, 'curso_presencial' ); ?>>Curso Presencial (yellow)</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="welcome_single_date_label">Date label</label></th>
+                        <td>
+                            <input type="text" id="welcome_single_date_label" name="edit_seo_fix_settings[welcome_single_date_label]" value="<?php echo esc_attr( $settings['welcome_single_date_label'] ?? '' ); ?>" class="regular-text" placeholder="8 Junho">
+                            <p class="description">Appears as <code>BOOTCAMP · 8 Junho</code> in the eyebrow.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="welcome_single_title">Course title</label></th>
+                        <td>
+                            <input type="text" id="welcome_single_title" name="edit_seo_fix_settings[welcome_single_title]" value="<?php echo esc_attr( $settings['welcome_single_title'] ?? '' ); ?>" class="large-text" placeholder="Agentes Inteligentes para Marketing">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="welcome_single_url">Course URL</label></th>
+                        <td>
+                            <input type="url" id="welcome_single_url" name="edit_seo_fix_settings[welcome_single_url]" value="<?php echo esc_attr( $settings['welcome_single_url'] ?? '' ); ?>" class="large-text" placeholder="https://weareedit.io/formacao/agentes-inteligentes-para-marketing/">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="welcome_single_description">Description</label></th>
+                        <td>
+                            <input type="text" id="welcome_single_description" name="edit_seo_fix_settings[welcome_single_description]" value="<?php echo esc_attr( $settings['welcome_single_description'] ?? '' ); ?>" class="large-text" placeholder="Remote · 4 semanas · 100% reembolso IEFP">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="welcome_single_tutor_name">Tutor name</label></th>
+                        <td>
+                            <input type="text" id="welcome_single_tutor_name" name="edit_seo_fix_settings[welcome_single_tutor_name]" value="<?php echo esc_attr( $settings['welcome_single_tutor_name'] ?? '' ); ?>" class="regular-text" placeholder="Miguel Rão Vieira">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="welcome_single_tutor_role">Tutor role</label></th>
+                        <td>
+                            <input type="text" id="welcome_single_tutor_role" name="edit_seo_fix_settings[welcome_single_tutor_role]" value="<?php echo esc_attr( $settings['welcome_single_tutor_role'] ?? 'Tutor · EDIT.' ); ?>" class="regular-text" placeholder="Especialista em IA · 20+ anos">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="welcome_single_tutor_url">Tutor profile URL</label></th>
+                        <td>
+                            <input type="url" id="welcome_single_tutor_url" name="edit_seo_fix_settings[welcome_single_tutor_url]" value="<?php echo esc_attr( $settings['welcome_single_tutor_url'] ?? '' ); ?>" class="large-text" placeholder="https://weareedit.io/equipa/miguel-rao-vieira/">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="welcome_single_tutor_photo">Tutor photo URL</label></th>
+                        <td>
+                            <input type="url" id="welcome_single_tutor_photo" name="edit_seo_fix_settings[welcome_single_tutor_photo]" value="<?php echo esc_attr( $settings['welcome_single_tutor_photo'] ?? '' ); ?>" class="large-text" placeholder="https://weareedit.io/wp-content/uploads/2026/05/miguel-rao-280x280-1.png">
+                        </td>
+                    </tr>
+                </table>
+
                 <p class="description" style="padding:10px 14px;background:#f5f5f5;border-left:3px solid #f92869;margin:8px 0 0 0;font-size:13px;">
                     <strong>Note:</strong> Path B replaces the Brevo "Mensagem de boas-vindas" automation entirely. Leave that
                     automation paused (or delete it) — WP handles welcome sends directly now, with today's freshest picks every time.
