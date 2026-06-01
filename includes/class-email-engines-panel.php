@@ -303,17 +303,6 @@ class EDIT_Email_Engines_Panel {
                     <?php
                 };
                 $render_extra_card( 2, $settings, [
-                    'typology'    => 'bootcamp',
-                    'date_label'  => '29 Junho',
-                    'title'       => 'Advanced Artificial Intelligence',
-                    'url'         => 'https://weareedit.io/formacao/bootcamp-advanced-artificial-intelligence/',
-                    'description' => 'Remote · 40 Horas · Pós-Laboral',
-                    'tutor_name'  => 'Naiara Back',
-                    'tutor_role'  => 'Estrategista Digital & IA aplicada ao negócio',
-                    'tutor_url'   => 'https://weareedit.io/equipa/naiara-back/',
-                    'tutor_photo' => 'https://weareedit.io/wp-content/uploads/2026/05/naiara-back-280x280-1.png',
-                ] );
-                $render_extra_card( 3, $settings, [
                     'typology'    => 'workshop',
                     'date_label'  => '13 Julho',
                     'title'       => 'Ethics by Design — Desenvolver e Usar IA com Responsabilidade',
@@ -323,6 +312,17 @@ class EDIT_Email_Engines_Panel {
                     'tutor_role'  => 'Head of Experience Design',
                     'tutor_url'   => 'https://weareedit.io/equipa/hugo-oliveira-vicente/',
                     'tutor_photo' => 'https://weareedit.io/wp-content/uploads/2026/06/hugo-oliveira-vicente-280x280-1.png',
+                ] );
+                $render_extra_card( 3, $settings, [
+                    'typology'    => 'bootcamp',
+                    'date_label'  => '29 Junho',
+                    'title'       => 'Advanced Artificial Intelligence',
+                    'url'         => 'https://weareedit.io/formacao/bootcamp-advanced-artificial-intelligence/',
+                    'description' => 'Remote · 40 Horas · Pós-Laboral',
+                    'tutor_name'  => 'Naiara Back',
+                    'tutor_role'  => 'Estrategista Digital & IA aplicada ao negócio',
+                    'tutor_url'   => 'https://weareedit.io/equipa/naiara-back/',
+                    'tutor_photo' => 'https://weareedit.io/wp-content/uploads/2026/05/naiara-back-280x280-1.png',
                 ] );
                 ?>
 
