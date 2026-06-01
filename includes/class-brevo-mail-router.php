@@ -18,6 +18,45 @@
  */
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+/**
+ * Override WP's pluggable wp_mail() — loaded BEFORE wp-includes/pluggable.php
+ * during plugin bootstrap, so our function wins. Sends every wp_mail call
+ * directly via Brevo's transactional API. Bypasses PHPMailer entirely so
+ * blocked-host SMTP can't hang the request.
+ *
+ * Returns:
+ *   true  — Brevo accepted the message (CF7 sees success → form transitions out
+ *           of "A enviar..." into success state)
+ *   false — Brevo rejected, no API key, or no recipients. CF7 shows error.
+ */
+if ( ! function_exists( 'wp_mail' ) ) {
+    function wp_mail( $to, $subject, $message, $headers = '', $attachments = [] ) {
+        $atts = [
+            'to'          => $to,
+            'subject'     => $subject,
+            'message'     => $message,
+            'headers'     => $headers,
+            'attachments' => $attachments,
+        ];
+
+        // pre_wp_mail emulation — preserves WP 5.7+ semantics so any other
+        // plugin hooking pre_wp_mail still works (and our own PHP_INT_MAX
+        // handler will finally fire on this older WP core).
+        if ( function_exists( 'apply_filters' ) ) {
+            $short = apply_filters( 'pre_wp_mail', null, $atts );
+            if ( $short !== null ) return (bool) $short;
+            $atts  = apply_filters( 'wp_mail', $atts );
+        }
+
+        if ( ! class_exists( 'EDIT_Brevo_Mail_Router' ) ) return false;
+        try {
+            return EDIT_Brevo_Mail_Router::external_route( $atts ) === true;
+        } catch ( \Throwable $e ) {
+            return false;
+        }
+    }
+}
+
 class EDIT_Brevo_Mail_Router {
 
     const DEFAULT_SENDER_EMAIL = 'geral@weareedit.io';
@@ -102,6 +141,16 @@ class EDIT_Brevo_Mail_Router {
             return self::do_route( $short, $atts );
         } catch ( \Throwable $e ) {
             self::log_debug( 'brevo_router_exception', $e->getMessage() . ' @ ' . $e->getFile() . ':' . $e->getLine(), is_array( $atts ) ? $atts : [] );
+            return false;
+        }
+    }
+
+    /** Public wrapper so our overridden wp_mail() can call into the router. */
+    public static function external_route( array $atts ) {
+        try {
+            return self::do_route( null, $atts );
+        } catch ( \Throwable $e ) {
+            self::log_debug( 'brevo_external_exception', $e->getMessage(), $atts );
             return false;
         }
     }
