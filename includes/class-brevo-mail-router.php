@@ -37,11 +37,22 @@ class EDIT_Brevo_Mail_Router {
         // Unconditional entry log — confirms the filter is firing.
         self::log_debug( 'brevo_router_entry', 'fired', is_array( $atts ) ? $atts : [] );
 
+        // Wrap everything in try/catch so a PHP error here doesn't kill the
+        // request silently — we'd rather log + return false to CF7.
+        try {
+            return self::do_route( $short, $atts );
+        } catch ( \Throwable $e ) {
+            self::log_debug( 'brevo_router_exception', $e->getMessage() . ' @ ' . $e->getFile() . ':' . $e->getLine(), is_array( $atts ) ? $atts : [] );
+            return false;
+        }
+    }
+
+    private static function do_route( $short, $atts ) {
         // Already handled? Let it pass.
         if ( $short !== null ) return $short;
 
         $settings = get_option( 'edit_seo_fix_settings', [] );
-        $api_key  = (string) ( $settings['brevo_api_key'] ?? '' );
+        $api_key  = trim( (string) ( $settings['brevo_api_key'] ?? '' ) );
         if ( $api_key === '' ) {
             self::log_debug( 'brevo_router_skip', 'no api key configured', is_array( $atts ) ? $atts : [] );
             return $short;
@@ -171,9 +182,12 @@ class EDIT_Brevo_Mail_Router {
         $lines = is_array( $headers ) ? $headers : preg_split( '~\r?\n~', (string) $headers );
 
         foreach ( $lines as $line ) {
+            $line = (string) $line;
             if ( strpos( $line, ':' ) === false ) continue;
-            [ $name, $value ] = array_map( 'trim', explode( ':', $line, 2 ) );
-            $key = strtolower( $name );
+            $parts = array_map( 'trim', explode( ':', $line, 2 ) );
+            $name  = isset( $parts[0] ) ? $parts[0] : '';
+            $value = isset( $parts[1] ) ? $parts[1] : '';
+            $key   = strtolower( $name );
             switch ( $key ) {
                 case 'from':
                     $p = self::extract_email_and_name( $value );
