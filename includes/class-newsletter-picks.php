@@ -433,13 +433,11 @@ class EDIT_Newsletter_Picks {
             $val = isset( $settings[ $key ] ) ? trim( (string) $settings[ $key ] ) : '';
             return $val !== '' ? $val : $default;
         };
+        $default_body = "Sou o Daniel, fundador da EDIT.\n\nEsta newsletter é onde partilho, em primeira mão, as ideias que estamos a explorar, os tutores que estamos a entrevistar, e os cursos que estão a nascer aqui dentro.\n\nUma edição por semana. Sem fluff. Quando responderes a este email, sou eu que leio.\n\nDeixo-te aqui o que está em destaque agora.";
         return [
             'eyebrow'          => $pick( 'welcome_eyebrow',          'Bem-vindo à EDIT.' ),
             'headline'         => $pick( 'welcome_headline',         'Que bom ter-te por aqui.' ),
-            'body_p1'          => $pick( 'welcome_body_p1',          'Sou o Daniel, fundador da EDIT.' ),
-            'body_p2'          => $pick( 'welcome_body_p2',          'Esta newsletter é onde partilho, em primeira mão, as ideias que estamos a explorar, os tutores que estamos a entrevistar, e os cursos que estão a nascer aqui dentro.' ),
-            'body_p3'          => $pick( 'welcome_body_p3',          'Uma edição por semana. Sem fluff. Quando responderes a este email, sou eu que leio.' ),
-            'body_p4'          => $pick( 'welcome_body_p4',          'Deixo-te aqui o que está em destaque agora.' ),
+            'body'             => $pick( 'welcome_body',             $default_body ),
             'section_eyebrow'  => $pick( 'welcome_section_eyebrow',  'Em destaque agora' ),
             'section_headline' => $pick( 'welcome_section_headline', 'As próximas edições.' ),
             'signature_url'    => $pick( 'welcome_signature_url',    'https://weareedit.io/wp-content/uploads/2026/05/DANIEL-DEVERA-ASSINATURA.png' ),

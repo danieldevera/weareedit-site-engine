@@ -149,27 +149,16 @@ class EDIT_Email_Engines_Panel {
                         </td>
                     </tr>
                     <tr>
-                        <th><label for="welcome_body_p1">Body — paragraph 1</label></th>
+                        <th><label for="welcome_body">Body</label></th>
                         <td>
-                            <textarea id="welcome_body_p1" name="edit_seo_fix_settings[welcome_body_p1]" rows="2" class="large-text" placeholder="Sou o Daniel, fundador da EDIT."><?php echo esc_textarea( $settings['welcome_body_p1'] ?? '' ); ?></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label for="welcome_body_p2">Body — paragraph 2</label></th>
-                        <td>
-                            <textarea id="welcome_body_p2" name="edit_seo_fix_settings[welcome_body_p2]" rows="3" class="large-text" placeholder="Esta newsletter é onde partilho, em primeira mão..."><?php echo esc_textarea( $settings['welcome_body_p2'] ?? '' ); ?></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label for="welcome_body_p3">Body — paragraph 3</label></th>
-                        <td>
-                            <textarea id="welcome_body_p3" name="edit_seo_fix_settings[welcome_body_p3]" rows="3" class="large-text" placeholder="Uma edição por semana. Sem fluff..."><?php echo esc_textarea( $settings['welcome_body_p3'] ?? '' ); ?></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label for="welcome_body_p4">Body — paragraph 4 (segue)</label></th>
-                        <td>
-                            <textarea id="welcome_body_p4" name="edit_seo_fix_settings[welcome_body_p4]" rows="2" class="large-text" placeholder="Deixo-te aqui o que está em destaque agora."><?php echo esc_textarea( $settings['welcome_body_p4'] ?? '' ); ?></textarea>
+                            <?php
+                            $default_body = "Sou o Daniel, fundador da EDIT.\n\nEsta newsletter é onde partilho, em primeira mão, as ideias que estamos a explorar, os tutores que estamos a entrevistar, e os cursos que estão a nascer aqui dentro.\n\nUma edição por semana. Sem fluff. Quando responderes a este email, sou eu que leio.\n\nDeixo-te aqui o que está em destaque agora.";
+                            $current_body = isset( $settings['welcome_body'] ) && trim( (string) $settings['welcome_body'] ) !== ''
+                                ? (string) $settings['welcome_body']
+                                : $default_body;
+                            ?>
+                            <textarea id="welcome_body" name="edit_seo_fix_settings[welcome_body]" rows="10" class="large-text"><?php echo esc_textarea( $current_body ); ?></textarea>
+                            <p class="description">Separate paragraphs with a blank line. Each paragraph renders as a <code>&lt;p&gt;</code> in the email.</p>
                         </td>
                     </tr>
                     <tr>

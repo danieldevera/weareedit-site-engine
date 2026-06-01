@@ -151,9 +151,15 @@ $render_card = static function ( array $pick, int $idx ) {
     <h1 style="margin:0;font-size:36px;line-height:1.1;font-weight:700;letter-spacing:-0.025em;color:#0a0a0a;"><?php echo $accent_trailing_dot( $copy['headline'] ?? 'Que bom ter-te por aqui.' ); ?></h1>
   </td></tr>
   <tr><td class="px-md" style="padding:0 40px 24px 40px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#0a0a0a;">
-    <?php foreach ( [ 'body_p1', 'body_p2', 'body_p3', 'body_p4' ] as $k ) : ?>
-      <?php $txt = trim( (string) ( $copy[ $k ] ?? '' ) ); if ( $txt === '' ) continue; ?>
-      <p style="margin:0 0 16px 0;font-size:16px;line-height:1.55;color:#222222;"><?php echo nl2br( esc_html( $txt ) ); ?></p>
+    <?php
+    // Split the single body field on blank lines into paragraphs.
+    $body_raw = (string) ( $copy['body'] ?? '' );
+    $paragraphs = preg_split( '~\n\s*\n~', $body_raw );
+    foreach ( $paragraphs as $para ) :
+        $para = trim( $para );
+        if ( $para === '' ) continue;
+    ?>
+      <p style="margin:0 0 16px 0;font-size:16px;line-height:1.55;color:#222222;"><?php echo nl2br( esc_html( $para ) ); ?></p>
     <?php endforeach; ?>
   </td></tr>
   <tr><td class="px-md" style="padding:8px 40px 48px 40px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
