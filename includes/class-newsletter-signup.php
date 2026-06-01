@@ -114,6 +114,22 @@ class EDIT_Newsletter_Signup {
         }
 
         if ( $result['ok'] ) {
+            // Fire the welcome email immediately (Path B — direct send,
+            // no Brevo automation). Uses today's rendered HTML so each
+            // subscriber sees the freshest picks. Errors here don't
+            // block the signup — log + continue.
+            if ( class_exists( 'EDIT_Newsletter_Picks' ) ) {
+                $welcome = EDIT_Newsletter_Picks::send_welcome_to( $email, $first_name );
+                if ( class_exists( 'EDIT_CF7_Debug' ) ) {
+                    EDIT_CF7_Debug::write( [
+                        'event'      => 'newsletter_welcome_send',
+                        'form_title' => 'Welcome Email · auto-fire on signup',
+                        'email'      => $email,
+                        'welcome'    => $welcome['ok'] ? 'ok' : ( 'error: ' . ( $welcome['message'] ?? '' ) ),
+                    ] );
+                }
+            }
+
             return new WP_REST_Response( [
                 'status'  => 'ok',
                 'message' => 'Subscrito, até breve.',

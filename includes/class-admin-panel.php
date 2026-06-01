@@ -71,8 +71,11 @@ class EDIT_Admin_Panel {
             // Brevo newsletter integration (v1.5.148+)
             'brevo_api_key'             => sanitize_text_field( $input['brevo_api_key'] ?? '' ),
             'brevo_newsletter_list_id'  => absint( $input['brevo_newsletter_list_id'] ?? 4 ),
-            // Welcome email autonomous sync (Task #23, v1.5.189+)
-            'brevo_welcome_template_id' => absint( $input['brevo_welcome_template_id'] ?? 0 ),
+            // Welcome email — Path B (direct send on signup)
+            'welcome_sender_email'      => sanitize_email( $input['welcome_sender_email'] ?? 'daniel.devera@weareedit.io' ),
+            'welcome_sender_name'       => sanitize_text_field( $input['welcome_sender_name'] ?? 'Daniel Devera from EDIT.' ),
+            'welcome_subject'           => sanitize_text_field( $input['welcome_subject'] ?? 'Que bom ter-te por aqui na EDIT.' ),
+            'welcome_test_recipient'    => sanitize_email( $input['welcome_test_recipient'] ?? 'daniel.devera@weareedit.io' ),
             'picks_cron_enabled'        => ! empty( $input['picks_cron_enabled'] ),
         ];
     }

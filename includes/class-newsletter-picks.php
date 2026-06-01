@@ -366,57 +366,95 @@ class EDIT_Newsletter_Picks {
     // ---------------------------------------------------------------- Brevo
 
     /**
-     * PUT the rendered HTML to the configured Brevo welcome template.
-     * Brevo API: PUT /v3/smtp/templates/{id} (transactional templates)
-     * or PUT /v3/emailCampaigns/{id} (marketing campaigns).
-     *
-     * We default to the transactional endpoint since welcome flows are
-     * usually built as transactional templates triggered by automations.
+     * Default sender for the welcome email. Overridable via settings
+     * (Email Marketing → Brevo connection → Welcome sender).
      */
-    public static function sync_to_brevo(): array {
-        $settings    = get_option( 'edit_seo_fix_settings', [] );
-        $api_key     = (string) ( $settings['brevo_api_key'] ?? '' );
-        $template_id = (int) ( $settings['brevo_welcome_template_id'] ?? 0 );
+    const DEFAULT_SENDER_EMAIL = 'daniel.devera@weareedit.io';
+    const DEFAULT_SENDER_NAME  = 'Daniel Devera from EDIT.';
+    const DEFAULT_SUBJECT      = 'Que bom ter-te por aqui na EDIT.';
 
-        if ( $api_key === '' )      return [ 'ok' => false, 'message' => 'Brevo API key not configured.' ];
-        if ( $template_id <= 0 )    return [ 'ok' => false, 'message' => 'Brevo welcome template ID not configured.' ];
+    /**
+     * Send the welcome email directly via Brevo's transactional API.
+     * Path B — bypasses Brevo Automations entirely. Each call sends a
+     * single welcome to one recipient with today's freshly rendered
+     * HTML inlined. Returns ['ok' => bool, 'message' => string].
+     *
+     * Used by:
+     *   - EDIT_Newsletter_Signup::handle_signup() on every new signup
+     *   - The admin "Send test welcome" button
+     *
+     * @param string $email      Recipient email
+     * @param string $first_name Optional first name for greeting personalization
+     */
+    public static function send_welcome_to( string $email, string $first_name = '' ): array {
+        $settings = get_option( 'edit_seo_fix_settings', [] );
+        $api_key  = (string) ( $settings['brevo_api_key'] ?? '' );
+        if ( $api_key === '' )       return [ 'ok' => false, 'message' => 'Brevo API key not configured.' ];
+        if ( ! is_email( $email ) )  return [ 'ok' => false, 'message' => 'Invalid recipient email.' ];
 
-        $picks = self::get_current_picks();
-        $html  = self::render_welcome_html();
+        $sender_email = (string) ( $settings['welcome_sender_email'] ?? self::DEFAULT_SENDER_EMAIL );
+        $sender_name  = (string) ( $settings['welcome_sender_name']  ?? self::DEFAULT_SENDER_NAME );
+        $subject      = (string) ( $settings['welcome_subject']      ?? self::DEFAULT_SUBJECT );
+
+        $html = self::render_welcome_html();
         if ( $html === '' ) return [ 'ok' => false, 'message' => 'Render failed: template file missing.' ];
 
-        // Cache the last successful render for the admin "Preview" link.
+        // Cache the last successful render for admin preview.
         update_option( self::OPT_LAST_HTML, $html, false );
 
-        $response = wp_remote_request( 'https://api.brevo.com/v3/smtp/templates/' . $template_id, [
-            'method'  => 'PUT',
+        $payload = [
+            'sender'      => [ 'name' => $sender_name, 'email' => $sender_email ],
+            'to'          => [ [ 'email' => $email, 'name' => $first_name ?: $email ] ],
+            'subject'     => $subject,
+            'htmlContent' => $html,
+            'tags'        => [ 'welcome', 'welcome-v1' ],
+        ];
+
+        $response = wp_remote_post( 'https://api.brevo.com/v3/smtp/email', [
+            'method'  => 'POST',
             'timeout' => 20,
             'headers' => [
                 'api-key'      => $api_key,
                 'Content-Type' => 'application/json',
                 'accept'       => 'application/json',
             ],
-            'body' => wp_json_encode( [
-                'htmlContent' => $html,
-                // Brevo accepts these alongside htmlContent — keep them optional.
-                // Sender + subject are usually set once in the template UI and we
-                // don't want to overwrite them on every cron tick.
-            ] ),
+            'body' => wp_json_encode( $payload ),
         ] );
 
         if ( is_wp_error( $response ) ) {
-            return [ 'ok' => false, 'message' => $response->get_error_message(), 'picks' => $picks ];
+            return [ 'ok' => false, 'message' => $response->get_error_message() ];
         }
 
         $code = (int) wp_remote_retrieve_response_code( $response );
         $body = json_decode( (string) wp_remote_retrieve_body( $response ), true );
 
         if ( $code >= 200 && $code < 300 ) {
-            return [ 'ok' => true, 'message' => 'Synced ' . count( $picks ) . ' picks at ' . self::today_pt(), 'picks' => $picks ];
+            $msg_id = is_array( $body ) && isset( $body['messageId'] ) ? $body['messageId'] : '';
+            return [ 'ok' => true, 'message' => 'Welcome sent to ' . $email . ' (msgId ' . $msg_id . ')' ];
         }
 
         $msg = is_array( $body ) && isset( $body['message'] ) ? $body['message'] : 'Brevo HTTP ' . $code;
-        return [ 'ok' => false, 'message' => $msg, 'picks' => $picks ];
+        return [ 'ok' => false, 'message' => $msg ];
+    }
+
+    /**
+     * Admin "Send test welcome" — sends a copy of the current welcome
+     * to the configured test recipient. Same logic as send_welcome_to()
+     * but stores the result for the admin status badge.
+     */
+    public static function send_test_welcome(): array {
+        $settings  = get_option( 'edit_seo_fix_settings', [] );
+        $recipient = (string) ( $settings['welcome_test_recipient'] ?? self::DEFAULT_SENDER_EMAIL );
+        $result    = self::send_welcome_to( $recipient, '' );
+        update_option( self::OPT_LAST_SYNC,    time(), false );
+        update_option( self::OPT_LAST_STATUS,  $result['ok'] ? 'ok' : 'error', false );
+        update_option( self::OPT_LAST_MESSAGE, (string) ( $result['message'] ?? '' ), false );
+        return $result;
+    }
+
+    /** Backwards-compatibility alias — sync_to_brevo() now sends a test. */
+    public static function sync_to_brevo(): array {
+        return self::send_test_welcome();
     }
 
     // ---------------------------------------------------------------- Status

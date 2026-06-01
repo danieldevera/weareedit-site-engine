@@ -76,36 +76,46 @@ class EDIT_Email_Engines_Panel {
 
                 <hr style="margin:32px 0 24px;border:0;border-top:1px solid #e5e5e5;">
 
-                <h2>Engine #1 · Welcome Email (autonomous picks)</h2>
+                <h2>Engine #1 · Welcome Email (direct send · Path B)</h2>
                 <p class="description">
-                    Daily WP-Cron job at 06:00 Europe/Lisbon picks the 3 closest upcoming editions (1 Bootcamp + 1 Workshop + 1 Curso),
-                    renders the locked welcome template with today's picks, and PUTs the HTML to your Brevo welcome transactional template.
-                    The welcome automation in Brevo keeps firing — new subscribers always see today's fresh picks.
+                    Every new subscriber via the homepage strip triggers an immediate welcome email — WP renders the locked
+                    template with today's freshest picks and sends it through Brevo's transactional API. No Brevo automation
+                    needed. Test deliverability with the button below before flipping the homepage strip on.
                 </p>
                 <table class="form-table">
                     <tr>
-                        <th><label for="brevo_welcome_template_id">Brevo welcome template ID</label></th>
+                        <th><label for="welcome_sender_email">Sender email</label></th>
                         <td>
-                            <input type="number" id="brevo_welcome_template_id" name="edit_seo_fix_settings[brevo_welcome_template_id]" value="<?php echo esc_attr( $settings['brevo_welcome_template_id'] ?? 0 ); ?>" class="small-text" min="0" placeholder="0">
-                            <p class="description">ID from <a href="https://app.brevo.com/transactional-email/templates" target="_blank">Brevo → Transactional → Templates</a> (or the trailing number in the template URL).</p>
+                            <input type="email" id="welcome_sender_email" name="edit_seo_fix_settings[welcome_sender_email]" value="<?php echo esc_attr( $settings['welcome_sender_email'] ?? 'daniel.devera@weareedit.io' ); ?>" class="regular-text">
+                            <p class="description">Must be Brevo-verified. Check at <a href="https://app.brevo.com/senders" target="_blank">Brevo → Senders, Domains & IPs</a>.</p>
                         </td>
                     </tr>
                     <tr>
-                        <th>Daily auto-sync</th>
+                        <th><label for="welcome_sender_name">Sender name</label></th>
                         <td>
-                            <label>
-                                <input type="checkbox" name="edit_seo_fix_settings[picks_cron_enabled]" value="1" <?php checked( $settings['picks_cron_enabled'] ?? false ); ?>>
-                                Run the cron every day at 06:00 Europe/Lisbon to refresh the welcome template with today's picks
-                            </label>
+                            <input type="text" id="welcome_sender_name" name="edit_seo_fix_settings[welcome_sender_name]" value="<?php echo esc_attr( $settings['welcome_sender_name'] ?? 'Daniel Devera from EDIT.' ); ?>" class="regular-text">
                         </td>
                     </tr>
                     <tr>
-                        <th>Manual sync</th>
+                        <th><label for="welcome_subject">Subject line</label></th>
+                        <td>
+                            <input type="text" id="welcome_subject" name="edit_seo_fix_settings[welcome_subject]" value="<?php echo esc_attr( $settings['welcome_subject'] ?? 'Que bom ter-te por aqui na EDIT.' ); ?>" class="regular-text">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="welcome_test_recipient">Test recipient</label></th>
+                        <td>
+                            <input type="email" id="welcome_test_recipient" name="edit_seo_fix_settings[welcome_test_recipient]" value="<?php echo esc_attr( $settings['welcome_test_recipient'] ?? 'daniel.devera@weareedit.io' ); ?>" class="regular-text">
+                            <p class="description">Where the "Send test welcome" button below delivers. Defaults to the sender so the round-trip is in one inbox.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Send test welcome</th>
                         <td>
                             <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="display:inline;">
                                 <?php wp_nonce_field( 'edit_newsletter_picks_force_sync' ); ?>
                                 <input type="hidden" name="action" value="edit_newsletter_picks_force_sync">
-                                <button type="submit" class="button">Force sync now</button>
+                                <button type="submit" class="button button-primary">Send test welcome →</button>
                             </form>
                             <?php
                             if ( $synced_flash && class_exists( 'EDIT_Newsletter_Picks' ) ) {
@@ -115,11 +125,11 @@ class EDIT_Email_Engines_Panel {
                                     . ( $ok ? '✓ ' : '✗ ' ) . esc_html( $st['message'] ?? '' ) . '</span>';
                             }
                             ?>
-                            <p class="description">Runs the same job the cron triggers. Use after changing picks or the template.</p>
+                            <p class="description">Save your changes first, then click. Renders the locked welcome template with today's picks and sends one email to the test recipient via Brevo's transactional API.</p>
                         </td>
                     </tr>
                     <tr>
-                        <th>Last sync</th>
+                        <th>Last send</th>
                         <td>
                             <?php
                             if ( class_exists( 'EDIT_Newsletter_Picks' ) ) {
@@ -133,13 +143,17 @@ class EDIT_Email_Engines_Panel {
                                         . '<strong style="color:' . $color . ';">' . $label . '</strong> &middot; '
                                         . esc_html( $st['message'] ?? '' );
                                 } else {
-                                    echo '<em>Never run yet — paste the template ID above, save, then click "Force sync now".</em>';
+                                    echo '<em>Never run yet — save your settings, then click "Send test welcome".</em>';
                                 }
                             }
                             ?>
                         </td>
                     </tr>
                 </table>
+                <p class="description" style="padding:10px 14px;background:#f5f5f5;border-left:3px solid #f92869;margin:8px 0 0 0;font-size:13px;">
+                    <strong>Note:</strong> Path B replaces the Brevo "Mensagem de boas-vindas" automation entirely. Leave that
+                    automation paused (or delete it) — WP handles welcome sends directly now, with today's freshest picks every time.
+                </p>
 
                 <hr style="margin:32px 0 24px;border:0;border-top:1px solid #e5e5e5;">
 
