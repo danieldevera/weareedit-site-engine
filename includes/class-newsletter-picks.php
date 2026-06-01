@@ -571,7 +571,7 @@ class EDIT_Newsletter_Picks {
      * (Email Marketing → Brevo connection → Welcome sender).
      */
     const DEFAULT_SENDER_EMAIL = 'daniel.devera@weareedit.io';
-    const DEFAULT_SENDER_NAME  = 'Daniel Devera from EDIT.';
+    const DEFAULT_SENDER_NAME  = 'Daniel Devera da EDIT.';
     const DEFAULT_SUBJECT      = 'Que bom ter-te por aqui na EDIT.';
 
     /**

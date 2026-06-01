@@ -89,7 +89,7 @@ class EDIT_Admin_Panel {
             'brevo_newsletter_list_id'  => absint( $input['brevo_newsletter_list_id'] ?? 4 ),
             // Welcome email — Path B (direct send on signup)
             'welcome_sender_email'      => sanitize_email( $input['welcome_sender_email'] ?? 'daniel.devera@weareedit.io' ),
-            'welcome_sender_name'       => sanitize_text_field( $input['welcome_sender_name'] ?? 'Daniel Devera from EDIT.' ),
+            'welcome_sender_name'       => sanitize_text_field( $input['welcome_sender_name'] ?? 'Daniel Devera da EDIT.' ),
             'welcome_subject'           => sanitize_text_field( $input['welcome_subject'] ?? 'Que bom ter-te por aqui na EDIT.' ),
             'welcome_test_recipient'    => sanitize_email( $input['welcome_test_recipient'] ?? 'daniel.devera@weareedit.io' ),
             'welcome_eyebrow'           => sanitize_text_field( $input['welcome_eyebrow'] ?? '' ),

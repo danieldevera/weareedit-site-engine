@@ -93,7 +93,7 @@ class EDIT_Email_Engines_Panel {
                     <tr>
                         <th><label for="welcome_sender_name">Sender name</label></th>
                         <td>
-                            <input type="text" id="welcome_sender_name" name="edit_seo_fix_settings[welcome_sender_name]" value="<?php echo esc_attr( $settings['welcome_sender_name'] ?? 'Daniel Devera from EDIT.' ); ?>" class="regular-text">
+                            <input type="text" id="welcome_sender_name" name="edit_seo_fix_settings[welcome_sender_name]" value="<?php echo esc_attr( $settings['welcome_sender_name'] ?? 'Daniel Devera da EDIT.' ); ?>" class="regular-text">
                         </td>
                     </tr>
                     <tr>
