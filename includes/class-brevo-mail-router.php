@@ -34,12 +34,18 @@ class EDIT_Brevo_Mail_Router {
      * @param array     $atts   wp_mail() args: to, subject, message, headers, attachments
      */
     public static function route_via_brevo( $short, $atts ) {
+        // Unconditional entry log — confirms the filter is firing.
+        self::log_debug( 'brevo_router_entry', 'fired', is_array( $atts ) ? $atts : [] );
+
         // Already handled? Let it pass.
         if ( $short !== null ) return $short;
 
         $settings = get_option( 'edit_seo_fix_settings', [] );
         $api_key  = (string) ( $settings['brevo_api_key'] ?? '' );
-        if ( $api_key === '' ) return $short; // No key — let WP fall back (will still fail, but logs cleaner)
+        if ( $api_key === '' ) {
+            self::log_debug( 'brevo_router_skip', 'no api key configured', is_array( $atts ) ? $atts : [] );
+            return $short;
+        }
 
         // Extract attrs (wp_mail allows the filter to mutate them).
         $to          = $atts['to']          ?? '';
