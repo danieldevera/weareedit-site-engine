@@ -3,7 +3,7 @@
  * Plugin Name: * weareedit.io Site Engine
  * Plugin URI:  https://github.com/danieldevera/weareedit-site-engine
  * Description: Custom site engine for weareedit.io — SEO (meta tags, OG, schema.org, sitemap, hreflang), GEO/LLM optimization (llms.txt, AI crawler rules, Wikidata-linked Person/Organization schema), brand customization (hero typography, dot accents, CTA hover animations), Google Reviews aggregation, output-buffer HTML rewrites, virtual pages, WP Rocket cache integration, and one-time data fixes.
- * Version:     1.5.229
+ * Version:     1.5.230
  * Author:      Daniel Devera
  * License:     GPL-2.0+
  * Text Domain: weareedit-site-engine
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.229' );
+define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.230' );
 define( 'WEAREDIT_SITE_ENGINE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WEAREDIT_SITE_ENGINE_URL', plugin_dir_url( __FILE__ ) );
 
@@ -65,6 +65,15 @@ add_action( 'wp_head', function () {
      class lands on the wrapper, then we hope the JS also adds searchOpen
      to .autocomplete.compact (which it does). */
   .autocomplete.searchOpen .autocomplete__inputWrapper{opacity:1 !important;animation:none !important;}
+  /* Restore the right-side header CTAs (In-company + Fala connosco) on
+     /formacao/ product pages. Theme applies display:none to both on
+     body.single-formacao + an extra right:40px on inCompany (which
+     would collide with Fala connosco at right:0). We override the
+     display + restore inCompany's base right:230px so the layout
+     matches the homepage exactly. Base rules already handle font,
+     colour, position:fixed, etc. — we just unhide and re-anchor. */
+  body.single-formacao .headerDesktop__contact{display:inline-flex !important;}
+  body.single-formacao .headerDesktop__inCompany{display:inline-flex !important;right:230px !important;}
   /* Mobile only — breathing room between the HORÁRIOS / details rows
      and the sticky product action menu (Remote / Pós-Laboral / Programa
      / Quero-me inscrever). On the live page the two blocks touch with
@@ -368,7 +377,7 @@ add_action( 'init', function () {
 }, 5 );
 
 /**
- * One-time migration (v1.5.229): rename welcome sender name from
+ * One-time migration (v1.5.230): rename welcome sender name from
  * "Daniel Devera from EDIT." (English "from") to "Daniel Devera da
  * EDIT." (Portuguese "da") so the sender name matches the new
  * Francisco da EDIT. convention. Only touches the saved value if it
