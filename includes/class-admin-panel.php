@@ -34,6 +34,18 @@ class EDIT_Admin_Panel {
     }
 
     public static function sanitize_settings( array $input ): array {
+        if ( class_exists( 'EDIT_CF7_Debug' ) ) {
+            EDIT_CF7_Debug::write( [
+                'event'      => 'settings_sanitize',
+                'form_title' => 'Settings sanitize · welcome_single_*',
+                'mode_in'        => var_export( $input['welcome_single_mode']        ?? '<MISSING>', true ),
+                'title_in'       => var_export( $input['welcome_single_title']       ?? '<MISSING>', true ),
+                'url_in'         => var_export( $input['welcome_single_url']         ?? '<MISSING>', true ),
+                'tutor_name_in'  => var_export( $input['welcome_single_tutor_name']  ?? '<MISSING>', true ),
+                'tutor_photo_in' => var_export( $input['welcome_single_tutor_photo'] ?? '<MISSING>', true ),
+                'input_keys'     => implode( ', ', array_keys( $input ) ),
+            ] );
+        }
         return [
             'default_description'   => sanitize_text_field( $input['default_description'] ?? '' ),
             'og_site_name'          => sanitize_text_field( $input['og_site_name'] ?? '' ),
