@@ -24,9 +24,10 @@ class EDIT_Brevo_Mail_Router {
     const DEFAULT_SENDER_NAME  = 'EDIT.';
 
     public static function init(): void {
-        // pre_wp_mail filter exists since WP 5.7. Returning anything
-        // other than null short-circuits the rest of wp_mail().
-        add_filter( 'pre_wp_mail', [ __CLASS__, 'route_via_brevo' ], 10, 2 );
+        // pre_wp_mail filter exists since WP 5.7. Run at priority 1 so
+        // we win over any other SMTP plugin / e-goi addon that may have
+        // hooked pre_wp_mail and silently returned false.
+        add_filter( 'pre_wp_mail', [ __CLASS__, 'route_via_brevo' ], 1, 2 );
     }
 
     /**
@@ -48,8 +49,11 @@ class EDIT_Brevo_Mail_Router {
     }
 
     private static function do_route( $short, $atts ) {
-        // Already handled? Let it pass.
-        if ( $short !== null ) return $short;
+        // Another filter already short-circuited. Log + override anyway
+        // so a failing SMTP plugin/e-goi addon can't block our Brevo route.
+        if ( $short !== null ) {
+            self::log_debug( 'brevo_router_override', 'overriding prior short=' . var_export( $short, true ), is_array( $atts ) ? $atts : [] );
+        }
 
         $settings = get_option( 'edit_seo_fix_settings', [] );
         $api_key  = trim( (string) ( $settings['brevo_api_key'] ?? '' ) );
