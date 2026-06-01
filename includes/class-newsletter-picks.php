@@ -125,12 +125,12 @@ class EDIT_Newsletter_Picks {
      *   ]
      */
     public static function get_current_picks(): array {
-        // 1a. Single-card manual mode — when toggled on, render exactly
-        //     one card built from the explicit settings fields. Bypasses
-        //     WP lookups entirely so the rendered tutor / photo / link
-        //     match what the operator typed, no matter what's in the CPT.
-        $single = self::get_single_card_pick();
-        if ( $single !== null ) return [ $single ];
+        // 1a. Manual cards mode (single-card toggle ON) — render up to 3
+        //     cards from explicit settings fields. Bypasses every WP lookup
+        //     so the rendered title / tutor / photo / link match what the
+        //     operator typed, no matter what's in the CPT.
+        $manual = self::get_manual_cards();
+        if ( ! empty( $manual ) ) return $manual;
 
         // 1b. Honour any manual pin set in Email Marketing settings — when
         //     present, those override the auto-pick logic entirely.
@@ -197,26 +197,38 @@ class EDIT_Newsletter_Picks {
      * array when the "welcome_single_mode" toggle is on AND a title is
      * set. Bypasses every WP lookup — every field comes from settings.
      */
-    private static function get_single_card_pick(): ?array {
+    /**
+     * Build the manual cards array (1-3 cards). When the
+     * "welcome_single_mode" toggle is OFF, returns empty.
+     * When ON, returns the cards whose title is filled (Card 1 always,
+     * Cards 2 + 3 only if their title is set).
+     */
+    private static function get_manual_cards(): array {
         $settings = get_option( 'edit_seo_fix_settings', [] );
+        if ( empty( $settings['welcome_single_mode'] ) ) return [];
 
-        if ( class_exists( 'EDIT_CF7_Debug' ) ) {
-            EDIT_CF7_Debug::write( [
-                'event'      => 'picks_single_check',
-                'form_title' => 'Picks · single-card check',
-                'mode_raw'        => var_export( $settings['welcome_single_mode']        ?? '<MISSING>', true ),
-                'title_raw'       => var_export( $settings['welcome_single_title']       ?? '<MISSING>', true ),
-                'url_raw'         => var_export( $settings['welcome_single_url']         ?? '<MISSING>', true ),
-                'tutor_name_raw'  => var_export( $settings['welcome_single_tutor_name']  ?? '<MISSING>', true ),
-                'tutor_photo_raw' => var_export( $settings['welcome_single_tutor_photo'] ?? '<MISSING>', true ),
-            ] );
-        }
+        $cards = [];
 
-        if ( empty( $settings['welcome_single_mode'] ) ) return null;
-        $title = trim( (string) ( $settings['welcome_single_title'] ?? '' ) );
+        // Card 1 — uses the original welcome_single_* keys.
+        $c1 = self::build_manual_card( $settings, 'welcome_single_' );
+        if ( $c1 ) $cards[] = $c1;
+
+        // Card 2 — welcome_card2_*
+        $c2 = self::build_manual_card( $settings, 'welcome_card2_' );
+        if ( $c2 ) $cards[] = $c2;
+
+        // Card 3 — welcome_card3_*
+        $c3 = self::build_manual_card( $settings, 'welcome_card3_' );
+        if ( $c3 ) $cards[] = $c3;
+
+        return $cards;
+    }
+
+    private static function build_manual_card( array $settings, string $prefix ): ?array {
+        $title = trim( (string) ( $settings[ $prefix . 'title' ] ?? '' ) );
         if ( $title === '' ) return null;
 
-        $typology = (string) ( $settings['welcome_single_typology'] ?? 'bootcamp' );
+        $typology = (string) ( $settings[ $prefix . 'typology' ] ?? 'bootcamp' );
         if ( ! isset( self::TYPOLOGY_COLORS[ $typology ] ) ) $typology = 'bootcamp';
 
         return [
@@ -224,13 +236,13 @@ class EDIT_Newsletter_Picks {
             'typology_label' => self::typology_label( $typology ),
             'color'          => self::TYPOLOGY_COLORS[ $typology ] ?? '#0a0a0a',
             'title'          => $title,
-            'description'    => (string) ( $settings['welcome_single_description'] ?? '' ),
-            'url'            => (string) ( $settings['welcome_single_url'] ?? '#' ),
-            'date_label'     => (string) ( $settings['welcome_single_date_label'] ?? '' ),
-            'tutor_name'     => (string) ( $settings['welcome_single_tutor_name'] ?? '' ),
-            'tutor_role'     => (string) ( $settings['welcome_single_tutor_role'] ?? 'Tutor · EDIT.' ),
-            'tutor_url'      => (string) ( $settings['welcome_single_tutor_url'] ?? '#' ),
-            'tutor_photo'    => (string) ( $settings['welcome_single_tutor_photo'] ?? self::FALLBACK_TUTOR_PHOTO ),
+            'description'    => (string) ( $settings[ $prefix . 'description' ] ?? '' ),
+            'url'            => (string) ( $settings[ $prefix . 'url' ] ?? '#' ),
+            'date_label'     => (string) ( $settings[ $prefix . 'date_label' ] ?? '' ),
+            'tutor_name'     => (string) ( $settings[ $prefix . 'tutor_name' ] ?? '' ),
+            'tutor_role'     => (string) ( $settings[ $prefix . 'tutor_role' ] ?? 'Tutor · EDIT.' ),
+            'tutor_url'      => (string) ( $settings[ $prefix . 'tutor_url' ] ?? '#' ),
+            'tutor_photo'    => (string) ( $settings[ $prefix . 'tutor_photo' ] ?? self::FALLBACK_TUTOR_PHOTO ),
         ];
     }
 

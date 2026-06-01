@@ -271,6 +271,61 @@ class EDIT_Email_Engines_Panel {
                     </tr>
                 </table>
 
+                <?php
+                // Reusable renderer for Card 2 + Card 3 (mirrors Card 1's fields).
+                $render_extra_card = function ( $n, $settings, $defaults ) {
+                    $p = 'welcome_card' . $n . '_';
+                    ?>
+                    <h4 style="margin-top:24px;">Card <?php echo (int) $n; ?> (optional)</h4>
+                    <p class="description">Leave the title blank to skip this card.</p>
+                    <table class="form-table">
+                        <tr>
+                            <th>Typology / accent colour</th>
+                            <td>
+                                <select name="edit_seo_fix_settings[<?php echo esc_attr( $p . 'typology' ); ?>]">
+                                    <?php $sel = $settings[ $p . 'typology' ] ?? $defaults['typology']; ?>
+                                    <option value="bootcamp"         <?php selected( $sel, 'bootcamp' ); ?>>Bootcamp (pink)</option>
+                                    <option value="workshop"         <?php selected( $sel, 'workshop' ); ?>>Workshop (teal)</option>
+                                    <option value="curso_remote"     <?php selected( $sel, 'curso_remote' ); ?>>Curso Remote (blue)</option>
+                                    <option value="curso_presencial" <?php selected( $sel, 'curso_presencial' ); ?>>Curso Presencial (yellow)</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr><th>Date label</th><td><input type="text" name="edit_seo_fix_settings[<?php echo esc_attr( $p . 'date_label' ); ?>]" value="<?php echo esc_attr( $settings[ $p . 'date_label' ] ?? '' ); ?>" class="regular-text" placeholder="<?php echo esc_attr( $defaults['date_label'] ); ?>"></td></tr>
+                        <tr><th>Course title</th><td><input type="text" name="edit_seo_fix_settings[<?php echo esc_attr( $p . 'title' ); ?>]" value="<?php echo esc_attr( $settings[ $p . 'title' ] ?? '' ); ?>" class="large-text" placeholder="<?php echo esc_attr( $defaults['title'] ); ?>"></td></tr>
+                        <tr><th>Course URL</th><td><input type="url" name="edit_seo_fix_settings[<?php echo esc_attr( $p . 'url' ); ?>]" value="<?php echo esc_attr( $settings[ $p . 'url' ] ?? '' ); ?>" class="large-text" placeholder="<?php echo esc_attr( $defaults['url'] ); ?>"></td></tr>
+                        <tr><th>Description</th><td><input type="text" name="edit_seo_fix_settings[<?php echo esc_attr( $p . 'description' ); ?>]" value="<?php echo esc_attr( $settings[ $p . 'description' ] ?? '' ); ?>" class="large-text" placeholder="<?php echo esc_attr( $defaults['description'] ); ?>"></td></tr>
+                        <tr><th>Tutor name</th><td><input type="text" name="edit_seo_fix_settings[<?php echo esc_attr( $p . 'tutor_name' ); ?>]" value="<?php echo esc_attr( $settings[ $p . 'tutor_name' ] ?? '' ); ?>" class="regular-text" placeholder="<?php echo esc_attr( $defaults['tutor_name'] ); ?>"></td></tr>
+                        <tr><th>Tutor role</th><td><input type="text" name="edit_seo_fix_settings[<?php echo esc_attr( $p . 'tutor_role' ); ?>]" value="<?php echo esc_attr( $settings[ $p . 'tutor_role' ] ?? 'Tutor · EDIT.' ); ?>" class="regular-text" placeholder="<?php echo esc_attr( $defaults['tutor_role'] ); ?>"></td></tr>
+                        <tr><th>Tutor profile URL</th><td><input type="url" name="edit_seo_fix_settings[<?php echo esc_attr( $p . 'tutor_url' ); ?>]" value="<?php echo esc_attr( $settings[ $p . 'tutor_url' ] ?? '' ); ?>" class="large-text" placeholder="<?php echo esc_attr( $defaults['tutor_url'] ); ?>"></td></tr>
+                        <tr><th>Tutor photo URL</th><td><input type="url" name="edit_seo_fix_settings[<?php echo esc_attr( $p . 'tutor_photo' ); ?>]" value="<?php echo esc_attr( $settings[ $p . 'tutor_photo' ] ?? '' ); ?>" class="large-text" placeholder="<?php echo esc_attr( $defaults['tutor_photo'] ); ?>"></td></tr>
+                    </table>
+                    <?php
+                };
+                $render_extra_card( 2, $settings, [
+                    'typology'    => 'bootcamp',
+                    'date_label'  => '29 Junho',
+                    'title'       => 'Advanced Artificial Intelligence',
+                    'url'         => 'https://weareedit.io/formacao/bootcamp-advanced-artificial-intelligence/',
+                    'description' => 'Remote · 40 Horas · Pós-Laboral',
+                    'tutor_name'  => 'Naiara Back',
+                    'tutor_role'  => 'Estrategista Digital & IA aplicada ao negócio',
+                    'tutor_url'   => 'https://weareedit.io/equipa/naiara-back/',
+                    'tutor_photo' => 'https://weareedit.io/wp-content/uploads/2026/05/naiara-back-280x280-1.png',
+                ] );
+                $render_extra_card( 3, $settings, [
+                    'typology'    => 'workshop',
+                    'date_label'  => '13 Julho',
+                    'title'       => 'Ethics by Design — Desenvolver e Usar IA com Responsabilidade',
+                    'url'         => 'https://weareedit.io/formacao/workshop-online-ethics-by-design/',
+                    'description' => 'Remote · Pós-Laboral · Novo programa',
+                    'tutor_name'  => 'Hugo Oliveira Vicente',
+                    'tutor_role'  => 'Head of Experience Design',
+                    'tutor_url'   => 'https://weareedit.io/equipa/hugo-oliveira-vicente/',
+                    'tutor_photo' => 'https://weareedit.io/wp-content/uploads/2026/06/hugo-oliveira-vicente-280x280-1.png',
+                ] );
+                ?>
+
                 <p class="description" style="padding:10px 14px;background:#f5f5f5;border-left:3px solid #f92869;margin:8px 0 0 0;font-size:13px;">
                     <strong>Note:</strong> Path B replaces the Brevo "Mensagem de boas-vindas" automation entirely. Leave that
                     automation paused (or delete it) — WP handles welcome sends directly now, with today's freshest picks every time.

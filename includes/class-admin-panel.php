@@ -106,6 +106,26 @@ class EDIT_Admin_Panel {
             'welcome_single_tutor_role'       => sanitize_text_field( $input['welcome_single_tutor_role'] ?? 'Tutor · EDIT.' ),
             'welcome_single_tutor_url'        => esc_url_raw( $input['welcome_single_tutor_url'] ?? '' ),
             'welcome_single_tutor_photo'      => esc_url_raw( $input['welcome_single_tutor_photo'] ?? '' ),
+            // Card 2 (optional — rendered only if title is filled)
+            'welcome_card2_typology'    => sanitize_text_field( $input['welcome_card2_typology'] ?? 'bootcamp' ),
+            'welcome_card2_date_label'  => sanitize_text_field( $input['welcome_card2_date_label'] ?? '' ),
+            'welcome_card2_title'       => sanitize_text_field( $input['welcome_card2_title'] ?? '' ),
+            'welcome_card2_url'         => esc_url_raw( $input['welcome_card2_url'] ?? '' ),
+            'welcome_card2_description' => sanitize_text_field( $input['welcome_card2_description'] ?? '' ),
+            'welcome_card2_tutor_name'  => sanitize_text_field( $input['welcome_card2_tutor_name'] ?? '' ),
+            'welcome_card2_tutor_role'  => sanitize_text_field( $input['welcome_card2_tutor_role'] ?? 'Tutor · EDIT.' ),
+            'welcome_card2_tutor_url'   => esc_url_raw( $input['welcome_card2_tutor_url'] ?? '' ),
+            'welcome_card2_tutor_photo' => esc_url_raw( $input['welcome_card2_tutor_photo'] ?? '' ),
+            // Card 3 (optional)
+            'welcome_card3_typology'    => sanitize_text_field( $input['welcome_card3_typology'] ?? 'workshop' ),
+            'welcome_card3_date_label'  => sanitize_text_field( $input['welcome_card3_date_label'] ?? '' ),
+            'welcome_card3_title'       => sanitize_text_field( $input['welcome_card3_title'] ?? '' ),
+            'welcome_card3_url'         => esc_url_raw( $input['welcome_card3_url'] ?? '' ),
+            'welcome_card3_description' => sanitize_text_field( $input['welcome_card3_description'] ?? '' ),
+            'welcome_card3_tutor_name'  => sanitize_text_field( $input['welcome_card3_tutor_name'] ?? '' ),
+            'welcome_card3_tutor_role'  => sanitize_text_field( $input['welcome_card3_tutor_role'] ?? 'Tutor · EDIT.' ),
+            'welcome_card3_tutor_url'   => esc_url_raw( $input['welcome_card3_tutor_url'] ?? '' ),
+            'welcome_card3_tutor_photo' => esc_url_raw( $input['welcome_card3_tutor_photo'] ?? '' ),
             'picks_cron_enabled'        => ! empty( $input['picks_cron_enabled'] ),
         ];
     }
