@@ -194,20 +194,23 @@ class EDIT_Email_Engines_Panel {
                     </tr>
                 </table>
 
-                <h3 style="margin-top:24px;">Single-card manual mode</h3>
+                <h3 style="margin-top:24px;">Manual cards mode (up to 3 cards)</h3>
                 <p class="description" style="padding:10px 14px;background:#fff8d6;border-left:3px solid #f92869;margin:0 0 16px 0;">
-                    When enabled, the welcome email renders <strong>exactly one card</strong> built from the fields below — no WP lookups, no auto-pick, no override list. Every field is what you type here. Use this when you need full control over a single send.
+                    When enabled, the welcome email renders <strong>up to 3 cards</strong> built from the fields below — no WP lookups, no auto-pick, no override list. Every field is what you type here. Cards 2 + 3 are optional — clear the title to skip a card.
                 </p>
                 <table class="form-table">
                     <tr>
-                        <th>Enable single-card mode</th>
+                        <th>Enable manual cards mode</th>
                         <td>
                             <label>
                                 <input type="checkbox" name="edit_seo_fix_settings[welcome_single_mode]" value="1" <?php checked( $settings['welcome_single_mode'] ?? false ); ?>>
-                                Override everything above and render one manual card
+                                Override everything above and render the manual cards below
                             </label>
                         </td>
                     </tr>
+                </table>
+                <h4>Card 1</h4>
+                <table class="form-table">
                     <tr>
                         <th><label for="welcome_single_typology">Typology / accent colour</label></th>
                         <td>
@@ -273,17 +276,25 @@ class EDIT_Email_Engines_Panel {
 
                 <?php
                 // Reusable renderer for Card 2 + Card 3 (mirrors Card 1's fields).
+                // Uses $defaults as the field VALUE when no saved data exists, so
+                // Cards 2 + 3 appear fully populated on first load — Daniel only
+                // needs to click Save to commit them.
                 $render_extra_card = function ( $n, $settings, $defaults ) {
                     $p = 'welcome_card' . $n . '_';
+                    // Field value: saved value if set (even if ''), otherwise the default.
+                    $val = function ( $key ) use ( $settings, $p, $defaults ) {
+                        if ( array_key_exists( $p . $key, $settings ) ) return (string) $settings[ $p . $key ];
+                        return (string) ( $defaults[ $key ] ?? '' );
+                    };
                     ?>
                     <h4 style="margin-top:24px;">Card <?php echo (int) $n; ?> (optional)</h4>
-                    <p class="description">Leave the title blank to skip this card.</p>
+                    <p class="description">Pre-filled with a sensible default. Clear the title to skip this card.</p>
                     <table class="form-table">
                         <tr>
                             <th>Typology / accent colour</th>
                             <td>
                                 <select name="edit_seo_fix_settings[<?php echo esc_attr( $p . 'typology' ); ?>]">
-                                    <?php $sel = $settings[ $p . 'typology' ] ?? $defaults['typology']; ?>
+                                    <?php $sel = $val( 'typology' ); ?>
                                     <option value="bootcamp"         <?php selected( $sel, 'bootcamp' ); ?>>Bootcamp (pink)</option>
                                     <option value="workshop"         <?php selected( $sel, 'workshop' ); ?>>Workshop (teal)</option>
                                     <option value="curso_remote"     <?php selected( $sel, 'curso_remote' ); ?>>Curso Remote (blue)</option>
@@ -291,14 +302,14 @@ class EDIT_Email_Engines_Panel {
                                 </select>
                             </td>
                         </tr>
-                        <tr><th>Date label</th><td><input type="text" name="edit_seo_fix_settings[<?php echo esc_attr( $p . 'date_label' ); ?>]" value="<?php echo esc_attr( $settings[ $p . 'date_label' ] ?? '' ); ?>" class="regular-text" placeholder="<?php echo esc_attr( $defaults['date_label'] ); ?>"></td></tr>
-                        <tr><th>Course title</th><td><input type="text" name="edit_seo_fix_settings[<?php echo esc_attr( $p . 'title' ); ?>]" value="<?php echo esc_attr( $settings[ $p . 'title' ] ?? '' ); ?>" class="large-text" placeholder="<?php echo esc_attr( $defaults['title'] ); ?>"></td></tr>
-                        <tr><th>Course URL</th><td><input type="url" name="edit_seo_fix_settings[<?php echo esc_attr( $p . 'url' ); ?>]" value="<?php echo esc_attr( $settings[ $p . 'url' ] ?? '' ); ?>" class="large-text" placeholder="<?php echo esc_attr( $defaults['url'] ); ?>"></td></tr>
-                        <tr><th>Description</th><td><input type="text" name="edit_seo_fix_settings[<?php echo esc_attr( $p . 'description' ); ?>]" value="<?php echo esc_attr( $settings[ $p . 'description' ] ?? '' ); ?>" class="large-text" placeholder="<?php echo esc_attr( $defaults['description'] ); ?>"></td></tr>
-                        <tr><th>Tutor name</th><td><input type="text" name="edit_seo_fix_settings[<?php echo esc_attr( $p . 'tutor_name' ); ?>]" value="<?php echo esc_attr( $settings[ $p . 'tutor_name' ] ?? '' ); ?>" class="regular-text" placeholder="<?php echo esc_attr( $defaults['tutor_name'] ); ?>"></td></tr>
-                        <tr><th>Tutor role</th><td><input type="text" name="edit_seo_fix_settings[<?php echo esc_attr( $p . 'tutor_role' ); ?>]" value="<?php echo esc_attr( $settings[ $p . 'tutor_role' ] ?? 'Tutor · EDIT.' ); ?>" class="regular-text" placeholder="<?php echo esc_attr( $defaults['tutor_role'] ); ?>"></td></tr>
-                        <tr><th>Tutor profile URL</th><td><input type="url" name="edit_seo_fix_settings[<?php echo esc_attr( $p . 'tutor_url' ); ?>]" value="<?php echo esc_attr( $settings[ $p . 'tutor_url' ] ?? '' ); ?>" class="large-text" placeholder="<?php echo esc_attr( $defaults['tutor_url'] ); ?>"></td></tr>
-                        <tr><th>Tutor photo URL</th><td><input type="url" name="edit_seo_fix_settings[<?php echo esc_attr( $p . 'tutor_photo' ); ?>]" value="<?php echo esc_attr( $settings[ $p . 'tutor_photo' ] ?? '' ); ?>" class="large-text" placeholder="<?php echo esc_attr( $defaults['tutor_photo'] ); ?>"></td></tr>
+                        <tr><th>Date label</th><td><input type="text" name="edit_seo_fix_settings[<?php echo esc_attr( $p . 'date_label' ); ?>]" value="<?php echo esc_attr( $val( 'date_label' ) ); ?>" class="regular-text"></td></tr>
+                        <tr><th>Course title</th><td><input type="text" name="edit_seo_fix_settings[<?php echo esc_attr( $p . 'title' ); ?>]" value="<?php echo esc_attr( $val( 'title' ) ); ?>" class="large-text"></td></tr>
+                        <tr><th>Course URL</th><td><input type="url" name="edit_seo_fix_settings[<?php echo esc_attr( $p . 'url' ); ?>]" value="<?php echo esc_attr( $val( 'url' ) ); ?>" class="large-text"></td></tr>
+                        <tr><th>Description</th><td><input type="text" name="edit_seo_fix_settings[<?php echo esc_attr( $p . 'description' ); ?>]" value="<?php echo esc_attr( $val( 'description' ) ); ?>" class="large-text"></td></tr>
+                        <tr><th>Tutor name</th><td><input type="text" name="edit_seo_fix_settings[<?php echo esc_attr( $p . 'tutor_name' ); ?>]" value="<?php echo esc_attr( $val( 'tutor_name' ) ); ?>" class="regular-text"></td></tr>
+                        <tr><th>Tutor role</th><td><input type="text" name="edit_seo_fix_settings[<?php echo esc_attr( $p . 'tutor_role' ); ?>]" value="<?php echo esc_attr( $val( 'tutor_role' ) ); ?>" class="regular-text"></td></tr>
+                        <tr><th>Tutor profile URL</th><td><input type="url" name="edit_seo_fix_settings[<?php echo esc_attr( $p . 'tutor_url' ); ?>]" value="<?php echo esc_attr( $val( 'tutor_url' ) ); ?>" class="large-text"></td></tr>
+                        <tr><th>Tutor photo URL</th><td><input type="url" name="edit_seo_fix_settings[<?php echo esc_attr( $p . 'tutor_photo' ); ?>]" value="<?php echo esc_attr( $val( 'tutor_photo' ) ); ?>" class="large-text"></td></tr>
                     </table>
                     <?php
                 };
