@@ -3,7 +3,7 @@
  * Plugin Name: * weareedit.io Site Engine
  * Plugin URI:  https://github.com/danieldevera/weareedit-site-engine
  * Description: Custom site engine for weareedit.io — SEO (meta tags, OG, schema.org, sitemap, hreflang), GEO/LLM optimization (llms.txt, AI crawler rules, Wikidata-linked Person/Organization schema), brand customization (hero typography, dot accents, CTA hover animations), Google Reviews aggregation, output-buffer HTML rewrites, virtual pages, WP Rocket cache integration, and one-time data fixes.
- * Version:     1.5.218
+ * Version:     1.5.219
  * Author:      Daniel Devera
  * License:     GPL-2.0+
  * Text Domain: weareedit-site-engine
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.218' );
+define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.219' );
 define( 'WEAREDIT_SITE_ENGINE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WEAREDIT_SITE_ENGINE_URL', plugin_dir_url( __FILE__ ) );
 
@@ -298,6 +298,48 @@ register_activation_hook( __FILE__, 'weareedit_site_engine_activate' );
  * (including weareedit.io's) run opcache.validate_timestamps=0, which
  * caches old PHP files indefinitely.
  */
+/**
+ * One-time migration: populate Card 2 + Card 3 fields in settings so
+ * Daniel doesn't have to type each one. Runs on every plugin load but
+ * uses a flag to only execute once. Existing non-empty values are
+ * preserved — defaults only fill blanks.
+ */
+add_action( 'init', function () {
+    $flag_key = 'welcome_cards_seeded_v1';
+    $settings = get_option( 'edit_seo_fix_settings', [] );
+    if ( ! is_array( $settings ) ) $settings = [];
+    if ( ! empty( $settings[ $flag_key ] ) ) return;
+
+    $defaults = [
+        // Card 2 — Workshop Ethics by Design (Hugo)
+        'welcome_card2_typology'    => 'workshop',
+        'welcome_card2_date_label'  => '13 Julho',
+        'welcome_card2_title'       => 'Ethics by Design — Desenvolver e Usar IA com Responsabilidade',
+        'welcome_card2_url'         => 'https://weareedit.io/formacao/workshop-online-ethics-by-design/',
+        'welcome_card2_description' => 'Remote · Pós-Laboral · Novo programa',
+        'welcome_card2_tutor_name'  => 'Hugo Oliveira Vicente',
+        'welcome_card2_tutor_role'  => 'Head of Experience Design',
+        'welcome_card2_tutor_url'   => 'https://weareedit.io/equipa/hugo-oliveira-vicente/',
+        'welcome_card2_tutor_photo' => 'https://weareedit.io/wp-content/uploads/2026/06/hugo-oliveira-vicente-280x280-1.png',
+        // Card 3 — Bootcamp Advanced AI (Naiara)
+        'welcome_card3_typology'    => 'bootcamp',
+        'welcome_card3_date_label'  => '29 Junho',
+        'welcome_card3_title'       => 'Advanced Artificial Intelligence',
+        'welcome_card3_url'         => 'https://weareedit.io/formacao/bootcamp-advanced-artificial-intelligence/',
+        'welcome_card3_description' => 'Remote · 40 Horas · Pós-Laboral',
+        'welcome_card3_tutor_name'  => 'Naiara Back',
+        'welcome_card3_tutor_role'  => 'Estrategista Digital & IA aplicada ao negócio',
+        'welcome_card3_tutor_url'   => 'https://weareedit.io/equipa/naiara-back/',
+        'welcome_card3_tutor_photo' => 'https://weareedit.io/wp-content/uploads/2026/05/naiara-back-280x280-1.png',
+    ];
+
+    foreach ( $defaults as $k => $v ) {
+        if ( empty( $settings[ $k ] ) ) $settings[ $k ] = $v;
+    }
+    $settings[ $flag_key ] = true;
+    update_option( 'edit_seo_fix_settings', $settings, false );
+}, 5 );
+
 add_action( 'upgrader_process_complete', function ( $upgrader, $hook_extra ) {
     if ( empty( $hook_extra['type'] ) || $hook_extra['type'] !== 'plugin' ) return;
     if ( empty( $hook_extra['plugins'] ) || ! is_array( $hook_extra['plugins'] ) ) return;

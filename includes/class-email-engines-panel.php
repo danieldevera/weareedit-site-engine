@@ -283,7 +283,8 @@ class EDIT_Email_Engines_Panel {
                     $p = 'welcome_card' . $n . '_';
                     // Field value: saved value if set (even if ''), otherwise the default.
                     $val = function ( $key ) use ( $settings, $p, $defaults ) {
-                        if ( array_key_exists( $p . $key, $settings ) ) return (string) $settings[ $p . $key ];
+                        $saved = isset( $settings[ $p . $key ] ) ? (string) $settings[ $p . $key ] : '';
+                        if ( $saved !== '' ) return $saved;
                         return (string) ( $defaults[ $key ] ?? '' );
                     };
                     ?>
