@@ -240,85 +240,11 @@ class EDIT_Admin_Panel {
                     </tr>
                 </table>
 
-                <h2>Brevo Newsletter Integration</h2>
-                <p class="description">Powers the homepage newsletter signup strip. Adds new subscribers to a Brevo list via the v3 REST API. Key is stored in <code>wp_options</code> — treat as a secret.</p>
-                <table class="form-table">
-                    <tr>
-                        <th><label for="brevo_api_key">Brevo API Key (v3)</label></th>
-                        <td>
-                            <input type="password" id="brevo_api_key" name="edit_seo_fix_settings[brevo_api_key]" value="<?php echo esc_attr( $settings['brevo_api_key'] ?? '' ); ?>" class="regular-text" placeholder="xkeysib-... (from Brevo SMTP & API → Chaves API)" autocomplete="off">
-                            <p class="description">Generate at <a href="https://app.brevo.com/settings/keys/api" target="_blank">Brevo → SMTP &amp; API → Chaves API</a>. Never paste this anywhere public.</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label for="brevo_newsletter_list_id">Newsletter list ID</label></th>
-                        <td>
-                            <input type="number" id="brevo_newsletter_list_id" name="edit_seo_fix_settings[brevo_newsletter_list_id]" value="<?php echo esc_attr( $settings['brevo_newsletter_list_id'] ?? 4 ); ?>" class="small-text" min="1" placeholder="4">
-                            <p class="description">Brevo list ID for new subscribers (default <code>4</code> = <code>Newsletter · Site organic (2026+)</code>). Find at <a href="https://app.brevo.com/contact/list-listing" target="_blank">Brevo → Contatos → Listas</a> — column "ID".</p>
-                        </td>
-                    </tr>
-                </table>
-
-                <h2>Welcome Email — Autonomous Picks</h2>
-                <p class="description">Daily WP-Cron job renders the locked welcome email template with the closest upcoming Bootcamp + Workshop + Curso, then PUTs the HTML to a Brevo transactional template. New subscribers always see today's fresh picks.</p>
-                <table class="form-table">
-                    <tr>
-                        <th><label for="brevo_welcome_template_id">Brevo welcome template ID</label></th>
-                        <td>
-                            <input type="number" id="brevo_welcome_template_id" name="edit_seo_fix_settings[brevo_welcome_template_id]" value="<?php echo esc_attr( $settings['brevo_welcome_template_id'] ?? 0 ); ?>" class="small-text" min="0" placeholder="0">
-                            <p class="description">Transactional template ID from <a href="https://app.brevo.com/transactional-email/templates" target="_blank">Brevo → Transactional → Templates</a> — column "ID" or the trailing number in the template URL.</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Daily auto-sync</th>
-                        <td>
-                            <label>
-                                <input type="checkbox" name="edit_seo_fix_settings[picks_cron_enabled]" value="1" <?php checked( $settings['picks_cron_enabled'] ?? false ); ?>>
-                                Run the cron every day at 06:00 Europe/Lisbon to refresh the welcome template with today's picks
-                            </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Manual sync</th>
-                        <td>
-                            <form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="display:inline;">
-                                <?php wp_nonce_field( 'edit_newsletter_picks_force_sync' ); ?>
-                                <input type="hidden" name="action" value="edit_newsletter_picks_force_sync">
-                                <button type="submit" class="button">Force sync now</button>
-                            </form>
-                            <?php
-                            if ( isset( $_GET['picks_synced'] ) ) {
-                                $st = class_exists( 'EDIT_Newsletter_Picks' ) ? EDIT_Newsletter_Picks::get_last_sync_status() : [];
-                                $ok = ! empty( $st ) && ( $st['status'] ?? '' ) === 'ok';
-                                echo '<span style="margin-left:12px;color:' . ( $ok ? '#1e8a4f' : '#b62929' ) . ';font-weight:600;">'
-                                    . ( $ok ? '✓ ' : '✗ ' ) . esc_html( $st['message'] ?? '' ) . '</span>';
-                            }
-                            ?>
-                            <p class="description">Runs the same job the cron triggers — useful for testing after changing picks or the template.</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Last sync</th>
-                        <td>
-                            <?php
-                            if ( class_exists( 'EDIT_Newsletter_Picks' ) ) {
-                                $st = EDIT_Newsletter_Picks::get_last_sync_status();
-                                if ( ! empty( $st['time'] ) ) {
-                                    $when   = wp_date( 'Y-m-d H:i:s', $st['time'] );
-                                    $ok     = ( $st['status'] ?? '' ) === 'ok';
-                                    $color  = $ok ? '#1e8a4f' : '#b62929';
-                                    $label  = $ok ? 'OK' : 'ERROR';
-                                    echo '<code>' . esc_html( $when ) . '</code> &middot; '
-                                        . '<strong style="color:' . $color . ';">' . $label . '</strong> &middot; '
-                                        . esc_html( $st['message'] ?? '' );
-                                } else {
-                                    echo '<em>Never run yet.</em>';
-                                }
-                            }
-                            ?>
-                        </td>
-                    </tr>
-                </table>
+                <h2>Email Marketing Engines</h2>
+                <p class="description" style="padding:12px 16px;background:#fff8d6;border-left:4px solid #f92869;margin:0 0 16px 0;">
+                    Brevo Newsletter Integration + Welcome Email controls moved to a dedicated top-level menu — open
+                    <a href="<?php echo esc_url( admin_url( 'admin.php?page=' . EDIT_Email_Engines_Panel::MENU_SLUG ) ); ?>" style="font-weight:700;">Email Marketing →</a>
+                </p>
 
                 <h2>Course Pages</h2>
                 <table class="form-table">
