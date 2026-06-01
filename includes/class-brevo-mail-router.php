@@ -24,10 +24,12 @@ class EDIT_Brevo_Mail_Router {
     const DEFAULT_SENDER_NAME  = 'EDIT.';
 
     public static function init(): void {
-        // pre_wp_mail filter exists since WP 5.7. Run at priority 1 so
-        // we win over any other SMTP plugin / e-goi addon that may have
-        // hooked pre_wp_mail and silently returned false.
-        add_filter( 'pre_wp_mail', [ __CLASS__, 'route_via_brevo' ], 1, 2 );
+        // pre_wp_mail filter exists since WP 5.7.
+        // Run at PHP_INT_MAX so we ALWAYS have the last word — any other
+        // SMTP plugin / e-goi addon that hooked pre_wp_mail and returned
+        // false to mark failure gets overridden by our successful Brevo
+        // send (Brevo's API already accepted the message at this point).
+        add_filter( 'pre_wp_mail', [ __CLASS__, 'route_via_brevo' ], PHP_INT_MAX, 2 );
     }
 
     /**
