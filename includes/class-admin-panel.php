@@ -34,6 +34,10 @@ class EDIT_Admin_Panel {
     }
 
     public static function sanitize_settings( array $input ): array {
+        // Preserve keys handled by other panels (e.g. the Email Marketing
+        // form has no fix_output_buffer checkbox — without this, every save
+        // on that form would silently disable the homepage hero rewrites).
+        $existing = (array) get_option( 'edit_seo_fix_settings', [] );
         if ( class_exists( 'EDIT_CF7_Debug' ) ) {
             EDIT_CF7_Debug::write( [
                 'event'      => 'settings_sanitize',
@@ -46,7 +50,7 @@ class EDIT_Admin_Panel {
                 'input_keys'     => implode( ', ', array_keys( $input ) ),
             ] );
         }
-        return [
+        $sanitized = [
             'default_description'   => sanitize_text_field( $input['default_description'] ?? '' ),
             'og_site_name'          => sanitize_text_field( $input['og_site_name'] ?? '' ),
             'twitter_handle'        => sanitize_text_field( $input['twitter_handle'] ?? '' ),
@@ -128,6 +132,16 @@ class EDIT_Admin_Panel {
             'welcome_card3_tutor_photo' => esc_url_raw( $input['welcome_card3_tutor_photo'] ?? '' ),
             'picks_cron_enabled'        => ! empty( $input['picks_cron_enabled'] ),
         ];
+
+        // Restore any key the submitted form didn't include — protects
+        // fields owned by other settings panels from being wiped to their
+        // ?? defaults on a partial-form save.
+        foreach ( $sanitized as $k => $_ ) {
+            if ( ! array_key_exists( $k, $input ) && array_key_exists( $k, $existing ) ) {
+                $sanitized[ $k ] = $existing[ $k ];
+            }
+        }
+        return $sanitized;
     }
 
     public static function render_settings_page() {
