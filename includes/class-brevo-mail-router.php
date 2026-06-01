@@ -30,6 +30,62 @@ class EDIT_Brevo_Mail_Router {
         // false to mark failure gets overridden by our successful Brevo
         // send (Brevo's API already accepted the message at this point).
         add_filter( 'pre_wp_mail', [ __CLASS__, 'route_via_brevo' ], PHP_INT_MAX, 2 );
+
+        // Fallback path — if wp_mail() has been replaced via the pluggable
+        // mechanism by another plugin, pre_wp_mail won't fire. The wp_mail
+        // filter (older API, runs INSIDE the function) usually still does.
+        // Route via Brevo here as a defence in depth.
+        add_filter( 'wp_mail', [ __CLASS__, 'route_via_brevo_filter' ], 1, 1 );
+
+        // One-shot diagnostic — confirms who owns wp_mail() and whether
+        // pre_wp_mail has any registered callbacks. Runs once per request
+        // on the next wp_mail() call only.
+        add_filter( 'wp_mail', [ __CLASS__, 'one_shot_diagnostic' ], 0, 1 );
+    }
+
+    private static $diag_fired = false;
+    public static function one_shot_diagnostic( $args ) {
+        if ( self::$diag_fired ) return $args;
+        self::$diag_fired = true;
+        if ( ! class_exists( 'EDIT_CF7_Debug' ) ) return $args;
+        $owner = 'unknown';
+        try {
+            if ( function_exists( 'wp_mail' ) ) {
+                $rf = new \ReflectionFunction( 'wp_mail' );
+                $owner = ( $rf->getFileName() ?: 'internal' ) . ':' . $rf->getStartLine();
+            }
+        } catch ( \Throwable $e ) {
+            $owner = 'reflection_error: ' . $e->getMessage();
+        }
+        global $wp_filter;
+        $pre_cb = isset( $wp_filter['pre_wp_mail'] ) ? count( (array) $wp_filter['pre_wp_mail']->callbacks ?? [] ) : 0;
+        EDIT_CF7_Debug::write( [
+            'event'       => 'wp_mail_diag',
+            'wp_mail_at'  => $owner,
+            'pre_wp_mail' => 'priorities=' . $pre_cb,
+            'class_loaded'=> class_exists( 'EDIT_Brevo_Mail_Router' ) ? 'yes' : 'no',
+        ] );
+        return $args;
+    }
+
+    /**
+     * Filter-based router — same logic as route_via_brevo but on the
+     * `wp_mail` filter instead of `pre_wp_mail`. Returns the args
+     * unchanged (the filter doesn't short-circuit), but sends a parallel
+     * email via Brevo so the user still gets the confirmation.
+     */
+    public static function route_via_brevo_filter( $args ) {
+        if ( ! is_array( $args ) ) return $args;
+        // Avoid double-send: if our pre_wp_mail handler already ran for
+        // this same call, skip.
+        if ( ! empty( $args['_edit_brevo_routed'] ) ) return $args;
+        try {
+            $result = self::do_route( null, $args );
+            self::log_debug( 'brevo_filter_done', 'result=' . var_export( $result, true ), $args );
+        } catch ( \Throwable $e ) {
+            self::log_debug( 'brevo_filter_exception', $e->getMessage(), $args );
+        }
+        return $args;
     }
 
     /**

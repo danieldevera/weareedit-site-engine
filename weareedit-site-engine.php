@@ -3,7 +3,7 @@
  * Plugin Name: * weareedit.io Site Engine
  * Plugin URI:  https://github.com/danieldevera/weareedit-site-engine
  * Description: Custom site engine for weareedit.io — SEO (meta tags, OG, schema.org, sitemap, hreflang), GEO/LLM optimization (llms.txt, AI crawler rules, Wikidata-linked Person/Organization schema), brand customization (hero typography, dot accents, CTA hover animations), Google Reviews aggregation, output-buffer HTML rewrites, virtual pages, WP Rocket cache integration, and one-time data fixes.
- * Version:     1.5.220
+ * Version:     1.5.221
  * Author:      Daniel Devera
  * License:     GPL-2.0+
  * Text Domain: weareedit-site-engine
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.220' );
+define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.221' );
 define( 'WEAREDIT_SITE_ENGINE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WEAREDIT_SITE_ENGINE_URL', plugin_dir_url( __FILE__ ) );
 
@@ -341,7 +341,7 @@ add_action( 'init', function () {
 }, 5 );
 
 /**
- * One-time recovery (v1.5.220): the Email Marketing form was wiping
+ * One-time recovery (v1.5.221): the Email Marketing form was wiping
  * fix_output_buffer to false on every save (form didn't include the
  * checkbox; old sanitize_settings replaced rather than merged). The
  * settings sanitizer is now fixed; this migration also re-enables the
