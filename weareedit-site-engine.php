@@ -3,7 +3,7 @@
  * Plugin Name: * weareedit.io Site Engine
  * Plugin URI:  https://github.com/danieldevera/weareedit-site-engine
  * Description: Custom site engine for weareedit.io — SEO (meta tags, OG, schema.org, sitemap, hreflang), GEO/LLM optimization (llms.txt, AI crawler rules, Wikidata-linked Person/Organization schema), brand customization (hero typography, dot accents, CTA hover animations), Google Reviews aggregation, output-buffer HTML rewrites, virtual pages, WP Rocket cache integration, and one-time data fixes.
- * Version:     1.5.226
+ * Version:     1.5.227
  * Author:      Daniel Devera
  * License:     GPL-2.0+
  * Text Domain: weareedit-site-engine
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.226' );
+define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.227' );
 define( 'WEAREDIT_SITE_ENGINE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WEAREDIT_SITE_ENGINE_URL', plugin_dir_url( __FILE__ ) );
 
@@ -66,11 +66,12 @@ add_action( 'wp_head', function () {
      to .autocomplete.compact (which it does). */
   .autocomplete.searchOpen .autocomplete__inputWrapper{opacity:1 !important;animation:none !important;}
   /* Restore the right-side header CTAs (In-company + Fala connosco) on
-     /formacao/ product pages. Theme hides them via visibility/opacity
-     (NOT display:none, so we leave display untouched — forcing flex
-     here broke the theme's positioning and stacked the two items). */
+     /formacao/ product pages. Theme applies display:none so visibility/
+     opacity alone can't lift them. inline-flex in v1.5.223 stacked them.
+     inline-block respects the parent flex layout — each item takes the
+     space it needs, the parent positions them. */
   body.single-formacao .headerDesktop__contact,
-  body.single-formacao .headerDesktop__inCompany{visibility:visible !important;opacity:1 !important;pointer-events:auto !important;}
+  body.single-formacao .headerDesktop__inCompany{display:inline-block !important;visibility:visible !important;opacity:1 !important;pointer-events:auto !important;}
   /* Mobile only — breathing room between the HORÁRIOS / details rows
      and the sticky product action menu (Remote / Pós-Laboral / Programa
      / Quero-me inscrever). On the live page the two blocks touch with
@@ -374,7 +375,7 @@ add_action( 'init', function () {
 }, 5 );
 
 /**
- * One-time migration (v1.5.226): rename welcome sender name from
+ * One-time migration (v1.5.227): rename welcome sender name from
  * "Daniel Devera from EDIT." (English "from") to "Daniel Devera da
  * EDIT." (Portuguese "da") so the sender name matches the new
  * Francisco da EDIT. convention. Only touches the saved value if it
