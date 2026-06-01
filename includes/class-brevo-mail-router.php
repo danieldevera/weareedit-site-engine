@@ -97,7 +97,8 @@ class EDIT_Brevo_Mail_Router {
 
         if ( ! empty( $parsed['cc'] ) )       $payload['cc']      = $parsed['cc'];
         if ( ! empty( $parsed['bcc'] ) )      $payload['bcc']     = $parsed['bcc'];
-        if ( ! empty( $parsed['reply_to'] ) ) $payload['replyTo'] = $parsed['reply_to'];
+        // Brevo expects replyTo as a SINGLE object, not an array. Use the first only.
+        if ( ! empty( $parsed['reply_to'] ) ) $payload['replyTo'] = $parsed['reply_to'][0];
 
         // Attachments: convert local file paths into base64 + name pairs.
         if ( ! empty( $attachments ) ) {
