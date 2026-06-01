@@ -181,6 +181,17 @@ class EDIT_Email_Engines_Panel {
                             <p class="description">PNG of Daniel's handwritten signature. Upload a <strong>tightly-cropped</strong> version (no top/bottom whitespace) to <a href="<?php echo esc_url( admin_url( 'media-new.php' ) ); ?>" target="_blank">Media → Add New</a>, copy the URL, and paste here. Leave blank to use the default <code>DANIEL-DEVERA-ASSINATURA.png</code>.</p>
                         </td>
                     </tr>
+                    <tr>
+                        <th><label for="welcome_pinned_picks">Featured products (override)</label></th>
+                        <td>
+                            <textarea id="welcome_pinned_picks" name="edit_seo_fix_settings[welcome_pinned_picks]" rows="4" class="large-text" placeholder="One slug or URL per line. Example:&#10;bootcamp-agentes-inteligentes-para-marketing&#10;bootcamp-advanced-artificial-intelligence&#10;workshop-online-ethics-by-design"><?php echo esc_textarea( $settings['welcome_pinned_picks'] ?? '' ); ?></textarea>
+                            <p class="description">
+                                One slug per line (or paste the full <code>/formacao/&lt;slug&gt;/</code> URL — I'll strip it).
+                                Up to 3 entries. <strong>Leave blank to auto-pick</strong> the closest upcoming Bootcamp + Workshop + Curso.
+                                When filled, these override the auto-pick and render in the order you list them.
+                            </p>
+                        </td>
+                    </tr>
                 </table>
 
                 <p class="description" style="padding:10px 14px;background:#f5f5f5;border-left:3px solid #f92869;margin:8px 0 0 0;font-size:13px;">

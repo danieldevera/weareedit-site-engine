@@ -125,6 +125,12 @@ class EDIT_Newsletter_Picks {
      *   ]
      */
     public static function get_current_picks(): array {
+        // 1. Honour any manual pin set in Email Marketing settings — when
+        //    present, those override the auto-pick logic entirely.
+        $pinned = self::get_pinned_picks();
+        if ( ! empty( $pinned ) ) return $pinned;
+
+        // 2. Otherwise auto-pick 1 closest upcoming per typology bucket.
         $by_typology = [
             'bootcamp'         => [],
             'workshop'         => [],
@@ -179,7 +185,37 @@ class EDIT_Newsletter_Picks {
         return $picks;
     }
 
-    private static function detect_typology( string $slug ): ?string {
+    /**
+     * Read the "Featured products (override)" textarea from settings.
+     * Returns up to 3 build_pick() arrays in the order provided, or
+     * an empty array when no pins are configured.
+     */
+    private static function get_pinned_picks(): array {
+        $settings = get_option( 'edit_seo_fix_settings', [] );
+        $raw = trim( (string) ( $settings['welcome_pinned_picks'] ?? '' ) );
+        if ( $raw === '' ) return [];
+
+        $lines = preg_split( '~\r?\n~', $raw );
+        $picks = [];
+        foreach ( $lines as $line ) {
+            $line = trim( $line );
+            if ( $line === '' ) continue;
+            // Accept either a bare slug or a full /formacao/<slug>/ URL.
+            if ( preg_match( '~/formacao/([^/?#]+)~', $line, $m ) ) {
+                $slug = $m[1];
+            } else {
+                $slug = $line;
+            }
+            $post = get_page_by_path( $slug, OBJECT, 'formacao' );
+            if ( ! $post instanceof WP_Post ) continue;
+            $typology = self::detect_typology( $slug, $post->ID ) ?: 'bootcamp';
+            $picks[] = self::build_pick( $post, $typology );
+            if ( count( $picks ) >= 3 ) break;
+        }
+        return $picks;
+    }
+
+    private static function detect_typology( string $slug, int $post_id = 0 ): ?string {
         if ( stripos( $slug, 'workshop' ) !== false ) return 'workshop';
         if ( stripos( $slug, 'bootcamp' ) !== false ) return 'bootcamp';
         if ( stripos( $slug, 'curso' ) !== false ) {
@@ -187,6 +223,21 @@ class EDIT_Newsletter_Picks {
                 return 'curso_presencial';
             }
             return 'curso_remote';
+        }
+        // Slug didn't carry the typology keyword (e.g. `agentes-inteligentes-
+        // para-marketing` is actually a Bootcamp). Fall back to inspecting
+        // the ACF `titulo` field + post_title for the keyword.
+        if ( $post_id > 0 ) {
+            $needle = '';
+            if ( function_exists( 'get_field' ) ) {
+                $needle .= ' ' . (string) get_field( 'titulo',       $post_id );
+                $needle .= ' ' . (string) get_field( 'home_titulo',  $post_id );
+            }
+            $post = get_post( $post_id );
+            if ( $post ) $needle .= ' ' . (string) $post->post_title;
+            if ( stripos( $needle, 'workshop' ) !== false ) return 'workshop';
+            if ( stripos( $needle, 'bootcamp' ) !== false ) return 'bootcamp';
+            if ( stripos( $needle, 'curso' )    !== false ) return 'curso_remote';
         }
         return null;
     }
