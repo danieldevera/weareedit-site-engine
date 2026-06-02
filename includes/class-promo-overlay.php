@@ -20,6 +20,11 @@ class EDIT_Promo_Overlay {
     /** Flip to false to disable the overlay without removing the file. */
     const ACTIVE        = true;
 
+    /** Test mode: restrict rendering to the path below. Set to '' (empty
+     *  string) to render site-wide. Useful for staging a campaign before
+     *  letting it loose on every visitor. */
+    const TEST_PATH     = '/escola-3/';
+
     /** localStorage key — bump to force the overlay to show again to all users. */
     const STORAGE_KEY   = 'edit_promo_early15_seen';
 
@@ -41,6 +46,13 @@ class EDIT_Promo_Overlay {
     public static function render(): void {
         if ( is_admin() ) return;
         if ( is_feed() ) return;
+        // Path gate — only render on the configured test path when set.
+        if ( self::TEST_PATH !== '' ) {
+            $request_path = isset( $_SERVER['REQUEST_URI'] ) ? strtok( (string) $_SERVER['REQUEST_URI'], '?' ) : '';
+            $request_path = '/' . trim( (string) $request_path, '/' ) . '/';
+            $test_path    = '/' . trim( self::TEST_PATH, '/' ) . '/';
+            if ( $request_path !== $test_path ) return;
+        }
         ?>
 <style id="edit-promo-overlay-css">
 #edit-promo-overlay { position: fixed; inset: 0; z-index: 99999; display: none; opacity: 0; transition: opacity 280ms ease; }
