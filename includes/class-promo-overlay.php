@@ -23,7 +23,7 @@ class EDIT_Promo_Overlay {
     /** Test mode: restrict rendering to the path below. Set to '' (empty
      *  string) to render site-wide. Useful for staging a campaign before
      *  letting it loose on every visitor. */
-    const TEST_PATH     = '/escola-3/';
+    const TEST_PATH     = '';
 
     /** localStorage key — bump to force the overlay to show again to all users. */
     const STORAGE_KEY   = 'edit_promo_early15_seen';
