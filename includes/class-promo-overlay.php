@@ -60,9 +60,9 @@ class EDIT_Promo_Overlay {
    Sits above the reCAPTCHA badge via z-index and bottom offset. */
 #edit-promo-overlay {
     position: fixed; left: 20px; bottom: 90px; z-index: 99999;
-    width: 300px; height: 300px;
+    width: 320px; height: 320px;
     display: none; opacity: 0;
-    transition: opacity 800ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 400ms cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
     will-change: opacity;
 }
@@ -85,13 +85,13 @@ class EDIT_Promo_Overlay {
 }
 #edit-promo-overlay__close:hover { background: rgba(10,10,10,0.10); }
 #edit-promo-overlay__close:focus-visible { outline: 2px solid #0a0a0a; outline-offset: 2px; }
-#edit-promo-overlay__eyebrow { margin: 0 0 10px; font-size: 9px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #0a0a0a; }
+#edit-promo-overlay__eyebrow { margin: 0 0 14px; font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #0a0a0a; }
 #edit-promo-overlay__headline {
-    margin: 0 0 12px; font-size: 42px; line-height: 0.95; font-weight: 800;
+    margin: 0 0 16px; font-size: 56px; line-height: 0.95; font-weight: 800;
     letter-spacing: -0.03em; color: #0a0a0a;
 }
 #edit-promo-overlay__headline .pct { color: #f92869; }
-#edit-promo-overlay__sub { margin: 0 0 16px; font-size: 13px; line-height: 1.4; color: #0a0a0a; }
+#edit-promo-overlay__sub { margin: 0 0 20px; font-size: 16px; line-height: 1.4; color: #0a0a0a; }
 #edit-promo-overlay__sub strong { font-weight: 700; }
 #edit-promo-overlay__card .swipe-cta {
     background: #0a0a0a; margin-top: auto; text-align: center; align-self: stretch;
@@ -102,18 +102,18 @@ class EDIT_Promo_Overlay {
 }
 #edit-promo-overlay__card .swipe-cta:hover .swipe-label { color: #ffdd06; }
 
-/* Staggered entrance for the items inside the card — opacity-only for
-   maximum fluidity (no transform = no GPU compositing jank). */
+/* Item stagger — tight, opacity-only cascade. Total duration ~660ms.
+   No transform, no scale, no movement = no compositing jank. */
 #edit-promo-overlay .edit-promo-stagger {
     opacity: 0;
-    transition: opacity 520ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 280ms cubic-bezier(0.4, 0, 0.2, 1);
     will-change: opacity;
 }
 #edit-promo-overlay.is-open .edit-promo-stagger { opacity: 1; }
-#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="1"] { transition-delay: 300ms; }
-#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="2"] { transition-delay: 480ms; }
-#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="3"] { transition-delay: 660ms; }
-#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="4"] { transition-delay: 880ms; }
+#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="1"] { transition-delay: 80ms; }
+#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="2"] { transition-delay: 180ms; }
+#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="3"] { transition-delay: 280ms; }
+#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="4"] { transition-delay: 380ms; }
 
 @media (max-width: 640px) {
     #edit-promo-overlay { left: 12px; bottom: 78px; width: calc(100vw - 24px); max-width: 320px; height: auto; min-height: 260px; }
