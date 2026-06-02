@@ -23,6 +23,10 @@ class EDIT_Formacao_Archive_Filter {
     const EARLY15_VALUE = 'early15';
     /** Campaign hard kill date — banner auto-hides itself after this. */
     const KILL_DATE     = '2026-06-30 23:59:59';
+    /** A/B test cookie name. Holds 'A' (countdown) or 'B' (static deadline). */
+    const VARIANT_COOKIE = 'edit_promo_variant';
+    /** Dismiss cookie name (set when user clicks the × on the bar). */
+    const DISMISS_COOKIE = 'edit_promo_bar_dismissed';
 
     public static function init(): void {
         // Shortlink redirect — runs early in the request lifecycle. The
@@ -87,50 +91,94 @@ class EDIT_Formacao_Archive_Filter {
     // Back-compat shim — older code paths checked is_active().
     private static function is_active(): bool { return self::is_banner_active(); }
 
+    /**
+     * Assign or return the visitor's A/B variant.
+     * 'A' = countdown bar (BD-4a), 'B' = static deadline (BD-4e).
+     * Cookie persists 30 days so visitors see the same variant on return.
+     */
+    private static function get_variant(): string {
+        $existing = isset( $_COOKIE[ self::VARIANT_COOKIE ] ) ? (string) $_COOKIE[ self::VARIANT_COOKIE ] : '';
+        if ( $existing === 'A' || $existing === 'B' ) {
+            return $existing;
+        }
+        // QA override: ?variant=A or ?variant=B on the URL forces a side
+        // without setting the cookie. Useful for screenshots + debug.
+        if ( isset( $_GET['variant'] ) ) {
+            $forced = strtoupper( sanitize_text_field( wp_unslash( (string) $_GET['variant'] ) ) );
+            if ( $forced === 'A' || $forced === 'B' ) return $forced;
+        }
+        $variant = ( random_int( 0, 1 ) === 0 ) ? 'A' : 'B';
+        if ( ! headers_sent() ) {
+            setcookie(
+                self::VARIANT_COOKIE,
+                $variant,
+                time() + 30 * DAY_IN_SECONDS,
+                defined( 'COOKIEPATH' ) && COOKIEPATH ? COOKIEPATH : '/',
+                defined( 'COOKIE_DOMAIN' ) && COOKIE_DOMAIN ? COOKIE_DOMAIN : '',
+                is_ssl(),
+                false
+            );
+            // Reflect in $_COOKIE so the same request sees the assignment too.
+            $_COOKIE[ self::VARIANT_COOKIE ] = $variant;
+        }
+        return $variant;
+    }
+
+    private static function is_dismissed(): bool {
+        return ! empty( $_COOKIE[ self::DISMISS_COOKIE ] );
+    }
+
     public static function maybe_print_css(): void {
         if ( ! self::is_banner_active() ) return;
         ?>
 <style id="edit-early15-banner-css">
-#edit-early15-banner {
+/* Minimal promo bar — sits above the breadcrumb nav, dark with a yellow
+   hairline border. Two variants (A countdown / B static) share most styles. */
+#edit-promo-bar {
     position: relative !important; z-index: 5 !important;
-    display: block !important; visibility: visible !important;
-    opacity: 1 !important; height: auto !important;
-    background: #ffdd06 !important; color: #0a0a0a !important;
-    border-top: 3px solid #0a0a0a !important; border-bottom: 3px solid #0a0a0a !important;
+    display: flex !important; visibility: visible !important; opacity: 1 !important;
+    align-items: center !important; justify-content: center !important; gap: 16px !important;
+    background: #0a0a0a !important; color: rgba(255,255,255,0.92) !important;
+    border-bottom: 1px solid #ffdd06 !important;
     font-family: 'SctoGroteskA', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-    margin: 0 !important; padding: 0 !important;
-    text-decoration: none !important; cursor: pointer !important;
-    transition: filter 0.15s ease !important;
+    font-weight: 400 !important; font-size: 14px !important; line-height: 1.3 !important;
+    margin: 0 !important; padding: 11px 40px !important;
+    text-decoration: none !important;
 }
-#edit-early15-banner:hover { filter: brightness(1.03) !important; }
-#edit-early15-banner, #edit-early15-banner:visited { color: #0a0a0a !important; }
-#edit-early15-banner .wrap {
-    max-width: 1280px; margin: 0 auto; padding: 16px 40px;
-    display: flex; flex-wrap: wrap; align-items: center; gap: 32px;
+#edit-promo-bar .dot {
+    width: 8px; height: 8px; background: #ffdd06; border-radius: 50%; flex-shrink: 0;
 }
-#edit-early15-banner .meta { flex: 0 0 auto; }
-#edit-early15-banner .eyebrow {
-    font-size: 11px !important; font-weight: 700 !important; letter-spacing: 0.22em !important;
-    text-transform: uppercase !important; margin: 0 0 4px 0 !important; color: #0a0a0a !important;
+#edit-promo-bar .copy { color: rgba(255,255,255,0.92); }
+#edit-promo-bar .copy .y { color: #ffdd06; }
+#edit-promo-bar .copy .p { color: #f92869; }
+#edit-promo-bar .copy .sep { color: rgba(255,255,255,0.3); margin: 0 10px; }
+#edit-promo-bar .copy .hl { color: #ffdd06; }
+#edit-promo-bar .countdown {
+    display: inline-flex; align-items: center; gap: 0;
+    font-family: 'SctoGroteskA', monospace; font-variant-numeric: tabular-nums;
 }
-#edit-early15-banner .eyebrow .promo { color: #0090eb !important; }
-#edit-early15-banner .headline {
-    font-size: 22px !important; font-weight: 800 !important; letter-spacing: -0.02em !important;
-    line-height: 1.15 !important; margin: 0 !important; color: #0a0a0a !important;
+#edit-promo-bar .countdown .n {
+    color: #fff; background: rgba(255,221,6,0.12); padding: 3px 7px; margin-right: 4px;
+    border-radius: 3px; min-width: 28px; text-align: center; display: inline-block;
 }
-#edit-early15-banner .headline .pct { color: #f92869 !important; }
-#edit-early15-banner .sub {
-    flex: 1 1 auto; font-size: 14px !important; line-height: 1.45 !important; margin: 0 !important;
-    text-align: right; color: #0a0a0a !important; font-weight: 500 !important;
+#edit-promo-bar .countdown .lbl { color: rgba(255,255,255,0.65); margin-right: 8px; }
+#edit-promo-bar .cta {
+    color: #ffdd06; background: transparent; text-decoration: none; padding: 0;
 }
-#edit-early15-banner .sub .early15-tag { color: #f92869 !important; font-weight: 700 !important; }
+#edit-promo-bar .cta:hover { color: #fff; }
+#edit-promo-bar .close {
+    position: absolute; right: 18px; top: 50%; transform: translateY(-50%);
+    font-size: 16px; color: rgba(255,255,255,0.55); cursor: pointer; line-height: 1;
+    background: transparent; border: 0; padding: 0;
+}
+#edit-promo-bar .close:hover { color: #fff; }
 @media (max-width: 720px) {
-    #edit-early15-banner .wrap { padding: 14px 20px; gap: 12px; }
-    #edit-early15-banner .headline { font-size: 18px; }
-    #edit-early15-banner .sub { text-align: left; }
+    #edit-promo-bar { padding: 10px 16px 10px 16px !important; font-size: 13px !important; flex-wrap: wrap; gap: 8px !important; }
+    #edit-promo-bar .close { right: 8px; }
+    #edit-promo-bar .copy .sep { margin: 0 6px; }
 }
-/* Card filter — hide the wrapper div that owns the grid slot, not
-   just the inner anchor (otherwise empty slots leave the grid full of gaps). */
+
+/* Card filter — hide the wrapper div that owns the grid slot. */
 .course-box.early15-hidden,
 .course:has(.course-box.early15-hidden) { display: none !important; }
 </style>
@@ -163,36 +211,148 @@ class EDIT_Formacao_Archive_Filter {
 
     public static function maybe_inject_html( string $html ): string {
         if ( ! self::is_banner_active() ) return $html;
+        if ( self::is_dismissed() ) return $html;
         // Avoid double-injection if the filter runs twice for any reason.
-        if ( strpos( $html, 'id="edit-early15-banner"' ) !== false ) return $html;
+        if ( strpos( $html, 'id="edit-promo-bar"' ) !== false ) return $html;
 
-        // Sitewide: every page (until kill date) gets the strip. We wrap
-        // it in an anchor so a click from any surface lands on the
-        // filtered formacao archive.
-        $banner = '<a id="edit-early15-banner" href="' . esc_url( home_url( '/formacao/?campanha=early15' ) ) . '" role="region" aria-label="Promoção Early Bird 15">'
-                . '<div class="wrap">'
-                .   '<div class="meta">'
-                .     '<p class="eyebrow"><span class="promo">PROMO</span> &middot; Setembro 2026</p>'
-                .     '<h2 class="headline">Early Bird <span class="pct">15%</span> &mdash; nos cursos de Setembro.</h2>'
-                .   '</div>'
-                .   '<p class="sub">Inscreve-te até 30 Junho e fica com 15% de desconto. Procura pelos cursos com o selo <span class="early15-tag">EARLY15</span> em baixo.</p>'
-                . '</div>'
-                . '</a>';
+        $variant   = self::get_variant();
+        $cta_url   = esc_url( home_url( '/formacao/?campanha=early15' ) );
+        $aria      = 'Promoção Early Bird 15 — variante ' . $variant;
 
-        // Preferred anchor: right after our own breadcrumb nav (sits below
-        // the dark hero, above the grid). Multiple fallbacks if it's missing.
+        // ---- Variant A : live countdown ----
+        if ( $variant === 'A' ) {
+            $inner = '<span class="dot"></span>'
+                   . '<span class="copy">'
+                   .   '<span class="y">Promo</span>'
+                   .   '<span class="sep">·</span>'
+                   .   'Early Bird <span class="p">15%</span> termina em'
+                   . '</span>'
+                   . '<span class="countdown">'
+                   .   '<span class="n" id="edit-promo-cd-d">--</span><span class="lbl">dias</span>'
+                   .   '<span class="n" id="edit-promo-cd-h">--</span><span class="lbl">horas</span>'
+                   .   '<span class="n" id="edit-promo-cd-m">--</span><span class="lbl">min</span>'
+                   . '</span>'
+                   . '<a class="cta" href="' . $cta_url . '" data-edit-promo-cta>Ver cursos →</a>'
+                   . '<button type="button" class="close" data-edit-promo-dismiss aria-label="Fechar">&times;</button>';
+        } else {
+            // ---- Variant B : static deadline ----
+            $inner = '<span class="dot"></span>'
+                   . '<span class="copy">'
+                   .   '<span class="y">Promo</span>'
+                   .   '<span class="sep">·</span>'
+                   .   'Early Bird <span class="p">15%</span> nos cursos de Setembro'
+                   .   '<span class="sep">·</span>'
+                   .   'Termina <span class="hl">30 Junho</span>'
+                   . '</span>'
+                   . '<a class="cta" href="' . $cta_url . '" data-edit-promo-cta>Ver cursos →</a>'
+                   . '<button type="button" class="close" data-edit-promo-dismiss aria-label="Fechar">&times;</button>';
+        }
+
+        $bar = '<div id="edit-promo-bar" data-variant="' . esc_attr( $variant ) . '" role="region" aria-label="' . esc_attr( $aria ) . '">'
+             . $inner
+             . '</div>'
+             . self::tracking_script( $variant );
+
+        // Insertion: RIGHT BEFORE our breadcrumb nav so the bar sits between
+        // the site header and the breadcrumb trail.
         $patterns = [
-            '#(</nav>\s*)(?=<!--\s*end\s+edit-breadcrumbs\s*-->|<main|<section|<div\s+class="container)#i',
-            '#(<nav[^>]*class="edit-breadcrumbs[^"]*"[^>]*>.*?</nav>)#is',
+            '#(<nav[^>]*class="edit-breadcrumbs[^"]*"[^>]*>)#i',
             '#(<!--\s*#masthead\s*-->)#i',
             '#(<main[^>]*>)#i',
         ];
         foreach ( $patterns as $pattern ) {
             if ( preg_match( $pattern, $html ) ) {
-                return preg_replace( $pattern, '$1' . $banner, $html, 1 );
+                // For #masthead comment, insert AFTER. For nav + main, insert BEFORE.
+                if ( strpos( $pattern, 'masthead' ) !== false ) {
+                    return preg_replace( $pattern, '$1' . $bar, $html, 1 );
+                }
+                return preg_replace( $pattern, $bar . '$1', $html, 1 );
             }
         }
-        // Last resort: prepend to <body>.
-        return preg_replace( '#(<body[^>]*>)#i', '$1' . $banner, $html, 1 );
+        return preg_replace( '#(<body[^>]*>)#i', '$1' . $bar, $html, 1 );
+    }
+
+    /**
+     * Inline JS — fires GA4 dataLayer events (view + click), runs the
+     * countdown for variant A, and handles dismissal.
+     */
+    private static function tracking_script( string $variant ): string {
+        $kill_iso = gmdate( 'c', strtotime( self::KILL_DATE ) );
+        ob_start();
+        ?>
+<script id="edit-promo-bar-js">
+(function () {
+    'use strict';
+    var bar = document.getElementById('edit-promo-bar');
+    if (!bar) return;
+    var variant = bar.getAttribute('data-variant') || 'A';
+    var killIso = <?php echo wp_json_encode( $kill_iso ); ?>;
+
+    // ---- GA4 / dataLayer view event ----
+    try {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            event: 'promo_bar_view',
+            promo_variant: variant,
+            promo_campaign: 'early15_set2026'
+        });
+    } catch (e) {}
+
+    // ---- CTA click event ----
+    var cta = bar.querySelector('[data-edit-promo-cta]');
+    if (cta) {
+        cta.addEventListener('click', function () {
+            try {
+                window.dataLayer.push({
+                    event: 'promo_bar_click',
+                    promo_variant: variant,
+                    promo_campaign: 'early15_set2026'
+                });
+            } catch (e) {}
+        });
+    }
+
+    // ---- Dismiss handler — sets cookie for 7 days ----
+    var close = bar.querySelector('[data-edit-promo-dismiss]');
+    if (close) {
+        close.addEventListener('click', function () {
+            var d = new Date();
+            d.setTime(d.getTime() + 7 * 24 * 60 * 60 * 1000);
+            document.cookie = '<?php echo esc_js( self::DISMISS_COOKIE ); ?>=1; expires=' + d.toUTCString() + '; path=/; SameSite=Lax';
+            bar.style.display = 'none';
+            try {
+                window.dataLayer.push({
+                    event: 'promo_bar_dismiss',
+                    promo_variant: variant,
+                    promo_campaign: 'early15_set2026'
+                });
+            } catch (e) {}
+        });
+    }
+
+    // ---- Countdown — variant A only ----
+    if (variant === 'A') {
+        var killDate = new Date(killIso).getTime();
+        function pad(n) { return n < 10 ? '0' + n : '' + n; }
+        function tick() {
+            var diff = killDate - Date.now();
+            if (diff <= 0) { bar.style.display = 'none'; return; }
+            var d = Math.floor(diff / 86400000);
+            var h = Math.floor((diff % 86400000) / 3600000);
+            var m = Math.floor((diff % 3600000) / 60000);
+            var dEl = document.getElementById('edit-promo-cd-d');
+            var hEl = document.getElementById('edit-promo-cd-h');
+            var mEl = document.getElementById('edit-promo-cd-m');
+            if (dEl) dEl.textContent = pad(d);
+            if (hEl) hEl.textContent = pad(h);
+            if (mEl) mEl.textContent = pad(m);
+        }
+        tick();
+        setInterval(tick, 60000);
+    }
+})();
+</script>
+        <?php
+        return (string) ob_get_clean();
     }
 }
