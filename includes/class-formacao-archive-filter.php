@@ -25,9 +25,12 @@ class EDIT_Formacao_Archive_Filter {
     const KILL_DATE     = '2026-06-30 23:59:59';
 
     public static function init(): void {
-        // /early15 shortlink → /formacao/?campanha=early15 (301).
-        // Has to run BEFORE WordPress 404s the unknown path.
-        add_action( 'init', [ __CLASS__, 'maybe_shortlink_redirect' ], 1 );
+        // Shortlink redirect — runs early in the request lifecycle. The
+        // class's own init() is itself called from `init` priority 10, so
+        // we attach to `parse_request` (which fires after init) and ALSO
+        // do an inline check in case parse_request was already past.
+        self::maybe_shortlink_redirect();
+        add_action( 'parse_request', [ __CLASS__, 'maybe_shortlink_redirect' ], 1 );
         // CSS still goes via wp_head — keeps the inline style cacheable.
         add_action( 'wp_head', [ __CLASS__, 'maybe_print_css' ], 7 );
         // Banner HTML injected into the buffered response.
