@@ -321,7 +321,7 @@ class EDIT_Newsletter_Signup {
             'copy'    => [
                 'eyebrow'   => 'Newsletter EDIT.',
                 'headline'  => 'Recebe a próxima edição.',
-                'pitch'     => "Notas semanais, entrevistas inéditas com tutores, cursos em pré-lançamento.\nConteúdos de especialidade com a minha Curadoria.",
+                'pitch'     => "Irei partilhar artigos semanais, entrevistas feitas na primeira pessoa com os nossos Tutores e Alumni, Cursos em pré-lançamento e algumas surpresas 🙂.\n\nMas o mais importante, ouvir as vossas opiniões sobre os temas que gostariam de ser abordados neste espaço, nos nossos eventos e em sala de aula.",
                 'disclaimer'=> "Junta-te a +11.000 profissionais digitais portugueses.\nSem spam. Cancela quando quiseres.",
                 'submit'    => 'Subscrever',
                 'placeholder' => 'o.teu.email@dominio.pt',
@@ -332,6 +332,7 @@ class EDIT_Newsletter_Signup {
                 'aria_close'=> 'Fechar',
                 'founder_name'       => 'Daniel Devera',
                 'founder_role'       => 'Founder',
+                'founder_email'      => 'daniel.devera@weareedit.io',
                 'founder_photo'      => 'https://weareedit.io/wp-content/uploads/2026/05/daniel-devera-sign-off.png',
                 'founder_signature'  => 'https://weareedit.io/wp-content/uploads/2026/05/DANIEL-DEVERA-ASSINATURA.png',
             ],

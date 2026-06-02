@@ -70,6 +70,8 @@
             ( copy.founder_signature ?
                 '<img id="edit-newsletter-strip__founder-signature" src="' + escapeAttr( copy.founder_signature ) + '" alt="' + escapeAttr( copy.founder_name || 'Assinatura' ) + '" loading="lazy">' : '' ) +
             '<span id="edit-newsletter-strip__founder-role">' + escapeHTML( copy.founder_role || '' ) + '</span>' +
+            ( copy.founder_email ?
+                '<a id="edit-newsletter-strip__founder-email" href="mailto:' + escapeAttr( copy.founder_email ) + '">' + escapeHTML( copy.founder_email ) + '</a>' : '' ) +
         '</div>' +
         '    </div>' : '' ),
         '  </div>',
