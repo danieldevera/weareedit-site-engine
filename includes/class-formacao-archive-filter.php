@@ -60,17 +60,20 @@ class EDIT_Formacao_Archive_Filter {
 }
 #edit-early15-banner .meta { flex: 0 0 auto; }
 #edit-early15-banner .eyebrow {
-    font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; margin: 0 0 4px 0;
+    font-size: 11px !important; font-weight: 700 !important; letter-spacing: 0.22em !important;
+    text-transform: uppercase !important; margin: 0 0 4px 0 !important; color: #0a0a0a !important;
 }
-#edit-early15-banner .eyebrow .promo { color: #0090eb; }
+#edit-early15-banner .eyebrow .promo { color: #0090eb !important; }
 #edit-early15-banner .headline {
-    font-size: 22px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; margin: 0;
+    font-size: 22px !important; font-weight: 800 !important; letter-spacing: -0.02em !important;
+    line-height: 1.15 !important; margin: 0 !important; color: #0a0a0a !important;
 }
-#edit-early15-banner .headline .pct { color: #f92869; }
+#edit-early15-banner .headline .pct { color: #f92869 !important; }
 #edit-early15-banner .sub {
-    flex: 1 1 auto; font-size: 14px; line-height: 1.45; margin: 0; text-align: right; color: #0a0a0a;
+    flex: 1 1 auto; font-size: 14px !important; line-height: 1.45 !important; margin: 0 !important;
+    text-align: right; color: #0a0a0a !important; font-weight: 500 !important;
 }
-#edit-early15-banner .sub .early15-tag { color: #f92869; font-weight: 700; }
+#edit-early15-banner .sub .early15-tag { color: #f92869 !important; font-weight: 700 !important; }
 @media (max-width: 720px) {
     #edit-early15-banner .wrap { padding: 14px 20px; gap: 12px; }
     #edit-early15-banner .headline { font-size: 18px; }
