@@ -60,13 +60,12 @@ class EDIT_Formacao_Hero {
 }
 .edit-fhero__title .p { color: #f92869; }
 
-/* Hide the theme's legacy hero h2 paragraphs (we replace them above). */
-.page-template-page-formacao .filter-result h2.hide-mobile.hide-tablet,
-.page-template-page-formacao .filter-result h2.hide-desktop {
-    display: none !important;
-}
-/* Hide the theme's filter-select "Formação" label too — our title replaces it. */
-.page-template-page-formacao .filter-result .filter-select {
+/* Hide the legacy markup that ships as siblings of our injected hero.
+   The theme renders <section.edit-fhero> + <div.filter-select> + two h2
+   paragraphs as siblings inside the same wrapper, so the general-sibling
+   combinator catches both without needing a body-class anchor. */
+.edit-fhero ~ .filter-select,
+.edit-fhero ~ h2 {
     display: none !important;
 }
 
