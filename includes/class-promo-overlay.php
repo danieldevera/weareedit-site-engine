@@ -144,8 +144,8 @@ class EDIT_Promo_Overlay {
     <div id="edit-promo-overlay__card">
         <button type="button" id="edit-promo-overlay__close" data-edit-promo-dismiss aria-label="Fechar promoção">&times;</button>
         <p id="edit-promo-overlay__eyebrow" class="edit-promo-stagger" data-stagger="1"><span class="promo">PROMO</span> &middot; Setembro 2026</p>
-        <h2 id="edit-promo-overlay__headline" class="edit-promo-stagger" data-stagger="2">Early <span class="pct">15%</span></h2>
-        <p id="edit-promo-overlay__sub" class="edit-promo-stagger" data-stagger="3">-15% nas edições de Setembro.<br>Inscrições até <strong>30 Junho</strong>.</p>
+        <h2 id="edit-promo-overlay__headline" class="edit-promo-stagger" data-stagger="2">Early Bird <span class="pct">15%</span></h2>
+        <p id="edit-promo-overlay__sub" class="edit-promo-stagger" data-stagger="3">-15% nos cursos de Setembro.<br>Inscrições até <strong>30 Junho</strong>.</p>
         <a href="<?php echo esc_url( home_url( '/formacao/?campanha=early15' ) ); ?>" id="edit-promo-overlay__cta" class="swipe-cta edit-promo-stagger" data-stagger="4" data-edit-promo-cta>
             <span class="swipe-layer swipe-pink"></span>
             <span class="swipe-layer swipe-teal"></span>

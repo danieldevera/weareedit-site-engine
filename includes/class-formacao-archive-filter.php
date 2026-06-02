@@ -120,7 +120,7 @@ class EDIT_Formacao_Archive_Filter {
                 . '<div class="wrap">'
                 .   '<div class="meta">'
                 .     '<p class="eyebrow"><span class="promo">PROMO</span> &middot; Setembro 2026</p>'
-                .     '<h2 class="headline">Early <span class="pct">15%</span> &mdash; nas edições de Setembro.</h2>'
+                .     '<h2 class="headline">Early Bird <span class="pct">15%</span> &mdash; nos cursos de Setembro.</h2>'
                 .   '</div>'
                 .   '<p class="sub">Inscreve-te até 30 Junho e fica com 15% de desconto. Procura pelos cursos com o selo <span class="early15-tag">EARLY15</span> em baixo.</p>'
                 . '</div>'
