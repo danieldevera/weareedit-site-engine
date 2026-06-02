@@ -62,12 +62,15 @@ class EDIT_Promo_Overlay {
     position: fixed; left: 20px; bottom: 90px; z-index: 99999;
     width: 320px; height: 320px;
     display: none; opacity: 0;
-    transition: opacity 400ms cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translate3d(0, 16px, 0);
+    transition: opacity 500ms cubic-bezier(0.16, 1, 0.3, 1),
+                transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
     pointer-events: none;
-    will-change: opacity;
+    will-change: opacity, transform;
 }
 #edit-promo-overlay.is-open {
     display: block; opacity: 1;
+    transform: translate3d(0, 0, 0);
     pointer-events: auto;
 }
 #edit-promo-overlay__card {
@@ -86,6 +89,7 @@ class EDIT_Promo_Overlay {
 #edit-promo-overlay__close:hover { background: rgba(10,10,10,0.10); }
 #edit-promo-overlay__close:focus-visible { outline: 2px solid #0a0a0a; outline-offset: 2px; }
 #edit-promo-overlay__eyebrow { margin: 0 0 14px; font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #0a0a0a; }
+#edit-promo-overlay__eyebrow .promo { color: #60c5b3; }
 #edit-promo-overlay__headline {
     margin: 0 0 16px; font-size: 56px; line-height: 0.95; font-weight: 800;
     letter-spacing: -0.03em; color: #0a0a0a;
@@ -102,18 +106,19 @@ class EDIT_Promo_Overlay {
 }
 #edit-promo-overlay__card .swipe-cta:hover .swipe-label { color: #ffdd06; }
 
-/* Item stagger — tight, opacity-only cascade. Total duration ~660ms.
-   No transform, no scale, no movement = no compositing jank. */
+/* Items: super-tight cascade (50ms apart) so the four blocks settle
+   into place as one fluid motion rather than four separate pops.
+   Same ease-out-expo curve as the pop-up itself for visual unity. */
 #edit-promo-overlay .edit-promo-stagger {
     opacity: 0;
-    transition: opacity 280ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 350ms cubic-bezier(0.16, 1, 0.3, 1);
     will-change: opacity;
 }
 #edit-promo-overlay.is-open .edit-promo-stagger { opacity: 1; }
-#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="1"] { transition-delay: 80ms; }
-#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="2"] { transition-delay: 180ms; }
-#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="3"] { transition-delay: 280ms; }
-#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="4"] { transition-delay: 380ms; }
+#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="1"] { transition-delay: 120ms; }
+#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="2"] { transition-delay: 170ms; }
+#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="3"] { transition-delay: 220ms; }
+#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="4"] { transition-delay: 270ms; }
 
 @media (max-width: 640px) {
     #edit-promo-overlay { left: 12px; bottom: 78px; width: calc(100vw - 24px); max-width: 320px; height: auto; min-height: 260px; }
@@ -127,7 +132,7 @@ class EDIT_Promo_Overlay {
 <div id="edit-promo-overlay" role="region" aria-labelledby="edit-promo-overlay__headline" aria-hidden="true">
     <div id="edit-promo-overlay__card">
         <button type="button" id="edit-promo-overlay__close" data-edit-promo-dismiss aria-label="Fechar promoção">&times;</button>
-        <p id="edit-promo-overlay__eyebrow" class="edit-promo-stagger" data-stagger="1">Setembro 2026</p>
+        <p id="edit-promo-overlay__eyebrow" class="edit-promo-stagger" data-stagger="1"><span class="promo">PROMO</span> &middot; Setembro 2026</p>
         <h2 id="edit-promo-overlay__headline" class="edit-promo-stagger" data-stagger="2">Early <span class="pct">15%</span></h2>
         <p id="edit-promo-overlay__sub" class="edit-promo-stagger" data-stagger="3">-15% nas edições de Setembro.<br>Inscrições até <strong>30 Junho</strong>.</p>
         <a href="<?php echo esc_url( home_url( '/formacao/?campanha=early15' ) ); ?>" id="edit-promo-overlay__cta" class="swipe-cta edit-promo-stagger" data-stagger="4" data-edit-promo-cta>
