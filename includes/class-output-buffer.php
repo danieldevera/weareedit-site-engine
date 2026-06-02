@@ -756,6 +756,19 @@ HTML;
         //    (formacao H1, course cards) that bypass the_title().
         $html = str_replace( '</font></br>', '</font> </br>', $html );
 
+        // 9. Footer "Subscrever Newsletter" — apply the locked swipe-CTA
+        // standard (pink→teal→black sweep + yellow text flip on hover) so
+        // it matches the homepage "Ver todos os Cursos" button. Theme markup
+        // is the bare anchor; we inject the 3 swipe-layer spans + wrap the
+        // text in a swipe-label span so the existing site-wide .swipe-cta
+        // CSS kicks in. Click behaviour (scroll to #edit-newsletter-strip)
+        // is handled by newsletter-signup.js separately.
+        $html = str_replace(
+            '<a href="#" class="btn btn-yellow">Subscrever Newsletter</a>',
+            '<a href="#" class="btn btn-yellow swipe-cta"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Subscrever Newsletter</span></a>',
+            $html
+        );
+
         return $html;
     }
 
