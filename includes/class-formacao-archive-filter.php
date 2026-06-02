@@ -27,6 +27,8 @@ class EDIT_Formacao_Archive_Filter {
         add_action( 'wp_head', [ __CLASS__, 'maybe_print_css' ], 7 );
         // Banner HTML injected into the buffered response.
         add_filter( 'weareedit_site_engine_output_buffer', [ __CLASS__, 'maybe_inject_html' ], 7 );
+        // Card filter — hides non-EARLY15 course-boxes server-side.
+        add_filter( 'weareedit_site_engine_output_buffer', [ __CLASS__, 'maybe_filter_cards' ], 8 );
     }
 
     private static function is_active(): bool {
@@ -74,8 +76,34 @@ class EDIT_Formacao_Archive_Filter {
     #edit-early15-banner .headline { font-size: 18px; }
     #edit-early15-banner .sub { text-align: left; }
 }
+/* Card filter — non-EARLY15 cards get this class server-side. */
+.course-box.early15-hidden { display: none !important; }
 </style>
         <?php
+    }
+
+    /**
+     * Hide every `<a class="course-box">…</a>` that does NOT contain a
+     * `<div class="course-promo-code">early15</div>` badge.
+     *
+     * The promo code appears inside `<div class="special-labels-container">`
+     * at the top-left of each card; we just check for the text node inside
+     * `course-promo-code` so case + whitespace are tolerant.
+     */
+    public static function maybe_filter_cards( string $html ): string {
+        if ( ! self::is_active() ) return $html;
+        if ( strpos( $html, 'course-box' ) === false ) return $html;
+
+        return preg_replace_callback(
+            '#<a([^>]*?)class="([^"]*?course-box[^"]*?)"([^>]*?)>(.*?)</a>#s',
+            function ( array $m ): string {
+                if ( preg_match( '#course-promo-code"[^>]*>\s*early15\s*<#i', $m[4] ) ) {
+                    return $m[0]; // keep — has the badge
+                }
+                return '<a' . $m[1] . 'class="' . $m[2] . ' early15-hidden"' . $m[3] . '>' . $m[4] . '</a>';
+            },
+            $html
+        );
     }
 
     public static function maybe_inject_html( string $html ): string {
