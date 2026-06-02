@@ -756,6 +756,16 @@ HTML;
         //    (formacao H1, course cards) that bypass the_title().
         $html = str_replace( '</font></br>', '</font> </br>', $html );
 
+        // 8a. /escola-3/ legacy copy correction — EDIT. no longer has
+        // Madrid + São Paulo campuses. Replace the dated multi-city
+        // phrase with the current Lisboa+Porto reality. Site-wide
+        // str_replace in case the same string appears elsewhere.
+        $html = str_replace(
+            'em Lisboa, Porto, Madrid e São Paulo',
+            'em Lisboa e Porto',
+            $html
+        );
+
         // 9. Footer "Subscrever Newsletter" — apply the locked swipe-CTA
         // standard (pink→teal→black sweep + yellow text flip on hover) so
         // it matches the homepage "Ver todos os Cursos" button. Theme markup
