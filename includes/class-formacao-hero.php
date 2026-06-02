@@ -82,7 +82,9 @@ class EDIT_Formacao_Hero {
 
     public static function maybe_rewrite_hero( string $html ): string {
         if ( ! self::is_active() ) return $html;
-        if ( strpos( $html, 'edit-fhero' ) !== false ) return $html;
+        // Guard against double-injection. Look for the section tag itself,
+        // not just "edit-fhero" — that token also appears in the inline CSS.
+        if ( strpos( $html, '<section class="edit-fhero"' ) !== false ) return $html;
         // Anchor: the existing hero's filter-select div. Insert our quote
         // hero immediately before it. CSS above hides the legacy markup.
         $anchor = '<div class="filter-select">';
