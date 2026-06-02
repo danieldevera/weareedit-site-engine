@@ -177,7 +177,10 @@ class EDIT_Promo_Overlay {
 
     var overlay = document.getElementById( 'edit-promo-overlay' );
     if ( ! overlay ) return;
-    if ( seen() ) return;
+    // QA override: ?promo=force re-fires the popup even after it's been
+    // marked seen (handy for screenshots, screen recordings, sales demos).
+    var force = /[?&]promo=force\b/.test( window.location.search );
+    if ( ! force && seen() ) return;
 
     function open() {
         overlay.classList.add( 'is-open' );
