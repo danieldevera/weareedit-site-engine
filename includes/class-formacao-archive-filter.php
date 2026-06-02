@@ -25,12 +25,31 @@ class EDIT_Formacao_Archive_Filter {
     const KILL_DATE     = '2026-06-30 23:59:59';
 
     public static function init(): void {
+        // /early15 shortlink → /formacao/?campanha=early15 (301).
+        // Has to run BEFORE WordPress 404s the unknown path.
+        add_action( 'init', [ __CLASS__, 'maybe_shortlink_redirect' ], 1 );
         // CSS still goes via wp_head — keeps the inline style cacheable.
         add_action( 'wp_head', [ __CLASS__, 'maybe_print_css' ], 7 );
         // Banner HTML injected into the buffered response.
         add_filter( 'weareedit_site_engine_output_buffer', [ __CLASS__, 'maybe_inject_html' ], 7 );
         // Card filter — hides non-EARLY15 course-boxes server-side.
         add_filter( 'weareedit_site_engine_output_buffer', [ __CLASS__, 'maybe_filter_cards' ], 8 );
+    }
+
+    /**
+     * Short-link redirect: /early15 → /formacao/?campanha=early15.
+     *
+     * Lets us print "weareedit.io/early15" on reels / posters / paid ads
+     * and have visitors land on the filtered archive without typing the
+     * full query string. 301 so search engines collapse the duplicate.
+     */
+    public static function maybe_shortlink_redirect(): void {
+        if ( is_admin() ) return;
+        $path = isset( $_SERVER['REQUEST_URI'] ) ? strtok( (string) $_SERVER['REQUEST_URI'], '?' ) : '';
+        $normalised = '/' . trim( (string) $path, '/' );
+        if ( $normalised !== '/early15' ) return;
+        wp_safe_redirect( home_url( '/formacao/?campanha=early15' ), 301 );
+        exit;
     }
 
     /**
