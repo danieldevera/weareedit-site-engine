@@ -22,14 +22,12 @@ class EDIT_Formacao_Archive_Filter {
 
     const QUERY_PARAM       = 'campanha';
     const EARLY15_VALUE     = 'early15';
-    const EARLY15_DATE_LIKE = '%/09/2026';
 
     public static function init(): void {
-        add_action( 'pre_get_posts', [ __CLASS__, 'maybe_filter' ] );
-        // Client-side fallback: theme may run a custom WP_Query inside a
-        // page template that bypasses pre_get_posts. JS hides non-matching
-        // cards after render so the filter works regardless of the
-        // theme's query architecture.
+        // Client-side filter only — theme runs custom WP_Query in the page
+        // template and pre_get_posts doesn't bite. Match on the visible
+        // EARLY15 badge text rather than a date heuristic, so only courses
+        // explicitly flagged for the campaign appear.
         add_action( 'wp_footer', [ __CLASS__, 'maybe_print_js' ], 60 );
     }
 
@@ -50,8 +48,9 @@ body.early15-filtering [data-formacao-card]:not(.early15-keep) { display: none !
 <script id="edit-early15-filter-js">
 (function () {
     'use strict';
-    // Pattern: "?? de Setembro 2026" (case-insensitive) anywhere in the card text.
-    var RE_SEPT_2026 = /\bSetembro\s+2026\b/i;
+    // Match cards by the visible EARLY15 badge — only courses explicitly
+    // flagged for the campaign should pass through, not every Setembro start.
+    var RE_EARLY15 = /\bEARLY\s*15\b/i;
 
     function run() {
         // Find every plausible course card on the archive. Themes vary; we
@@ -76,7 +75,7 @@ body.early15-filtering [data-formacao-card]:not(.early15-keep) { display: none !
         for ( var k = 0; k < seen.length; k++ ) {
             var el = seen[ k ];
             el.setAttribute( 'data-formacao-card', '1' );
-            if ( RE_SEPT_2026.test( el.textContent || '' ) ) {
+            if ( RE_EARLY15.test( el.textContent || '' ) ) {
                 el.classList.add( 'early15-keep' );
             }
         }
@@ -92,21 +91,4 @@ body.early15-filtering [data-formacao-card]:not(.early15-keep) { display: none !
         <?php
     }
 
-    public static function maybe_filter( $query ): void {
-        if ( is_admin() ) return;
-        if ( ! $query->is_main_query() ) return;
-        if ( ! is_post_type_archive( 'formacao' ) ) return;
-        if ( empty( $_GET[ self::QUERY_PARAM ] ) ) return;
-
-        $campaign = sanitize_text_field( wp_unslash( (string) $_GET[ self::QUERY_PARAM ] ) );
-        if ( $campaign !== self::EARLY15_VALUE ) return;
-
-        $meta_query = (array) $query->get( 'meta_query' );
-        $meta_query[] = [
-            'key'     => 'home_data',
-            'value'   => self::EARLY15_DATE_LIKE,
-            'compare' => 'LIKE',
-        ];
-        $query->set( 'meta_query', $meta_query );
-    }
 }
