@@ -434,11 +434,13 @@
     #edit-newsletter-strip.is-pulsing { animation: none; }
 }
 
-/* Force pointer cursor on the legacy footer "Subscrever Newsletter"
-   button — the theme's href="#" + .btn-yellow combo shows a text/
-   default cursor in some browsers, which feels unclickable. Our JS
-   now treats this as a scroll trigger, so cursor must reinforce that. */
-footer a.btn-yellow,
-footer a.btn.btn-yellow {
+/* Force pointer cursor on the legacy "Subscrever Newsletter" yellow
+   CTA. Theme markup is <a class="btn btn-yellow" href="#"> inside a
+   .btn-container — NOT inside a <footer> element. Selector broadened
+   to match wherever the theme renders it. Our JS treats this as a
+   scroll trigger, so the cursor must reinforce that. */
+.btn-container a.btn-yellow,
+a.btn.btn-yellow,
+a.btn-yellow[href="#"] {
     cursor: pointer !important;
 }
