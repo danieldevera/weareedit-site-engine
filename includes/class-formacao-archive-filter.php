@@ -79,8 +79,10 @@ class EDIT_Formacao_Archive_Filter {
     #edit-early15-banner .headline { font-size: 18px; }
     #edit-early15-banner .sub { text-align: left; }
 }
-/* Card filter — non-EARLY15 cards get this class server-side. */
-.course-box.early15-hidden { display: none !important; }
+/* Card filter — hide the wrapper div that owns the grid slot, not
+   just the inner anchor (otherwise empty slots leave the grid full of gaps). */
+.course-box.early15-hidden,
+.course:has(.course-box.early15-hidden) { display: none !important; }
 </style>
         <?php
     }
