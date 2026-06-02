@@ -62,13 +62,12 @@ class EDIT_Promo_Overlay {
     position: fixed; left: 20px; bottom: 90px; z-index: 99999;
     width: 300px; height: 300px;
     display: none; opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 520ms cubic-bezier(0.22, 1, 0.36, 1),
-                transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition: opacity 800ms cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
+    will-change: opacity;
 }
 #edit-promo-overlay.is-open {
-    display: block; opacity: 1; transform: translateY(0);
+    display: block; opacity: 1;
     pointer-events: auto;
 }
 #edit-promo-overlay__card {
@@ -103,25 +102,25 @@ class EDIT_Promo_Overlay {
 }
 #edit-promo-overlay__card .swipe-cta:hover .swipe-label { color: #ffdd06; }
 
-/* Staggered entrance for the items inside the card */
+/* Staggered entrance for the items inside the card — opacity-only for
+   maximum fluidity (no transform = no GPU compositing jank). */
 #edit-promo-overlay .edit-promo-stagger {
     opacity: 0;
-    transform: translateY(12px);
-    transition: opacity 420ms cubic-bezier(0.22, 1, 0.36, 1),
-                transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition: opacity 520ms cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: opacity;
 }
-#edit-promo-overlay.is-open .edit-promo-stagger { opacity: 1; transform: translateY(0); }
-#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="1"] { transition-delay: 260ms; }
-#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="2"] { transition-delay: 360ms; }
-#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="3"] { transition-delay: 460ms; }
-#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="4"] { transition-delay: 580ms; }
+#edit-promo-overlay.is-open .edit-promo-stagger { opacity: 1; }
+#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="1"] { transition-delay: 300ms; }
+#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="2"] { transition-delay: 480ms; }
+#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="3"] { transition-delay: 660ms; }
+#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="4"] { transition-delay: 880ms; }
 
 @media (max-width: 640px) {
     #edit-promo-overlay { left: 12px; bottom: 78px; width: calc(100vw - 24px); max-width: 320px; height: auto; min-height: 260px; }
 }
 @media (prefers-reduced-motion: reduce) {
     #edit-promo-overlay,
-    #edit-promo-overlay .edit-promo-stagger { transition: none !important; transform: none !important; }
+    #edit-promo-overlay .edit-promo-stagger { transition: none !important; }
 }
 </style>
 
