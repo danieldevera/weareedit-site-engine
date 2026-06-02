@@ -62,9 +62,11 @@ class EDIT_Promo_Overlay {
     position: fixed; left: 20px; bottom: 90px; z-index: 99999;
     width: 320px; height: 320px;
     display: none; opacity: 0;
-    transform: translate3d(0, 16px, 0);
-    transition: opacity 500ms cubic-bezier(0.16, 1, 0.3, 1),
-                transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+    transform: translate3d(0, 24px, 0);
+    /* ease-out-sine — the gentlest standard easing. Decelerates softly
+       across the whole motion rather than slamming to a stop. */
+    transition: opacity 1100ms cubic-bezier(0.39, 0.575, 0.565, 1),
+                transform 1100ms cubic-bezier(0.39, 0.575, 0.565, 1);
     pointer-events: none;
     will-change: opacity, transform;
 }
@@ -89,7 +91,7 @@ class EDIT_Promo_Overlay {
 #edit-promo-overlay__close:hover { background: rgba(10,10,10,0.10); }
 #edit-promo-overlay__close:focus-visible { outline: 2px solid #0a0a0a; outline-offset: 2px; }
 #edit-promo-overlay__eyebrow { margin: 0 0 14px; font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #0a0a0a; }
-#edit-promo-overlay__eyebrow .promo { color: #60c5b3; }
+#edit-promo-overlay__eyebrow .promo { color: #0090eb; }
 #edit-promo-overlay__headline {
     margin: 0 0 16px; font-size: 56px; line-height: 0.95; font-weight: 800;
     letter-spacing: -0.03em; color: #0a0a0a;
@@ -106,19 +108,18 @@ class EDIT_Promo_Overlay {
 }
 #edit-promo-overlay__card .swipe-cta:hover .swipe-label { color: #ffdd06; }
 
-/* Items: super-tight cascade (50ms apart) so the four blocks settle
-   into place as one fluid motion rather than four separate pops.
-   Same ease-out-expo curve as the pop-up itself for visual unity. */
+/* Items: same gentle ease-out-sine, longer duration, ~120ms apart so
+   the cascade unfolds at a leisurely pace alongside the pop-up motion. */
 #edit-promo-overlay .edit-promo-stagger {
     opacity: 0;
-    transition: opacity 350ms cubic-bezier(0.16, 1, 0.3, 1);
+    transition: opacity 700ms cubic-bezier(0.39, 0.575, 0.565, 1);
     will-change: opacity;
 }
 #edit-promo-overlay.is-open .edit-promo-stagger { opacity: 1; }
-#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="1"] { transition-delay: 120ms; }
-#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="2"] { transition-delay: 170ms; }
-#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="3"] { transition-delay: 220ms; }
-#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="4"] { transition-delay: 270ms; }
+#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="1"] { transition-delay: 250ms; }
+#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="2"] { transition-delay: 370ms; }
+#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="3"] { transition-delay: 490ms; }
+#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="4"] { transition-delay: 610ms; }
 
 @media (max-width: 640px) {
     #edit-promo-overlay { left: 12px; bottom: 78px; width: calc(100vw - 24px); max-width: 320px; height: auto; min-height: 260px; }
