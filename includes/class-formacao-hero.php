@@ -37,43 +37,52 @@ class EDIT_Formacao_Hero {
         if ( ! self::is_active() ) return;
         ?>
 <style id="edit-formacao-hero-css">
-.edit-fhero {
-    position: relative; z-index: 2;
-    max-width: 1100px; margin: 0 auto; padding: 80px 60px 90px;
-    font-family: 'SctoGroteskA', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+/* Load the brand font's heaviest weight directly so we don't depend on
+   theme load order. Regular/Medium/Bold ship via the theme. */
+@font-face {
+    font-family: 'SctoGroteskA';
+    src: url('https://weareedit.io/wp-content/themes/weareedit/css/fonts/SctoGroteskA-Black.woff2') format('woff2');
+    font-weight: 900; font-style: normal; font-display: swap;
 }
+
+.edit-fhero {
+    position: relative !important; z-index: 2 !important;
+    max-width: 1100px !important; margin: 0 auto !important; padding: 80px 60px 90px !important;
+    font-family: 'SctoGroteskA', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+    text-align: left !important;
+}
+.edit-fhero * { text-align: left !important; }
 .edit-fhero__quote-row {
-    display: flex; align-items: flex-start; gap: 24px; margin: 0 0 40px 0;
+    display: flex !important; align-items: flex-start !important; gap: 24px !important;
+    margin: 0 0 40px 0 !important;
 }
 .edit-fhero__mark {
-    font-family: Georgia, 'Times New Roman', serif;
-    font-size: 90px; line-height: 0.6; color: #f92869; flex-shrink: 0;
+    font-family: Georgia, 'Times New Roman', serif !important;
+    font-size: 90px !important; line-height: 0.6 !important; color: #f92869 !important;
+    flex-shrink: 0 !important;
 }
 .edit-fhero__quote {
-    font-family: Georgia, 'Times New Roman', serif; font-style: italic;
-    font-size: 30px; line-height: 1.35; color: rgba(255,255,255,0.92);
-    max-width: 820px; margin: 0;
+    font-family: Georgia, 'Times New Roman', serif !important; font-style: italic !important;
+    font-size: 30px !important; line-height: 1.35 !important; color: rgba(255,255,255,0.92) !important;
+    max-width: 820px !important; margin: 0 !important; font-weight: 400 !important;
 }
 .edit-fhero__title {
-    font-size: 160px; font-weight: 900; line-height: 0.9;
-    letter-spacing: -0.04em; color: #fff; margin: 0;
+    font-family: 'SctoGroteskA', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+    font-size: 160px !important; font-weight: 900 !important; line-height: 0.9 !important;
+    letter-spacing: -0.04em !important; color: #fff !important; margin: 0 !important;
+    text-transform: none !important;
 }
-.edit-fhero__title .p { color: #f92869; }
+.edit-fhero__title .p { color: #f92869 !important; }
 
-/* Hide the legacy markup that ships as siblings of our injected hero.
-   The theme renders <section.edit-fhero> + <div.filter-select> + two h2
-   paragraphs as siblings inside the same wrapper, so the general-sibling
-   combinator catches both without needing a body-class anchor. */
+/* Hide the legacy markup that ships as siblings of our injected hero. */
 .edit-fhero ~ .filter-select,
-.edit-fhero ~ h2 {
-    display: none !important;
-}
+.edit-fhero ~ h2 { display: none !important; }
 
 @media (max-width: 900px) {
-    .edit-fhero { padding: 60px 24px 70px; }
-    .edit-fhero__quote { font-size: 22px; }
-    .edit-fhero__mark { font-size: 64px; }
-    .edit-fhero__title { font-size: 88px; }
+    .edit-fhero { padding: 60px 24px 70px !important; }
+    .edit-fhero__quote { font-size: 22px !important; }
+    .edit-fhero__mark { font-size: 64px !important; }
+    .edit-fhero__title { font-size: 88px !important; }
 }
 </style>
         <?php
