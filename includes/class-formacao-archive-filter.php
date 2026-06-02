@@ -44,10 +44,13 @@ class EDIT_Formacao_Archive_Filter {
         ?>
 <style id="edit-early15-banner-css">
 #edit-early15-banner {
-    position: relative; z-index: 5; display: block;
-    background: #ffdd06; color: #0a0a0a;
-    border-top: 4px solid #0a0a0a; border-bottom: 4px solid #0a0a0a;
-    font-family: 'SctoGroteskA', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    position: relative !important; z-index: 5 !important;
+    display: block !important; visibility: visible !important;
+    opacity: 1 !important; height: auto !important; min-height: 100px !important;
+    background: #ffdd06 !important; color: #0a0a0a !important;
+    border-top: 4px solid #0a0a0a !important; border-bottom: 4px solid #0a0a0a !important;
+    font-family: 'SctoGroteskA', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+    margin: 0 !important; padding: 0 !important;
 }
 #edit-early15-banner .wrap {
     max-width: 1280px; margin: 0 auto; padding: 28px 40px;
@@ -83,7 +86,7 @@ class EDIT_Formacao_Archive_Filter {
         // Avoid double-injection if the filter runs twice for any reason.
         if ( strpos( $html, 'id="edit-early15-banner"' ) !== false ) return $html;
 
-        $banner = '<aside id="edit-early15-banner" role="region" aria-label="Promoção Early 15">'
+        $banner = '<div id="edit-early15-banner" role="region" aria-label="Promoção Early 15">'
                 . '<div class="wrap">'
                 .   '<div class="meta">'
                 .     '<p class="eyebrow"><span class="promo">PROMO</span> &middot; Setembro 2026</p>'
@@ -92,7 +95,7 @@ class EDIT_Formacao_Archive_Filter {
                 .   '</div>'
                 .   '<p class="hint">A campanha aplica-se aos cursos com selo EARLY15</p>'
                 . '</div>'
-                . '</aside>';
+                . '</div>';
 
         // Preferred anchor: right after our own breadcrumb nav (sits below
         // the dark hero, above the grid). Multiple fallbacks if it's missing.
