@@ -433,3 +433,12 @@
 @media (prefers-reduced-motion: reduce) {
     #edit-newsletter-strip.is-pulsing { animation: none; }
 }
+
+/* Force pointer cursor on the legacy footer "Subscrever Newsletter"
+   button — the theme's href="#" + .btn-yellow combo shows a text/
+   default cursor in some browsers, which feels unclickable. Our JS
+   now treats this as a scroll trigger, so cursor must reinforce that. */
+footer a.btn-yellow,
+footer a.btn.btn-yellow {
+    cursor: pointer !important;
+}
