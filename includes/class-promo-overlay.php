@@ -61,12 +61,13 @@ class EDIT_Promo_Overlay {
     position: fixed; left: 20px; bottom: 90px; z-index: 99999;
     width: 300px; height: 300px;
     display: none; opacity: 0;
-    transform: translateY(24px) scale(0.96);
-    transition: opacity 320ms ease, transform 420ms cubic-bezier(0.16,1,0.30,1);
+    transform: translateY(40px);
+    transition: opacity 520ms cubic-bezier(0.22, 1, 0.36, 1),
+                transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
     pointer-events: none;
 }
 #edit-promo-overlay.is-open {
-    display: block; opacity: 1; transform: translateY(0) scale(1);
+    display: block; opacity: 1; transform: translateY(0);
     pointer-events: auto;
 }
 #edit-promo-overlay__card {
@@ -84,14 +85,13 @@ class EDIT_Promo_Overlay {
 }
 #edit-promo-overlay__close:hover { background: rgba(10,10,10,0.10); }
 #edit-promo-overlay__close:focus-visible { outline: 2px solid #0a0a0a; outline-offset: 2px; }
-#edit-promo-overlay__logo { display: block; height: 16px; width: auto; margin-bottom: 14px; }
-#edit-promo-overlay__eyebrow { margin: 0 0 8px; font-size: 9px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #0a0a0a; }
+#edit-promo-overlay__eyebrow { margin: 0 0 10px; font-size: 9px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #0a0a0a; }
 #edit-promo-overlay__headline {
-    margin: 0 0 10px; font-size: 38px; line-height: 0.95; font-weight: 800;
+    margin: 0 0 12px; font-size: 42px; line-height: 0.95; font-weight: 800;
     letter-spacing: -0.03em; color: #0a0a0a;
 }
 #edit-promo-overlay__headline .pct { color: #f92869; }
-#edit-promo-overlay__sub { margin: 0 0 14px; font-size: 12px; line-height: 1.35; color: #0a0a0a; }
+#edit-promo-overlay__sub { margin: 0 0 16px; font-size: 13px; line-height: 1.4; color: #0a0a0a; }
 #edit-promo-overlay__sub strong { font-weight: 700; }
 #edit-promo-overlay__card .swipe-cta {
     background: #0a0a0a; margin-top: auto; text-align: center; align-self: stretch;
@@ -101,23 +101,36 @@ class EDIT_Promo_Overlay {
     letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700;
 }
 #edit-promo-overlay__card .swipe-cta:hover .swipe-label { color: #ffdd06; }
+
+/* Staggered entrance for the items inside the card */
+#edit-promo-overlay .edit-promo-stagger {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 420ms cubic-bezier(0.22, 1, 0.36, 1),
+                transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+#edit-promo-overlay.is-open .edit-promo-stagger { opacity: 1; transform: translateY(0); }
+#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="1"] { transition-delay: 260ms; }
+#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="2"] { transition-delay: 360ms; }
+#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="3"] { transition-delay: 460ms; }
+#edit-promo-overlay.is-open .edit-promo-stagger[data-stagger="4"] { transition-delay: 580ms; }
+
 @media (max-width: 640px) {
-    /* Mobile — slightly smaller, hugs the bottom-left corner */
     #edit-promo-overlay { left: 12px; bottom: 78px; width: calc(100vw - 24px); max-width: 320px; height: auto; min-height: 260px; }
 }
 @media (prefers-reduced-motion: reduce) {
-    #edit-promo-overlay { transition: none !important; transform: none !important; }
+    #edit-promo-overlay,
+    #edit-promo-overlay .edit-promo-stagger { transition: none !important; transform: none !important; }
 }
 </style>
 
 <div id="edit-promo-overlay" role="region" aria-labelledby="edit-promo-overlay__headline" aria-hidden="true">
     <div id="edit-promo-overlay__card">
         <button type="button" id="edit-promo-overlay__close" data-edit-promo-dismiss aria-label="Fechar promoção">&times;</button>
-        <img id="edit-promo-overlay__logo" src="https://weareedit.io/wp-content/uploads/2026/05/edit-extended-logo.png" alt="EDIT.">
-        <p id="edit-promo-overlay__eyebrow">Setembro 2026</p>
-        <h2 id="edit-promo-overlay__headline">Early <span class="pct">15%</span></h2>
-        <p id="edit-promo-overlay__sub">-15% nas edições de Setembro.<br>Inscrições até <strong>30 Junho</strong>.</p>
-        <a href="<?php echo esc_url( home_url( '/formacao/?campanha=early15' ) ); ?>" id="edit-promo-overlay__cta" class="swipe-cta" data-edit-promo-cta>
+        <p id="edit-promo-overlay__eyebrow" class="edit-promo-stagger" data-stagger="1">Setembro 2026</p>
+        <h2 id="edit-promo-overlay__headline" class="edit-promo-stagger" data-stagger="2">Early <span class="pct">15%</span></h2>
+        <p id="edit-promo-overlay__sub" class="edit-promo-stagger" data-stagger="3">-15% nas edições de Setembro.<br>Inscrições até <strong>30 Junho</strong>.</p>
+        <a href="<?php echo esc_url( home_url( '/formacao/?campanha=early15' ) ); ?>" id="edit-promo-overlay__cta" class="swipe-cta edit-promo-stagger" data-stagger="4" data-edit-promo-cta>
             <span class="swipe-layer swipe-pink"></span>
             <span class="swipe-layer swipe-teal"></span>
             <span class="swipe-layer swipe-black"></span>
