@@ -68,9 +68,9 @@ class EDIT_Formacao_Archive_Filter {
 }
 #edit-early15-banner .headline .pct { color: #f92869; }
 #edit-early15-banner .sub {
-    flex: 1 1 auto; font-size: 14px; line-height: 1.45; margin: 0; text-align: right;
+    flex: 1 1 auto; font-size: 14px; line-height: 1.45; margin: 0; text-align: right; color: #0a0a0a;
 }
-#edit-early15-banner .sub strong { font-weight: 700; }
+#edit-early15-banner .sub .early15-tag { color: #f92869; font-weight: 700; }
 @media (max-width: 720px) {
     #edit-early15-banner .wrap { padding: 14px 20px; gap: 12px; }
     #edit-early15-banner .headline { font-size: 18px; }
@@ -117,7 +117,7 @@ class EDIT_Formacao_Archive_Filter {
                 .     '<p class="eyebrow"><span class="promo">PROMO</span> &middot; Setembro 2026</p>'
                 .     '<h2 class="headline">Early <span class="pct">15%</span> &mdash; nas edições de Setembro.</h2>'
                 .   '</div>'
-                .   '<p class="sub">Inscreve-te até <strong>30 Junho</strong> e fica com 15% de desconto. Procura pelos cursos com o selo <strong>EARLY15</strong> em baixo.</p>'
+                .   '<p class="sub">Inscreve-te até 30 Junho e fica com 15% de desconto. Procura pelos cursos com o selo <span class="early15-tag">EARLY15</span> em baixo.</p>'
                 . '</div>'
                 . '</div>';
 
