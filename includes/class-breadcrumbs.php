@@ -120,11 +120,8 @@ class EDIT_Breadcrumbs {
 .edit-breadcrumbs li:not(:last-child)::after{content:'›';color:rgba(255,255,255,.35);margin:0 10px;font-size:14px}
 .edit-breadcrumbs a{text-decoration:none;transition:opacity .15s ease;font-weight:500}
 .edit-breadcrumbs a:hover{opacity:.75}
-.edit-breadcrumbs [aria-current="page"]{font-weight:700}
-.edit-breadcrumbs li:nth-child(1) > *{color:#ffdd06}
-.edit-breadcrumbs li:nth-child(2) > *{color:#60c5b3}
-.edit-breadcrumbs li:nth-child(3) > *{color:#f92869}
-.edit-breadcrumbs li:nth-child(4) > *{color:#4a9eff}
+.edit-breadcrumbs [aria-current="page"]{font-weight:700;color:rgba(255,255,255,.9)}
+.edit-breadcrumbs a{color:rgba(255,255,255,.55)}
 @media (max-width:768px){.edit-breadcrumbs{padding:110px 20px 10px;font-size:12px}.edit-breadcrumbs li:not(:last-child)::after{margin:0 6px}}
 </style>
         <?php
