@@ -41,44 +41,66 @@ class EDIT_Formacao_Archive_Filter {
         if ( strpos( (string) $path, '/formacao' ) !== 0 ) return;
         ?>
 <style id="edit-early15-filter-css">
-/* Hidden state during JS evaluation — avoids flash of non-matching cards.
-   Removed once JS has decided which cards to show. */
+/* Hide non-matching cards once JS has tagged the survivors. The body
+   class gates the rule so a JS failure leaves cards visible by default
+   (the safety net — better to show all September courses than a blank
+   archive). */
 body.early15-filtering [data-formacao-card]:not(.early15-keep) { display: none !important; }
 </style>
 <script id="edit-early15-filter-js">
 (function () {
     'use strict';
-    // Match cards by the visible EARLY15 badge — only courses explicitly
-    // flagged for the campaign should pass through, not every Setembro start.
-    var RE_EARLY15 = /\bEARLY\s*15\b/i;
+    // Preferred match: visible EARLY15 badge anywhere in card text.
+    var RE_EARLY15 = /EARLY\s*15/i;
+    // Floor match: any Setembro 2026 start date.
+    var RE_SEPT_2026 = /Setembro\s+2026/i;
 
-    function run() {
-        // Find every plausible course card on the archive. Themes vary; we
-        // try a few selectors and de-duplicate so each card is tagged once.
+    function findCards() {
         var selectors = [
             '.card-formacao', '.formacao-card', '.course-card',
             'article.formacao', '.card-curso', '.grid-formacao > *',
-            // Generic fallback: links to /formacao/<slug>/
-            'a[href*="/formacao/"]:not([href$="/formacao/"]) '
+            'article[class*="formacao"]', 'li[class*="formacao"]'
         ];
         var seen = [];
         for ( var i = 0; i < selectors.length; i++ ) {
             var nodes = document.querySelectorAll( selectors[ i ] );
             for ( var j = 0; j < nodes.length; j++ ) {
-                var card = nodes[ j ].closest( '[class*="card"], [class*="formacao"], article, li' ) || nodes[ j ];
-                if ( seen.indexOf( card ) !== -1 ) continue;
-                seen.push( card );
+                if ( seen.indexOf( nodes[ j ] ) === -1 ) seen.push( nodes[ j ] );
             }
         }
-        if ( ! seen.length ) return;
+        // Anchor fallback: each course link bubbles up to its card wrapper.
+        var anchors = document.querySelectorAll( 'a[href*="/formacao/"]' );
+        for ( var k = 0; k < anchors.length; k++ ) {
+            var href = ( anchors[ k ].getAttribute( 'href' ) || '' ).replace( /\/$/, '' );
+            if ( href.endsWith( '/formacao' ) ) continue; // skip self-link to archive
+            var card = anchors[ k ].closest( 'article, li, [class*="card"], [class*="formacao"], [class*="curso"]' );
+            if ( card && seen.indexOf( card ) === -1 ) seen.push( card );
+        }
+        return seen;
+    }
+
+    function run() {
+        var cards = findCards();
+        if ( ! cards.length ) return;
+
+        var earlyCards = [];
+        var septCards  = [];
+        for ( var i = 0; i < cards.length; i++ ) {
+            var txt = cards[ i ].textContent || '';
+            if ( RE_EARLY15.test( txt ) ) earlyCards.push( cards[ i ] );
+            if ( RE_SEPT_2026.test( txt ) ) septCards.push( cards[ i ] );
+        }
+
+        // Prefer EARLY15 badge matches; fall back to September date; bail if
+        // neither matches anything (don't blank the page).
+        var keep;
+        if ( earlyCards.length )      keep = earlyCards;
+        else if ( septCards.length )  keep = septCards;
+        else                          return;
+
+        for ( var j = 0; j < cards.length; j++ ) cards[ j ].setAttribute( 'data-formacao-card', '1' );
+        for ( var k = 0; k < keep.length; k++ )  keep[ k ].classList.add( 'early15-keep' );
         document.body.classList.add( 'early15-filtering' );
-        for ( var k = 0; k < seen.length; k++ ) {
-            var el = seen[ k ];
-            el.setAttribute( 'data-formacao-card', '1' );
-            if ( RE_EARLY15.test( el.textContent || '' ) ) {
-                el.classList.add( 'early15-keep' );
-            }
-        }
     }
 
     if ( document.readyState === 'loading' ) {
@@ -86,6 +108,8 @@ body.early15-filtering [data-formacao-card]:not(.early15-keep) { display: none !
     } else {
         run();
     }
+    // Re-run on window.load in case cards are injected after DOMContentLoaded.
+    window.addEventListener( 'load', run );
 })();
 </script>
         <?php
