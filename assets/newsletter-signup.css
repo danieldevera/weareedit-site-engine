@@ -414,3 +414,22 @@
         clip-path: inset(0); -webkit-clip-path: inset(0);
     }
 }
+
+/* ----------------------------------------------------------------
+   Footer-to-strip scroll pulse — fires when the user clicks the
+   footer "Subscrever Newsletter" CTA. 1.4s 3-beat brand pulse over
+   the strip's outer shadow so the eye lands on the form, then the
+   input takes focus.
+   ---------------------------------------------------------------- */
+#edit-newsletter-strip.is-pulsing {
+    animation: edit-strip-pulse 1400ms cubic-bezier(0.22, 1, 0.36, 1) 1;
+}
+@keyframes edit-strip-pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(249, 40, 105, 0.0); }
+    20%  { box-shadow: 0 0 0 14px rgba(249, 40, 105, 0.55); }
+    50%  { box-shadow: 0 0 0 22px rgba(249, 40, 105, 0.25); }
+    100% { box-shadow: 0 0 0 0 rgba(249, 40, 105, 0.0); }
+}
+@media (prefers-reduced-motion: reduce) {
+    #edit-newsletter-strip.is-pulsing { animation: none; }
+}

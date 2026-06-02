@@ -363,3 +363,96 @@
         injectStrip();
     }
 })();
+
+/* ============================================================================
+   Footer "Subscrever Newsletter" → strip scroll + pulse + focus
+   Decoupled from the strip-injection IIFE above so it survives bfcache
+   restores and pages where the strip is already in the DOM.
+   ========================================================================== */
+(function () {
+    'use strict';
+
+    var STRIP_ID  = 'edit-newsletter-strip';
+    var PULSE_CLS = 'is-pulsing';
+    var HASH      = '#' + STRIP_ID;
+
+    function findStrip() { return document.getElementById( STRIP_ID ); }
+    function findEmailInput() {
+        var strip = findStrip(); if ( ! strip ) return null;
+        return strip.querySelector( 'input[type="email"], input[name="email"]' );
+    }
+
+    function scrollToAndPulse() {
+        var strip = findStrip();
+        if ( ! strip ) return false;
+        try {
+            strip.scrollIntoView( { behavior: 'smooth', block: 'center' } );
+        } catch ( _ ) {
+            // Fallback for browsers without smooth scroll options
+            strip.scrollIntoView();
+        }
+        // Trigger pulse: remove first if already there so the animation
+        // can restart on repeated clicks.
+        strip.classList.remove( PULSE_CLS );
+        // Force reflow so the class re-add restarts the animation.
+        void strip.offsetWidth;
+        strip.classList.add( PULSE_CLS );
+        var clear = function () { strip.classList.remove( PULSE_CLS ); };
+        strip.addEventListener( 'animationend', clear, { once: true } );
+        // Hard fallback in case animationend doesn't fire (reduced-motion etc.)
+        setTimeout( clear, 1700 );
+        // Land focus in the email input ~600ms after scroll starts so the
+        // browser has time to settle the position before the keyboard pops.
+        setTimeout( function () {
+            var input = findEmailInput();
+            if ( input && typeof input.focus === 'function' ) {
+                try { input.focus( { preventScroll: true } ); } catch ( _ ) { input.focus(); }
+            }
+        }, 600 );
+        return true;
+    }
+
+    // Identify any footer CTA that says "Subscrever Newsletter" (case-insensitive).
+    // Matches both <a> and <button> just in case the theme uses either.
+    function isFooterNewsletterCta( el ) {
+        if ( ! el ) return false;
+        var text = ( el.textContent || '' ).trim().toLowerCase();
+        if ( text.indexOf( 'subscrever newsletter' ) === -1 ) return false;
+        return !! el.closest( 'footer, .site-footer, [class*="footer"]' );
+    }
+
+    function wireFooterCta() {
+        // Use delegation so we don't need to know exact selectors.
+        document.addEventListener( 'click', function ( e ) {
+            var target = e.target && e.target.closest ? e.target.closest( 'a, button' ) : null;
+            if ( ! target ) return;
+            if ( ! isFooterNewsletterCta( target ) ) return;
+            if ( scrollToAndPulse() ) {
+                e.preventDefault();
+            }
+            // If no strip on this page (shouldn't happen now that strip is
+            // site-wide), let the original link navigate as a fallback.
+        }, true );
+    }
+
+    function handleHashOnLoad() {
+        if ( window.location.hash !== HASH ) return;
+        // Wait one frame for the strip to be injected by the other IIFE.
+        var attempts = 0;
+        var tryIt = function () {
+            if ( scrollToAndPulse() ) return;
+            if ( ++attempts < 30 ) setTimeout( tryIt, 100 );
+        };
+        tryIt();
+    }
+
+    if ( document.readyState === 'loading' ) {
+        document.addEventListener( 'DOMContentLoaded', function () {
+            wireFooterCta();
+            handleHashOnLoad();
+        } );
+    } else {
+        wireFooterCta();
+        handleHashOnLoad();
+    }
+})();

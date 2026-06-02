@@ -275,9 +275,15 @@ class EDIT_Newsletter_Signup {
         return null;
     }
 
-    /** Whether to render the strip on the current page at all. */
+    /** Whether to render the strip on the current page at all.
+     *  Renders site-wide on the front-end. Admin/login/feeds are skipped.
+     *  Footer "Subscrever Newsletter" button auto-scrolls + pulses the
+     *  strip — so every page with a footer needs a strip below the
+     *  footer button.
+     */
     private static function should_render(): bool {
-        return is_front_page() || self::detect_formacao_typology() !== null;
+        if ( is_admin() || wp_doing_ajax() || is_feed() ) return false;
+        return true;
     }
 
     /** Resolve the current page's typology key for color mapping. */
