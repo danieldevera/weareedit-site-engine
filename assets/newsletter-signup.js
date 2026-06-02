@@ -422,13 +422,28 @@
     }
 
     function wireFooterCta() {
-        // Use delegation so we don't need to know exact selectors.
+        // Capture phase + stopImmediatePropagation so any legacy click
+        // listener (e.g. the old popup-opener wired to the same anchor)
+        // never runs. Also clear the URL hash that the legacy anchor
+        // would otherwise leave behind ("#form-newsletter").
         document.addEventListener( 'click', function ( e ) {
             var target = e.target && e.target.closest ? e.target.closest( 'a, button' ) : null;
             if ( ! target ) return;
             if ( ! isFooterNewsletterCta( target ) ) return;
             if ( scrollToAndPulse() ) {
                 e.preventDefault();
+                e.stopPropagation();
+                if ( typeof e.stopImmediatePropagation === 'function' ) {
+                    e.stopImmediatePropagation();
+                }
+                // Remove the legacy popup hash from the URL if the
+                // browser already accepted it before our handler ran.
+                try {
+                    if ( window.location.hash && window.location.hash !== HASH ) {
+                        history.replaceState( null, '', window.location.pathname + window.location.search );
+                    }
+                } catch ( _ ) {}
+                return false;
             }
             // If no strip on this page (shouldn't happen now that strip is
             // site-wide), let the original link navigate as a fallback.
