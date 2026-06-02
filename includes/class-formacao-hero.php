@@ -66,6 +66,13 @@ class EDIT_Formacao_Hero {
     font-size: 30px !important; line-height: 1.35 !important; color: rgba(255,255,255,0.92) !important;
     max-width: 820px !important; margin: 0 !important; font-weight: 400 !important;
 }
+.edit-fhero__attr {
+    display: block !important; margin: 16px 0 0 0 !important;
+    font-family: 'SctoGroteskA', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+    font-style: normal !important; font-weight: 700 !important;
+    font-size: 11px !important; letter-spacing: 0.22em !important;
+    text-transform: uppercase !important; color: rgba(255,255,255,0.55) !important;
+}
 .edit-fhero__title {
     font-family: 'SctoGroteskA', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
     font-size: 160px !important; font-weight: 900 !important; line-height: 0.9 !important;
@@ -102,7 +109,7 @@ class EDIT_Formacao_Hero {
         $hero = '<section class="edit-fhero" aria-label="Hero">'
               . '<div class="edit-fhero__quote-row">'
               .   '<span class="edit-fhero__mark">&ldquo;</span>'
-              .   '<p class="edit-fhero__quote">We help individuals &amp; businesses grow in the Digital Ecosystem through our physical &amp; remote learning programs.</p>'
+              .   '<p class="edit-fhero__quote">We help individuals &amp; businesses grow in the Digital Ecosystem through our physical &amp; remote learning programs.<span class="edit-fhero__attr">Daniel Devera &middot; Founder, EDIT.</span></p>'
               . '</div>'
               . '<h1 class="edit-fhero__title">Formação<span class="p">.</span></h1>'
               . '</section>';
