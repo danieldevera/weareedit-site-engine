@@ -28,8 +28,9 @@ class EDIT_Promo_Overlay {
     /** localStorage key — bump to force the overlay to show again to all users. */
     const STORAGE_KEY   = 'edit_promo_early15_seen';
 
-    /** Delay before the modal fades in, milliseconds. */
-    const SHOW_DELAY_MS = 10000;
+    /** Delay before the modal fades in, milliseconds.
+     *  Lowered to 2s during QA — bump back to 10000 before site-wide rollout. */
+    const SHOW_DELAY_MS = 2000;
 
     /** Auto-mark as seen after this many ms of being visible. */
     const AUTO_MARK_MS  = 30000;
