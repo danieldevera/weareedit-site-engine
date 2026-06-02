@@ -34,13 +34,16 @@ class EDIT_Formacao_Archive_Filter {
     }
 
     /**
-     * Banner is sitewide during the campaign window — every page from now
-     * until the kill date shows the strip. Banner text links to the
-     * filtered archive so clicks land on the curated /formacao/ view.
+     * Banner is scoped to /formacao/ pages during the campaign window.
+     * Other pages stay clean. Banner text still links to the filtered
+     * archive so clicks inside the formacao surface land on the curated
+     * /formacao/?campanha=early15 view.
      */
     private static function is_banner_active(): bool {
         if ( is_admin() || is_feed() ) return false;
         if ( strtotime( self::KILL_DATE ) < time() ) return false;
+        $path = isset( $_SERVER['REQUEST_URI'] ) ? strtok( (string) $_SERVER['REQUEST_URI'], '?' ) : '';
+        if ( strpos( (string) $path, '/formacao' ) !== 0 ) return false;
         return true;
     }
 
