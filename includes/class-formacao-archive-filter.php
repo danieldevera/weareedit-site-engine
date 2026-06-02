@@ -38,8 +38,8 @@ class EDIT_Formacao_Archive_Filter {
         ?>
 <style id="edit-early15-banner-css">
 #edit-early15-banner {
-    position: relative; z-index: 5;
-    background: #ffdd06; color: #0a0a0a; border-bottom: 4px solid #0a0a0a;
+    position: relative; z-index: 5; display: block !important; visibility: visible !important;
+    background: #ffdd06; color: #0a0a0a; border-top: 4px solid #0a0a0a; border-bottom: 4px solid #0a0a0a;
     font-family: 'SctoGroteskA', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 #edit-early15-banner .wrap {
@@ -73,30 +73,48 @@ class EDIT_Formacao_Archive_Filter {
 <script id="edit-early15-banner-js">
 (function () {
     'use strict';
-    if ( document.getElementById( 'edit-early15-banner' ) ) return;
-    var banner = document.createElement( 'aside' );
-    banner.id = 'edit-early15-banner';
-    banner.setAttribute( 'role', 'region' );
-    banner.setAttribute( 'aria-label', 'Promoção Early 15' );
-    banner.innerHTML = ''
-        + '<div class="wrap">'
-        +   '<div class="meta">'
-        +     '<p class="eyebrow"><span class="promo">PROMO</span> &middot; Setembro 2026</p>'
-        +     '<h2 class="headline">Early <span class="pct">15%</span> &mdash; nas edi&ccedil;&otilde;es de Setembro.</h2>'
-        +     '<p class="sub">Inscreve-te at&eacute; <strong>30 Junho</strong> e fica com 15% de desconto. Procura pelos cursos com o selo <strong>EARLY15</strong> em baixo.</p>'
-        +   '</div>'
-        +   '<p class="hint">A campanha aplica-se aos cursos com selo EARLY15</p>'
-        + '</div>';
-    // Insert the banner immediately after the theme's hero header. Try a few
-    // common anchors; fall back to prepending to <main>.
-    var anchor = document.querySelector( '#masthead' )
-              || document.querySelector( 'header[role="banner"]' )
-              || document.querySelector( 'header.site-header' );
-    if ( anchor && anchor.parentNode ) {
-        anchor.parentNode.insertBefore( banner, anchor.nextSibling );
+    function build() {
+        if ( document.getElementById( 'edit-early15-banner' ) ) return;
+        var banner = document.createElement( 'aside' );
+        banner.id = 'edit-early15-banner';
+        banner.setAttribute( 'role', 'region' );
+        banner.setAttribute( 'aria-label', 'Promoção Early 15' );
+        banner.innerHTML = ''
+            + '<div class="wrap">'
+            +   '<div class="meta">'
+            +     '<p class="eyebrow"><span class="promo">PROMO</span> &middot; Setembro 2026</p>'
+            +     '<h2 class="headline">Early <span class="pct">15%</span> &mdash; nas edi&ccedil;&otilde;es de Setembro.</h2>'
+            +     '<p class="sub">Inscreve-te at&eacute; <strong>30 Junho</strong> e fica com 15% de desconto. Procura pelos cursos com o selo <strong>EARLY15</strong> em baixo.</p>'
+            +   '</div>'
+            +   '<p class="hint">A campanha aplica-se aos cursos com selo EARLY15</p>'
+            + '</div>';
+
+        // Insertion order, most-specific first:
+        //   1. After our own breadcrumb bar (best: lands below dark hero, above grid)
+        //   2. After the page's hero/title block (`.page-header`, `.entry-header`)
+        //   3. Before <main>'s first child
+        //   4. Last resort: prepend to <body>
+        var bc = document.querySelector( '.edit-breadcrumbs' );
+        if ( bc && bc.parentNode ) {
+            bc.parentNode.insertBefore( banner, bc.nextSibling );
+            return;
+        }
+        var pageHeader = document.querySelector( '.page-header, .entry-header, .site-banner, .hero, [class*="hero"]' );
+        if ( pageHeader && pageHeader.parentNode ) {
+            pageHeader.parentNode.insertBefore( banner, pageHeader.nextSibling );
+            return;
+        }
+        var main = document.querySelector( 'main' );
+        if ( main && main.firstChild ) {
+            main.insertBefore( banner, main.firstChild );
+            return;
+        }
+        document.body.insertBefore( banner, document.body.firstChild );
+    }
+    if ( document.readyState === 'loading' ) {
+        document.addEventListener( 'DOMContentLoaded', build );
     } else {
-        var main = document.querySelector( 'main' ) || document.body;
-        main.insertBefore( banner, main.firstChild );
+        build();
     }
 })();
 </script>
