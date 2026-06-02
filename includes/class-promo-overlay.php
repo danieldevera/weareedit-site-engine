@@ -57,23 +57,33 @@ class EDIT_Promo_Overlay {
         ?>
 <style id="edit-promo-overlay-css">
 /* Floating bottom-left card (NOT a modal) — site stays fully interactive.
-   Sits above the reCAPTCHA badge via z-index and bottom offset. */
+   Sits above the reCAPTCHA badge via z-index and bottom offset.
+
+   Why visibility (not display): swapping display:none → block in the same
+   frame as opacity 0 → 1 makes the browser skip the transition entirely
+   (the element was unrendered, then suddenly painted). Using
+   visibility:hidden + pointer-events:none keeps the element in the box
+   model the whole time so the opacity/transform tween actually plays. */
 #edit-promo-overlay {
     position: fixed; left: 20px; bottom: 90px; z-index: 99999;
     width: 320px; height: 320px;
-    display: none; opacity: 0;
+    visibility: hidden; opacity: 0;
     transform: translate3d(0, 24px, 0);
     /* ease-out-sine — the gentlest standard easing. Decelerates softly
        across the whole motion rather than slamming to a stop. */
     transition: opacity 1100ms cubic-bezier(0.39, 0.575, 0.565, 1),
-                transform 1100ms cubic-bezier(0.39, 0.575, 0.565, 1);
+                transform 1100ms cubic-bezier(0.39, 0.575, 0.565, 1),
+                visibility 0ms linear 1100ms;
     pointer-events: none;
     will-change: opacity, transform;
 }
 #edit-promo-overlay.is-open {
-    display: block; opacity: 1;
+    visibility: visible; opacity: 1;
     transform: translate3d(0, 0, 0);
     pointer-events: auto;
+    transition: opacity 1100ms cubic-bezier(0.39, 0.575, 0.565, 1),
+                transform 1100ms cubic-bezier(0.39, 0.575, 0.565, 1),
+                visibility 0ms linear 0ms;
 }
 #edit-promo-overlay__card {
     position: relative; width: 100%; height: 100%;
