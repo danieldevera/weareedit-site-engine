@@ -21,6 +21,8 @@ class EDIT_Formacao_Archive_Filter {
 
     const QUERY_PARAM   = 'campanha';
     const EARLY15_VALUE = 'early15';
+    /** Campaign hard kill date — banner auto-hides itself after this. */
+    const KILL_DATE     = '2026-06-30 23:59:59';
 
     public static function init(): void {
         // CSS still goes via wp_head — keeps the inline style cacheable.
@@ -31,7 +33,23 @@ class EDIT_Formacao_Archive_Filter {
         add_filter( 'weareedit_site_engine_output_buffer', [ __CLASS__, 'maybe_filter_cards' ], 8 );
     }
 
-    private static function is_active(): bool {
+    /**
+     * Banner is sitewide during the campaign window — every page from now
+     * until the kill date shows the strip. Banner text links to the
+     * filtered archive so clicks land on the curated /formacao/ view.
+     */
+    private static function is_banner_active(): bool {
+        if ( is_admin() || is_feed() ) return false;
+        if ( strtotime( self::KILL_DATE ) < time() ) return false;
+        return true;
+    }
+
+    /**
+     * Card filter is scoped: only fires on /formacao/ when ?campanha=early15
+     * is explicitly set. Visitors landing there via the banner link or any
+     * other channel see the curated 7 courses; other surfaces stay normal.
+     */
+    private static function is_filter_active(): bool {
         if ( is_admin() || is_feed() ) return false;
         if ( empty( $_GET[ self::QUERY_PARAM ] ) ) return false;
         $campaign = sanitize_text_field( wp_unslash( (string) $_GET[ self::QUERY_PARAM ] ) );
@@ -41,8 +59,11 @@ class EDIT_Formacao_Archive_Filter {
         return true;
     }
 
+    // Back-compat shim — older code paths checked is_active().
+    private static function is_active(): bool { return self::is_banner_active(); }
+
     public static function maybe_print_css(): void {
-        if ( ! self::is_active() ) return;
+        if ( ! self::is_banner_active() ) return;
         ?>
 <style id="edit-early15-banner-css">
 #edit-early15-banner {
@@ -53,7 +74,11 @@ class EDIT_Formacao_Archive_Filter {
     border-top: 3px solid #0a0a0a !important; border-bottom: 3px solid #0a0a0a !important;
     font-family: 'SctoGroteskA', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
     margin: 0 !important; padding: 0 !important;
+    text-decoration: none !important; cursor: pointer !important;
+    transition: filter 0.15s ease !important;
 }
+#edit-early15-banner:hover { filter: brightness(1.03) !important; }
+#edit-early15-banner, #edit-early15-banner:visited { color: #0a0a0a !important; }
 #edit-early15-banner .wrap {
     max-width: 1280px; margin: 0 auto; padding: 16px 40px;
     display: flex; flex-wrap: wrap; align-items: center; gap: 32px;
@@ -96,7 +121,7 @@ class EDIT_Formacao_Archive_Filter {
      * `course-promo-code` so case + whitespace are tolerant.
      */
     public static function maybe_filter_cards( string $html ): string {
-        if ( ! self::is_active() ) return $html;
+        if ( ! self::is_filter_active() ) return $html;
         if ( strpos( $html, 'course-box' ) === false ) return $html;
 
         return preg_replace_callback(
@@ -112,11 +137,14 @@ class EDIT_Formacao_Archive_Filter {
     }
 
     public static function maybe_inject_html( string $html ): string {
-        if ( ! self::is_active() ) return $html;
+        if ( ! self::is_banner_active() ) return $html;
         // Avoid double-injection if the filter runs twice for any reason.
         if ( strpos( $html, 'id="edit-early15-banner"' ) !== false ) return $html;
 
-        $banner = '<div id="edit-early15-banner" role="region" aria-label="Promoção Early 15">'
+        // Sitewide: every page (until kill date) gets the strip. We wrap
+        // it in an anchor so a click from any surface lands on the
+        // filtered formacao archive.
+        $banner = '<a id="edit-early15-banner" href="' . esc_url( home_url( '/formacao/?campanha=early15' ) ) . '" role="region" aria-label="Promoção Early Bird 15">'
                 . '<div class="wrap">'
                 .   '<div class="meta">'
                 .     '<p class="eyebrow"><span class="promo">PROMO</span> &middot; Setembro 2026</p>'
@@ -124,7 +152,7 @@ class EDIT_Formacao_Archive_Filter {
                 .   '</div>'
                 .   '<p class="sub">Inscreve-te até 30 Junho e fica com 15% de desconto. Procura pelos cursos com o selo <span class="early15-tag">EARLY15</span> em baixo.</p>'
                 . '</div>'
-                . '</div>';
+                . '</a>';
 
         // Preferred anchor: right after our own breadcrumb nav (sits below
         // the dark hero, above the grid). Multiple fallbacks if it's missing.
