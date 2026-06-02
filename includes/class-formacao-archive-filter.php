@@ -46,36 +46,33 @@ class EDIT_Formacao_Archive_Filter {
 #edit-early15-banner {
     position: relative !important; z-index: 5 !important;
     display: block !important; visibility: visible !important;
-    opacity: 1 !important; height: auto !important; min-height: 100px !important;
+    opacity: 1 !important; height: auto !important;
     background: #ffdd06 !important; color: #0a0a0a !important;
-    border-top: 4px solid #0a0a0a !important; border-bottom: 4px solid #0a0a0a !important;
+    border-top: 3px solid #0a0a0a !important; border-bottom: 3px solid #0a0a0a !important;
     font-family: 'SctoGroteskA', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
     margin: 0 !important; padding: 0 !important;
 }
 #edit-early15-banner .wrap {
-    max-width: 1280px; margin: 0 auto; padding: 28px 40px;
-    display: flex; flex-wrap: wrap; align-items: center; gap: 24px;
+    max-width: 1280px; margin: 0 auto; padding: 16px 40px;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 32px;
 }
+#edit-early15-banner .meta { flex: 0 0 auto; }
 #edit-early15-banner .eyebrow {
-    font-size: 12px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; margin: 0 0 6px 0;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; margin: 0 0 4px 0;
 }
 #edit-early15-banner .eyebrow .promo { color: #0090eb; }
 #edit-early15-banner .headline {
-    font-size: 30px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; margin: 0 0 6px 0;
+    font-size: 22px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; margin: 0;
 }
 #edit-early15-banner .headline .pct { color: #f92869; }
 #edit-early15-banner .sub {
-    font-size: 15px; line-height: 1.45; margin: 0; max-width: 540px;
+    flex: 1 1 auto; font-size: 14px; line-height: 1.45; margin: 0; text-align: right;
 }
 #edit-early15-banner .sub strong { font-weight: 700; }
-#edit-early15-banner .meta { flex: 1 1 auto; display: flex; flex-direction: column; }
-#edit-early15-banner .hint {
-    font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700;
-    color: rgba(10,10,10,0.7); margin: 0;
-}
 @media (max-width: 720px) {
-    #edit-early15-banner .wrap { padding: 22px 20px; gap: 14px; }
-    #edit-early15-banner .headline { font-size: 24px; }
+    #edit-early15-banner .wrap { padding: 14px 20px; gap: 12px; }
+    #edit-early15-banner .headline { font-size: 18px; }
+    #edit-early15-banner .sub { text-align: left; }
 }
 </style>
         <?php
@@ -91,9 +88,8 @@ class EDIT_Formacao_Archive_Filter {
                 .   '<div class="meta">'
                 .     '<p class="eyebrow"><span class="promo">PROMO</span> &middot; Setembro 2026</p>'
                 .     '<h2 class="headline">Early <span class="pct">15%</span> &mdash; nas edições de Setembro.</h2>'
-                .     '<p class="sub">Inscreve-te até <strong>30 Junho</strong> e fica com 15% de desconto. Procura pelos cursos com o selo <strong>EARLY15</strong> em baixo.</p>'
                 .   '</div>'
-                .   '<p class="hint">A campanha aplica-se aos cursos com selo EARLY15</p>'
+                .   '<p class="sub">Inscreve-te até <strong>30 Junho</strong> e fica com 15% de desconto. Procura pelos cursos com o selo <strong>EARLY15</strong> em baixo.</p>'
                 . '</div>'
                 . '</div>';
 
