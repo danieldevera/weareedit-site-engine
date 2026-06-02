@@ -47,7 +47,7 @@ class EDIT_Formacao_Hero {
 
 .edit-fhero {
     position: relative !important; z-index: 2 !important;
-    max-width: 1100px !important; margin: 0 auto !important; padding: 80px 60px 90px !important;
+    max-width: 1100px !important; margin: 0 !important; padding: 80px 0 90px !important;
     font-family: 'SctoGroteskA', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
     text-align: left !important;
 }
@@ -74,9 +74,10 @@ class EDIT_Formacao_Hero {
     text-transform: uppercase !important; color: rgba(255,255,255,0.55) !important;
 }
 .edit-fhero__title {
+    /* Matches homepage hero h1: 100px / 700 / 1.1 / -3.13px (theme spec). */
     font-family: 'SctoGroteskA', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-    font-size: 160px !important; font-weight: 900 !important; line-height: 0.9 !important;
-    letter-spacing: -0.04em !important; color: #fff !important; margin: 0 !important;
+    font-size: 100px !important; font-weight: 700 !important; line-height: 1.1 !important;
+    letter-spacing: -3.13px !important; color: #fff !important; margin: 0 !important;
     text-transform: none !important;
 }
 .edit-fhero__title .p { color: #f92869 !important; }
@@ -89,7 +90,7 @@ class EDIT_Formacao_Hero {
     .edit-fhero { padding: 60px 24px 70px !important; }
     .edit-fhero__quote { font-size: 22px !important; }
     .edit-fhero__mark { font-size: 64px !important; }
-    .edit-fhero__title { font-size: 88px !important; }
+    .edit-fhero__title { font-size: 56px !important; letter-spacing: -1.8px !important; }
 }
 </style>
         <?php
