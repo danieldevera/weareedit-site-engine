@@ -3,7 +3,7 @@
  * Plugin Name: * weareedit.io Site Engine
  * Plugin URI:  https://github.com/danieldevera/weareedit-site-engine
  * Description: Custom site engine for weareedit.io — SEO (meta tags, OG, schema.org, sitemap, hreflang), GEO/LLM optimization (llms.txt, AI crawler rules, Wikidata-linked Person/Organization schema), brand customization (hero typography, dot accents, CTA hover animations), Google Reviews aggregation, output-buffer HTML rewrites, virtual pages, WP Rocket cache integration, and one-time data fixes.
- * Version:     1.5.241
+ * Version:     1.5.242
  * Author:      Daniel Devera
  * License:     GPL-2.0+
  * Text Domain: weareedit-site-engine
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.241' );
+define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.242' );
 define( 'WEAREDIT_SITE_ENGINE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WEAREDIT_SITE_ENGINE_URL', plugin_dir_url( __FILE__ ) );
 
@@ -228,6 +228,7 @@ require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-formacao-corporativa-pa
 require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-newsletter-signup.php';
 require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-newsletter-picks.php';
 require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-promo-overlay.php';
+require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-formacao-archive-filter.php';
 require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-wp-mail-sender.php';
 require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-brevo-mail-router.php';
 require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-jquery-alias.php';
@@ -276,6 +277,7 @@ function weareedit_site_engine_init() {
     EDIT_Newsletter_Signup::init();
     EDIT_Newsletter_Picks::init();
     EDIT_Promo_Overlay::init();
+    EDIT_Formacao_Archive_Filter::init();
     EDIT_WP_Mail_Sender::init();
     EDIT_Brevo_Mail_Router::init();
     EDIT_JQuery_Alias::init();
