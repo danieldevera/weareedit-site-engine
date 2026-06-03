@@ -142,9 +142,10 @@ class EDIT_Formacao_Archive_Filter {
     border-bottom: 1px solid #ffdd06 !important;
     font-family: 'SctoGroteskA', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
     font-weight: 400 !important; font-size: 14px !important; line-height: 1.3 !important;
-    /* Top margin clears the theme's fixed header (~78px) so the bar sits
-       right under it instead of being hidden behind it. */
-    margin: 78px 0 0 0 !important; padding: 11px 40px !important;
+    /* Top margin clears the theme's fixed header so the bar sits right
+       under it instead of being hidden behind it. The theme header is
+       taller than the visible nav row — uses ~110px clearance in practice. */
+    margin: 110px 0 0 0 !important; padding: 11px 40px !important;
     text-decoration: none !important;
 }
 /* When the bar sits above the breadcrumbs, zero out the breadcrumbs'
