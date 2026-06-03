@@ -179,8 +179,10 @@ class EDIT_Formacao_Archive_Filter {
 }
 #edit-promo-bar .close:hover { color: #fff; }
 @media (max-width: 720px) {
-    #edit-promo-bar { padding: 10px 16px 10px 16px !important; font-size: 13px !important; flex-wrap: wrap; gap: 8px !important; }
-    #edit-promo-bar .close { right: 8px; }
+    /* Preserve the top clearance for the fixed mobile header (~90px),
+       only shrink the horizontal padding + font + spacing. */
+    #edit-promo-bar { padding: 100px 16px 10px 16px !important; font-size: 13px !important; flex-wrap: wrap; gap: 8px !important; }
+    #edit-promo-bar .close { right: 8px; top: auto; bottom: 8px; transform: none; }
     #edit-promo-bar .copy .sep { margin: 0 6px; }
 }
 
