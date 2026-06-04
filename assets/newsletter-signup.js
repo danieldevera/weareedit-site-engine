@@ -125,7 +125,9 @@
         // Workshop pages (and other product pages going forward):
         // sit at the END of the page content, just before the footer.
         // The formacao theme typically has a global <footer> at the bottom.
-        var footer = document.querySelector( 'footer.footer, footer#footer, footer[role="contentinfo"], body > footer' );
+        // Equipa profile pages nest the footer inside an extra <div>, so
+        // `body > footer` misses it — fall back to any <footer> on the page.
+        var footer = document.querySelector( 'footer.footer, footer#footer, footer[role="contentinfo"], body > footer, footer' );
         if ( footer ) return { node: footer, position: 'before' };
 
         // Fallback: first <section> inside main content.
