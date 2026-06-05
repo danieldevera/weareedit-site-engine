@@ -613,6 +613,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </script>
 
 <style>
+@font-face {
+  font-family: 'SctoGroteskA';
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url('<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/fonts/SctoGroteskA-Light.woff2' ); ?>') format('woff2');
+}
+@font-face {
+  font-family: 'SctoGroteskA';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/fonts/SctoGroteskA-Regular.woff2' ); ?>') format('woff2');
+}
 :root {
   --edit-yellow: #ffdd06;
   --edit-pink: #f92869;
@@ -631,7 +645,7 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'SctoGroteskA', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   color: var(--ink);
   background: #fff;
   line-height: 1.5;
@@ -655,26 +669,20 @@ a { color: inherit; text-decoration: none; }
   padding-top: 18px; padding-bottom: 18px;
 }
 .brand {
-  display: flex; align-items: center; gap: 12px;
+  display: inline-flex; flex-direction: column; align-items: flex-start; gap: 6px;
+  line-height: 1;
 }
-.brand-mark {
-  width: 40px; height: 40px;
-  background: var(--edit-yellow);
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 900; font-size: 17px;
+.brand-logo {
+  display: block; height: 32px; width: auto;
+}
+.brand-tag {
+  font-family: 'SctoGroteskA', sans-serif;
+  font-weight: 300;
+  font-size: 9.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
   color: var(--ink);
-  border-radius: 4px;
-  letter-spacing: -0.02em;
-}
-.brand-text {
-  display: flex; flex-direction: column; line-height: 1.05;
-}
-.brand-text strong {
-  font-weight: 800; letter-spacing: -0.02em; font-size: 16px;
-}
-.brand-text small {
-  font-size: 11px; color: var(--grey-3);
-  text-transform: uppercase; letter-spacing: 0.18em; margin-top: 2px;
+  padding-left: 3px;
 }
 .cta-header {
   display: inline-block;
@@ -1395,11 +1403,8 @@ a { color: inherit; text-decoration: none; }
 <header class="site-header">
   <div class="wrap">
     <a href="/" class="brand">
-      <div class="brand-mark">E.</div>
-      <div class="brand-text">
-        <strong>EDIT.</strong>
-        <small>para empresas</small>
-      </div>
+      <img class="brand-logo" src="<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-edit-black.svg' ); ?>" alt="EDIT.">
+      <span class="brand-tag">para empresas</span>
     </a>
     <a href="#contacto" class="cta-header">Pedir Proposta</a>
   </div>
