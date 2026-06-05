@@ -669,10 +669,20 @@ a { color: inherit; text-decoration: none; }
   padding-top: 18px; padding-bottom: 18px;
 }
 .brand {
-  display: inline-block; line-height: 0;
+  display: inline-flex; flex-direction: column; align-items: flex-start; gap: 10px;
+  line-height: 1;
 }
 .brand-lockup {
-  display: block; height: 56px; width: auto;
+  display: block; height: 44px; width: auto;
+}
+.brand-tag {
+  font-family: 'SctoGroteskA', sans-serif;
+  font-weight: 300;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink);
+  padding-left: 3px;
 }
 .cta-header {
   display: inline-block;
@@ -1393,7 +1403,8 @@ a { color: inherit; text-decoration: none; }
 <header class="site-header">
   <div class="wrap">
     <a href="/" class="brand" aria-label="EDIT. for business">
-      <img class="brand-lockup" src="<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-empresas-lockup-black.svg' ); ?>" alt="EDIT. for business">
+      <img class="brand-lockup" src="<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-edit-master-black.png' ); ?>" alt="EDIT.">
+      <span class="brand-tag">for business</span>
     </a>
     <a href="#contacto" class="cta-header">Pedir Proposta</a>
   </div>
