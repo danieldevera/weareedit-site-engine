@@ -57,18 +57,12 @@ class EDIT_CF7_BCC_Archive {
             return $components;
         }
 
-        // Skip if the archive address is already the recipient (don't BCC ourselves
-        // if we're already the To: target).
+        // Skip if the archive address is already anywhere in To / Cc / Bcc.
+        // Single inclusive check — covers forms that hardcode geral@weareedit.io
+        // in any recipient field, in any casing, to avoid duplicate sends.
         $recipient = isset( $components['recipient'] ) ? (string) $components['recipient'] : '';
-        if ( stripos( $recipient, self::ARCHIVE_ADDRESS ) !== false ) {
-            return $components;
-        }
-
-        $headers = isset( $components['additional_headers'] ) ? (string) $components['additional_headers'] : '';
-
-        // Skip if the archive address is already in any Bcc: line (avoid dupes
-        // when a form maintainer has already wired it manually).
-        if ( preg_match( '/^Bcc:.*' . preg_quote( self::ARCHIVE_ADDRESS, '/' ) . '/im', $headers ) ) {
+        $headers   = isset( $components['additional_headers'] ) ? (string) $components['additional_headers'] : '';
+        if ( stripos( $recipient . ' ' . $headers, self::ARCHIVE_ADDRESS ) !== false ) {
             return $components;
         }
 
