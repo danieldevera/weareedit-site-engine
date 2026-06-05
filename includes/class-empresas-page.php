@@ -75,6 +75,29 @@ class EDIT_Empresas_Page {
         '/formacao-digital-para-empresas',
     ];
 
+    /**
+     * REST API — lead form endpoint.
+     * Form on the page POSTs JSON here; we validate, send 2 emails, log,
+     * and (when configured) push a deal into Brevo Sales Hub.
+     */
+    const REST_NAMESPACE      = 'edit/v1';
+    const REST_ROUTE          = '/lead-empresas';
+    const ADMIN_EMAIL         = 'empresas@weareedit.io';
+    const RATE_LIMIT_PER_HOUR = 5;
+
+    /**
+     * Brevo Sales Hub integration — STUBBED until Daniel creates the
+     * "Empresas Inbound" pipeline and provides the IDs. Setting both
+     * to non-empty strings activates the Brevo posting in post_to_brevo().
+     *
+     * Where to find:
+     *   Brevo → Sales Hub → Pipelines → click "Empresas Inbound" →
+     *   pipeline_id is in the URL or pipeline settings.
+     *   First stage ID (e.g., "Novo Lead") is in the pipeline stages list.
+     */
+    const BREVO_PIPELINE_ID = '';
+    const BREVO_STAGE_ID    = '';
+
     public static function init(): void {
         if ( self::STATUS === 'off' ) return;
 
@@ -89,6 +112,11 @@ class EDIT_Empresas_Page {
         if ( self::redirects_active() ) {
             add_action( 'template_redirect', [ __CLASS__, 'maybe_redirect_legacy' ], 1 );
         }
+
+        // REST API — lead form endpoint. Registered unconditionally so the
+        // form on the empresas surface can POST even while STATUS = 'preview'
+        // (admins testing the form before public launch).
+        add_action( 'rest_api_init', [ __CLASS__, 'register_rest_route' ] );
     }
 
     private static function is_subdomain_request(): bool {
@@ -123,6 +151,278 @@ class EDIT_Empresas_Page {
         if ( self::STATUS === 'live' )    return true;
         if ( self::STATUS === 'preview' ) return current_user_can( 'manage_options' );
         return false;
+    }
+
+    /* ─────────────────────────────────────────────────────────────────────
+     * REST API — lead form endpoint
+     * POST /wp-json/edit/v1/lead-empresas
+     * ────────────────────────────────────────────────────────────────── */
+
+    public static function register_rest_route(): void {
+        register_rest_route( self::REST_NAMESPACE, self::REST_ROUTE, [
+            'methods'             => 'POST',
+            'callback'            => [ __CLASS__, 'handle_lead_submission' ],
+            'permission_callback' => '__return_true',
+        ] );
+    }
+
+    /**
+     * Handle a lead-form POST submission.
+     *
+     * Pipeline:
+     *   1. Honeypot check (silent OK to confuse bots)
+     *   2. Required field validation
+     *   3. Email format check
+     *   4. Per-IP rate limit (5/hour)
+     *   5. Send admin notification email (to empresas@weareedit.io)
+     *   6. Send user auto-reply
+     *   7. Push deal to Brevo Sales Hub (if configured)
+     *   8. Log to CF7 Debug Log (single-pane visibility)
+     *
+     * @return WP_REST_Response
+     */
+    public static function handle_lead_submission( $request ) {
+        $params = $request->get_json_params();
+        if ( ! is_array( $params ) || empty( $params ) ) {
+            $params = $request->get_params();
+        }
+
+        // Honeypot — silent fake-OK so bots think it worked.
+        if ( ! empty( $params['website'] ) ) {
+            return new WP_REST_Response( [ 'status' => 'ok', 'message' => 'Recebido.' ], 200 );
+        }
+
+        // Required field validation.
+        $required = [
+            'nome'    => 'Nome',
+            'email'   => 'Email',
+            'empresa' => 'Empresa',
+            'cargo'   => 'Cargo',
+            'size'    => 'Tamanho da equipa',
+        ];
+        $missing = [];
+        foreach ( $required as $key => $label ) {
+            if ( empty( trim( (string) ( $params[ $key ] ?? '' ) ) ) ) {
+                $missing[] = $label;
+            }
+        }
+        if ( ! empty( $missing ) ) {
+            return new WP_REST_Response( [
+                'status'  => 'error',
+                'message' => 'Campos obrigatórios em falta: ' . implode( ', ', $missing ),
+            ], 400 );
+        }
+
+        if ( ! is_email( $params['email'] ) ) {
+            return new WP_REST_Response( [
+                'status'  => 'error',
+                'message' => 'Email inválido.',
+            ], 400 );
+        }
+
+        // Per-IP rate limit.
+        $ip     = self::client_ip();
+        $rl_key = 'edit_empresas_rl_' . md5( $ip );
+        $count  = (int) get_transient( $rl_key );
+        if ( $count >= self::RATE_LIMIT_PER_HOUR ) {
+            return new WP_REST_Response( [
+                'status'  => 'error',
+                'message' => 'Demasiadas tentativas. Tente novamente dentro de uma hora.',
+            ], 429 );
+        }
+        set_transient( $rl_key, $count + 1, HOUR_IN_SECONDS );
+
+        // Sanitize.
+        $areas = isset( $params['areas'] ) && is_array( $params['areas'] )
+            ? array_map( 'sanitize_text_field', $params['areas'] )
+            : [];
+
+        $data = [
+            'nome'     => sanitize_text_field( $params['nome'] ),
+            'email'    => sanitize_email( $params['email'] ),
+            'empresa'  => sanitize_text_field( $params['empresa'] ),
+            'cargo'    => sanitize_text_field( $params['cargo'] ),
+            'size'     => sanitize_text_field( $params['size'] ),
+            'timeline' => sanitize_text_field( $params['timeline'] ?? '' ),
+            'areas'    => $areas,
+            'mensagem' => sanitize_textarea_field( $params['mensagem'] ?? '' ),
+            'ip'       => filter_var( $ip, FILTER_VALIDATE_IP ) ?: '',
+            'ua'       => isset( $_SERVER['HTTP_USER_AGENT'] )
+                           ? mb_substr( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ), 0, 200 )
+                           : '',
+            'ts'       => current_time( 'c' ),
+        ];
+
+        // Send emails.
+        $admin_sent = self::send_admin_mail( $data );
+        $user_sent  = self::send_user_mail( $data );
+
+        // Brevo deal — currently stubbed (returns null until pipeline ID is set).
+        $brevo_deal_id = self::post_to_brevo( $data );
+
+        // Log to CF7 Debug Log if available.
+        if ( class_exists( 'EDIT_CF7_Debug' ) ) {
+            EDIT_CF7_Debug::write( [
+                'event'      => 'empresas_lead_submit',
+                'form_title' => 'Empresas Inbound (empresas.weareedit.io)',
+                'company'    => $data['empresa'],
+                'name'       => $data['nome'],
+                'email'      => $data['email'],
+                'cargo'      => $data['cargo'],
+                'size'       => $data['size'],
+                'timeline'   => $data['timeline'],
+                'admin_mail' => $admin_sent ? 'sent' : 'failed',
+                'user_mail'  => $user_sent ? 'sent' : 'failed',
+                'brevo_deal' => $brevo_deal_id ?: 'skipped',
+                'ip'         => $data['ip'],
+            ] );
+        }
+
+        return new WP_REST_Response( [
+            'status'  => 'ok',
+            'message' => 'Pedido recebido. Voltamos em 24h úteis com um plano e uma proposta.',
+        ], 200 );
+    }
+
+    private static function client_ip(): string {
+        if ( ! empty( $_SERVER['HTTP_CF_CONNECTING_IP'] ) ) {
+            return (string) wp_unslash( $_SERVER['HTTP_CF_CONNECTING_IP'] );
+        }
+        if ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+            $list = explode( ',', wp_unslash( $_SERVER['HTTP_X_FORWARDED_FOR'] ) );
+            return trim( $list[0] );
+        }
+        return (string) ( $_SERVER['REMOTE_ADDR'] ?? '' );
+    }
+
+    private static function send_admin_mail( array $data ): bool {
+        $subject = sprintf( '[Empresas] Pedido de %s — %s', $data['empresa'], $data['cargo'] );
+
+        $areas_str = empty( $data['areas'] ) ? '—' : implode( ', ', $data['areas'] );
+
+        $body  = "Novo pedido de proposta recebido em empresas.weareedit.io\n";
+        $body .= "─────────────────────────────────────────────────────\n\n";
+        $body .= "Nome: {$data['nome']}\n";
+        $body .= "Email: {$data['email']}\n";
+        $body .= "Empresa: {$data['empresa']}\n";
+        $body .= "Cargo: {$data['cargo']}\n";
+        $body .= "Tamanho da equipa: {$data['size']}\n";
+        $body .= "Quando começar: " . ( $data['timeline'] ?: '—' ) . "\n";
+        $body .= "Áreas de interesse: {$areas_str}\n\n";
+        $body .= "Mensagem:\n" . ( $data['mensagem'] ?: '—' ) . "\n\n";
+        $body .= "─────────────────────────────────────────────────────\n";
+        $body .= "Meta:\n";
+        $body .= "IP: {$data['ip']}\n";
+        $body .= "Timestamp: {$data['ts']}\n";
+
+        $headers = [
+            'Reply-To: ' . $data['nome'] . ' <' . $data['email'] . '>',
+            'X-Mailer: weareedit-site-engine/empresas',
+        ];
+
+        return (bool) wp_mail( self::ADMIN_EMAIL, $subject, $body, $headers );
+    }
+
+    private static function send_user_mail( array $data ): bool {
+        $subject = 'Pedido recebido — EDIT. para Empresas';
+
+        $body  = "Olá " . $data['nome'] . ",\n\n";
+        $body .= "Recebemos o vosso pedido para " . $data['empresa'] . ". Obrigado pelo interesse.\n\n";
+        $body .= "Em 24 horas úteis, alguém da nossa equipa contacta para uma chamada de descoberta de 30 minutos. ";
+        $body .= "Depois desenhamos um programa à medida do vosso setor, da vossa equipa e do vosso contexto.\n\n";
+        $body .= "Se for urgente, escreva diretamente para empresas@weareedit.io.\n\n";
+        $body .= "Cumprimentos,\n";
+        $body .= "Equipa EDIT.\n\n";
+        $body .= "—\n";
+        $body .= "EDIT. — Disruptive Digital Education\n";
+        $body .= "Entidade Formadora Certificada DGERT nº 18391\n";
+        $body .= "https://weareedit.io\n";
+
+        $headers = [
+            'From: EDIT. para Empresas <' . self::ADMIN_EMAIL . '>',
+            'Reply-To: ' . self::ADMIN_EMAIL,
+            'X-Mailer: weareedit-site-engine/empresas',
+        ];
+
+        return (bool) wp_mail( $data['email'], $subject, $body, $headers );
+    }
+
+    /**
+     * Push deal to Brevo Sales Hub — STUBBED.
+     *
+     * Activates the moment Daniel sets BREVO_PIPELINE_ID and BREVO_STAGE_ID
+     * constants above. Until then this is a no-op and returns null so the
+     * form still works (just falls back to email-only delivery).
+     *
+     * Reuses the Brevo API key from the existing wp_options entry the
+     * EDIT_Brevo_Mail_Router class already consumes — no new config needed.
+     *
+     * @return string|null  Brevo deal ID on success, null otherwise.
+     */
+    private static function post_to_brevo( array $data ): ?string {
+        if ( empty( self::BREVO_PIPELINE_ID ) || empty( self::BREVO_STAGE_ID ) ) {
+            return null;
+        }
+
+        // Reuse Brevo API key from existing plugin config.
+        $api_key = get_option( 'edit_brevo_api_key' );
+        if ( empty( $api_key ) ) return null;
+
+        // 1) Upsert the contact via /v3/contacts.
+        $contact_attrs = [
+            'NOME'             => $data['nome'],
+            'EMPRESA'          => $data['empresa'],
+            'CARGO'            => $data['cargo'],
+            'EMPRESAS_SOURCE'  => 'empresas.weareedit.io',
+        ];
+        wp_remote_post( 'https://api.brevo.com/v3/contacts', [
+            'timeout' => 8,
+            'headers' => [
+                'api-key'      => $api_key,
+                'Content-Type' => 'application/json',
+                'Accept'       => 'application/json',
+            ],
+            'body'    => wp_json_encode( [
+                'email'         => $data['email'],
+                'attributes'    => $contact_attrs,
+                'updateEnabled' => true,
+            ] ),
+        ] );
+
+        // 2) Create the deal in the Empresas Inbound pipeline.
+        $deal_name = sprintf( '%s — %s (%s)', $data['empresa'], $data['cargo'], $data['size'] );
+        $deal_attrs = [
+            'pipeline'           => self::BREVO_PIPELINE_ID,
+            'deal_stage'         => self::BREVO_STAGE_ID,
+            'empresas_cargo'     => $data['cargo'],
+            'empresas_size'      => $data['size'],
+            'empresas_timeline'  => $data['timeline'],
+            'empresas_areas'     => implode( ', ', $data['areas'] ),
+            'empresas_mensagem'  => $data['mensagem'],
+            'empresas_source'    => 'website',
+        ];
+
+        $deal_res = wp_remote_post( 'https://api.brevo.com/crm/v3/deals', [
+            'timeout' => 8,
+            'headers' => [
+                'api-key'      => $api_key,
+                'Content-Type' => 'application/json',
+                'Accept'       => 'application/json',
+            ],
+            'body'    => wp_json_encode( [
+                'name'       => $deal_name,
+                'attributes' => $deal_attrs,
+                'linkedContactsIds' => [], // Will be linked via contact email after creation
+            ] ),
+        ] );
+
+        if ( is_wp_error( $deal_res ) ) return null;
+
+        $code = wp_remote_retrieve_response_code( $deal_res );
+        if ( $code < 200 || $code >= 300 ) return null;
+
+        $body = json_decode( wp_remote_retrieve_body( $deal_res ), true );
+        return $body['id'] ?? null;
     }
 
     /**
@@ -234,6 +534,61 @@ class EDIT_Empresas_Page {
 
 <link rel="preconnect" href="https://weareedit.io" crossorigin>
 <link rel="icon" href="https://weareedit.io/wp-content/uploads/2021/05/cropped-favicon-edit-32x32.png">
+
+<?php // GTM (production only — preview mode keeps analytics quiet) ?>
+<?php if ( self::STATUS === 'live' ) : ?>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TSP85L');</script>
+<!-- End Google Tag Manager -->
+<?php endif; ?>
+
+<?php // JSON-LD — Service schema for the B2B offer ?>
+<script type="application/ld+json">
+<?php echo wp_json_encode( [
+    '@context' => 'https://schema.org',
+    '@type'    => 'Service',
+    'serviceType' => 'Formação Corporativa Digital',
+    'name'     => 'EDIT. para Empresas — Formação Digital Corporativa',
+    'url'      => 'https://' . self::SUBDOMAIN . '/',
+    'description' => $description,
+    'provider' => [
+        '@type' => 'EducationalOrganization',
+        '@id'   => 'https://weareedit.io/#organization',
+        'name'  => 'EDIT. — Disruptive Digital Education',
+        'url'   => 'https://weareedit.io/',
+        'sameAs' => [
+            'https://www.linkedin.com/school/weareedit/',
+            'https://www.wikidata.org/wiki/Q139907765',
+        ],
+    ],
+    'areaServed' => [
+        '@type' => 'Country',
+        'name'  => 'Portugal',
+    ],
+    'audience' => [
+        '@type' => 'Audience',
+        'audienceType' => 'B2B — CEOs, HR Directors, L&D Managers',
+    ],
+    'hasOfferCatalog' => [
+        '@type' => 'OfferCatalog',
+        'name'  => 'Disciplinas',
+        'itemListElement' => array_map( function( $area ) {
+            return [
+                '@type' => 'Offer',
+                'itemOffered' => [
+                    '@type' => 'Course',
+                    'name'  => 'Formação Corporativa · ' . $area['title'],
+                    'description' => $area['lede'],
+                ],
+            ];
+        }, $areas ),
+    ],
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT ); ?>
+</script>
 
 <style>
 :root {
@@ -764,33 +1119,213 @@ a { color: inherit; text-decoration: none; }
 }
 .faq-item .answer strong { color: var(--ink); }
 
-/* ── FINAL CTA ───────────────────────────────────────────────────── */
-.final-cta {
+/* ── LEAD SECTION (form) ─────────────────────────────────────────── */
+.lead-section {
   padding: 100px 0;
   background: var(--ink);
   color: #fff;
 }
-.final-cta .wrap {
-  text-align: center;
-}
-.final-cta h2 {
-  font-size: clamp(32px, 4.4vw, 56px);
+.lead-section .section-eyebrow { color: rgba(255,255,255,0.55); }
+.lead-section h2 {
+  font-size: clamp(30px, 3.8vw, 46px);
   line-height: 1.05; letter-spacing: -0.025em;
   font-weight: 700;
-  margin: 0 0 24px 0;
+  margin: 0 0 18px 0;
+  color: #fff;
+  max-width: 16ch;
 }
-.final-cta p {
-  font-size: 18px;
+.lead-section .lead-intro {
+  font-size: 17px;
   color: rgba(255,255,255,0.75);
-  max-width: 50ch;
-  margin: 0 auto 36px auto;
   line-height: 1.5;
+  margin: 0 0 24px 0;
+  max-width: 42ch;
 }
-.final-cta .btn-primary {
-  background: var(--edit-yellow);
+.lead-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 64px;
+  align-items: start;
+}
+.lead-bullets {
+  list-style: none;
+  padding: 0; margin: 28px 0 0 0;
+}
+.lead-bullets li {
+  padding: 12px 0 12px 28px;
+  font-size: 15px;
+  color: rgba(255,255,255,0.85);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  position: relative;
+}
+.lead-bullets li::before {
+  content: '→';
+  position: absolute;
+  left: 0; top: 12px;
+  color: var(--edit-yellow);
+  font-weight: 700;
+}
+
+/* Form card */
+.lead-form-wrap {
+  background: #fff;
   color: var(--ink);
+  padding: 32px;
+  border-radius: 8px;
+  border-top: 4px solid var(--edit-yellow);
 }
-.final-cta .btn-primary:hover { background: #fff; }
+.lead-form-wrap h3 {
+  font-size: 19px;
+  font-weight: 700;
+  margin: 0 0 6px 0;
+  letter-spacing: -0.01em;
+}
+.lead-form-wrap .form-help {
+  font-size: 13.5px;
+  color: var(--grey-3);
+  margin: 0 0 22px 0;
+}
+
+.lead-form .hp {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px; height: 1px;
+  opacity: 0;
+}
+.lead-form .field { margin-bottom: 14px; }
+.lead-form .field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.lead-form label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 6px;
+  letter-spacing: 0.02em;
+}
+.lead-form input[type="text"],
+.lead-form input[type="email"],
+.lead-form input[type="tel"],
+.lead-form select,
+.lead-form textarea {
+  width: 100%;
+  padding: 11px 12px;
+  border: 1.5px solid var(--grey-2);
+  border-radius: 4px;
+  font-size: 14.5px;
+  font-family: inherit;
+  background: #fff;
+  color: var(--ink);
+  transition: border-color 0.15s ease;
+  box-sizing: border-box;
+}
+.lead-form select { appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='none' stroke='%23444' stroke-width='1.5'><path d='M1 1.5l5 5 5-5'/></svg>"); background-repeat: no-repeat; background-position: right 14px center; background-size: 12px; padding-right: 34px; }
+.lead-form input:focus,
+.lead-form select:focus,
+.lead-form textarea:focus {
+  outline: none;
+  border-color: var(--ink);
+}
+.lead-form textarea { resize: vertical; min-height: 70px; }
+
+.lead-form .checkbox-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 12px;
+  background: var(--grey-1);
+  padding: 12px 14px;
+  border-radius: 4px;
+}
+.lead-form .checkbox-group label {
+  font-weight: 500;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  margin-bottom: 0;
+  padding: 4px 0;
+  letter-spacing: 0;
+}
+.lead-form .checkbox-group input[type="checkbox"] {
+  width: 15px; height: 15px;
+  accent-color: var(--ink);
+  flex-shrink: 0;
+}
+
+.form-meta {
+  margin-top: 22px;
+}
+.btn-submit {
+  background: var(--ink);
+  color: #fff;
+  padding: 14px 24px;
+  border: 0;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.18s ease;
+  font-family: inherit;
+  letter-spacing: 0.01em;
+}
+.btn-submit:hover:not(:disabled) { background: var(--edit-pink); }
+.btn-submit:disabled { opacity: 0.6; cursor: wait; }
+
+.privacy-note {
+  font-size: 11.5px;
+  color: var(--grey-3);
+  margin: 12px 0 0 0;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.form-error {
+  background: #ffe5e5;
+  color: #c62828;
+  padding: 11px 14px;
+  border-radius: 4px;
+  font-size: 13.5px;
+  margin-top: 14px;
+  border-left: 3px solid #c62828;
+}
+.form-success {
+  text-align: center;
+  padding: 36px 16px;
+}
+.form-success .check {
+  display: inline-flex;
+  align-items: center; justify-content: center;
+  width: 56px; height: 56px;
+  background: var(--edit-yellow);
+  border-radius: 50%;
+  font-size: 28px;
+  margin-bottom: 16px;
+}
+.form-success h3 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0 0 10px 0;
+  letter-spacing: -0.01em;
+}
+.form-success p {
+  color: var(--grey-4);
+  font-size: 15px;
+  margin: 0;
+  max-width: 40ch;
+  margin-left: auto; margin-right: auto;
+}
+
+@media (max-width: 880px) {
+  .lead-grid { grid-template-columns: 1fr; gap: 40px; }
+  .lead-form .field-row { grid-template-columns: 1fr; }
+  .lead-form .checkbox-group { grid-template-columns: 1fr; }
+}
 
 /* ── FOOTER ──────────────────────────────────────────────────────── */
 .site-footer {
@@ -821,6 +1356,12 @@ a { color: inherit; text-decoration: none; }
 </style>
 </head>
 <body>
+
+<?php if ( self::STATUS === 'live' ) : ?>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TSP85L" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<?php endif; ?>
 
 <?php if ( self::STATUS === 'preview' ) : ?>
 <div class="preview-banner">
@@ -1006,14 +1547,182 @@ a { color: inherit; text-decoration: none; }
 </section>
 <?php endif; ?>
 
-<!-- ─── FINAL CTA ──────────────────────────────────────────────── -->
-<section class="final-cta" id="contacto">
+<!-- ─── LEAD SECTION (form) ────────────────────────────────────── -->
+<section class="lead-section" id="contacto">
   <div class="wrap">
-    <h2>Vamos formar a sua equipa.</h2>
-    <p>Conte-nos do desafio. Em 24 horas úteis voltamos com um plano e uma proposta. Sem compromisso.</p>
-    <a href="mailto:empresas@weareedit.io?subject=Pedido%20de%20Proposta%20-%20Forma%C3%A7%C3%A3o%20para%20Empresas" class="btn btn-primary">Pedir Proposta</a>
+    <div class="lead-grid">
+      <div class="lead-copy">
+        <p class="section-eyebrow">Vamos conversar</p>
+        <h2>Vamos formar a sua equipa.</h2>
+        <p class="lead-intro">Em 24 horas úteis voltamos com um plano e uma proposta. Sem compromisso.</p>
+        <ul class="lead-bullets">
+          <li>Diagnóstico inicial em chamada de 30 minutos</li>
+          <li>Programa desenhado em torno do vosso setor e ferramentas</li>
+          <li>Apoio na elegibilidade para Cheque-Formação, SIFIDE e outros</li>
+          <li>DGERT certificada · Tutores profissionais em activo</li>
+        </ul>
+      </div>
+      <div class="lead-form-wrap">
+        <h3>Pedir proposta</h3>
+        <p class="form-help">7 campos · 2 minutos · resposta em 24h úteis</p>
+
+        <form id="empresas-form" class="lead-form" novalidate>
+          <input type="text" name="website" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+          <div class="field">
+            <label for="ef-nome">Nome *</label>
+            <input type="text" id="ef-nome" name="nome" required autocomplete="name">
+          </div>
+
+          <div class="field">
+            <label for="ef-email">Email corporativo *</label>
+            <input type="email" id="ef-email" name="email" required autocomplete="email">
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="ef-empresa">Empresa *</label>
+              <input type="text" id="ef-empresa" name="empresa" required autocomplete="organization">
+            </div>
+            <div class="field">
+              <label for="ef-cargo">Cargo *</label>
+              <select id="ef-cargo" name="cargo" required>
+                <option value="">Selecionar</option>
+                <option>CEO / Fundador(a)</option>
+                <option>Director(a) RH</option>
+                <option>Manager L&amp;D</option>
+                <option>Head de Departamento</option>
+                <option>Outro</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="ef-size">Equipa a formar *</label>
+              <select id="ef-size" name="size" required>
+                <option value="">Selecionar</option>
+                <option>1–10 pessoas</option>
+                <option>11–25 pessoas</option>
+                <option>26–50 pessoas</option>
+                <option>51–100 pessoas</option>
+                <option>100+ pessoas</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="ef-timeline">Quando começar?</label>
+              <select id="ef-timeline" name="timeline">
+                <option value="">Selecionar</option>
+                <option>Imediato</option>
+                <option>1–3 meses</option>
+                <option>3–6 meses</option>
+                <option>A explorar</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Áreas de interesse</label>
+            <div class="checkbox-group">
+              <label><input type="checkbox" name="areas[]" value="Marketing Digital"> Marketing Digital</label>
+              <label><input type="checkbox" name="areas[]" value="UX/UI Design"> UX/UI Design</label>
+              <label><input type="checkbox" name="areas[]" value="Desenvolvimento Web"> Desenvolvimento Web</label>
+              <label><input type="checkbox" name="areas[]" value="Data & Business"> Data &amp; Business</label>
+              <label><input type="checkbox" name="areas[]" value="Inteligência Artificial"> Inteligência Artificial</label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="ef-mensagem">Mensagem (opcional)</label>
+            <textarea id="ef-mensagem" name="mensagem" rows="3" placeholder="O desafio que querem resolver, prazo, contexto útil…"></textarea>
+          </div>
+
+          <div class="form-meta">
+            <button type="submit" class="btn-submit">Pedir Proposta</button>
+            <p class="privacy-note">Os dados são usados apenas para responder ao seu pedido. Sem newsletters automáticas.</p>
+          </div>
+
+          <div class="form-error" hidden></div>
+        </form>
+      </div>
+    </div>
   </div>
 </section>
+
+<script>
+(function() {
+  var form = document.getElementById('empresas-form');
+  if (!form) return;
+
+  var errorBox  = form.querySelector('.form-error');
+  var submitBtn = form.querySelector('.btn-submit');
+  var endpoint  = '<?php echo esc_url( rest_url( self::REST_NAMESPACE . self::REST_ROUTE ) ); ?>';
+
+  function showError(msg) {
+    errorBox.textContent = msg;
+    errorBox.hidden = false;
+    errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  function hideError() {
+    errorBox.hidden = true;
+    errorBox.textContent = '';
+  }
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    hideError();
+
+    var fd = new FormData(form);
+    var data = {};
+    fd.forEach(function(value, key) {
+      if (key.slice(-2) === '[]') {
+        var k = key.slice(0, -2);
+        if (!data[k]) data[k] = [];
+        data[k].push(value);
+      } else {
+        data[key] = value;
+      }
+    });
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'A enviar…';
+
+    fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+    .then(function(res) {
+      return res.json().then(function(body) {
+        return { ok: res.ok, body: body };
+      }).catch(function() {
+        return { ok: res.ok, body: {} };
+      });
+    })
+    .then(function(result) {
+      if (result.ok && result.body.status === 'ok') {
+        var wrap = form.parentElement;
+        wrap.innerHTML = '<div class="form-success"><div class="check">✓</div><h3>Pedido recebido.</h3><p>' + (result.body.message || 'Voltamos em 24h úteis.') + '</p></div>';
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'lead_submit', { event_category: 'empresas', event_label: 'form' });
+        }
+        if (typeof window.dataLayer !== 'undefined') {
+          window.dataLayer.push({ event: 'empresas_lead_submit' });
+        }
+      } else {
+        showError(result.body.message || 'Erro ao enviar. Tente novamente.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Pedir Proposta';
+      }
+    })
+    .catch(function() {
+      showError('Erro de ligação. Tente novamente em alguns segundos.');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Pedir Proposta';
+    });
+  });
+})();
+</script>
 
 <!-- ─── FOOTER ─────────────────────────────────────────────────── -->
 <footer class="site-footer">
