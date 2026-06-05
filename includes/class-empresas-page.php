@@ -344,8 +344,12 @@ class EDIT_Empresas_Page {
     private static function send_user_mail( array $data ): bool {
         $subject = 'Pedido recebido — EDIT. para Empresas';
 
+        // Trim trailing period so PT brand names ending in "." (EDIT., Co. Lda.,
+        // S.A., etc.) don't produce double-period sentences ("para EDIT..").
+        $empresa_clean = rtrim( $data['empresa'], '.' );
+
         $body  = "Olá " . $data['nome'] . ",\n\n";
-        $body .= "Recebemos o vosso pedido para " . $data['empresa'] . ". Obrigado pelo interesse.\n\n";
+        $body .= "Recebemos o vosso pedido para " . $empresa_clean . ". Obrigado pelo interesse.\n\n";
         $body .= "Em 24 horas úteis, alguém da nossa equipa contacta para uma chamada de descoberta de 30 minutos. ";
         $body .= "Depois desenhamos um programa à medida do vosso setor, da vossa equipa e do vosso contexto.\n\n";
         $body .= "Se for urgente, escreva diretamente para empresas@weareedit.io.\n\n";
