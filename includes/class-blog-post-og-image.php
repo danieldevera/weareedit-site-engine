@@ -31,7 +31,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class EDIT_Blog_Post_OG_Image {
 
-    const CPT_SLUG        = 'blog-post';
+    const CPT_SLUG        = 'blog';
     const ACF_BACKGROUND  = 'fundo_header';
     const ACF_IMAGE_SMALL = 'home_image_small';
 
