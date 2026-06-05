@@ -41,6 +41,10 @@ class EDIT_Formacao_Archive_Filter {
         add_filter( 'weareedit_site_engine_output_buffer', [ __CLASS__, 'maybe_inject_html' ], 7 );
         // Card filter — hides non-EARLY15 course-boxes server-side.
         add_filter( 'weareedit_site_engine_output_buffer', [ __CLASS__, 'maybe_filter_cards' ], 8 );
+        // Como Funciona + FAQ block — injected below the course grid on the
+        // filtered view to answer the questions promo readers ask before
+        // converting (terms, eligibility, payment plan, cancellation).
+        add_filter( 'weareedit_site_engine_output_buffer', [ __CLASS__, 'maybe_inject_faq_section' ], 9 );
     }
 
     /**
@@ -189,6 +193,43 @@ class EDIT_Formacao_Archive_Filter {
 /* Card filter — hide the wrapper div that owns the grid slot. */
 .course-box.early15-hidden,
 .course:has(.course-box.early15-hidden) { display: none !important; }
+
+/* ─── Como Funciona + FAQ section (filtered view only) ─────────────────── */
+#edit-early15-info {
+    background: #fafafa; padding: 88px 24px; font-family: 'SctoGroteskA','Helvetica Neue',Helvetica,Arial,sans-serif;
+}
+#edit-early15-info .ef-wrap { max-width: 1080px; margin: 0 auto; }
+#edit-early15-info .ef-hdr { text-align: center; margin-bottom: 56px; }
+#edit-early15-info .ef-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: #f92869; margin: 0 0 16px 0; }
+#edit-early15-info .ef-title { font-size: 40px; line-height: 1.1; font-weight: 700; letter-spacing: -0.02em; color: #0a0a0a; margin: 0 0 16px 0; }
+#edit-early15-info .ef-sub { font-size: 17px; line-height: 1.55; color: #444; max-width: 620px; margin: 0 auto; }
+#edit-early15-info .ef-steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; margin: 0 0 72px 0; padding: 0; list-style: none; }
+#edit-early15-info .ef-step { background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 32px 28px; position: relative; }
+#edit-early15-info .ef-num { font-size: 13px; font-weight: 700; letter-spacing: 0.18em; color: #f92869; margin-bottom: 18px; }
+#edit-early15-info .ef-step h3 { font-size: 20px; line-height: 1.25; font-weight: 700; color: #0a0a0a; margin: 0 0 12px 0; letter-spacing: -0.01em; }
+#edit-early15-info .ef-step p { font-size: 15px; line-height: 1.55; color: #444; margin: 0; }
+#edit-early15-info .ef-step strong { color: #0a0a0a; }
+#edit-early15-info .ef-faq { background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 40px 36px; }
+#edit-early15-info .ef-faq-title { font-size: 22px; font-weight: 700; color: #0a0a0a; margin: 0 0 24px 0; letter-spacing: -0.01em; }
+#edit-early15-info .ef-faq details { border-bottom: 1px solid #ececec; padding: 16px 0; }
+#edit-early15-info .ef-faq details:last-of-type { border-bottom: 0; }
+#edit-early15-info .ef-faq summary { cursor: pointer; font-weight: 600; font-size: 16px; color: #0a0a0a; padding-right: 24px; position: relative; list-style: none; }
+#edit-early15-info .ef-faq summary::-webkit-details-marker { display: none; }
+#edit-early15-info .ef-faq summary::after { content: '+'; position: absolute; right: 0; top: -2px; font-size: 22px; color: #f92869; font-weight: 400; transition: transform .15s; }
+#edit-early15-info .ef-faq details[open] summary::after { content: '−'; }
+#edit-early15-info .ef-faq details p { font-size: 15px; line-height: 1.6; color: #555; margin: 14px 0 0 0; }
+#edit-early15-info .ef-faq details a { color: #f92869; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+#edit-early15-info .ef-cta { text-align: center; margin-top: 40px; font-size: 15px; color: #444; }
+#edit-early15-info .ef-cta a { color: #0a0a0a; font-weight: 600; text-decoration: underline; text-decoration-color: #ffdd06; text-decoration-thickness: 3px; text-underline-offset: 4px; }
+#edit-early15-info .ef-cta a:hover { text-decoration-color: #f92869; }
+@media (max-width: 720px) {
+    #edit-early15-info { padding: 56px 16px; }
+    #edit-early15-info .ef-hdr { margin-bottom: 40px; }
+    #edit-early15-info .ef-title { font-size: 30px; }
+    #edit-early15-info .ef-steps { grid-template-columns: 1fr; gap: 16px; margin-bottom: 48px; }
+    #edit-early15-info .ef-step { padding: 24px 22px; }
+    #edit-early15-info .ef-faq { padding: 28px 22px; }
+}
 </style>
         <?php
     }
@@ -278,6 +319,101 @@ class EDIT_Formacao_Archive_Filter {
             }
         }
         return preg_replace( '#(<body[^>]*>)#i', '$1' . $bar, $html, 1 );
+    }
+
+    /**
+     * Inject the "Como funciona + FAQ" section into the buffered HTML on
+     * /formacao/?campanha=early15 only. Sits BEFORE the global <footer>.
+     *
+     * Answers the 5 questions promo readers ask before converting:
+     *   - How does the discount actually work?
+     *   - Does it stack with other promos?
+     *   - Can I pay in installments?
+     *   - What if I cancel?
+     *   - Does it apply to international students?
+     *
+     * GA4 events: faq_open (per question) + early15_contact_click (lead CTA).
+     */
+    public static function maybe_inject_faq_section( string $html ): string {
+        if ( ! self::is_filter_active() ) return $html;
+        if ( strpos( $html, 'id="edit-early15-info"' ) !== false ) return $html;
+
+        $contact_url = esc_url( home_url( '/contacto/?campaign=early15' ) );
+
+        $section  = '<section id="edit-early15-info" aria-label="Como funciona o Early Bird">';
+        $section .= '<div class="ef-wrap">';
+
+        // Header
+        $section .= '<header class="ef-hdr">';
+        $section .= '<p class="ef-eyebrow">EARLY BIRD · 15% DE DESCONTO</p>';
+        $section .= '<h2 class="ef-title">Como funciona</h2>';
+        $section .= '<p class="ef-sub">Inscreves-te até <strong>30 Junho</strong>, recebes <strong>15% de desconto</strong> sobre o valor total do curso de Setembro. Sem letras pequenas.</p>';
+        $section .= '</header>';
+
+        // 3-step explainer
+        $section .= '<ol class="ef-steps">';
+        $section .= '<li class="ef-step">'
+                  .   '<div class="ef-num">PASSO 01</div>'
+                  .   '<h3>Escolhe um curso elegível</h3>'
+                  .   '<p>Vê os cursos de Setembro acima — todos com o badge <strong>Early Bird 15%</strong>.</p>'
+                  . '</li>';
+        $section .= '<li class="ef-step">'
+                  .   '<div class="ef-num">PASSO 02</div>'
+                  .   '<h3>Inscreve-te até 30 Junho</h3>'
+                  .   '<p>Desconto válido para inscrições registadas até <strong>30 Junho 2026, 23:59 (Lisboa)</strong>.</p>'
+                  . '</li>';
+        $section .= '<li class="ef-step">'
+                  .   '<div class="ef-num">PASSO 03</div>'
+                  .   '<h3>Recebes 15% de desconto</h3>'
+                  .   '<p>Aplicado ao valor total do curso — mesmo com pagamento parcelado.</p>'
+                  . '</li>';
+        $section .= '</ol>';
+
+        // FAQ
+        $section .= '<div class="ef-faq">';
+        $section .= '<h3 class="ef-faq-title">Perguntas frequentes</h3>';
+
+        $faqs = [
+            [ 'O desconto acumula com outras promoções?',           'Não. O Early Bird é exclusivo das outras promoções activas no momento da inscrição.' ],
+            [ 'Posso pagar em prestações?',                          'Sim. O desconto aplica-se ao valor total do curso, mesmo com pagamento parcelado.' ],
+            [ 'O que acontece se cancelar a inscrição?',             'Aplica-se a política de cancelamento normal. <a href="/termos-condicoes/">Consulta os Termos &amp; Condições</a> para mais detalhes.' ],
+            [ 'Aplica-se a alunos internacionais?',                  'Sim. O desconto é válido para inscrições de qualquer país, em modalidade Remote Learning ou Presencial.' ],
+            [ 'Posso usar o desconto numa edição de Outubro/Novembro?', 'Não. O Early Bird 15% é exclusivo das edições com início em <strong>Setembro 2026</strong>.' ],
+        ];
+
+        foreach ( $faqs as $i => $faq ) {
+            $section .= '<details data-faq-idx="' . esc_attr( (string) ( $i + 1 ) ) . '">'
+                      .   '<summary>' . esc_html( $faq[0] ) . '</summary>'
+                      .   '<p>' . wp_kses_post( $faq[1] ) . '</p>'
+                      . '</details>';
+        }
+        $section .= '</div>'; // .ef-faq
+
+        // Final CTA
+        $section .= '<p class="ef-cta">Não sabes qual escolher? <a href="' . $contact_url . '" data-early15-contact>Fala com a nossa equipa</a> — respondemos no mesmo dia.</p>';
+
+        $section .= '</div>'; // .ef-wrap
+        $section .= '</section>';
+
+        // GA4 tracking — fires once per FAQ open + once per contact click
+        $section .= '<script id="edit-early15-info-js">'
+                  . '(function(){'
+                  . 'var sec=document.getElementById("edit-early15-info");if(!sec)return;'
+                  . 'var dl=window.dataLayer=window.dataLayer||[];'
+                  . 'sec.querySelectorAll("details").forEach(function(d){'
+                  .   'd.addEventListener("toggle",function(){if(d.open){try{dl.push({event:"faq_open",faq_idx:d.getAttribute("data-faq-idx"),promo_campaign:"early15_set2026"});}catch(e){}}});'
+                  . '});'
+                  . 'var cta=sec.querySelector("[data-early15-contact]");if(cta){cta.addEventListener("click",function(){try{dl.push({event:"early15_contact_click",promo_campaign:"early15_set2026"});}catch(e){}});}'
+                  . '})();'
+                  . '</script>';
+
+        // Inject BEFORE the global <footer> so the section appears at the
+        // end of the main content area, above the site footer.
+        if ( preg_match( '#<footer[^>]*>#i', $html ) ) {
+            return preg_replace( '#(<footer[^>]*>)#i', $section . '$1', $html, 1 );
+        }
+        // Fallback — append at end of body
+        return preg_replace( '#(</body[^>]*>)#i', $section . '$1', $html, 1 );
     }
 
     /**
