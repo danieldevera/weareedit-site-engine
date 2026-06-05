@@ -673,12 +673,12 @@ a { color: inherit; text-decoration: none; }
   line-height: 1;
 }
 .brand-logo {
-  display: block; height: 32px; width: auto;
+  display: block; height: 40px; width: auto;
 }
 .brand-tag {
   font-family: 'SctoGroteskA', sans-serif;
   font-weight: 300;
-  font-size: 9.5px;
+  font-size: 11px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--ink);
