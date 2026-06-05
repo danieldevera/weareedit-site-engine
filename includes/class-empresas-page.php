@@ -98,6 +98,14 @@ class EDIT_Empresas_Page {
     const BREVO_PIPELINE_ID = '';
     const BREVO_STAGE_ID    = '';
 
+    /**
+     * Preview token — share-link bypass for STATUS = 'preview'.
+     * Visit https://empresas.weareedit.io/?preview=<TOKEN> to view the page
+     * without needing WP admin login (which doesn't carry cross-subdomain
+     * cookies by default). Rotate the token any time by changing this string.
+     */
+    const PREVIEW_TOKEN = 'edit-2026';
+
     public static function init(): void {
         if ( self::STATUS === 'off' ) return;
 
@@ -148,8 +156,16 @@ class EDIT_Empresas_Page {
      * page doesn't get crawled before we open it.
      */
     private static function should_render_publicly(): bool {
-        if ( self::STATUS === 'live' )    return true;
-        if ( self::STATUS === 'preview' ) return current_user_can( 'manage_options' );
+        if ( self::STATUS === 'live' ) return true;
+        if ( self::STATUS === 'preview' ) {
+            if ( current_user_can( 'manage_options' ) ) return true;
+            // Share-link bypass: ?preview=<TOKEN> grants visibility without
+            // needing admin login (cookies don't cross subdomain boundary).
+            $token = isset( $_GET['preview'] ) ? (string) wp_unslash( $_GET['preview'] ) : '';
+            if ( ! empty( self::PREVIEW_TOKEN ) && hash_equals( self::PREVIEW_TOKEN, $token ) ) {
+                return true;
+            }
+        }
         return false;
     }
 
