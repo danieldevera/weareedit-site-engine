@@ -669,11 +669,30 @@ a { color: inherit; text-decoration: none; }
   padding-top: 18px; padding-bottom: 18px;
 }
 .brand {
-  display: inline-flex; flex-direction: column; align-items: flex-start; gap: 6px;
+  display: inline-flex; flex-direction: column; align-items: flex-start; gap: 8px;
   line-height: 1;
 }
-.brand-logo {
-  display: block; height: 40px; width: auto;
+.brand-mark {
+  display: inline-flex; align-items: center; gap: 2px;
+}
+.brand-mark .letter-box {
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--ink);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: 'SctoGroteskA', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--ink);
+  letter-spacing: 0;
+  line-height: 1;
+}
+.brand-mark .letter-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--edit-yellow);
+  margin-left: 2px;
+  align-self: flex-end;
+  margin-bottom: 2px;
 }
 .brand-tag {
   font-family: 'SctoGroteskA', sans-serif;
@@ -1403,7 +1422,13 @@ a { color: inherit; text-decoration: none; }
 <header class="site-header">
   <div class="wrap">
     <a href="/" class="brand">
-      <img class="brand-logo" src="<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-edit-black.svg' ); ?>" alt="EDIT.">
+      <span class="brand-mark" aria-label="EDIT.">
+        <span class="letter-box">E</span>
+        <span class="letter-box">D</span>
+        <span class="letter-box">I</span>
+        <span class="letter-box">T</span>
+        <span class="letter-dot"></span>
+      </span>
       <span class="brand-tag">for business</span>
     </a>
     <a href="#contacto" class="cta-header">Pedir Proposta</a>
