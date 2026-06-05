@@ -80,10 +80,11 @@ class EDIT_Empresas_Page {
      * Form on the page POSTs JSON here; we validate, send 2 emails, log,
      * and (when configured) push a deal into Brevo Sales Hub.
      */
-    const REST_NAMESPACE      = 'edit/v1';
-    const REST_ROUTE          = '/lead-empresas';
-    const ADMIN_EMAIL         = 'empresas@weareedit.io';
-    const RATE_LIMIT_PER_HOUR = 5;
+    const REST_NAMESPACE        = 'edit/v1';
+    const REST_ROUTE            = '/lead-empresas';
+    const ADMIN_EMAIL           = 'empresas@weareedit.io';
+    const ADMIN_EMAIL_FALLBACK  = 'geral@weareedit.io';
+    const RATE_LIMIT_PER_HOUR   = 5;
 
     /**
      * Brevo Sales Hub integration — STUBBED until Daniel creates the
@@ -333,6 +334,7 @@ class EDIT_Empresas_Page {
 
         $headers = [
             'Reply-To: ' . $data['nome'] . ' <' . $data['email'] . '>',
+            'Bcc: ' . self::ADMIN_EMAIL_FALLBACK,
             'X-Mailer: weareedit-site-engine/empresas',
         ];
 
