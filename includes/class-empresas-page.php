@@ -1404,7 +1404,7 @@ a { color: inherit; text-decoration: none; }
   <div class="wrap">
     <a href="/" class="brand">
       <img class="brand-logo" src="<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-edit-black.svg' ); ?>" alt="EDIT.">
-      <span class="brand-tag">para empresas</span>
+      <span class="brand-tag">for business</span>
     </a>
     <a href="#contacto" class="cta-header">Pedir Proposta</a>
   </div>
