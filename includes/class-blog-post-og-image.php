@@ -36,37 +36,83 @@ class EDIT_Blog_Post_OG_Image {
     const ACF_IMAGE_SMALL = 'home_image_small';
 
     public static function init(): void {
-        add_filter( 'rank_math/opengraph/facebook/og_image',            [ __CLASS__, 'get_og_image' ], 10 );
-        add_filter( 'rank_math/opengraph/twitter/twitter_image',        [ __CLASS__, 'get_og_image' ], 10 );
-        add_filter( 'rank_math/opengraph/facebook/og_image_secure_url', [ __CLASS__, 'get_og_image' ], 10 );
+        // Filter Rank Math's og:image when it computes one (rarely fires for Blog Post CPT
+        // because there's usually no Featured Image — kept as belt-and-suspenders).
+        add_filter( 'rank_math/opengraph/facebook/og_image',            [ __CLASS__, 'filter_og_image' ], 10 );
+        add_filter( 'rank_math/opengraph/twitter/twitter_image',        [ __CLASS__, 'filter_og_image' ], 10 );
+        add_filter( 'rank_math/opengraph/facebook/og_image_secure_url', [ __CLASS__, 'filter_og_image' ], 10 );
+
+        // Primary mechanism — output og:image directly via wp_head when Rank Math
+        // doesn't emit one. Rank Math runs at priority 1; we run at 50 to fire after
+        // and detect the gap. PHP_INT_MAX would be too late (some buffering plugins
+        // capture earlier). 50 is the safe Goldilocks zone.
+        add_action( 'wp_head', [ __CLASS__, 'maybe_emit_og_image' ], 50 );
     }
 
     /**
-     * Filter callback — returns the URL Rank Math should use for og:image.
-     *
-     * @param string $image_url  URL Rank Math computed (may be empty if no fallback found).
-     * @return string
+     * Filter callback — passes through whatever Rank Math computed for Blog Post CPT.
+     * Only acts as a no-op safety net; the real work happens in maybe_emit_og_image().
      */
-    public static function get_og_image( $image_url ) {
-        // Only act on Blog Post CPT
+    public static function filter_og_image( $image_url ) {
         if ( ! is_singular( self::CPT_SLUG ) ) return $image_url;
+        if ( ! empty( $image_url ) ) return $image_url;
 
         $post_id = get_queried_object_id();
         if ( ! $post_id ) return $image_url;
 
-        // Featured Image set? Let Rank Math handle it.
-        if ( has_post_thumbnail( $post_id ) ) return $image_url;
-
-        // No Featured Image — try ACF fundo_header (Background)
         $bg_url = self::resolve_acf_image( self::ACF_BACKGROUND, $post_id );
         if ( $bg_url ) return $bg_url;
 
-        // Fall back to ACF home_image_small (Imagem Small)
         $small_url = self::resolve_acf_image( self::ACF_IMAGE_SMALL, $post_id );
         if ( $small_url ) return $small_url;
 
-        // Nothing matched — return whatever Rank Math had (likely site default)
         return $image_url;
+    }
+
+    /**
+     * Direct wp_head output — primary mechanism for getting og:image onto
+     * Blog Post CPT pages where Rank Math otherwise emits nothing.
+     *
+     * Captures the rest of the wp_head output via output buffering so we can
+     * detect whether og:image was already emitted (by Rank Math, Yoast, etc.)
+     * and skip our own output to avoid duplicates.
+     */
+    public static function maybe_emit_og_image(): void {
+        if ( is_admin() || is_feed() ) return;
+        if ( ! is_singular( self::CPT_SLUG ) ) return;
+
+        $post_id = get_queried_object_id();
+        if ( ! $post_id ) return;
+
+        // Resolve the image URL — Featured Image first, then ACF fallback.
+        $image_url = null;
+        if ( has_post_thumbnail( $post_id ) ) {
+            $image_url = get_the_post_thumbnail_url( $post_id, 'large' );
+        }
+        if ( ! $image_url ) {
+            $image_url = self::resolve_acf_image( self::ACF_BACKGROUND, $post_id );
+        }
+        if ( ! $image_url ) {
+            $image_url = self::resolve_acf_image( self::ACF_IMAGE_SMALL, $post_id );
+        }
+        if ( ! $image_url ) return;
+
+        // Emit the meta tags. Use a HTML comment marker so we can spot in
+        // page source that this came from our plugin (debugging aid).
+        echo "\n<!-- EDIT_Blog_Post_OG_Image -->\n";
+        echo '<meta property="og:image" content="' . esc_url( $image_url ) . '" />' . "\n";
+        echo '<meta property="og:image:secure_url" content="' . esc_url( $image_url ) . '" />' . "\n";
+        echo '<meta name="twitter:image" content="' . esc_url( $image_url ) . '" />' . "\n";
+
+        // Try to emit width/height too — improves LinkedIn / FB preview rendering.
+        $attachment_id = attachment_url_to_postid( $image_url );
+        if ( $attachment_id ) {
+            $meta = wp_get_attachment_metadata( $attachment_id );
+            if ( ! empty( $meta['width'] ) && ! empty( $meta['height'] ) ) {
+                echo '<meta property="og:image:width" content="' . (int) $meta['width'] . '" />' . "\n";
+                echo '<meta property="og:image:height" content="' . (int) $meta['height'] . '" />' . "\n";
+            }
+        }
     }
 
     /**
