@@ -279,19 +279,40 @@ class EDIT_Empresas_Page {
 
         // Log to CF7 Debug Log if available.
         if ( class_exists( 'EDIT_CF7_Debug' ) ) {
+            // Compact diagnostic of what discovery captured for the 5 custom attrs.
+            $diag = [];
+            if ( $brevo_result !== 'fail:no_api_key' ) {
+                $settings = get_option( 'edit_seo_fix_settings', [] );
+                $api_key  = trim( (string) ( $settings['brevo_api_key'] ?? '' ) );
+                if ( $api_key !== '' ) {
+                    $meta_map = self::discover_brevo_deal_attribute_meta( $api_key );
+                    if ( is_array( $meta_map ) ) {
+                        foreach ( [ 'Cargo', 'Tamanho da equipa', 'Urgência', 'Áreas de interesse', 'Origem do lead', 'Descrição da oportunidade' ] as $label ) {
+                            $key  = self::normalize_attr_label( $label );
+                            $meta = $meta_map[ $key ] ?? null;
+                            if ( ! $meta ) { $diag[] = $label . '=missing'; continue; }
+                            $type = $meta['type'] ?? '?';
+                            $nopt = count( $meta['options'] ?? [] );
+                            $diag[] = sprintf( '%s[%s:%s/opt=%d]', $label, $meta['slug'], $type, $nopt );
+                        }
+                    }
+                }
+            }
+
             EDIT_CF7_Debug::write( [
-                'event'      => 'empresas_lead_submit',
-                'form_title' => 'Empresas Inbound (empresas.weareedit.io)',
-                'company'    => $data['empresa'],
-                'name'       => $data['nome'],
-                'email'      => $data['email'],
-                'cargo'      => $data['cargo'],
-                'size'       => $data['size'],
-                'timeline'   => $data['timeline'],
-                'admin_mail' => $admin_sent ? 'sent' : 'failed',
-                'user_mail'  => $user_sent ? 'sent' : 'failed',
-                'brevo_deal' => $brevo_result,
-                'ip'         => $data['ip'],
+                'event'       => 'empresas_lead_submit',
+                'form_title'  => 'Empresas Inbound (empresas.weareedit.io)',
+                'company'     => $data['empresa'],
+                'name'        => $data['nome'],
+                'email'       => $data['email'],
+                'cargo'       => $data['cargo'],
+                'size'        => $data['size'],
+                'timeline'    => $data['timeline'],
+                'admin_mail'  => $admin_sent ? 'sent' : 'failed',
+                'user_mail'   => $user_sent ? 'sent' : 'failed',
+                'brevo_deal'  => $brevo_result,
+                'brevo_attrs' => empty( $diag ) ? '(none)' : implode( ' | ', $diag ),
+                'ip'          => $data['ip'],
             ] );
         }
 
@@ -534,7 +555,7 @@ class EDIT_Empresas_Page {
      * Cached 12h. Returns null if API call fails.
      */
     private static function discover_brevo_deal_attribute_meta( string $api_key ): ?array {
-        $cache_key = 'edit_empresas_brevo_deal_attr_meta_v2';
+        $cache_key = 'edit_empresas_brevo_deal_attr_meta_v3';
         $cached    = get_transient( $cache_key );
         if ( is_array( $cached ) && ! empty( $cached ) ) return $cached;
 
@@ -571,8 +592,11 @@ class EDIT_Empresas_Page {
                 }
             }
 
+            $type = mb_strtolower( (string) ( $attr['attributeTypeName'] ?? $attr['type'] ?? '' ) );
+
             $map[ self::normalize_attr_label( $label ) ] = [
                 'slug'    => $slug,
+                'type'    => $type,
                 'options' => $options,
             ];
         }
@@ -687,25 +711,29 @@ class EDIT_Empresas_Page {
                 $meta = $meta_map[ self::normalize_attr_label( $label ) ] ?? null;
                 if ( ! $meta || empty( $meta['slug'] ) ) continue;
 
-                // For Múltipla escolha attrs (have options), find best match by
-                // dash/whitespace-insensitive normalization. If no Brevo option
-                // matches, SKIP this field — sending an unknown option string
-                // makes the whole deal API call fail with 400. Better to land the
-                // deal with the matched fields and surface the gap separately.
-                if ( ! empty( $meta['options'] ) ) {
-                    $target  = self::normalize_option_value( $value );
-                    $matched = '';
-                    foreach ( $meta['options'] as $opt ) {
-                        if ( self::normalize_option_value( $opt ) === $target ) {
-                            $matched = $opt;
-                            break;
-                        }
-                    }
-                    if ( $matched === '' ) continue; // skip — no matching Brevo option
-                    $deal_attrs[ $meta['slug'] ] = [ $matched ];
-                } else {
+                // Decide payload shape from the attribute TYPE (not from whether
+                // options were captured — Brevo's API doesn't always expose them).
+                $type     = (string) ( $meta['type'] ?? '' );
+                $is_text  = ( $type === '' || stripos( $type, 'text' ) !== false || stripos( $type, 'string' ) !== false );
+
+                if ( $is_text ) {
                     $deal_attrs[ $meta['slug'] ] = $value;
+                    continue;
                 }
+
+                // Multi-choice / select: must match against a known option, else SKIP.
+                // Sending an unknown option string makes the whole deal API call fail.
+                if ( empty( $meta['options'] ) ) continue;
+                $target  = self::normalize_option_value( $value );
+                $matched = '';
+                foreach ( $meta['options'] as $opt ) {
+                    if ( self::normalize_option_value( $opt ) === $target ) {
+                        $matched = $opt;
+                        break;
+                    }
+                }
+                if ( $matched === '' ) continue;
+                $deal_attrs[ $meta['slug'] ] = [ $matched ];
             }
         }
 
