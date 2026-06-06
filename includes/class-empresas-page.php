@@ -1197,6 +1197,34 @@ a { color: inherit; text-decoration: none; }
 }
 .cta-header:hover { background: var(--edit-pink); }
 
+.site-nav {
+  display: flex; gap: 28px; align-items: center;
+}
+.site-nav a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--grey-4);
+  text-decoration: none;
+  padding: 6px 0;
+  position: relative;
+  transition: color 0.18s ease;
+}
+.site-nav a:hover { color: var(--ink); }
+.site-nav a.active {
+  color: var(--ink);
+  font-weight: 700;
+}
+.site-nav a.active::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -2px;
+  height: 2px;
+  background: var(--edit-yellow);
+}
+@media (max-width: 900px) {
+  .site-nav { display: none; }
+}
+
 /* ── HERO ────────────────────────────────────────────────────────── */
 .hero {
   position: relative;
@@ -1206,7 +1234,7 @@ a { color: inherit; text-decoration: none; }
   color: #fff;
   padding: 140px 0 80px 0;
   background:
-    linear-gradient(180deg, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.82) 100%),
+    linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.55) 50%, rgba(0,0,0,0.92) 100%),
     url('<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/empresas-hero.jpg' ); ?>') center 30% / cover no-repeat #0a0a0a;
 }
 .hero .eyebrow {
@@ -1254,6 +1282,11 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 768px) {
   .hero { min-height: 78vh; padding: 110px 0 56px 0; }
 }
+.btn,
+.cta-header,
+button {
+  cursor: pointer;
+}
 .btn {
   display: inline-block;
   padding: 16px 26px;
@@ -1288,15 +1321,16 @@ a { color: inherit; text-decoration: none; }
 .logo-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 48px 36px;
+  gap: 56px 48px;
   align-items: center;
 }
 .logo-cell {
   display: flex; align-items: center; justify-content: center;
-  height: 88px;
+  height: 120px;
 }
 .logo-cell img {
   max-width: 100%; max-height: 100%;
+  width: auto;
   object-fit: contain;
   opacity: 0.85;
   transition: opacity 0.2s ease;
@@ -1934,19 +1968,151 @@ a { color: inherit; text-decoration: none; }
   .lead-form .checkbox-group { grid-template-columns: 1fr; }
 }
 
+/* ── FOUNDERS NL ──────────────────────────────────────────────────── */
+.founders-nl {
+  background: var(--ink);
+  color: #fff;
+  padding: 96px 0;
+  position: relative;
+}
+.founders-nl .nl-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.founders-nl .eyebrow {
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--edit-yellow);
+  margin: 0 0 18px 0;
+}
+.founders-nl h2 {
+  font-size: clamp(30px, 3.6vw, 44px);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin: 0 0 18px 0;
+  color: #fff;
+  max-width: 18ch;
+}
+.founders-nl p.nl-lede {
+  font-size: 16px;
+  line-height: 1.55;
+  color: rgba(255,255,255,0.7);
+  max-width: 50ch;
+}
+.founders-nl .nl-form {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px;
+  padding: 32px 28px;
+}
+.founders-nl .nl-form label {
+  display: block;
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(255,255,255,0.65);
+  margin-bottom: 10px;
+}
+.founders-nl .nl-input-row {
+  display: flex; gap: 8px;
+}
+.founders-nl .nl-input-row input {
+  flex: 1; min-width: 0;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  font-size: 15px;
+  padding: 12px 14px;
+  border-radius: 4px;
+  font-family: inherit;
+}
+.founders-nl .nl-input-row input::placeholder { color: rgba(255,255,255,0.4); }
+.founders-nl .nl-input-row input:focus { outline: 0; border-color: var(--edit-yellow); background: rgba(255,255,255,0.1); }
+.founders-nl .nl-input-row button {
+  background: var(--edit-yellow); color: var(--ink);
+  border: 0; border-radius: 4px;
+  font-weight: 700; font-size: 14px;
+  padding: 12px 22px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.18s ease;
+}
+.founders-nl .nl-input-row button:hover { background: #fff; }
+.founders-nl .nl-input-row button:disabled { opacity: 0.55; cursor: wait; }
+.founders-nl .nl-hint {
+  font-size: 12px; color: rgba(255,255,255,0.5);
+  margin-top: 12px;
+}
+.founders-nl .nl-status {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--edit-yellow);
+  min-height: 18px;
+}
+.founders-nl .nl-status.error { color: #ff8b9c; }
+@media (max-width: 900px) {
+  .founders-nl { padding: 64px 0; }
+  .founders-nl .nl-grid { grid-template-columns: 1fr; gap: 40px; }
+}
+
 /* ── FOOTER ──────────────────────────────────────────────────────── */
 .site-footer {
-  padding: 40px 0;
-  background: #fff;
+  background: #fafafa;
   border-top: 1px solid var(--grey-2);
-  font-size: 13px; color: var(--grey-3);
+  padding: 64px 0 28px 0;
+  font-size: 14px; color: var(--grey-3);
 }
-.site-footer .wrap {
-  display: flex; justify-content: space-between; align-items: center;
-  flex-wrap: wrap; gap: 16px;
+.site-footer .footer-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr 1.2fr;
+  gap: 56px;
+  margin-bottom: 56px;
 }
-.site-footer a { color: var(--grey-3); }
-.site-footer a:hover { color: var(--ink); }
+.site-footer .footer-col h4 {
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--ink);
+  margin: 0 0 14px 0;
+}
+.site-footer .footer-col a,
+.site-footer .footer-col p {
+  display: block;
+  font-size: 14px;
+  color: var(--grey-3);
+  line-height: 1.7;
+  text-decoration: none;
+}
+.site-footer .footer-col a:hover { color: var(--ink); }
+.site-footer .footer-logo {
+  font-size: 24px; font-weight: 900; letter-spacing: -0.02em;
+  margin-bottom: 14px;
+}
+.site-footer .footer-logo .dot { color: var(--edit-yellow); }
+.site-footer .footer-about p {
+  max-width: 36ch;
+  margin-top: 6px;
+}
+.site-footer .footer-bottom {
+  border-top: 1px solid var(--grey-2);
+  padding-top: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--grey-3);
+}
+.site-footer .footer-bottom a { color: var(--grey-3); }
+.site-footer .footer-bottom a:hover { color: var(--ink); }
+@media (max-width: 900px) {
+  .site-footer .footer-grid { grid-template-columns: 1fr 1fr; gap: 36px; }
+}
+@media (max-width: 560px) {
+  .site-footer .footer-grid { grid-template-columns: 1fr; }
+}
 
 /* ── PREVIEW BANNER ──────────────────────────────────────────────── */
 .preview-banner {
@@ -1983,6 +2149,12 @@ a { color: inherit; text-decoration: none; }
       <img class="brand-lockup" src="<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-edit-master-black.png' ); ?>" alt="EDIT.">
       <span class="brand-tag">for business</span>
     </a>
+    <nav class="site-nav" aria-label="Navegação principal">
+      <a href="https://weareedit.io/formacao/">Cursos</a>
+      <a href="https://weareedit.io/workshops/">Workshops</a>
+      <a href="https://weareedit.io/bootcamps/">Bootcamps</a>
+      <a href="/" class="active">Empresas</a>
+    </nav>
     <a href="#contacto" class="cta-header">Pedir Proposta</a>
   </div>
 </header>
@@ -2368,13 +2540,101 @@ a { color: inherit; text-decoration: none; }
 })();
 </script>
 
+<!-- ─── FOUNDERS NL ────────────────────────────────────────────── -->
+<section class="founders-nl">
+  <div class="wrap">
+    <div class="nl-grid">
+      <div class="nl-copy">
+        <p class="eyebrow">Founder's note</p>
+        <h2>O que estou a aprender sobre upskill corporativo.</h2>
+        <p class="nl-lede">De duas em duas semanas escrevo um email curto sobre o que está a funcionar (e a falhar) em programas de formação digital nas empresas portuguesas. Direto da prática. Sem fluff.</p>
+      </div>
+      <form class="nl-form" id="founders-nl-form" novalidate>
+        <label for="fnl-email">Email corporativo</label>
+        <div class="nl-input-row">
+          <input type="email" id="fnl-email" name="email" placeholder="voce@empresa.pt" required autocomplete="email">
+          <button type="submit" class="btn-nl-submit">Subscrever</button>
+        </div>
+        <p class="nl-hint">Quinzenal · Cancela a qualquer momento · Sem spam</p>
+        <div class="nl-status" role="status" aria-live="polite"></div>
+      </form>
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var form = document.getElementById('founders-nl-form');
+  if (!form) return;
+  var endpoint = '<?php echo esc_url( rest_url( 'edit/v1/newsletter-signup' ) ); ?>';
+  var status = form.querySelector('.nl-status');
+  var btn = form.querySelector('button');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    status.classList.remove('error');
+    status.textContent = '';
+    var email = form.querySelector('#fnl-email').value.trim();
+    if (!email) return;
+    btn.disabled = true;
+    var orig = btn.textContent;
+    btn.textContent = 'A enviar…';
+    fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email, source: 'empresas-founders-nl' })
+    }).then(function(r){ return r.json().catch(function(){return{};}).then(function(b){return{ok:r.ok,body:b};}); })
+      .then(function(res){
+        if (res.ok && (res.body.status === 'ok' || res.body.success)) {
+          status.textContent = 'Obrigado. O primeiro email chega em breve.';
+          form.querySelector('#fnl-email').value = '';
+        } else {
+          status.classList.add('error');
+          status.textContent = (res.body && res.body.message) || 'Não consegui registar. Tenta novamente.';
+        }
+      })
+      .catch(function(){
+        status.classList.add('error');
+        status.textContent = 'Erro de rede. Tenta novamente.';
+      })
+      .then(function(){ btn.disabled = false; btn.textContent = orig; });
+  });
+})();
+</script>
+
 <!-- ─── FOOTER ─────────────────────────────────────────────────── -->
 <footer class="site-footer">
   <div class="wrap">
-    <div>EDIT. — Disruptive Digital Education · DGERT nº 18391 · Entidade Formadora Certificada</div>
-    <div>
-      <a href="https://weareedit.io/">weareedit.io</a> ·
-      <a href="mailto:empresas@weareedit.io">empresas@weareedit.io</a>
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <div class="footer-logo">EDIT<span class="dot">.</span></div>
+        <p>Disruptive Digital Education.<br>DGERT nº 18391 · Entidade Formadora Certificada.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Formação</h4>
+        <a href="https://weareedit.io/formacao/">Cursos</a>
+        <a href="https://weareedit.io/workshops/">Workshops</a>
+        <a href="https://weareedit.io/bootcamps/">Bootcamps</a>
+        <a href="/">EDIT. for Business</a>
+      </div>
+      <div class="footer-col">
+        <h4>Lisboa</h4>
+        <p>Rua Sociedade Farmacêutica 3<br>1150-340 Lisboa<br><a href="tel:+351210182455">+351 210 182 455</a></p>
+        <h4 style="margin-top:22px;">Porto</h4>
+        <p>Rua Direita do Viso 130<br>4250-194 Porto<br><a href="tel:+351224960345">+351 224 960 345</a></p>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <a href="mailto:empresas@weareedit.io">empresas@weareedit.io</a>
+        <a href="https://api.whatsapp.com/send?phone=351936508449" target="_blank" rel="noopener">WhatsApp +351 936 508 449</a>
+        <a href="https://www.linkedin.com/company/edit-disruptive-digital-education/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://www.instagram.com/edit.education/" target="_blank" rel="noopener">Instagram</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 EDIT. — Disruptive Digital Education</span>
+      <span>
+        <a href="https://weareedit.io/politica-de-privacidade/">Privacidade</a> ·
+        <a href="https://weareedit.io/termos-e-condicoes/">Termos</a>
+      </span>
     </div>
   </div>
 </footer>
