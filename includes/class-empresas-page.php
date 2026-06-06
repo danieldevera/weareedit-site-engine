@@ -780,12 +780,12 @@ a { color: inherit; text-decoration: none; }
 .logo-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 36px 28px;
+  gap: 48px 36px;
   align-items: center;
 }
 .logo-cell {
   display: flex; align-items: center; justify-content: center;
-  height: 56px;
+  height: 88px;
 }
 .logo-cell img {
   max-width: 100%; max-height: 100%;
