@@ -632,6 +632,43 @@ class EDIT_Empresas_Page {
     }
 
     /**
+     * Auto-discover the Brevo contact list ID for "Empresas * Inbound" so the
+     * plugin doesn't have to hardcode it. Cached 12h. Returns null on failure.
+     */
+    private static function discover_brevo_empresas_list_id( string $api_key ): ?int {
+        $cache_key = 'edit_empresas_brevo_list_id_v1';
+        $cached    = get_transient( $cache_key );
+        if ( $cached !== false && (int) $cached > 0 ) return (int) $cached;
+
+        // Paginate through lists — Brevo defaults to 10/page; we ask for 50.
+        $res = wp_remote_get( 'https://api.brevo.com/v3/contacts/lists?limit=50&offset=0', [
+            'timeout' => 8,
+            'headers' => [
+                'api-key' => $api_key,
+                'Accept'  => 'application/json',
+            ],
+        ] );
+        if ( is_wp_error( $res ) ) return null;
+        if ( wp_remote_retrieve_response_code( $res ) !== 200 ) return null;
+
+        $body = json_decode( wp_remote_retrieve_body( $res ), true );
+        if ( ! is_array( $body ) ) return null;
+        $lists = $body['lists'] ?? $body['items'] ?? ( isset( $body[0] ) ? $body : [] );
+        if ( ! is_array( $lists ) ) return null;
+
+        foreach ( $lists as $list ) {
+            $name = (string) ( $list['name'] ?? '' );
+            if ( strcasecmp( trim( $name ), 'Empresas * Inbound' ) !== 0 ) continue;
+            $id = (int) ( $list['id'] ?? 0 );
+            if ( $id > 0 ) {
+                set_transient( $cache_key, $id, 12 * HOUR_IN_SECONDS );
+                return $id;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Push deal to Brevo Sales Hub.
      *
      * Two-step: (1) upsert contact via /v3/contacts, (2) create deal via /crm/v3/deals.
@@ -666,6 +703,16 @@ class EDIT_Empresas_Page {
             'CARGO'            => $data['cargo'],
             'EMPRESAS_SOURCE'  => 'empresas.weareedit.io',
         ];
+        $contact_body = [
+            'email'         => $data['email'],
+            'attributes'    => $contact_attrs,
+            'updateEnabled' => true,
+        ];
+        // Add to the "Empresas * Inbound" contact list (auto-discovered by name).
+        $list_id = self::discover_brevo_empresas_list_id( $api_key );
+        if ( $list_id ) {
+            $contact_body['listIds'] = [ $list_id ];
+        }
         $contact_res = wp_remote_post( 'https://api.brevo.com/v3/contacts', [
             'timeout' => 8,
             'headers' => [
@@ -673,11 +720,7 @@ class EDIT_Empresas_Page {
                 'Content-Type' => 'application/json',
                 'Accept'       => 'application/json',
             ],
-            'body'    => wp_json_encode( [
-                'email'         => $data['email'],
-                'attributes'    => $contact_attrs,
-                'updateEnabled' => true,
-            ] ),
+            'body'    => wp_json_encode( $contact_body ),
         ] );
         if ( is_wp_error( $contact_res ) ) return 'fail:contact_wp_error';
         $contact_code = wp_remote_retrieve_response_code( $contact_res );
