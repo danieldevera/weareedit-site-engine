@@ -290,7 +290,7 @@ class EDIT_Empresas_Page {
                 if ( $api_key !== '' ) {
                     $meta_map = self::discover_brevo_deal_attribute_meta( $api_key );
                     if ( is_array( $meta_map ) ) {
-                        foreach ( [ 'Cargo', 'Tamanho da equipa', 'Urgência', 'Áreas de interesse', 'Origem do lead', 'Descrição da oportunidade' ] as $label ) {
+                        foreach ( [ 'Cargo', 'Tamanho da equipa', 'Urgência', 'Áreas de interesse', 'Origem do lead', 'Descrição do acordo' ] as $label ) {
                             $key  = self::normalize_attr_label( $label );
                             $meta = $meta_map[ $key ] ?? null;
                             if ( ! $meta ) { $diag[] = $label . '=missing'; continue; }
@@ -298,13 +298,13 @@ class EDIT_Empresas_Page {
                             $opts = $meta['options'] ?? [];
                             $opts_snippet = '';
                             if ( ! empty( $opts ) ) {
-                                $opts_snippet = '=[' . implode( '|', array_slice( $opts, 0, 6 ) ) . ']';
+                                $labels_only = array_map( function( $o ) { return $o['label']; }, array_slice( $opts, 0, 6 ) );
+                                $opts_snippet = '=[' . implode( '|', $labels_only ) . ']';
                             }
-                            $diag[] = sprintf( '%s[%s:%s/opt=%d%s]', $label, $meta['slug'], $type, count( $opts ), $opts_snippet );
+                            $raw_first = $meta['raw_first'] ?? '';
+                            $raw_snippet = $raw_first !== '' && $raw_first !== null ? ' raw=' . mb_substr( $raw_first, 0, 80 ) : '';
+                            $diag[] = sprintf( '%s[%s:%s/opt=%d%s%s]', $label, $meta['slug'], $type, count( $opts ), $opts_snippet, $raw_snippet );
                         }
-                        // Dump all discovered labels so we see anything we couldn't match by name.
-                        $all_labels = array_keys( $meta_map );
-                        $diag[] = 'ALL_LABELS=' . implode( ',', array_slice( $all_labels, 0, 40 ) );
                     }
                 }
             }
@@ -565,7 +565,7 @@ class EDIT_Empresas_Page {
      * Cached 12h. Returns null if API call fails.
      */
     private static function discover_brevo_deal_attribute_meta( string $api_key ): ?array {
-        $cache_key = 'edit_empresas_brevo_deal_attr_meta_v4';
+        $cache_key = 'edit_empresas_brevo_deal_attr_meta_v5';
         $cached    = get_transient( $cache_key );
         if ( is_array( $cached ) && ! empty( $cached ) ) return $cached;
 
@@ -590,14 +590,23 @@ class EDIT_Empresas_Page {
             $slug  = (string) ( $attr['internalName'] ?? $attr['name'] ?? '' );
             if ( $label === '' || $slug === '' ) continue;
 
-            $options = [];
-            $raw_opts = $attr['attributeOptions'] ?? $attr['options'] ?? [];
+            // Capture options as label/value pairs so we can match by label
+            // but send the value (Brevo's internal ID, if any).
+            $options    = [];
+            $raw_first  = null;
+            $raw_opts   = $attr['attributeOptions'] ?? $attr['options'] ?? [];
             if ( is_array( $raw_opts ) ) {
                 foreach ( $raw_opts as $opt ) {
-                    if ( is_string( $opt ) ) { $options[] = $opt; continue; }
+                    if ( $raw_first === null ) $raw_first = $opt; // for diagnostic
+                    if ( is_string( $opt ) ) {
+                        $options[] = [ 'label' => $opt, 'value' => $opt ];
+                        continue;
+                    }
                     if ( is_array( $opt ) ) {
-                        $cand = $opt['label'] ?? $opt['value'] ?? $opt['name'] ?? '';
-                        if ( $cand !== '' ) $options[] = (string) $cand;
+                        $lbl = (string) ( $opt['label'] ?? $opt['name'] ?? '' );
+                        $val = (string) ( $opt['value'] ?? $opt['id'] ?? $lbl );
+                        if ( $lbl === '' && $val === '' ) continue;
+                        $options[] = [ 'label' => $lbl !== '' ? $lbl : $val, 'value' => $val !== '' ? $val : $lbl ];
                     }
                 }
             }
@@ -605,9 +614,10 @@ class EDIT_Empresas_Page {
             $type = mb_strtolower( (string) ( $attr['attributeTypeName'] ?? $attr['type'] ?? '' ) );
 
             $map[ self::normalize_attr_label( $label ) ] = [
-                'slug'    => $slug,
-                'type'    => $type,
-                'options' => $options,
+                'slug'      => $slug,
+                'type'      => $type,
+                'options'   => $options,
+                'raw_first' => is_array( $raw_first ) ? wp_json_encode( $raw_first ) : ( is_string( $raw_first ) ? $raw_first : null ),
             ];
         }
         if ( empty( $map ) ) return null;
@@ -713,7 +723,7 @@ class EDIT_Empresas_Page {
                 [ 'Urgência',                    $data['timeline'] ?? '' ],
                 [ 'Áreas de interesse',          implode( ', ', (array) ( $data['areas'] ?? [] ) ) ],
                 [ 'Origem do lead',              'Website' ],
-                [ 'Descrição da oportunidade',   $data['mensagem'] ?? '' ],
+                [ 'Descrição do acordo',         $data['mensagem'] ?? '' ],
             ];
             foreach ( $field_map as [ $label, $value ] ) {
                 $value = (string) $value;
@@ -732,18 +742,20 @@ class EDIT_Empresas_Page {
                 }
 
                 // Multi-choice / select: must match against a known option, else SKIP.
-                // Sending an unknown option string makes the whole deal API call fail.
+                // Options are stored as [ 'label' => ..., 'value' => ... ] pairs.
+                // Match by label; send the value (Brevo's internal ID, if distinct).
                 if ( empty( $meta['options'] ) ) continue;
                 $target  = self::normalize_option_value( $value );
-                $matched = '';
+                $matched_value = null;
                 foreach ( $meta['options'] as $opt ) {
-                    if ( self::normalize_option_value( $opt ) === $target ) {
-                        $matched = $opt;
+                    if ( self::normalize_option_value( $opt['label'] ) === $target
+                      || self::normalize_option_value( $opt['value'] ) === $target ) {
+                        $matched_value = $opt['value'];
                         break;
                     }
                 }
-                if ( $matched === '' ) continue;
-                $deal_attrs[ $meta['slug'] ] = [ $matched ];
+                if ( $matched_value === null ) continue;
+                $deal_attrs[ $meta['slug'] ] = [ $matched_value ];
             }
         }
 
