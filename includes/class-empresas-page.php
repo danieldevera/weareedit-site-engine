@@ -443,9 +443,10 @@ class EDIT_Empresas_Page {
      * @return string|null  Brevo deal ID on success, null otherwise (form falls back to email-only).
      */
     private static function post_to_brevo( array $data ): ?string {
-        // Reuse Brevo API key from existing plugin config.
-        $api_key = get_option( 'edit_brevo_api_key' );
-        if ( empty( $api_key ) ) return null;
+        // Reuse Brevo API key from existing plugin config (same source the mail router uses).
+        $settings = get_option( 'edit_seo_fix_settings', [] );
+        $api_key  = trim( (string) ( $settings['brevo_api_key'] ?? '' ) );
+        if ( $api_key === '' ) return null;
 
         // Auto-discover pipeline + stage IDs by name (cached 12h).
         // Manual override: set BREVO_PIPELINE_ID + BREVO_STAGE_ID consts above to skip discovery.
