@@ -688,8 +688,9 @@ class EDIT_Empresas_Page {
                 if ( ! $meta || empty( $meta['slug'] ) ) continue;
 
                 // For Múltipla escolha attrs (have options), find best match by
-                // dash/whitespace-insensitive normalization. Falls back to the raw
-                // value if no Brevo option matches (Brevo will reject — log will show).
+                // dash/whitespace-insensitive normalization, then wrap in an array
+                // — Brevo expects [ "value" ] for multi-choice attrs even when the
+                // selection is a single value.
                 if ( ! empty( $meta['options'] ) ) {
                     $target = self::normalize_option_value( $value );
                     foreach ( $meta['options'] as $opt ) {
@@ -698,8 +699,10 @@ class EDIT_Empresas_Page {
                             break;
                         }
                     }
+                    $deal_attrs[ $meta['slug'] ] = [ $value ];
+                } else {
+                    $deal_attrs[ $meta['slug'] ] = $value;
                 }
-                $deal_attrs[ $meta['slug'] ] = $value;
             }
         }
 
