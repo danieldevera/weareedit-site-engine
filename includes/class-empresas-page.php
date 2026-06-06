@@ -87,7 +87,8 @@ class EDIT_Empresas_Page {
     const RATE_LIMIT_PER_HOUR   = 20;
 
     // Brevo Reuniões booking link offered in the lead auto-reply email.
-    const BOOKING_URL           = 'https://meet.brevo.com/daniel-devera';
+    // Slug "borderless" = Daniel's customized Discovery 30 min meeting type URL.
+    const BOOKING_URL           = 'https://meet.brevo.com/daniel-devera/borderless';
 
     /**
      * Brevo Sales Hub integration — STUBBED until Daniel creates the
@@ -382,25 +383,113 @@ class EDIT_Empresas_Page {
         // S.A., etc.) don't produce double-period sentences ("para EDIT..").
         $empresa_clean = rtrim( $data['empresa'], '.' );
 
-        $body  = "Olá " . $data['nome'] . ",\n\n";
-        $body .= "Sou o Daniel Devera, fundador da EDIT. Recebi o vosso pedido para " . $empresa_clean . " — obrigado pelo interesse.\n\n";
-        $body .= "Eu próprio respondo a todos os pedidos vindos pela empresas.weareedit.io. ";
-        $body .= "Em 24 horas úteis contacto-vos para agendar uma conversa de 30 minutos onde percebemos o vosso contexto, equipa e objetivos. ";
-        $body .= "Depois desenhamos juntos um programa à medida do vosso setor.\n\n";
-        $body .= "Se quiser adiantar, pode reservar já um horário aqui:\n";
-        $body .= self::BOOKING_URL . "\n\n";
-        $body .= "Para qualquer coisa urgente, responda diretamente a este email.\n\n";
-        $body .= "Cumprimentos,\n";
-        $body .= "Daniel Devera\n\n";
-        $body .= "—\n";
-        $body .= "Daniel Devera · Fundador, EDIT.\n";
-        $body .= "EDIT. — Disruptive Digital Education\n";
-        $body .= "Entidade Formadora Certificada DGERT nº 18391\n";
-        $body .= "https://weareedit.io\n";
+        $nome_safe    = esc_html( $data['nome'] );
+        $empresa_safe = esc_html( $empresa_clean );
+        $booking_url  = esc_url( self::BOOKING_URL );
+
+        $body = <<<HTML
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pedido recebido — EDIT. para Empresas</title>
+<style>
+@media only screen and (max-width:600px){
+  .container{width:100% !important;padding:0 !important;}
+  .px-md{padding-left:24px !important;padding-right:24px !important;}
+  .cta-btn{display:block !important;width:auto !important;}
+}
+</style>
+</head>
+<body style="margin:0;padding:0;background:#f4f4f2;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#0a0a0a;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4f4f2;">
+  <tr>
+    <td align="center" style="padding:32px 16px;">
+      <table role="presentation" class="container" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:600px;background:#ffffff;">
+
+        <!-- Header / brand line -->
+        <tr>
+          <td class="px-md" style="padding:32px 40px 8px 40px;">
+            <p style="margin:0;font-size:13px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#0a0a0a;">EDIT. <span style="color:#f92869;">·</span> for Business</p>
+          </td>
+        </tr>
+
+        <!-- Greeting -->
+        <tr>
+          <td class="px-md" style="padding:24px 40px 0 40px;">
+            <p style="margin:0;font-size:18px;line-height:1.5;color:#0a0a0a;">Olá {$nome_safe},</p>
+          </td>
+        </tr>
+
+        <!-- Body -->
+        <tr>
+          <td class="px-md" style="padding:16px 40px 0 40px;">
+            <p style="margin:0 0 16px 0;font-size:16px;line-height:1.6;color:#0a0a0a;">Sou o <strong>Daniel Devera</strong>, fundador da EDIT. Recebi o vosso pedido para <strong>{$empresa_safe}</strong> — obrigado pelo interesse.</p>
+            <p style="margin:0 0 16px 0;font-size:16px;line-height:1.6;color:#0a0a0a;">Eu próprio respondo a todos os pedidos vindos pela <strong>empresas.weareedit.io</strong>. Em 24 horas úteis contacto-vos para agendar uma conversa de 30 minutos onde percebemos o vosso contexto, equipa e objetivos. Depois desenhamos juntos um programa à medida do vosso setor.</p>
+            <p style="margin:0;font-size:16px;line-height:1.6;color:#0a0a0a;">Se quiser adiantar, pode reservar já o horário que lhe convém:</p>
+          </td>
+        </tr>
+
+        <!-- CTA button -->
+        <tr>
+          <td class="px-md" align="left" style="padding:24px 40px 8px 40px;">
+            <a href="{$booking_url}" class="cta-btn" style="display:inline-block;background:#0a0a0a;color:#ffffff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;font-weight:600;letter-spacing:0.01em;text-decoration:none;padding:14px 28px;border-radius:32px;mso-padding-alt:0;box-shadow:inset 0 -2px 0 rgba(0,0,0,0.15);">Reservar 30 min →</a>
+          </td>
+        </tr>
+
+        <!-- Subtle helper -->
+        <tr>
+          <td class="px-md" style="padding:0 40px 24px 40px;">
+            <p style="margin:0;font-size:13px;line-height:1.5;color:#666666;">Para qualquer coisa urgente, responda diretamente a este email.</p>
+          </td>
+        </tr>
+
+        <!-- Divider -->
+        <tr>
+          <td class="px-md" style="padding:8px 40px 0 40px;">
+            <div style="height:1px;background:#e5e5e2;line-height:1px;font-size:0;">&nbsp;</div>
+          </td>
+        </tr>
+
+        <!-- Founder signature card (locked spec) -->
+        <tr>
+          <td class="px-md" style="padding:24px 40px 32px 40px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td valign="top" width="84" style="padding-right:18px;">
+                  <a href="https://weareedit.io/equipa/daniel-devera/" style="display:inline-block;text-decoration:none;border:0;"><img src="https://weareedit.io/wp-content/uploads/2026/05/daniel-devera-sign-off.png" alt="Daniel Devera" width="84" height="84" style="display:block;width:84px;height:84px;border-radius:50%;border:3px solid #f92869;box-sizing:border-box;"></a>
+                </td>
+                <td valign="top" style="padding-top:0;">
+                  <a href="https://weareedit.io/equipa/daniel-devera/" style="display:inline-block;text-decoration:none;border:0;"><img src="https://weareedit.io/wp-content/uploads/2026/06/daniel-devera-assinatura-cropped.png" alt="Daniel Devera" width="180" height="auto" style="display:block;width:180px;height:auto;border:0;"></a>
+                  <p style="margin:8px 0 0 4px;font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#0a0a0a;font-family:'Helvetica Neue',Arial,sans-serif;"><a href="https://weareedit.io/equipa/daniel-devera/" style="color:#0a0a0a;text-decoration:none;">Founder · EDIT.</a></p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Footer DGERT line -->
+        <tr>
+          <td class="px-md" style="padding:24px 40px;background:#0a0a0a;color:#888888;font-size:11px;line-height:1.6;text-align:center;letter-spacing:0.04em;">
+            EDIT. — Disruptive Digital Education<br>
+            Entidade Formadora Certificada DGERT nº 18391<br>
+            <a href="https://weareedit.io" style="color:#ffdd06;text-decoration:none;">weareedit.io</a>
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>
+HTML;
 
         $headers = [
             'From: Daniel Devera (EDIT.) <' . self::ADMIN_EMAIL . '>',
             'Reply-To: ' . self::ADMIN_EMAIL,
+            'Content-Type: text/html; charset=UTF-8',
             'X-Mailer: weareedit-site-engine/empresas',
         ];
 
