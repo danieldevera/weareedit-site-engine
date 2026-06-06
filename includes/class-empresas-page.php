@@ -2267,12 +2267,23 @@ a { color: inherit; text-decoration: none; }
         var nameParts = String(data.nome || '').trim().split(/\s+/);
         var fname = nameParts[0] || '';
         var lname = nameParts.slice(1).join(' ');
+        // email pre-fill confirmed working v1.5.320. Name variants unknown —
+        // throw every plausible Brevo / common-CRM param name; Brevo ignores
+        // unrecognized ones, picks whatever matches its internal mapping.
         var prefillQs = ''
-          + 'email='     + enc(data.email)
-          + '&firstname=' + enc(fname)
-          + '&lastname='  + enc(lname)
-          + '&name='      + enc(data.nome)
-          + '&company='   + enc(data.empresa);
+          + 'email='        + enc(data.email)
+          + '&FIRSTNAME='   + enc(fname)
+          + '&LASTNAME='    + enc(lname)
+          + '&firstname='   + enc(fname)
+          + '&lastname='    + enc(lname)
+          + '&first_name='  + enc(fname)
+          + '&last_name='   + enc(lname)
+          + '&nome='        + enc(fname)
+          + '&sobrenome='   + enc(lname)
+          + '&name='        + enc(data.nome)
+          + '&fullname='    + enc(data.nome)
+          + '&company='     + enc(data.empresa)
+          + '&COMPANY='     + enc(data.empresa);
         var iframeSrc = bookingUrl + (bookingUrl.indexOf('?') === -1 ? '?' : '&') + prefillQs;
 
         var wrap = form.parentElement;
