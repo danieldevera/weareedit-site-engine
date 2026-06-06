@@ -1851,6 +1851,36 @@ a { color: inherit; text-decoration: none; }
   max-width: 40ch;
   margin-left: auto; margin-right: auto;
 }
+.booking-embed {
+  margin-top: 32px;
+  padding-top: 32px;
+  border-top: 1px solid #e5e5e2;
+}
+.booking-embed .booking-eyebrow {
+  margin: 0 0 8px 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--edit-pink, #f92869);
+}
+.booking-embed h4 {
+  margin: 0 0 20px 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+.booking-embed iframe {
+  width: 100%;
+  min-height: 720px;
+  border: 0;
+  display: block;
+  background: #fff;
+}
+@media (max-width: 600px) {
+  .booking-embed iframe { min-height: 820px; }
+}
 
 @media (max-width: 880px) {
   .lead-grid { grid-template-columns: 1fr; gap: 40px; }
@@ -2185,6 +2215,7 @@ a { color: inherit; text-decoration: none; }
   var errorBox  = form.querySelector('.form-error');
   var submitBtn = form.querySelector('.btn-submit');
   var endpoint  = '<?php echo esc_url( rest_url( self::REST_NAMESPACE . self::REST_ROUTE ) ); ?>';
+  var bookingUrl = '<?php echo esc_url( self::BOOKING_URL ); ?>';
 
   function showError(msg) {
     errorBox.textContent = msg;
@@ -2230,7 +2261,17 @@ a { color: inherit; text-decoration: none; }
     .then(function(result) {
       if (result.ok && result.body.status === 'ok') {
         var wrap = form.parentElement;
-        wrap.innerHTML = '<div class="form-success"><div class="check">✓</div><h3>Pedido recebido.</h3><p>' + (result.body.message || 'Voltamos em 24h úteis.') + '</p></div>';
+        wrap.innerHTML = ''
+          + '<div class="form-success">'
+          +   '<div class="check">✓</div>'
+          +   '<h3>Pedido recebido.</h3>'
+          +   '<p>' + (result.body.message || 'Voltamos em 24h úteis.') + '</p>'
+          + '</div>'
+          + '<div class="booking-embed">'
+          +   '<p class="booking-eyebrow">Adiantar agora</p>'
+          +   '<h4>Escolha o seu horário para a chamada de 30 min</h4>'
+          +   '<iframe src="' + bookingUrl + '" title="Reservar reunião com Daniel Devera" loading="lazy" style="width:100%;min-height:720px;border:0;display:block;background:#fff;"></iframe>'
+          + '</div>';
         if (typeof window.gtag === 'function') {
           window.gtag('event', 'lead_submit', { event_category: 'empresas', event_label: 'form' });
         }
