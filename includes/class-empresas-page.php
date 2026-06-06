@@ -949,21 +949,11 @@ HTML;
         nocache_headers();
         header( 'Content-Type: text/html; charset=UTF-8' );
 
-        // Add body class so empresas CSS can be scoped under .empresas-page selector.
-        add_filter( 'body_class', [ __CLASS__, 'add_body_class' ] );
-        // Inject our meta tags into theme <head> (high priority — before theme defaults).
-        add_action( 'wp_head', [ __CLASS__, 'emit_head_meta' ], 1 );
-        // Inject our scoped CSS LATE so it overrides theme styles where they collide.
-        add_action( 'wp_head', [ __CLASS__, 'emit_inline_css' ], PHP_INT_MAX );
-        // Late JS to swap the theme logo for the EDIT. for Business lockup.
-        add_action( 'wp_footer', [ __CLASS__, 'emit_logo_swap_js' ], PHP_INT_MAX );
-
-        // WP theme chrome: outputs <!DOCTYPE>, <html>, <head> (with wp_head), <body>, site nav.
-        get_header();
-        // Empresas page body (sections only — our custom header/footer markup stripped).
-        self::emit_body();
-        // WP theme footer: outputs site footer + wp_footer + closing tags.
-        get_footer();
+        // Approved design = custom inline header (V2 EDIT. lockup + "for business"
+        // stacked) + custom footer. Theme integration via get_header/get_footer was
+        // attempted v1.5.326–328 but fought our cinematic hero layout (font cascade,
+        // logo selector misses, hero overlap). Reverted to emit_html() in v1.5.329.
+        self::emit_html();
         exit;
     }
 
