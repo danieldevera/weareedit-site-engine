@@ -565,7 +565,7 @@ class EDIT_Empresas_Page {
      * Cached 12h. Returns null if API call fails.
      */
     private static function discover_brevo_deal_attribute_meta( string $api_key ): ?array {
-        $cache_key = 'edit_empresas_brevo_deal_attr_meta_v5';
+        $cache_key = 'edit_empresas_brevo_deal_attr_meta_v6';
         $cached    = get_transient( $cache_key );
         if ( is_array( $cached ) && ! empty( $cached ) ) return $cached;
 
@@ -603,10 +603,15 @@ class EDIT_Empresas_Page {
                         continue;
                     }
                     if ( is_array( $opt ) ) {
-                        $lbl = (string) ( $opt['label'] ?? $opt['name'] ?? '' );
-                        $val = (string) ( $opt['value'] ?? $opt['id'] ?? $lbl );
-                        if ( $lbl === '' && $val === '' ) continue;
-                        $options[] = [ 'label' => $lbl !== '' ? $lbl : $val, 'value' => $val !== '' ? $val : $lbl ];
+                        // Brevo's deal-attr option shape: { key: "<id>", value: "<display>" }.
+                        // Send the key; match user-facing form input against the display value.
+                        $display = (string) ( $opt['value'] ?? $opt['label'] ?? $opt['name'] ?? '' );
+                        $id      = (string) ( $opt['key'] ?? $opt['id'] ?? $display );
+                        if ( $display === '' && $id === '' ) continue;
+                        $options[] = [
+                            'label' => $display !== '' ? $display : $id,
+                            'value' => $id !== ''      ? $id      : $display,
+                        ];
                     }
                 }
             }
