@@ -955,6 +955,8 @@ HTML;
         add_action( 'wp_head', [ __CLASS__, 'emit_head_meta' ], 1 );
         // Inject our scoped CSS LATE so it overrides theme styles where they collide.
         add_action( 'wp_head', [ __CLASS__, 'emit_inline_css' ], PHP_INT_MAX );
+        // Late JS to swap the theme logo for the EDIT. for Business lockup.
+        add_action( 'wp_footer', [ __CLASS__, 'emit_logo_swap_js' ], PHP_INT_MAX );
 
         // WP theme chrome: outputs <!DOCTYPE>, <html>, <head> (with wp_head), <body>, site nav.
         get_header();
@@ -963,6 +965,38 @@ HTML;
         // WP theme footer: outputs site footer + wp_footer + closing tags.
         get_footer();
         exit;
+    }
+
+    /**
+     * JS-based logo swap. CSS `content: url()` only works when the selector
+     * matches the theme's specific markup; this is more robust — it grabs the
+     * first <img> inside the page header (excluding the yellow CTA button area)
+     * and swaps src to the empresas lockup.
+     */
+    public static function emit_logo_swap_js(): void {
+        $logo_url = esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-empresas-lockup-white.svg' );
+        echo <<<HTML
+<script>
+(function(){
+  function swap(){
+    var hdr = document.querySelector('header[role="banner"], #masthead, header.site-header, .site-header, header.header, #header, body > header');
+    if (!hdr) return;
+    var img = hdr.querySelector('img');
+    if (!img) return;
+    img.src = '{$logo_url}';
+    img.removeAttribute('srcset');
+    img.style.height = '36px';
+    img.style.width = 'auto';
+    img.style.maxWidth = '180px';
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', swap);
+  } else {
+    swap();
+  }
+})();
+</script>
+HTML;
     }
 
     /**
@@ -1036,25 +1070,46 @@ body.empresas-page textarea {
   font-family: 'SctoGroteskA', 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
 }
 
-/* Logo swap in the theme top bar — replace the EDIT. master mark with the
-   EDIT. for Business lockup, scoped to this body class only. */
-body.empresas-page header .logo img,
-body.empresas-page header a[rel~="home"] img,
-body.empresas-page header .site-logo img,
-body.empresas-page header .brand img,
-body.empresas-page #masthead img.custom-logo,
-body.empresas-page .site-header img.custom-logo {
-  content: url('{$logo_url}') !important;
-  height: 40px !important;
-  width: auto !important;
+/* Top bar — black background so white EDIT. for Business lockup is visible. */
+body.empresas-page header,
+body.empresas-page .site-header,
+body.empresas-page #masthead,
+body.empresas-page #header,
+body.empresas-page header[role="banner"] {
+  background: #0a0a0a !important;
+}
+body.empresas-page header a:not(.cta-yellow):not([class*="connosco"]),
+body.empresas-page .site-header a:not(.cta-yellow):not([class*="connosco"]) {
+  color: #fff !important;
 }
 
 /* Strip any residual whitespace the theme adds above our hero. */
 body.empresas-page main,
 body.empresas-page #primary,
-body.empresas-page #content {
+body.empresas-page #content,
+body.empresas-page .site-content,
+body.empresas-page .site-main {
   padding-top: 0 !important;
   margin-top: 0 !important;
+  max-width: none !important;
+  width: 100% !important;
+}
+
+/* Hero typography — pin sizing under .empresas-page so theme defaults
+   can't shrink/regress the approved layout. */
+body.empresas-page .hero h1 {
+  font-size: clamp(40px, 6.4vw, 88px) !important;
+  line-height: 0.98 !important;
+  letter-spacing: -0.035em !important;
+  font-weight: 700 !important;
+  max-width: 16ch !important;
+  color: #fff !important;
+}
+body.empresas-page .hero .eyebrow {
+  color: var(--edit-yellow, #ffdd06) !important;
+}
+body.empresas-page .hero .lede {
+  color: rgba(255,255,255,0.85) !important;
 }
 CSS;
 
