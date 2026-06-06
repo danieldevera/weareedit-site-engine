@@ -2260,6 +2260,21 @@ a { color: inherit; text-decoration: none; }
     })
     .then(function(result) {
       if (result.ok && result.body.status === 'ok') {
+        // Pre-fill Brevo Reuniões with data the user just gave us — no double entry.
+        // Brevo doesn't publish its exact param names, so we send several common variants;
+        // unknown params are ignored.
+        function enc(s) { return encodeURIComponent(s || ''); }
+        var nameParts = String(data.nome || '').trim().split(/\s+/);
+        var fname = nameParts[0] || '';
+        var lname = nameParts.slice(1).join(' ');
+        var prefillQs = ''
+          + 'email='     + enc(data.email)
+          + '&firstname=' + enc(fname)
+          + '&lastname='  + enc(lname)
+          + '&name='      + enc(data.nome)
+          + '&company='   + enc(data.empresa);
+        var iframeSrc = bookingUrl + (bookingUrl.indexOf('?') === -1 ? '?' : '&') + prefillQs;
+
         var wrap = form.parentElement;
         wrap.innerHTML = ''
           + '<div class="form-success">'
@@ -2270,7 +2285,7 @@ a { color: inherit; text-decoration: none; }
           + '<div class="booking-embed">'
           +   '<p class="booking-eyebrow">Adiantar agora</p>'
           +   '<h4>Escolha o seu horário para a chamada de 30 min</h4>'
-          +   '<iframe src="' + bookingUrl + '" title="Reservar reunião com Daniel Devera" loading="lazy" style="width:100%;min-height:720px;border:0;display:block;background:#fff;"></iframe>'
+          +   '<iframe src="' + iframeSrc + '" title="Reservar reunião com Daniel Devera" loading="lazy" style="width:100%;min-height:720px;border:0;display:block;background:#fff;"></iframe>'
           + '</div>';
         if (typeof window.gtag === 'function') {
           window.gtag('event', 'lead_submit', { event_category: 'empresas', event_label: 'form' });
