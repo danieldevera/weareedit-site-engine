@@ -1199,13 +1199,20 @@ a { color: inherit; text-decoration: none; }
 
 /* ── HERO ────────────────────────────────────────────────────────── */
 .hero {
-  padding: 80px 0 80px 0;
-  background: #fff;
+  position: relative;
+  min-height: 86vh;
+  display: flex;
+  align-items: flex-end;
+  color: #fff;
+  padding: 140px 0 80px 0;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.35) 50%, rgba(0,0,0,0.82) 100%),
+    url('<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/empresas-hero.jpg' ); ?>') center 30% / cover no-repeat #0a0a0a;
 }
 .hero .eyebrow {
   font-size: 12px; font-weight: 700;
   letter-spacing: 0.22em; text-transform: uppercase;
-  color: var(--grey-3);
+  color: var(--edit-yellow);
   margin: 0 0 24px 0;
 }
 .hero h1 {
@@ -1213,11 +1220,13 @@ a { color: inherit; text-decoration: none; }
   line-height: 0.98;
   letter-spacing: -0.035em;
   font-weight: 700;
+  color: #fff;
   margin: 0 0 28px 0;
   max-width: 16ch;
 }
 .hero h1 .accent {
   background: var(--edit-yellow);
+  color: var(--ink);
   padding: 0 0.08em;
   border-radius: 4px;
   white-space: nowrap;
@@ -1225,12 +1234,25 @@ a { color: inherit; text-decoration: none; }
 .hero .lede {
   font-size: clamp(17px, 1.5vw, 21px);
   line-height: 1.45;
-  color: var(--grey-4);
+  color: rgba(255,255,255,0.85);
   max-width: 60ch;
   margin: 0 0 40px 0;
 }
+.hero .lede strong { color: #fff; }
 .hero .ctas {
   display: flex; gap: 12px; flex-wrap: wrap;
+}
+.hero .btn-secondary {
+  color: #fff;
+  border-color: rgba(255,255,255,0.4);
+}
+.hero .btn-secondary:hover {
+  border-color: #fff;
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+@media (max-width: 768px) {
+  .hero { min-height: 78vh; padding: 110px 0 56px 0; }
 }
 .btn {
   display: inline-block;
