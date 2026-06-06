@@ -370,25 +370,91 @@ class EDIT_Empresas_Page {
     }
 
     /**
-     * Push deal to Brevo Sales Hub — STUBBED.
+     * Auto-discover the Brevo Empresas Inbound pipeline + first stage IDs by NAME.
      *
-     * Activates the moment Daniel sets BREVO_PIPELINE_ID and BREVO_STAGE_ID
-     * constants above. Until then this is a no-op and returns null so the
-     * form still works (just falls back to email-only delivery).
+     * Avoids the dev-pain of extracting IDs from Brevo's UI. The plugin calls
+     * GET /crm/v3/pipelines once, finds the pipeline named "Empresas Inbound",
+     * picks the first stage as the entry point (Novo Lead), caches both in a
+     * transient for 12 hours. Future pipeline renames / reorders auto-adapt.
      *
-     * Reuses the Brevo API key from the existing wp_options entry the
-     * EDIT_Brevo_Mail_Router class already consumes — no new config needed.
-     *
-     * @return string|null  Brevo deal ID on success, null otherwise.
+     * @return array|null  ['pipeline' => '...', 'stage' => '...'] or null on failure
      */
-    private static function post_to_brevo( array $data ): ?string {
-        if ( empty( self::BREVO_PIPELINE_ID ) || empty( self::BREVO_STAGE_ID ) ) {
-            return null;
+    private static function discover_brevo_pipeline_ids( string $api_key ): ?array {
+        $cache_key = 'edit_empresas_brevo_pipeline_ids';
+        $cached    = get_transient( $cache_key );
+        if ( is_array( $cached ) && ! empty( $cached['pipeline'] ) && ! empty( $cached['stage'] ) ) {
+            return $cached;
         }
 
+        $res = wp_remote_get( 'https://api.brevo.com/crm/v3/pipelines', [
+            'timeout' => 8,
+            'headers' => [
+                'api-key' => $api_key,
+                'Accept'  => 'application/json',
+            ],
+        ] );
+        if ( is_wp_error( $res ) ) return null;
+        if ( wp_remote_retrieve_response_code( $res ) !== 200 ) return null;
+
+        $body = json_decode( wp_remote_retrieve_body( $res ), true );
+        if ( ! is_array( $body ) ) return null;
+
+        // Brevo returns either a top-level array of pipelines or a wrapper { items: [...] }.
+        $pipelines = isset( $body[0] ) ? $body : ( $body['items'] ?? $body['pipelines'] ?? [] );
+        if ( ! is_array( $pipelines ) ) return null;
+
+        foreach ( $pipelines as $pipeline ) {
+            $name = $pipeline['pipeline_name'] ?? $pipeline['name'] ?? '';
+            if ( strcasecmp( trim( $name ), 'Empresas Inbound' ) !== 0 ) continue;
+
+            $pipeline_id = (string) ( $pipeline['pipeline'] ?? $pipeline['id'] ?? '' );
+            $stages      = $pipeline['stages'] ?? $pipeline['deal_stages'] ?? [];
+            if ( empty( $pipeline_id ) || empty( $stages ) || ! is_array( $stages ) ) continue;
+
+            // First non-closed stage is "Novo Lead" — pick that as entry point.
+            $stage_id = '';
+            foreach ( $stages as $stage ) {
+                $stage_name = $stage['name'] ?? '';
+                $sid        = (string) ( $stage['id'] ?? '' );
+                if ( empty( $sid ) ) continue;
+                if ( strcasecmp( trim( $stage_name ), 'Novo Lead' ) === 0 ) { $stage_id = $sid; break; }
+                if ( empty( $stage_id ) ) $stage_id = $sid; // fallback: first stage
+            }
+            if ( empty( $stage_id ) ) continue;
+
+            $ids = [ 'pipeline' => $pipeline_id, 'stage' => $stage_id ];
+            set_transient( $cache_key, $ids, 12 * HOUR_IN_SECONDS );
+            return $ids;
+        }
+
+        return null;
+    }
+
+    /**
+     * Push deal to Brevo Sales Hub.
+     *
+     * Two-step: (1) upsert contact via /v3/contacts, (2) create deal via /crm/v3/deals.
+     * Pipeline + first stage IDs are auto-discovered by name "Empresas Inbound"
+     * via discover_brevo_pipeline_ids() — see that method's docblock.
+     *
+     * Reuses the Brevo API key from wp_options the existing EDIT_Brevo_Mail_Router
+     * class already consumes — no new config needed.
+     *
+     * @return string|null  Brevo deal ID on success, null otherwise (form falls back to email-only).
+     */
+    private static function post_to_brevo( array $data ): ?string {
         // Reuse Brevo API key from existing plugin config.
         $api_key = get_option( 'edit_brevo_api_key' );
         if ( empty( $api_key ) ) return null;
+
+        // Auto-discover pipeline + stage IDs by name (cached 12h).
+        // Manual override: set BREVO_PIPELINE_ID + BREVO_STAGE_ID consts above to skip discovery.
+        if ( ! empty( self::BREVO_PIPELINE_ID ) && ! empty( self::BREVO_STAGE_ID ) ) {
+            $ids = [ 'pipeline' => self::BREVO_PIPELINE_ID, 'stage' => self::BREVO_STAGE_ID ];
+        } else {
+            $ids = self::discover_brevo_pipeline_ids( $api_key );
+            if ( ! $ids ) return null; // Discovery failed (IP block / pipeline not found / API down).
+        }
 
         // 1) Upsert the contact via /v3/contacts.
         $contact_attrs = [
@@ -414,8 +480,8 @@ class EDIT_Empresas_Page {
         // 2) Create the deal in the Empresas Inbound pipeline.
         $deal_name = sprintf( '%s — %s (%s)', $data['empresa'], $data['cargo'], $data['size'] );
         $deal_attrs = [
-            'pipeline'           => self::BREVO_PIPELINE_ID,
-            'deal_stage'         => self::BREVO_STAGE_ID,
+            'pipeline'           => $ids['pipeline'],
+            'deal_stage'         => $ids['stage'],
             'empresas_cargo'     => $data['cargo'],
             'empresas_size'      => $data['size'],
             'empresas_timeline'  => $data['timeline'],
