@@ -393,7 +393,8 @@ class EDIT_Empresas_Page {
             return $cached;
         }
 
-        $res = wp_remote_get( 'https://api.brevo.com/crm/v3/pipelines', [
+        // Correct Brevo CRM endpoint (no /v3 prefix on Sales Hub routes).
+        $res = wp_remote_get( 'https://api.brevo.com/crm/pipeline/details/list', [
             'timeout' => 8,
             'headers' => [
                 'api-key' => $api_key,
@@ -409,6 +410,7 @@ class EDIT_Empresas_Page {
         $body = json_decode( $raw, true );
         if ( ! is_array( $body ) ) return 'fail:discovery_bad_json';
 
+        // Endpoint returns top-level array of pipeline objects.
         $pipelines = isset( $body[0] ) ? $body : ( $body['items'] ?? $body['pipelines'] ?? [] );
         if ( ! is_array( $pipelines ) || empty( $pipelines ) ) {
             $snippet = mb_substr( preg_replace( '/\s+/', ' ', $raw ), 0, 120 );
@@ -421,6 +423,7 @@ class EDIT_Empresas_Page {
             $available_names[] = $name;
             if ( strcasecmp( trim( $name ), 'Empresas Inbound' ) !== 0 ) continue;
 
+            // Brevo returns the pipeline ID in the `pipeline` field (legacy) or `id`.
             $pipeline_id = (string) ( $pipeline['pipeline'] ?? $pipeline['id'] ?? '' );
             $stages      = $pipeline['stages'] ?? $pipeline['deal_stages'] ?? [];
             if ( empty( $pipeline_id ) ) return 'fail:discovery_no_pipeline_id';
@@ -562,7 +565,7 @@ class EDIT_Empresas_Page {
             'empresas_source'    => 'website',
         ];
 
-        $deal_res = wp_remote_post( 'https://api.brevo.com/crm/v3/deals', [
+        $deal_res = wp_remote_post( 'https://api.brevo.com/crm/deals', [
             'timeout' => 8,
             'headers' => [
                 'api-key'      => $api_key,
