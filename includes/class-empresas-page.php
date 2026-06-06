@@ -688,18 +688,21 @@ class EDIT_Empresas_Page {
                 if ( ! $meta || empty( $meta['slug'] ) ) continue;
 
                 // For Múltipla escolha attrs (have options), find best match by
-                // dash/whitespace-insensitive normalization, then wrap in an array
-                // — Brevo expects [ "value" ] for multi-choice attrs even when the
-                // selection is a single value.
+                // dash/whitespace-insensitive normalization. If no Brevo option
+                // matches, SKIP this field — sending an unknown option string
+                // makes the whole deal API call fail with 400. Better to land the
+                // deal with the matched fields and surface the gap separately.
                 if ( ! empty( $meta['options'] ) ) {
-                    $target = self::normalize_option_value( $value );
+                    $target  = self::normalize_option_value( $value );
+                    $matched = '';
                     foreach ( $meta['options'] as $opt ) {
                         if ( self::normalize_option_value( $opt ) === $target ) {
-                            $value = $opt;
+                            $matched = $opt;
                             break;
                         }
                     }
-                    $deal_attrs[ $meta['slug'] ] = [ $value ];
+                    if ( $matched === '' ) continue; // skip — no matching Brevo option
+                    $deal_attrs[ $meta['slug'] ] = [ $matched ];
                 } else {
                     $deal_attrs[ $meta['slug'] ] = $value;
                 }
