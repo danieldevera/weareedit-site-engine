@@ -295,9 +295,16 @@ class EDIT_Empresas_Page {
                             $meta = $meta_map[ $key ] ?? null;
                             if ( ! $meta ) { $diag[] = $label . '=missing'; continue; }
                             $type = $meta['type'] ?? '?';
-                            $nopt = count( $meta['options'] ?? [] );
-                            $diag[] = sprintf( '%s[%s:%s/opt=%d]', $label, $meta['slug'], $type, $nopt );
+                            $opts = $meta['options'] ?? [];
+                            $opts_snippet = '';
+                            if ( ! empty( $opts ) ) {
+                                $opts_snippet = '=[' . implode( '|', array_slice( $opts, 0, 6 ) ) . ']';
+                            }
+                            $diag[] = sprintf( '%s[%s:%s/opt=%d%s]', $label, $meta['slug'], $type, count( $opts ), $opts_snippet );
                         }
+                        // Dump all discovered labels so we see anything we couldn't match by name.
+                        $all_labels = array_keys( $meta_map );
+                        $diag[] = 'ALL_LABELS=' . implode( ',', array_slice( $all_labels, 0, 40 ) );
                     }
                 }
             }
@@ -558,7 +565,7 @@ class EDIT_Empresas_Page {
      * Cached 12h. Returns null if API call fails.
      */
     private static function discover_brevo_deal_attribute_meta( string $api_key ): ?array {
-        $cache_key = 'edit_empresas_brevo_deal_attr_meta_v3';
+        $cache_key = 'edit_empresas_brevo_deal_attr_meta_v4';
         $cached    = get_transient( $cache_key );
         if ( is_array( $cached ) && ! empty( $cached ) ) return $cached;
 
