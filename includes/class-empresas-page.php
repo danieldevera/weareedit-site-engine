@@ -499,6 +499,90 @@ class EDIT_Empresas_Page {
     }
 
     /**
+     * Normalize a Brevo attribute label for case/accent-insensitive matching.
+     * Lowercase + strip combining marks so "Urgência" matches "urgencia".
+     */
+    private static function normalize_attr_label( string $label ): string {
+        $label = trim( $label );
+        if ( function_exists( 'transliterator_transliterate' ) ) {
+            $stripped = transliterator_transliterate( 'Any-Latin; Latin-ASCII;', $label );
+            if ( is_string( $stripped ) ) $label = $stripped;
+        }
+        return mb_strtolower( $label );
+    }
+
+    /**
+     * Loosely normalize a value for option-matching. Lowercase, strip accents,
+     * strip ALL hyphens/dashes/whitespace so "1-10 pessoas", "1–10 pessoas",
+     * "1 10 pessoas", and "110pessoas" all collapse to the same key.
+     */
+    private static function normalize_option_value( string $s ): string {
+        $s = trim( $s );
+        if ( function_exists( 'transliterator_transliterate' ) ) {
+            $t = transliterator_transliterate( 'Any-Latin; Latin-ASCII;', $s );
+            if ( is_string( $t ) ) $s = $t;
+        }
+        $s = mb_strtolower( $s );
+        $s = preg_replace( '/[\s\-\x{2013}\x{2014}]+/u', '', $s );
+        return (string) $s;
+    }
+
+    /**
+     * Auto-discover Brevo deal attribute metadata by label name. Returns map
+     *   normalized-label => [ 'slug' => internalName, 'options' => [string,...] ]
+     * (options only populated for Múltipla escolha / select-type attrs).
+     * Cached 12h. Returns null if API call fails.
+     */
+    private static function discover_brevo_deal_attribute_meta( string $api_key ): ?array {
+        $cache_key = 'edit_empresas_brevo_deal_attr_meta_v2';
+        $cached    = get_transient( $cache_key );
+        if ( is_array( $cached ) && ! empty( $cached ) ) return $cached;
+
+        $res = wp_remote_get( 'https://api.brevo.com/v3/crm/attributes/deals', [
+            'timeout' => 8,
+            'headers' => [
+                'api-key' => $api_key,
+                'Accept'  => 'application/json',
+            ],
+        ] );
+        if ( is_wp_error( $res ) ) return null;
+        if ( wp_remote_retrieve_response_code( $res ) !== 200 ) return null;
+
+        $body = json_decode( wp_remote_retrieve_body( $res ), true );
+        if ( ! is_array( $body ) ) return null;
+        $items = isset( $body[0] ) ? $body : ( $body['items'] ?? $body['attributes'] ?? [] );
+        if ( ! is_array( $items ) ) return null;
+
+        $map = [];
+        foreach ( $items as $attr ) {
+            $label = (string) ( $attr['label'] ?? '' );
+            $slug  = (string) ( $attr['internalName'] ?? $attr['name'] ?? '' );
+            if ( $label === '' || $slug === '' ) continue;
+
+            $options = [];
+            $raw_opts = $attr['attributeOptions'] ?? $attr['options'] ?? [];
+            if ( is_array( $raw_opts ) ) {
+                foreach ( $raw_opts as $opt ) {
+                    if ( is_string( $opt ) ) { $options[] = $opt; continue; }
+                    if ( is_array( $opt ) ) {
+                        $cand = $opt['label'] ?? $opt['value'] ?? $opt['name'] ?? '';
+                        if ( $cand !== '' ) $options[] = (string) $cand;
+                    }
+                }
+            }
+
+            $map[ self::normalize_attr_label( $label ) ] = [
+                'slug'    => $slug,
+                'options' => $options,
+            ];
+        }
+        if ( empty( $map ) ) return null;
+
+        set_transient( $cache_key, $map, 12 * HOUR_IN_SECONDS );
+        return $map;
+    }
+
+    /**
      * Push deal to Brevo Sales Hub.
      *
      * Two-step: (1) upsert contact via /v3/contacts, (2) create deal via /crm/v3/deals.
@@ -574,19 +658,54 @@ class EDIT_Empresas_Page {
         }
 
         // 2) Create the deal in the Empresas Inbound pipeline.
-        // NOTE: Custom deal attrs (empresas_*) must be pre-registered in Brevo Sales Hub
-        // before they can be sent here. Until they are, we pack everything into the deal
-        // name + linked contact (which carries CARGO, EMPRESA, NOME, EMPRESAS_SOURCE).
         $name_parts = [ $data['empresa'], $data['cargo'], $data['size'] ];
         if ( ! empty( $data['timeline'] ) ) $name_parts[] = $data['timeline'];
         $deal_name = implode( ' · ', $name_parts );
 
+        // Baseline attrs always required.
+        $deal_attrs = [
+            'pipeline'   => $ids['pipeline'],
+            'deal_stage' => $ids['stage'],
+        ];
+
+        // Try to enrich with custom attributes — auto-discover slugs by label.
+        // If discovery fails or attrs aren't registered yet, fall back to baseline.
+        $meta_map = self::discover_brevo_deal_attribute_meta( $api_key );
+        if ( is_array( $meta_map ) ) {
+            // field => [ Brevo attr label, raw form value ]
+            $field_map = [
+                [ 'Cargo',                       $data['cargo'] ],
+                [ 'Tamanho da equipa',           $data['size'] ],
+                [ 'Urgência',                    $data['timeline'] ?? '' ],
+                [ 'Áreas de interesse',          implode( ', ', (array) ( $data['areas'] ?? [] ) ) ],
+                [ 'Origem do lead',              'Website' ],
+                [ 'Descrição da oportunidade',   $data['mensagem'] ?? '' ],
+            ];
+            foreach ( $field_map as [ $label, $value ] ) {
+                $value = (string) $value;
+                if ( $value === '' ) continue;
+                $meta = $meta_map[ self::normalize_attr_label( $label ) ] ?? null;
+                if ( ! $meta || empty( $meta['slug'] ) ) continue;
+
+                // For Múltipla escolha attrs (have options), find best match by
+                // dash/whitespace-insensitive normalization. Falls back to the raw
+                // value if no Brevo option matches (Brevo will reject — log will show).
+                if ( ! empty( $meta['options'] ) ) {
+                    $target = self::normalize_option_value( $value );
+                    foreach ( $meta['options'] as $opt ) {
+                        if ( self::normalize_option_value( $opt ) === $target ) {
+                            $value = $opt;
+                            break;
+                        }
+                    }
+                }
+                $deal_attrs[ $meta['slug'] ] = $value;
+            }
+        }
+
         $deal_payload = [
             'name'       => $deal_name,
-            'attributes' => [
-                'pipeline'   => $ids['pipeline'],
-                'deal_stage' => $ids['stage'],
-            ],
+            'attributes' => $deal_attrs,
         ];
         if ( $contact_id > 0 ) {
             $deal_payload['linkedContactsIds'] = [ $contact_id ];
