@@ -383,21 +383,23 @@ class EDIT_Empresas_Page {
         $empresa_clean = rtrim( $data['empresa'], '.' );
 
         $body  = "Olá " . $data['nome'] . ",\n\n";
-        $body .= "Recebemos o vosso pedido para " . $empresa_clean . ". Obrigado pelo interesse.\n\n";
-        $body .= "Quer adiantar? Reserve já um horário para a chamada de descoberta de 30 min:\n";
+        $body .= "Sou o Daniel Devera, fundador da EDIT. Recebi o vosso pedido para " . $empresa_clean . " — obrigado pelo interesse.\n\n";
+        $body .= "Eu próprio respondo a todos os pedidos vindos pela empresas.weareedit.io. ";
+        $body .= "Em 24 horas úteis contacto-vos para agendar uma conversa de 30 minutos onde percebemos o vosso contexto, equipa e objetivos. ";
+        $body .= "Depois desenhamos juntos um programa à medida do vosso setor.\n\n";
+        $body .= "Se quiser adiantar, pode reservar já um horário aqui:\n";
         $body .= self::BOOKING_URL . "\n\n";
-        $body .= "Caso prefira, em 24 horas úteis alguém da nossa equipa contacta para agendar. ";
-        $body .= "Depois desenhamos um programa à medida do vosso setor, da vossa equipa e do vosso contexto.\n\n";
-        $body .= "Se for urgente, escreva diretamente para empresas@weareedit.io.\n\n";
+        $body .= "Para qualquer coisa urgente, responda diretamente a este email.\n\n";
         $body .= "Cumprimentos,\n";
-        $body .= "Equipa EDIT.\n\n";
+        $body .= "Daniel Devera\n\n";
         $body .= "—\n";
+        $body .= "Daniel Devera · Fundador, EDIT.\n";
         $body .= "EDIT. — Disruptive Digital Education\n";
         $body .= "Entidade Formadora Certificada DGERT nº 18391\n";
         $body .= "https://weareedit.io\n";
 
         $headers = [
-            'From: EDIT. para Empresas <' . self::ADMIN_EMAIL . '>',
+            'From: Daniel Devera (EDIT.) <' . self::ADMIN_EMAIL . '>',
             'Reply-To: ' . self::ADMIN_EMAIL,
             'X-Mailer: weareedit-site-engine/empresas',
         ];
