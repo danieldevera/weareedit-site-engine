@@ -86,6 +86,9 @@ class EDIT_Empresas_Page {
     const ADMIN_EMAIL_FALLBACK  = 'geral@weareedit.io';
     const RATE_LIMIT_PER_HOUR   = 20;
 
+    // Brevo Reuniões booking link offered in the lead auto-reply email.
+    const BOOKING_URL           = 'https://meet.brevo.com/daniel-devera';
+
     /**
      * Brevo Sales Hub integration — STUBBED until Daniel creates the
      * "Empresas Inbound" pipeline and provides the IDs. Setting both
@@ -381,7 +384,9 @@ class EDIT_Empresas_Page {
 
         $body  = "Olá " . $data['nome'] . ",\n\n";
         $body .= "Recebemos o vosso pedido para " . $empresa_clean . ". Obrigado pelo interesse.\n\n";
-        $body .= "Em 24 horas úteis, alguém da nossa equipa contacta para uma chamada de descoberta de 30 minutos. ";
+        $body .= "Quer adiantar? Reserve já um horário para a chamada de descoberta de 30 min:\n";
+        $body .= self::BOOKING_URL . "\n\n";
+        $body .= "Caso prefira, em 24 horas úteis alguém da nossa equipa contacta para agendar. ";
         $body .= "Depois desenhamos um programa à medida do vosso setor, da vossa equipa e do vosso contexto.\n\n";
         $body .= "Se for urgente, escreva diretamente para empresas@weareedit.io.\n\n";
         $body .= "Cumprimentos,\n";
