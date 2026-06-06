@@ -473,11 +473,28 @@ class EDIT_Empresas_Page {
      * keep a single source of truth.
      * ────────────────────────────────────────────────────────────────── */
 
+    /**
+     * Empresas-specific client logo list — all converted to black-on-transparent
+     * PNGs, bundled in plugin assets/img/clients/. Avoids the original CDN's
+     * white-on-transparent and white-on-black variants that don't render
+     * cleanly on a light-bg page.
+     */
     private static function clients(): array {
-        if ( class_exists( 'EDIT_Formacao_Corporativa_Page' ) ) {
-            return EDIT_Formacao_Corporativa_Page::CLIENTS;
-        }
-        return [];
+        $base = WEAREDIT_SITE_ENGINE_URL . 'assets/img/clients/';
+        return [
+            [ 'name' => 'Pfizer',              'slug' => 'pfizer',     'logo' => $base . 'pfizer-header.png' ],
+            [ 'name' => 'FNAC',                'slug' => 'fnac',       'logo' => $base . 'fnac-header.png' ],
+            [ 'name' => 'Adidas',              'slug' => 'adidas',     'logo' => $base . 'adidas-header.png' ],
+            [ 'name' => 'Galp',                'slug' => 'galp',       'logo' => $base . 'galp-header.png' ],
+            [ 'name' => 'Worten',              'slug' => 'worten',     'logo' => $base . 'worten-header.png' ],
+            [ 'name' => 'CM Porto',            'slug' => 'cm-porto',   'logo' => $base . 'porto-cm-1.png' ],
+            [ 'name' => 'Nestlé',              'slug' => 'nestle',     'logo' => $base . 'nestle-logo-1.png' ],
+            [ 'name' => 'TAP Air Portugal',    'slug' => 'tap',        'logo' => $base . 'tap-air-portugal-1.png' ],
+            [ 'name' => 'Altice',              'slug' => 'altice',     'logo' => $base . 'altice-logo.png' ],
+            [ 'name' => 'Sonae MC',            'slug' => 'sonae-mc',   'logo' => $base . 'sonae-mc-1.png' ],
+            [ 'name' => 'Santa Casa',          'slug' => 'santa-casa', 'logo' => $base . 'santa-casa.png' ],
+            [ 'name' => 'Governo de Portugal', 'slug' => 'governo',    'logo' => $base . 'governo-de-portugal.png' ],
+        ];
     }
 
     private static function value_props(): array {
@@ -773,12 +790,10 @@ a { color: inherit; text-decoration: none; }
 .logo-cell img {
   max-width: 100%; max-height: 100%;
   object-fit: contain;
-  filter: grayscale(100%) brightness(0.7);
-  opacity: 0.78;
-  transition: filter 0.2s ease, opacity 0.2s ease;
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
 }
 .logo-cell:hover img {
-  filter: none;
   opacity: 1;
 }
 
