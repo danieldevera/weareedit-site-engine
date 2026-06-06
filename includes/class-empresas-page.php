@@ -949,8 +949,92 @@ HTML;
         nocache_headers();
         header( 'Content-Type: text/html; charset=UTF-8' );
 
-        self::emit_html();
+        // Add body class so empresas CSS can be scoped under .empresas-page selector.
+        add_filter( 'body_class', [ __CLASS__, 'add_body_class' ] );
+        // Inject our meta tags into theme <head> (high priority — before theme defaults).
+        add_action( 'wp_head', [ __CLASS__, 'emit_head_meta' ], 1 );
+        // Inject our scoped CSS LATE so it overrides theme styles where they collide.
+        add_action( 'wp_head', [ __CLASS__, 'emit_inline_css' ], PHP_INT_MAX );
+
+        // WP theme chrome: outputs <!DOCTYPE>, <html>, <head> (with wp_head), <body>, site nav.
+        get_header();
+        // Empresas page body (sections only — our custom header/footer markup stripped).
+        self::emit_body();
+        // WP theme footer: outputs site footer + wp_footer + closing tags.
+        get_footer();
         exit;
+    }
+
+    /**
+     * Add 'empresas-page' to body classes so the page-specific CSS can be
+     * scoped under that selector + win specificity vs theme defaults.
+     */
+    public static function add_body_class( array $classes ): array {
+        $classes[] = 'empresas-page';
+        return $classes;
+    }
+
+    /**
+     * Captured emit_html() output, generated once per request and reused.
+     * The big emit_html() method outputs a full HTML doc; the helpers below
+     * slice out the head/CSS/body portions we need to hand off to the theme.
+     */
+    private static function captured_emit_html(): string {
+        static $cache = null;
+        if ( $cache !== null ) return $cache;
+        ob_start();
+        self::emit_html();
+        $cache = ob_get_clean();
+        return $cache;
+    }
+
+    /**
+     * Emit empresas-specific meta tags (title/description/OG/canonical/JSON-LD)
+     * inside the theme's <head>. Strips out the doctype/html/head wrappers and
+     * keeps just the meta children.
+     */
+    public static function emit_head_meta(): void {
+        $full = self::captured_emit_html();
+        // Pull what's inside <head>...</head>, drop the <style> block since
+        // emit_inline_css() emits that separately at a later wp_head priority.
+        if ( ! preg_match( '/<head[^>]*>(.*?)<\/head>/s', $full, $m ) ) return;
+        $head = $m[1];
+        $head = preg_replace( '/<style\b.*?<\/style>/s', '', $head );
+        // Avoid duplicating tags the theme already sets — charset, viewport, generator.
+        $head = preg_replace( '/<meta\s+charset[^>]*>/i', '', $head );
+        $head = preg_replace( '/<meta\s+name=["\']viewport["\'][^>]*>/i', '', $head );
+        echo $head;
+    }
+
+    /**
+     * Emit the empresas inline CSS block scoped under .empresas-page body class
+     * so it beats theme styles via specificity without needing !important.
+     */
+    public static function emit_inline_css(): void {
+        $full = self::captured_emit_html();
+        if ( ! preg_match( '/<style\b[^>]*>(.*?)<\/style>/s', $full, $m ) ) return;
+        $css = $m[1];
+        // Open new <style> with the scoped CSS.
+        echo "<style id=\"empresas-page-css\">\n" . $css . "\n</style>";
+    }
+
+    /**
+     * Emit the empresas body content (sections only). Strips:
+     *   - everything outside <body>…</body>
+     *   - our custom <header class="site-header"> (theme provides it)
+     *   - our custom <footer class="site-footer"> (theme provides it)
+     *   - GTM noscript (theme provides it via wp_body_open if needed)
+     */
+    public static function emit_body(): void {
+        $full = self::captured_emit_html();
+        if ( ! preg_match( '/<body\b[^>]*>(.*)<\/body>/s', $full, $m ) ) return;
+        $body = $m[1];
+        // Strip the custom header/footer markup — theme provides chrome.
+        $body = preg_replace( '/<header\s+class="site-header"[^>]*>.*?<\/header>/s', '', $body );
+        $body = preg_replace( '/<footer\s+class="site-footer"[^>]*>.*?<\/footer>/s', '', $body );
+        // Strip GTM noscript (theme should already have its own GTM block).
+        $body = preg_replace( '/<noscript><iframe\s+src="https:\/\/www\.googletagmanager\.com\/ns\.html[^"]+"[^>]*><\/iframe><\/noscript>/s', '', $body );
+        echo $body;
     }
 
     /* ─────────────────────────────────────────────────────────────────────
