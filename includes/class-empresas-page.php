@@ -393,8 +393,8 @@ class EDIT_Empresas_Page {
             return $cached;
         }
 
-        // Correct Brevo CRM endpoint (no /v3 prefix on Sales Hub routes).
-        $res = wp_remote_get( 'https://api.brevo.com/crm/pipeline/details/list', [
+        // Brevo Sales Hub: list all pipelines.
+        $res = wp_remote_get( 'https://api.brevo.com/v3/crm/pipeline/details/all', [
             'timeout' => 8,
             'headers' => [
                 'api-key' => $api_key,
@@ -565,7 +565,7 @@ class EDIT_Empresas_Page {
             'empresas_source'    => 'website',
         ];
 
-        $deal_res = wp_remote_post( 'https://api.brevo.com/crm/deals', [
+        $deal_res = wp_remote_post( 'https://api.brevo.com/v3/crm/deals', [
             'timeout' => 8,
             'headers' => [
                 'api-key'      => $api_key,
