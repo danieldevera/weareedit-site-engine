@@ -1851,6 +1851,29 @@ a { color: inherit; text-decoration: none; }
   max-width: 40ch;
   margin-left: auto; margin-right: auto;
 }
+/* Success state: collapse the 2-column grid so the calendar gets full width. */
+.lead-grid.is-success {
+  display: block;
+  max-width: 980px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 48px 56px 56px 56px;
+  border-radius: 0;
+}
+.lead-grid.is-success .form-success {
+  text-align: center;
+  padding: 8px 0 32px 0;
+  border-bottom: 1px solid #e5e5e2;
+  margin-bottom: 0;
+}
+.lead-grid.is-success .form-success p {
+  max-width: 52ch;
+}
+.lead-grid.is-success .booking-embed {
+  margin-top: 32px;
+  padding-top: 0;
+  border-top: 0;
+}
 .booking-embed {
   margin-top: 32px;
   padding-top: 32px;
@@ -1866,20 +1889,21 @@ a { color: inherit; text-decoration: none; }
 }
 .booking-embed h4 {
   margin: 0 0 20px 0;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--ink);
   letter-spacing: -0.01em;
 }
 .booking-embed iframe {
   width: 100%;
-  min-height: 720px;
+  min-height: 820px;
   border: 0;
   display: block;
   background: #fff;
 }
-@media (max-width: 600px) {
-  .booking-embed iframe { min-height: 820px; }
+@media (max-width: 768px) {
+  .lead-grid.is-success { padding: 32px 20px 40px 20px; }
+  .booking-embed iframe { min-height: 900px; }
 }
 
 @media (max-width: 880px) {
@@ -2286,8 +2310,11 @@ a { color: inherit; text-decoration: none; }
           + '&COMPANY='     + enc(data.empresa);
         var iframeSrc = bookingUrl + (bookingUrl.indexOf('?') === -1 ? '?' : '&') + prefillQs;
 
-        var wrap = form.parentElement;
-        wrap.innerHTML = ''
+        // Replace the WHOLE 2-column grid (not just the form column) so the
+        // calendar embed gets the full container width to breathe.
+        var grid = form.closest('.lead-grid') || form.parentElement;
+        grid.classList.add('is-success');
+        grid.innerHTML = ''
           + '<div class="form-success">'
           +   '<div class="check">✓</div>'
           +   '<h3>Pedido recebido.</h3>'
@@ -2296,7 +2323,7 @@ a { color: inherit; text-decoration: none; }
           + '<div class="booking-embed">'
           +   '<p class="booking-eyebrow">Adiantar agora</p>'
           +   '<h4>Escolha o seu horário para a chamada de 30 min</h4>'
-          +   '<iframe src="' + iframeSrc + '" title="Reservar reunião com Daniel Devera" loading="lazy" style="width:100%;min-height:720px;border:0;display:block;background:#fff;"></iframe>'
+          +   '<iframe src="' + iframeSrc + '" title="Reservar reunião com Daniel Devera" loading="lazy"></iframe>'
           + '</div>';
         if (typeof window.gtag === 'function') {
           window.gtag('event', 'lead_submit', { event_category: 'empresas', event_label: 'form' });
