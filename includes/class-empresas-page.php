@@ -969,7 +969,8 @@ HTML;
      * and swaps src to the empresas lockup.
      */
     public static function emit_logo_swap_js(): void {
-        $logo_url = esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-empresas-lockup-white.svg' );
+        // BLACK lockup (approved) for the WHITE top bar.
+        $logo_url = esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-empresas-lockup-black.svg' );
         echo <<<HTML
 <script>
 (function(){
@@ -1065,17 +1066,24 @@ body.empresas-page textarea {
   font-family: 'SctoGroteskA', 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
 }
 
-/* Top bar — black background so white EDIT. for Business lockup is visible. */
+/* Top bar — WHITE background (approved). EDIT. for Business lockup in BLACK on white. */
 body.empresas-page header,
 body.empresas-page .site-header,
 body.empresas-page #masthead,
 body.empresas-page #header,
 body.empresas-page header[role="banner"] {
-  background: #0a0a0a !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid #ececec !important;
 }
 body.empresas-page header a:not(.cta-yellow):not([class*="connosco"]),
 body.empresas-page .site-header a:not(.cta-yellow):not([class*="connosco"]) {
-  color: #fff !important;
+  color: #0a0a0a !important;
+}
+/* SVG / icon strokes default to dark on the white bar. */
+body.empresas-page header svg,
+body.empresas-page header path {
+  fill: #0a0a0a !important;
+  stroke: #0a0a0a !important;
 }
 
 /* Strip any residual whitespace the theme adds above our hero. */
