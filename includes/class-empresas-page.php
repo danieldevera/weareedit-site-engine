@@ -548,22 +548,49 @@ class EDIT_Empresas_Page {
         ] );
         if ( is_wp_error( $contact_res ) ) return 'fail:contact_wp_error';
         $contact_code = wp_remote_retrieve_response_code( $contact_res );
-        // 201 = created, 204 = updated, others = failed (but we continue trying the deal anyway)
-        // Only hard-fail on 401/403 (auth/IP) since those mean nothing downstream will work either.
         if ( $contact_code === 401 || $contact_code === 403 ) return 'fail:contact_' . $contact_code;
 
+        // Capture contact ID from upsert response — needed to link the deal.
+        // 201 returns { id }, 204 (existing contact) returns empty body — we need a follow-up GET.
+        $contact_id = 0;
+        $contact_body = json_decode( wp_remote_retrieve_body( $contact_res ), true );
+        if ( is_array( $contact_body ) && ! empty( $contact_body['id'] ) ) {
+            $contact_id = (int) $contact_body['id'];
+        } elseif ( $contact_code === 204 ) {
+            // Existing contact — fetch their ID by email.
+            $lookup = wp_remote_get( 'https://api.brevo.com/v3/contacts/' . rawurlencode( $data['email'] ), [
+                'timeout' => 8,
+                'headers' => [
+                    'api-key' => $api_key,
+                    'Accept'  => 'application/json',
+                ],
+            ] );
+            if ( ! is_wp_error( $lookup ) && wp_remote_retrieve_response_code( $lookup ) === 200 ) {
+                $lookup_body = json_decode( wp_remote_retrieve_body( $lookup ), true );
+                if ( is_array( $lookup_body ) && ! empty( $lookup_body['id'] ) ) {
+                    $contact_id = (int) $lookup_body['id'];
+                }
+            }
+        }
+
         // 2) Create the deal in the Empresas Inbound pipeline.
-        $deal_name  = sprintf( '%s — %s (%s)', $data['empresa'], $data['cargo'], $data['size'] );
-        $deal_attrs = [
-            'pipeline'           => $ids['pipeline'],
-            'deal_stage'         => $ids['stage'],
-            'empresas_cargo'     => $data['cargo'],
-            'empresas_size'      => $data['size'],
-            'empresas_timeline'  => $data['timeline'],
-            'empresas_areas'     => implode( ', ', $data['areas'] ),
-            'empresas_mensagem'  => $data['mensagem'],
-            'empresas_source'    => 'website',
+        // NOTE: Custom deal attrs (empresas_*) must be pre-registered in Brevo Sales Hub
+        // before they can be sent here. Until they are, we pack everything into the deal
+        // name + linked contact (which carries CARGO, EMPRESA, NOME, EMPRESAS_SOURCE).
+        $name_parts = [ $data['empresa'], $data['cargo'], $data['size'] ];
+        if ( ! empty( $data['timeline'] ) ) $name_parts[] = $data['timeline'];
+        $deal_name = implode( ' · ', $name_parts );
+
+        $deal_payload = [
+            'name'       => $deal_name,
+            'attributes' => [
+                'pipeline'   => $ids['pipeline'],
+                'deal_stage' => $ids['stage'],
+            ],
         ];
+        if ( $contact_id > 0 ) {
+            $deal_payload['linkedContactsIds'] = [ $contact_id ];
+        }
 
         $deal_res = wp_remote_post( 'https://api.brevo.com/v3/crm/deals', [
             'timeout' => 8,
@@ -572,11 +599,7 @@ class EDIT_Empresas_Page {
                 'Content-Type' => 'application/json',
                 'Accept'       => 'application/json',
             ],
-            'body'    => wp_json_encode( [
-                'name'              => $deal_name,
-                'attributes'        => $deal_attrs,
-                'linkedContactsIds' => [],
-            ] ),
+            'body'    => wp_json_encode( $deal_payload ),
         ] );
 
         if ( is_wp_error( $deal_res ) ) return 'fail:deal_wp_error';
