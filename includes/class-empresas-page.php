@@ -1014,8 +1014,51 @@ HTML;
         $full = self::captured_emit_html();
         if ( ! preg_match( '/<style\b[^>]*>(.*?)<\/style>/s', $full, $m ) ) return;
         $css = $m[1];
-        // Open new <style> with the scoped CSS.
-        echo "<style id=\"empresas-page-css\">\n" . $css . "\n</style>";
+
+        // Theme integration overrides: scoped under body.empresas-page so they
+        // win specificity vs theme defaults without leaking to other pages.
+        $logo_url = esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-empresas-lockup-white.svg' );
+        $overrides = <<<CSS
+
+/* ── EMPRESAS THEME OVERRIDES (v1.5.327+) ─────────────────────────── */
+body.empresas-page,
+body.empresas-page h1,
+body.empresas-page h2,
+body.empresas-page h3,
+body.empresas-page h4,
+body.empresas-page h5,
+body.empresas-page p,
+body.empresas-page a,
+body.empresas-page button,
+body.empresas-page input,
+body.empresas-page select,
+body.empresas-page textarea {
+  font-family: 'SctoGroteskA', 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+}
+
+/* Logo swap in the theme top bar — replace the EDIT. master mark with the
+   EDIT. for Business lockup, scoped to this body class only. */
+body.empresas-page header .logo img,
+body.empresas-page header a[rel~="home"] img,
+body.empresas-page header .site-logo img,
+body.empresas-page header .brand img,
+body.empresas-page #masthead img.custom-logo,
+body.empresas-page .site-header img.custom-logo {
+  content: url('{$logo_url}') !important;
+  height: 40px !important;
+  width: auto !important;
+}
+
+/* Strip any residual whitespace the theme adds above our hero. */
+body.empresas-page main,
+body.empresas-page #primary,
+body.empresas-page #content {
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+CSS;
+
+        echo "<style id=\"empresas-page-css\">\n" . $css . "\n" . $overrides . "\n</style>";
     }
 
     /**
@@ -1034,6 +1077,8 @@ HTML;
         $body = preg_replace( '/<footer\s+class="site-footer"[^>]*>.*?<\/footer>/s', '', $body );
         // Strip GTM noscript (theme should already have its own GTM block).
         $body = preg_replace( '/<noscript><iframe\s+src="https:\/\/www\.googletagmanager\.com\/ns\.html[^"]+"[^>]*><\/iframe><\/noscript>/s', '', $body );
+        // Strip the preview banner (Daniel can see admin bar for env signal).
+        $body = preg_replace( '/<div\s+class="preview-banner"[^>]*>.*?<\/div>/s', '', $body );
         echo $body;
     }
 
