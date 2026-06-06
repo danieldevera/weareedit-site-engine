@@ -274,8 +274,8 @@ class EDIT_Empresas_Page {
         $admin_sent = self::send_admin_mail( $data );
         $user_sent  = self::send_user_mail( $data );
 
-        // Brevo deal — currently stubbed (returns null until pipeline ID is set).
-        $brevo_deal_id = self::post_to_brevo( $data );
+        // Brevo deal — returns deal ID on success, or "fail:<reason>" on failure.
+        $brevo_result = self::post_to_brevo( $data );
 
         // Log to CF7 Debug Log if available.
         if ( class_exists( 'EDIT_CF7_Debug' ) ) {
@@ -290,7 +290,7 @@ class EDIT_Empresas_Page {
                 'timeline'   => $data['timeline'],
                 'admin_mail' => $admin_sent ? 'sent' : 'failed',
                 'user_mail'  => $user_sent ? 'sent' : 'failed',
-                'brevo_deal' => $brevo_deal_id ?: 'skipped',
+                'brevo_deal' => $brevo_result,
                 'ip'         => $data['ip'],
             ] );
         }
@@ -379,6 +379,71 @@ class EDIT_Empresas_Page {
      *
      * @return array|null  ['pipeline' => '...', 'stage' => '...'] or null on failure
      */
+    /**
+     * Verbose variant of discover_brevo_pipeline_ids — returns either an
+     * ['pipeline'=>..., 'stage'=>...] array on success, or a string tagged
+     * with the specific failure reason for diagnostic logging.
+     *
+     * @return array|string
+     */
+    private static function discover_brevo_pipeline_ids_verbose( string $api_key ) {
+        $cache_key = 'edit_empresas_brevo_pipeline_ids';
+        $cached    = get_transient( $cache_key );
+        if ( is_array( $cached ) && ! empty( $cached['pipeline'] ) && ! empty( $cached['stage'] ) ) {
+            return $cached;
+        }
+
+        $res = wp_remote_get( 'https://api.brevo.com/crm/v3/pipelines', [
+            'timeout' => 8,
+            'headers' => [
+                'api-key' => $api_key,
+                'Accept'  => 'application/json',
+            ],
+        ] );
+        if ( is_wp_error( $res ) ) return 'fail:discovery_wp_error';
+
+        $code = wp_remote_retrieve_response_code( $res );
+        if ( $code !== 200 ) return 'fail:discovery_http_' . $code;
+
+        $raw  = wp_remote_retrieve_body( $res );
+        $body = json_decode( $raw, true );
+        if ( ! is_array( $body ) ) return 'fail:discovery_bad_json';
+
+        $pipelines = isset( $body[0] ) ? $body : ( $body['items'] ?? $body['pipelines'] ?? [] );
+        if ( ! is_array( $pipelines ) || empty( $pipelines ) ) {
+            $snippet = mb_substr( preg_replace( '/\s+/', ' ', $raw ), 0, 120 );
+            return 'fail:discovery_no_pipelines:' . $snippet;
+        }
+
+        $available_names = [];
+        foreach ( $pipelines as $pipeline ) {
+            $name = $pipeline['pipeline_name'] ?? $pipeline['name'] ?? '';
+            $available_names[] = $name;
+            if ( strcasecmp( trim( $name ), 'Empresas Inbound' ) !== 0 ) continue;
+
+            $pipeline_id = (string) ( $pipeline['pipeline'] ?? $pipeline['id'] ?? '' );
+            $stages      = $pipeline['stages'] ?? $pipeline['deal_stages'] ?? [];
+            if ( empty( $pipeline_id ) ) return 'fail:discovery_no_pipeline_id';
+            if ( empty( $stages ) || ! is_array( $stages ) ) return 'fail:discovery_no_stages';
+
+            $stage_id = '';
+            foreach ( $stages as $stage ) {
+                $stage_name = $stage['name'] ?? '';
+                $sid        = (string) ( $stage['id'] ?? '' );
+                if ( empty( $sid ) ) continue;
+                if ( strcasecmp( trim( $stage_name ), 'Novo Lead' ) === 0 ) { $stage_id = $sid; break; }
+                if ( empty( $stage_id ) ) $stage_id = $sid;
+            }
+            if ( empty( $stage_id ) ) return 'fail:discovery_no_stage_id';
+
+            $ids = [ 'pipeline' => $pipeline_id, 'stage' => $stage_id ];
+            set_transient( $cache_key, $ids, 12 * HOUR_IN_SECONDS );
+            return $ids;
+        }
+
+        return 'fail:discovery_pipeline_not_found:' . implode( '|', array_slice( $available_names, 0, 5 ) );
+    }
+
     private static function discover_brevo_pipeline_ids( string $api_key ): ?array {
         $cache_key = 'edit_empresas_brevo_pipeline_ids';
         $cached    = get_transient( $cache_key );
@@ -442,19 +507,20 @@ class EDIT_Empresas_Page {
      *
      * @return string|null  Brevo deal ID on success, null otherwise (form falls back to email-only).
      */
-    private static function post_to_brevo( array $data ): ?string {
+    private static function post_to_brevo( array $data ): string {
         // Reuse Brevo API key from existing plugin config (same source the mail router uses).
         $settings = get_option( 'edit_seo_fix_settings', [] );
         $api_key  = trim( (string) ( $settings['brevo_api_key'] ?? '' ) );
-        if ( $api_key === '' ) return null;
+        if ( $api_key === '' ) return 'fail:no_api_key';
 
         // Auto-discover pipeline + stage IDs by name (cached 12h).
         // Manual override: set BREVO_PIPELINE_ID + BREVO_STAGE_ID consts above to skip discovery.
         if ( ! empty( self::BREVO_PIPELINE_ID ) && ! empty( self::BREVO_STAGE_ID ) ) {
             $ids = [ 'pipeline' => self::BREVO_PIPELINE_ID, 'stage' => self::BREVO_STAGE_ID ];
         } else {
-            $ids = self::discover_brevo_pipeline_ids( $api_key );
-            if ( ! $ids ) return null; // Discovery failed (IP block / pipeline not found / API down).
+            $discovery = self::discover_brevo_pipeline_ids_verbose( $api_key );
+            if ( is_string( $discovery ) ) return $discovery; // tagged failure
+            $ids = $discovery;
         }
 
         // 1) Upsert the contact via /v3/contacts.
@@ -464,7 +530,7 @@ class EDIT_Empresas_Page {
             'CARGO'            => $data['cargo'],
             'EMPRESAS_SOURCE'  => 'empresas.weareedit.io',
         ];
-        wp_remote_post( 'https://api.brevo.com/v3/contacts', [
+        $contact_res = wp_remote_post( 'https://api.brevo.com/v3/contacts', [
             'timeout' => 8,
             'headers' => [
                 'api-key'      => $api_key,
@@ -477,9 +543,14 @@ class EDIT_Empresas_Page {
                 'updateEnabled' => true,
             ] ),
         ] );
+        if ( is_wp_error( $contact_res ) ) return 'fail:contact_wp_error';
+        $contact_code = wp_remote_retrieve_response_code( $contact_res );
+        // 201 = created, 204 = updated, others = failed (but we continue trying the deal anyway)
+        // Only hard-fail on 401/403 (auth/IP) since those mean nothing downstream will work either.
+        if ( $contact_code === 401 || $contact_code === 403 ) return 'fail:contact_' . $contact_code;
 
         // 2) Create the deal in the Empresas Inbound pipeline.
-        $deal_name = sprintf( '%s — %s (%s)', $data['empresa'], $data['cargo'], $data['size'] );
+        $deal_name  = sprintf( '%s — %s (%s)', $data['empresa'], $data['cargo'], $data['size'] );
         $deal_attrs = [
             'pipeline'           => $ids['pipeline'],
             'deal_stage'         => $ids['stage'],
@@ -499,19 +570,22 @@ class EDIT_Empresas_Page {
                 'Accept'       => 'application/json',
             ],
             'body'    => wp_json_encode( [
-                'name'       => $deal_name,
-                'attributes' => $deal_attrs,
-                'linkedContactsIds' => [], // Will be linked via contact email after creation
+                'name'              => $deal_name,
+                'attributes'        => $deal_attrs,
+                'linkedContactsIds' => [],
             ] ),
         ] );
 
-        if ( is_wp_error( $deal_res ) ) return null;
+        if ( is_wp_error( $deal_res ) ) return 'fail:deal_wp_error';
 
         $code = wp_remote_retrieve_response_code( $deal_res );
-        if ( $code < 200 || $code >= 300 ) return null;
+        if ( $code < 200 || $code >= 300 ) {
+            $body_snippet = mb_substr( (string) wp_remote_retrieve_body( $deal_res ), 0, 120 );
+            return 'fail:deal_' . $code . ':' . preg_replace( '/\s+/', ' ', $body_snippet );
+        }
 
         $body = json_decode( wp_remote_retrieve_body( $deal_res ), true );
-        return $body['id'] ?? null;
+        return $body['id'] ?? 'fail:deal_no_id';
     }
 
     /**
