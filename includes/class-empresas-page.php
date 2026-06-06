@@ -949,11 +949,16 @@ HTML;
         nocache_headers();
         header( 'Content-Type: text/html; charset=UTF-8' );
 
-        // Approved design = custom inline header (V2 EDIT. lockup + "for business"
-        // stacked) + custom footer. Theme integration via get_header/get_footer was
-        // attempted v1.5.326–328 but fought our cinematic hero layout (font cascade,
-        // logo selector misses, hero overlap). Reverted to emit_html() in v1.5.329.
-        self::emit_html();
+        // v1.5.330: re-enable theme integration. Theme chrome wraps; empresas body
+        // content renders inside with v1.5.329 visual fidelity via scoped CSS.
+        add_filter( 'body_class', [ __CLASS__, 'add_body_class' ] );
+        add_action( 'wp_head',   [ __CLASS__, 'emit_head_meta' ], 1 );
+        add_action( 'wp_head',   [ __CLASS__, 'emit_inline_css' ], PHP_INT_MAX );
+        add_action( 'wp_footer', [ __CLASS__, 'emit_logo_swap_js' ], PHP_INT_MAX );
+
+        get_header();
+        self::emit_body();
+        get_footer();
         exit;
     }
 
