@@ -84,7 +84,7 @@ class EDIT_Empresas_Page {
     const REST_ROUTE            = '/lead-empresas';
     const ADMIN_EMAIL           = 'empresas@weareedit.io';
     const ADMIN_EMAIL_FALLBACK  = 'geral@weareedit.io';
-    const RATE_LIMIT_PER_HOUR   = 5;
+    const RATE_LIMIT_PER_HOUR   = 20;
 
     /**
      * Brevo Sales Hub integration — STUBBED until Daniel creates the
@@ -237,17 +237,20 @@ class EDIT_Empresas_Page {
             ], 400 );
         }
 
-        // Per-IP rate limit.
-        $ip     = self::client_ip();
-        $rl_key = 'edit_empresas_rl_' . md5( $ip );
-        $count  = (int) get_transient( $rl_key );
-        if ( $count >= self::RATE_LIMIT_PER_HOUR ) {
-            return new WP_REST_Response( [
-                'status'  => 'error',
-                'message' => 'Demasiadas tentativas. Tente novamente dentro de uma hora.',
-            ], 429 );
+        // Per-IP rate limit. Admins bypass for testing.
+        $ip       = self::client_ip();
+        $is_admin = is_user_logged_in() && current_user_can( 'manage_options' );
+        if ( ! $is_admin ) {
+            $rl_key = 'edit_empresas_rl_' . md5( $ip );
+            $count  = (int) get_transient( $rl_key );
+            if ( $count >= self::RATE_LIMIT_PER_HOUR ) {
+                return new WP_REST_Response( [
+                    'status'  => 'error',
+                    'message' => 'Demasiadas tentativas. Tente novamente dentro de uma hora.',
+                ], 429 );
+            }
+            set_transient( $rl_key, $count + 1, HOUR_IN_SECONDS );
         }
-        set_transient( $rl_key, $count + 1, HOUR_IN_SECONDS );
 
         // Sanitize.
         $areas = isset( $params['areas'] ) && is_array( $params['areas'] )
