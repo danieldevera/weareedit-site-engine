@@ -1394,11 +1394,13 @@ body.empresas-page .hero .ctas .btn.swipe-cta .swipe-label {
 body.empresas-page .hero .ctas .btn.swipe-cta:hover .swipe-label {
   color: #ffdd06 !important;
 }
-/* "Financiamento" notation — small label sitting above the second CTA,
-   visually grouping the secondary button as the financing pathway. */
-body.empresas-page .hero .ctas .empresas-cta-secondary {
+/* "Financiamento" notation — wrapped around the secondary CTA so the
+   button itself can keep its overflow: hidden (required for swipe-cta
+   layers to stay clipped inside). The notation sits in the wrapper,
+   positioned absolute above the button. */
+body.empresas-page .hero .ctas .cta-wrap {
   position: relative !important;
-  overflow: visible !important;
+  display: inline-block !important;
 }
 body.empresas-page .hero .ctas .cta-notation {
   position: absolute !important;
@@ -1410,6 +1412,7 @@ body.empresas-page .hero .ctas .cta-notation {
   text-transform: uppercase !important;
   color: var(--edit-yellow, #ffdd06) !important;
   pointer-events: none !important;
+  white-space: nowrap !important;
 }
 CSS;
 
@@ -2716,13 +2719,15 @@ button {
         <span class="swipe-layer swipe-black"></span>
         <span class="swipe-label">Pedir Proposta</span>
       </a>
-      <a href="#financiamento" class="btn btn-yellow swipe-cta empresas-cta-secondary">
+      <span class="cta-wrap">
         <span class="cta-notation">Financiamento</span>
-        <span class="swipe-layer swipe-pink"></span>
-        <span class="swipe-layer swipe-teal"></span>
-        <span class="swipe-layer swipe-black"></span>
-        <span class="swipe-label">Fundos de Compensação</span>
-      </a>
+        <a href="#financiamento" class="btn btn-yellow swipe-cta empresas-cta-secondary">
+          <span class="swipe-layer swipe-pink"></span>
+          <span class="swipe-layer swipe-teal"></span>
+          <span class="swipe-layer swipe-black"></span>
+          <span class="swipe-label">Fundos de Compensação</span>
+        </a>
+      </span>
     </div>
   </div>
 </section>
