@@ -1198,31 +1198,32 @@ body.empresas-page header a[href*="formacao-digital-para-empresas"] {
   display: none !important;
 }
 
-/* Hamburger box outline — matches main site's black-outlined square box.
-   The JS DOM walk above adds .empresas-menu-btn to the hamburger element
-   (theme class names are unpredictable). */
+/* Hamburger: 3 stacked horizontal lines, NO box outline (matches main
+   weareedit.io header — image #29 reference from user). Architecture:
+   single ::after = middle bar, top + bottom bars via box-shadow offsets.
+   More reliable than multi-layer linear-gradient backgrounds (v1.5.357's
+   approach showed only 1 bar in image #27).
+
+   Sizing: button 26x22 (close to search-icon footprint), bars 22px wide ×
+   2px tall, separation 7px between bar centres → top bar at y=4, middle
+   at y=11, bottom at y=18 within 22px height. currentColor drives state. */
 body.empresas-page .empresas-menu-btn,
 body.empresas-page header .empresas-menu-btn {
-  border: 2px solid #0a0a0a !important;
+  border: 0 !important;
   padding: 0 !important;
-  margin-right: 22px !important;
+  margin-right: 18px !important;
   background: transparent !important;
+  background-image: none !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   box-sizing: border-box !important;
-  width: 36px !important;
-  height: 36px !important;
+  width: 26px !important;
+  height: 22px !important;
+  position: relative !important;
+  color: #0a0a0a !important;
 }
-
-/* Hamburger: single source of truth — same architecture as the logo fix.
-   Block every path the theme could use to paint into the button:
-     1. Hide every descendant (.menuButton__inner + anything nested deeper)
-     2. Kill any theme ::before content
-     3. Force background-image: none on the button itself
-   Then draw OUR 3 bars in a ::after that FULLY covers the button interior
-   (inset: 0) with an opaque per-state background. Theme content can't bleed
-   through opaque coverage at z-index 20. */
+/* Hide every theme child + any theme ::before injection */
 body.empresas-page .empresas-menu-btn .menuButton__inner,
 body.empresas-page .empresas-menu-btn * {
   display: none !important;
@@ -1231,38 +1232,29 @@ body.empresas-page .empresas-menu-btn::before {
   content: none !important;
   display: none !important;
 }
-body.empresas-page .empresas-menu-btn {
-  position: relative !important;
-  color: #0a0a0a !important;
-  background-image: none !important;
-  overflow: hidden !important;
-}
+/* Middle bar = ::after. Top + bottom bars = box-shadow offsets. */
 body.empresas-page .empresas-menu-btn::after {
   content: '' !important;
   position: absolute !important;
-  inset: 0 !important;
+  left: 50% !important;
+  top: 50% !important;
+  width: 22px !important;
+  height: 2px !important;
+  transform: translate(-50%, -50%) !important;
+  background: currentColor !important;
+  box-shadow:
+    0 -7px 0 currentColor,
+    0  7px 0 currentColor !important;
+  border-radius: 1px !important;
   pointer-events: none !important;
   z-index: 20 !important;
-  background-color: #ffffff !important;
-  background-image:
-    linear-gradient(currentColor, currentColor),
-    linear-gradient(currentColor, currentColor),
-    linear-gradient(currentColor, currentColor) !important;
-  background-size: 18px 2px !important;
-  background-position: center 30%, center 50%, center 70% !important;
-  background-repeat: no-repeat !important;
 }
-/* Open state: bars switch to white via currentColor, ::after bg goes dark
-   to match the menu overlay so the visual blends seamlessly. */
+/* Open state: bars become white. Menu overlay shows behind directly
+   (no box around them) so no background-color toggle needed. */
 body.empresas-page header[class*="menuOpen"] .empresas-menu-btn,
 body.empresas-page .headerDesktop[class*="menuOpen"] .empresas-menu-btn,
 body.empresas-page .headerMobile[class*="menuOpen"] .empresas-menu-btn {
   color: #ffffff !important;
-}
-body.empresas-page header[class*="menuOpen"] .empresas-menu-btn::after,
-body.empresas-page .headerDesktop[class*="menuOpen"] .empresas-menu-btn::after,
-body.empresas-page .headerMobile[class*="menuOpen"] .empresas-menu-btn::after {
-  background-color: #0a0a0a !important;
 }
 
 /* Search container: theme collapses .headerDesktop__search on menuOpen so
