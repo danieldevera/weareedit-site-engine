@@ -2726,12 +2726,6 @@ button {
     <h1>Forme a sua equipa nas competências <span class="accent">digitais</span> que o futuro exige.</h1>
     <p class="lede">Programas à medida em <strong>IA, Data, UX, Design, Marketing Digital e Programação</strong>. Entregues presencialmente em Lisboa e Porto, nas vossas instalações, ou em formato remoto. Elegíveis para Cheque‑Formação e Fundos de Compensação.</p>
     <div class="ctas">
-      <a href="#contacto" class="btn btn-yellow swipe-cta empresas-cta-primary">
-        <span class="swipe-layer swipe-pink"></span>
-        <span class="swipe-layer swipe-teal"></span>
-        <span class="swipe-layer swipe-black"></span>
-        <span class="swipe-label">Pedir Proposta</span>
-      </a>
       <span class="cta-wrap">
         <span class="cta-notation">Financiamento</span>
         <a href="#financiamento" class="btn btn-yellow swipe-cta empresas-cta-secondary">
@@ -2741,6 +2735,12 @@ button {
           <span class="swipe-label">Fundos de Compensação</span>
         </a>
       </span>
+      <a href="#contacto" class="btn btn-yellow swipe-cta empresas-cta-primary">
+        <span class="swipe-layer swipe-pink"></span>
+        <span class="swipe-layer swipe-teal"></span>
+        <span class="swipe-layer swipe-black"></span>
+        <span class="swipe-label">Discovery Call</span>
+      </a>
     </div>
   </div>
 </section>
