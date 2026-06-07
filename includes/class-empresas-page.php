@@ -969,16 +969,13 @@ HTML;
      * and swaps src to the empresas lockup.
      */
     public static function emit_logo_swap_js(): void {
-        // Inline SVG of the EDIT for business lockup. Single DOM element,
-        // colour controlled via CSS (currentColor cascades into all EDIT
-        // paths + FOR BUSINESS text), yellow dot hard-coded #FFDD06. No
-        // src swap on menu state changes — CSS just flips `color:` and
-        // every fill in the SVG follows. Eliminates the swap-time visual
-        // shift permanently. Source paths copied verbatim from approved
-        // logo-empresas-lockup-black.svg (with #0a0a0a → currentColor).
-        $svg_lockup = '<svg class="empresas-lockup" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 152 62" preserveAspectRatio="xMinYMin meet" aria-label="EDIT. for business" role="img"><defs><path id="el-clip" d="M0 40L151.351 40 151.351 0 0 0z"/></defs><g fill="none" fill-rule="evenodd"><path fill="currentColor" d="M56.596 27.055c3.57 0 6.178-2.69 6.178-6.281 0-3.566-2.608-6.256-6.178-6.256h-3.128v12.537h3.128zM49.922 11.72c0-.276.219-.52.497-.52h6.507c5.3 0 9.637 4.305 9.637 9.574 0 5.32-4.338 9.626-9.637 9.626h-6.507c-.278 0-.497-.246-.497-.521V11.72z"/><mask id="el-mask" fill="#fff"><use href="#el-clip"/></mask><path fill="currentColor" d="M39.396 37.827h35.313V2.174H39.396v35.653zM37.244 40h39.62V0h-39.62v40z" mask="url(#el-mask)"/><path fill="currentColor" d="M2.152 37.827h35.316V2.174H2.152v35.653zM0 40h39.62V0H0v40z" mask="url(#el-mask)"/><path fill="currentColor" d="M14.263 11.72c0-.272.23-.52.54-.52h11.599c.313 0 .54.248.54.52v2.25c0 .276-.227.52-.54.52h-8.434v4.5h7.038c.285 0 .542.246.542.52v2.277c0 .303-.257.522-.542.522h-7.038v4.801h8.434c.313 0 .54.247.54.52v2.25c0 .275-.227.52-.54.52H14.804c-.311 0-.54-.245-.54-.52V11.72z" mask="url(#el-mask)"/><path fill="currentColor" d="M76.638 37.827h35.316V2.174H76.638v35.653zM74.488 40h39.62V0h-39.62v40z" mask="url(#el-mask)"/><path fill="currentColor" d="M91.92 11.72c0-.272.329-.52.688-.52h3.375c.367 0 .692.248.692.52V29.88c0 .274-.325.521-.692.521h-3.375c-.36 0-.688-.247-.688-.521V11.72z" mask="url(#el-mask)"/><path fill="currentColor" d="M113.884 37.827h35.315V2.174h-35.315v35.653zM111.73 40h39.62V0h-39.62v40z" mask="url(#el-mask)"/><path fill="currentColor" d="M129 14.49h-4.084c-.292 0-.507-.246-.507-.52v-2.25c0-.272.215-.52.507-.52h11.663c.295 0 .509.248.509.52v2.25c0 .274-.214.52-.509.52h-4.083v15.388c0 .274-.24.522-.507.522h-2.483c-.265 0-.507-.248-.507-.522V14.491z" mask="url(#el-mask)"/><circle cx="141.04" cy="28" r="2.4" fill="#FFDD06"/></g><text x="3" y="58" style="font-family:\'SctoGroteskA\',sans-serif;font-weight:300;font-size:5.4px;letter-spacing:1.18px;fill:currentColor;text-transform:uppercase;">FOR BUSINESS</text></svg>';
-        // Pass as JSON-encoded string so JS gets it safely as a string literal.
-        $svg_json = wp_json_encode( $svg_lockup );
+        // Dual-PNG opacity-toggle lockup. Both approved FINAL PNGs are
+        // injected at the same time, stacked absolutely. CSS flips opacity
+        // 0↔1 based on the menuOpen class — no src swap, no jump, exact
+        // approved visual design. Black PNG is in normal flow (drives the
+        // wrapper's box size); white is absolutely positioned on top.
+        $logo_url       = esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-empresas-master-lockup.png' );
+        $logo_url_white = esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-empresas-master-lockup-white.png' );
         echo <<<HTML
 <script>
 (function(){
@@ -987,13 +984,17 @@ HTML;
     if (!hdr) return;
     var img = hdr.querySelector('img');
     if (!img) return;
-    // Replace the theme's <img> with our inline SVG lockup. After this
-    // there is NO image swap on menu open/close — the SVG's currentColor
-    // fills inherit from the parent's color property, which CSS flips
-    // between #0a0a0a (closed) and #ffffff (open) based on the menuOpen
-    // class on .headerDesktop. Zero src changes, zero visual shift.
-    var svgMarkup = {$svg_json};
-    img.outerHTML = svgMarkup;
+    // Replace the theme's <img> with a wrapper holding BOTH approved PNGs.
+    // Black PNG drives the wrapper size (position: static); white PNG is
+    // position: absolute on top, opacity 0. CSS toggles opacities on
+    // menuOpen state — both images already rendered, so swap is instant
+    // and zero layout shift.
+    var lockup = document.createElement('span');
+    lockup.className = 'empresas-lockup';
+    lockup.innerHTML =
+      '<img class="lockup-black" src="{$logo_url}" alt="EDIT. for business" loading="eager">' +
+      '<img class="lockup-white" src="{$logo_url_white}" alt="" loading="eager" aria-hidden="true">';
+    img.parentNode.replaceChild(lockup, img);
     // Walk header buttons just to TAG the hamburger with .empresas-menu-btn
     // (theme class names are unpredictable). All colour/filter work is now
     // done via CSS scoped to header:not([class*="menuOpen"]) — see emit_inline_css —
@@ -1254,23 +1255,47 @@ body.empresas-page .headerMobile[class*="menuOpen"] .empresas-menu-btn {
   color: #ffffff !important;
 }
 
-/* Inline SVG logo (v1.5.354). Replaces the PNG <img> swap mechanism.
-   color: cascades into every `currentColor` fill in the SVG, so flipping
-   #0a0a0a ↔ #ffffff between states recolours the entire EDIT lockup +
-   FOR BUSINESS tag instantly. Yellow dot is hard-coded #FFDD06 in the
-   SVG so it stays brand-yellow in both states. Zero swap, zero shift. */
+/* Dual-PNG lockup (v1.5.355). Both approved FINAL PNGs rendered at the
+   same time, stacked absolutely. Opacity toggles per menu state — no src
+   swap, no jump, exact approved design (matches logo-compare-black-vs-white.html). */
 body.empresas-page header .empresas-lockup,
 body.empresas-page .headerDesktop .empresas-lockup,
 body.empresas-page .headerMobile .empresas-lockup {
+  position: relative !important;
+  display: inline-block !important;
+  line-height: 0 !important;
+}
+body.empresas-page header .empresas-lockup img,
+body.empresas-page .headerDesktop .empresas-lockup img,
+body.empresas-page .headerMobile .empresas-lockup img {
   height: 60px !important;
   width: auto !important;
   display: block !important;
-  color: #0a0a0a !important;
+  transition: opacity 180ms ease !important;
 }
-body.empresas-page header[class*="menuOpen"] .empresas-lockup,
-body.empresas-page .headerDesktop[class*="menuOpen"] .empresas-lockup,
-body.empresas-page .headerMobile[class*="menuOpen"] .empresas-lockup {
-  color: #ffffff !important;
+/* Black drives the wrapper's size; white overlays on top. */
+body.empresas-page .empresas-lockup .lockup-black {
+  position: relative !important;
+  opacity: 1 !important;
+}
+body.empresas-page .empresas-lockup .lockup-white {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  opacity: 0 !important;
+}
+/* Menu-open state: flip opacities. Both images stay rendered at
+   identical positions — only their alpha changes — so the visual
+   transition is purely a cross-fade, zero layout shift. */
+body.empresas-page header[class*="menuOpen"] .empresas-lockup .lockup-black,
+body.empresas-page .headerDesktop[class*="menuOpen"] .empresas-lockup .lockup-black,
+body.empresas-page .headerMobile[class*="menuOpen"] .empresas-lockup .lockup-black {
+  opacity: 0 !important;
+}
+body.empresas-page header[class*="menuOpen"] .empresas-lockup .lockup-white,
+body.empresas-page .headerDesktop[class*="menuOpen"] .empresas-lockup .lockup-white,
+body.empresas-page .headerMobile[class*="menuOpen"] .empresas-lockup .lockup-white {
+  opacity: 1 !important;
 }
 /* Wider gap between hamburger and search. */
 body.empresas-page header [aria-label*="search" i],
