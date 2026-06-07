@@ -998,10 +998,13 @@ HTML;
     }
     // Hamburger / search nuke: walk header buttons, blacken via filter +
     // background overrides. Skip the brand anchor + Fala connosco CTA.
+    // Also tag the hamburger with .empresas-menu-btn so CSS can target it
+    // for the box outline (themes use unpredictable class names).
     var allButtons = hdr.querySelectorAll('button, a[role="button"], [class*="toggle"], [aria-label*="menu" i], [aria-label*="navega" i], [aria-label*="search" i], [aria-label*="open" i]');
     for (var k = 0; k < allButtons.length; k++) {
       var btn = allButtons[k];
       var cls = (btn.className && (btn.className.baseVal || btn.className) || '').toString().toLowerCase();
+      var aria = (btn.getAttribute('aria-label') || '').toLowerCase();
       // Skip logo + Fala connosco CTA
       if (cls.indexOf('connosco') > -1 || cls.indexOf('fala') > -1 || cls.indexOf('cta') > -1 || cls.indexOf('brand') > -1) continue;
       if (btn.querySelector && btn.querySelector('img[src*="logo-empresas"]')) continue;
@@ -1010,6 +1013,14 @@ HTML;
       for (var m = 0; m < kids.length; m++) {
         kids[m].style.setProperty('filter', 'brightness(0)', 'important');
         kids[m].style.setProperty('color', '#0a0a0a', 'important');
+      }
+      // If this looks like a hamburger (menu, not search), tag it for the box outline.
+      var isMenu = aria.indexOf('menu') > -1 || aria.indexOf('navega') > -1 ||
+                   cls.indexOf('menu') > -1 || cls.indexOf('hamburger') > -1 ||
+                   cls.indexOf('burger') > -1 || cls.indexOf('toggle') > -1;
+      var isSearch = aria.indexOf('search') > -1 || cls.indexOf('search') > -1;
+      if (isMenu && !isSearch) {
+        btn.classList.add('empresas-menu-btn');
       }
     }
   }
@@ -1144,23 +1155,24 @@ body.empresas-page header a[href*="formacao-digital-para-empresas"] {
   display: none !important;
 }
 
-/* Hamburger box outline + spacing — match main site (where hamburger is in
-   a black-outlined box) AND give breathing room between hamburger and search. */
-body.empresas-page header button[aria-label*="menu" i],
-body.empresas-page header [class*="menu-toggle"],
-body.empresas-page header [class*="hamburger"],
-body.empresas-page header [class*="burger"] {
+/* Hamburger box outline — matches main site's black-outlined square box.
+   The JS DOM walk above adds .empresas-menu-btn to the hamburger element
+   (theme class names are unpredictable). */
+body.empresas-page .empresas-menu-btn,
+body.empresas-page header .empresas-menu-btn {
   border: 2px solid #0a0a0a !important;
   padding: 6px 10px !important;
-  margin-right: 18px !important;
+  margin-right: 22px !important;
   background: transparent !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
+  box-sizing: border-box !important;
 }
+/* Wider gap between hamburger and search. */
 body.empresas-page header [aria-label*="search" i],
 body.empresas-page header [class*="search"]:not(input):not(form) {
-  margin-left: 8px !important;
+  margin-left: 12px !important;
 }
 
 /* Strip any residual whitespace the theme adds above our hero. */
