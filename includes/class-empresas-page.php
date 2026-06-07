@@ -969,9 +969,10 @@ HTML;
      * and swaps src to the empresas lockup.
      */
     public static function emit_logo_swap_js(): void {
-        // Approved + locked empresas lockup (V2 master + FOR BUSINESS tag, baked
-        // into a single trimmed transparent PNG via magick compose).
-        $logo_url = esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-empresas-master-lockup.png' );
+        // Approved + locked empresas lockup (hybrid SVG: V2 master art as
+        // base64-embedded PNG + FOR BUSINESS tag as true SVG text in
+        // SctoGroteskA Thin). Scales infinitely from the SVG container.
+        $logo_url = esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-empresas-master-lockup.svg' );
         echo <<<HTML
 <script>
 (function(){
@@ -982,9 +983,18 @@ HTML;
     if (!img) return;
     img.src = '{$logo_url}';
     img.removeAttribute('srcset');
-    img.style.height = '54px';
-    img.style.width = 'auto';
-    img.style.maxWidth = '230px';
+    img.style.setProperty('height', '60px', 'important');
+    img.style.setProperty('width', 'auto', 'important');
+    img.style.setProperty('max-width', 'none', 'important');
+    img.style.setProperty('max-height', 'none', 'important');
+    img.style.setProperty('object-fit', 'contain', 'important');
+    // Free the parent anchor too — themes often cap logo containers.
+    var anchor = img.closest('a');
+    if (anchor) {
+      anchor.style.setProperty('max-width', 'none', 'important');
+      anchor.style.setProperty('width', 'auto', 'important');
+      anchor.style.setProperty('height', 'auto', 'important');
+    }
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', swap);
