@@ -1082,9 +1082,40 @@ body.empresas-page .site-header a:not(.cta-yellow):not([class*="connosco"]) {
 }
 /* SVG / icon strokes default to dark on the white bar. */
 body.empresas-page header svg,
-body.empresas-page header path {
+body.empresas-page header path,
+body.empresas-page header line,
+body.empresas-page header polyline,
+body.empresas-page header rect {
   fill: #0a0a0a !important;
   stroke: #0a0a0a !important;
+  color: #0a0a0a !important;
+}
+
+/* Hamburger / menu-toggle / nav-toggle — flip CSS-bar variants to black too.
+   Covers most theme conventions: 3 stacked spans inside a button, divs with
+   background-color making the bars, ::before/::after pseudo-bars. */
+body.empresas-page header button,
+body.empresas-page header button span,
+body.empresas-page header [class*="menu-toggle"],
+body.empresas-page header [class*="menu-toggle"] span,
+body.empresas-page header [class*="nav-toggle"],
+body.empresas-page header [class*="nav-toggle"] span,
+body.empresas-page header [class*="hamburger"],
+body.empresas-page header [class*="hamburger"] span,
+body.empresas-page header [aria-label*="menu" i],
+body.empresas-page header [aria-label*="menu" i] span,
+body.empresas-page header [aria-label*="search" i],
+body.empresas-page header [aria-label*="search" i] svg {
+  color: #0a0a0a !important;
+}
+body.empresas-page header button span,
+body.empresas-page header [class*="menu-toggle"] span,
+body.empresas-page header [class*="nav-toggle"] span,
+body.empresas-page header [class*="hamburger"] span,
+body.empresas-page header [class*="hamburger"]::before,
+body.empresas-page header [class*="hamburger"]::after {
+  background-color: #0a0a0a !important;
+  background: #0a0a0a !important;
 }
 
 /* Strip any residual whitespace the theme adds above our hero. */
