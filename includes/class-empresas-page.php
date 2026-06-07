@@ -2066,75 +2066,78 @@ button {
   .areas-grid { grid-template-columns: 1fr; }
 }
 
-/* ── PROCESS — wavy 4-circle infographic (v1.5.377) ──────────────────
-   Full-bleed (sits outside .wrap), wave line crosses all 4 columns,
-   circles alternate top/bottom positions, text blocks alternate above/
-   below with dotted connectors. Each step gets a brand accent colour. */
+/* ── PROCESS — exact infographic replica (v1.5.378) ──────────────────
+   SVG holds the wave bands + white spheres + numbers (scales with viewport).
+   HTML grid overlay holds text blocks alternating above/below the wave. */
 .process {
-  padding: 90px 0 110px 0;
+  padding: 90px 0 100px 0;
 }
-.process-wave {
+.process-wave-v2 {
   position: relative;
   width: 100%;
-  margin-top: 56px;
-  padding: 40px 0;
+  margin-top: 40px;
 }
-.pw-curve {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
+.pw-svg {
+  display: block;
   width: 100%;
-  height: 240px;
-  transform: translateY(-50%);
-  z-index: 1;
-  pointer-events: none;
+  height: auto;
 }
-.pw-steps {
-  list-style: none;
-  margin: 0;
-  padding: 0 40px;
+.pw-grid {
+  position: absolute;
+  inset: 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: 1fr 120px 1fr;
-  gap: 0;
-  position: relative;
-  z-index: 2;
-  align-items: stretch;
+  grid-template-rows: 1fr 1fr;
+  pointer-events: none;
 }
 .pw-step {
-  position: relative;
-  display: grid;
-  grid-template-rows: subgrid;
-  grid-row: 1 / span 3;
-  align-items: stretch;
-  justify-items: center;
-}
-.pw-step--above .pw-content { grid-row: 1; align-self: end; padding-bottom: 18px; }
-.pw-step--below .pw-content { grid-row: 3; align-self: start; padding-top: 18px; }
-.pw-step .pw-circle      { grid-row: 2; align-self: center; }
-.pw-step--above .pw-connector { grid-row: 1; align-self: end; }
-.pw-step--below .pw-connector { grid-row: 3; align-self: start; }
-
-.pw-content {
-  max-width: 260px;
+  padding: 0 20px;
   text-align: center;
-  padding: 0 12px;
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 320px;
+  justify-self: center;
+}
+.pw-step--above {
+  grid-row: 1;
+  align-self: end;
+  padding-bottom: 24px;
+}
+.pw-step--below {
+  grid-row: 2;
+  align-self: start;
+  padding-top: 24px;
+  flex-direction: column-reverse;
+}
+.pw-step:nth-child(1) { grid-column: 1; }
+.pw-step:nth-child(2) { grid-column: 2; }
+.pw-step:nth-child(3) { grid-column: 3; }
+.pw-step:nth-child(4) { grid-column: 4; }
+.pw-dots {
+  display: block;
+  width: 2px;
+  height: 28px;
+  background-image: linear-gradient(to bottom, var(--accent) 50%, transparent 50%);
+  background-size: 2px 6px;
+  background-repeat: repeat-y;
+  opacity: 0.65;
+  margin: 12px 0;
+}
+.pw-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .pw-time {
-  display: inline-block;
-  background: var(--accent, var(--edit-yellow));
-  color: var(--ink);
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  padding: 4px 10px;
-  border-radius: 999px;
-  margin-bottom: 10px;
+  color: var(--accent);
+  margin-bottom: 8px;
 }
-.pw-step--above .pw-time { background: transparent; color: var(--accent); padding-left: 0; padding-right: 0; }
-.pw-step--below .pw-time { background: transparent; color: var(--accent); padding-left: 0; padding-right: 0; }
 .pw-title {
   font-size: 19px;
   font-weight: 700;
@@ -2148,53 +2151,54 @@ button {
   color: var(--grey-4);
   line-height: 1.5;
   margin: 0;
-}
-.pw-connector {
-  display: block;
-  width: 2px;
-  height: 28px;
-  background-image: linear-gradient(to bottom, var(--accent) 50%, transparent 50%);
-  background-size: 2px 6px;
-  background-repeat: repeat-y;
-  opacity: 0.5;
-}
-.pw-circle {
-  width: 88px;
-  height: 88px;
-  border-radius: 50%;
-  background: #fff;
-  border: 6px solid var(--accent);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 26px;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-  position: relative;
-  z-index: 3;
+  max-width: 28ch;
 }
 @media (max-width: 880px) {
-  .pw-curve { display: none; }
-  .pw-steps {
-    grid-template-columns: 1fr;
-    grid-template-rows: none;
+  .process-wave-v2 { margin-top: 24px; }
+  .pw-svg {
+    /* Mobile: hide the SVG wave entirely, show stacked text only */
+    display: none;
+  }
+  .pw-grid {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
     padding: 0 24px;
-    gap: 48px;
   }
   .pw-step,
   .pw-step--above,
   .pw-step--below {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
     grid-row: auto;
+    grid-column: auto;
+    align-self: stretch;
+    text-align: left;
+    align-items: flex-start;
+    max-width: none;
+    padding: 0;
+    flex-direction: column;
   }
-  .pw-step--above .pw-content,
-  .pw-step--below .pw-content { padding: 0; text-align: left; max-width: none; }
-  .pw-step .pw-connector { display: none; }
-  .pw-step .pw-circle { margin-bottom: 16px; }
+  .pw-step--above { padding-bottom: 0; }
+  .pw-step--below { padding-top: 0; }
+  .pw-content { align-items: flex-start; }
+  .pw-body { max-width: none; }
+  .pw-dots { display: none; }
+  .pw-title { font-size: 22px; }
+  /* Mobile: show a coloured number tile in place of the SVG sphere */
+  .pw-step::before {
+    content: attr(data-num);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #fff;
+    border: 4px solid var(--accent);
+    font-weight: 800;
+    color: var(--ink);
+    margin-bottom: 14px;
+  }
 }
 
 /* ── FINANCING ───────────────────────────────────────────────────── */
@@ -2844,29 +2848,62 @@ button {
 </section>
 <?php endif; ?>
 
-<!-- ─── PROCESS — wavy 4-circle infographic, full-bleed (v1.5.377) ───
-   Reference: image #49. Adapted to brand palette (pink → coral → yellow
-   → teal) and our 4-step data. Circles alternate top/bottom on the wave;
-   text alternates above/below with dotted connectors. Wave block sits
-   OUTSIDE .wrap so it spans full viewport width (per user image #50). -->
+<!-- ─── PROCESS — exact infographic replica (v1.5.378) ───────────────
+   Reference: image #51. Thick colored sleeves alternately wrap circles
+   (odd loop under, even loop over). White spheres with drop shadow +
+   gradient. Text alternates above/below the wave. Full-bleed: sits
+   outside .wrap. -->
 <?php if ( ! empty( $process ) ) :
-    $step_colors = [ 'var(--edit-pink)', 'var(--edit-coral)', 'var(--edit-yellow)', 'var(--edit-teal)' ];
+    $step_colors = [ '#f92869', '#ec8172', '#ffdd06', '#60c5b3' ];
 ?>
 <section class="process" id="processo">
   <div class="wrap">
     <p class="section-eyebrow">Como Trabalhamos</p>
     <h2 class="section-title">4 passos. Do briefing à medição de impacto.</h2>
   </div>
-  <div class="process-wave">
-    <svg class="pw-curve" viewBox="0 0 1200 240" preserveAspectRatio="none" aria-hidden="true">
-      <path d="M 0 120 C 100 30, 200 30, 300 120 S 500 210, 600 120 S 800 30, 900 120 S 1100 210, 1200 120" fill="none" stroke="var(--grey-2)" stroke-width="3" />
+  <div class="process-wave-v2">
+    <svg class="pw-svg" viewBox="0 0 1400 400" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <defs>
+        <radialGradient id="pw-sphere" cx="35%" cy="32%" r="72%">
+          <stop offset="0%" stop-color="#ffffff"/>
+          <stop offset="65%" stop-color="#f4f4f4"/>
+          <stop offset="100%" stop-color="#d4d4d4"/>
+        </radialGradient>
+        <filter id="pw-shadow" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="7"/>
+          <feOffset dy="9"/>
+          <feComponentTransfer><feFuncA type="linear" slope="0.28"/></feComponentTransfer>
+          <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <!-- Colored sleeves: 4 segments, each wrapping its circle.
+           Arc radius 105 = circle radius 80 + half stroke 25, so the
+           sleeve's inner edge touches the circle's outer edge. Sweep
+           flag alternates: 0 (under) for circles 1+3, 1 (over) for 2+4. -->
+      <path d="M 0 200 L 95 200 A 105 105 0 0 0 305 200 L 395 200" stroke="<?php echo esc_attr( $step_colors[0] ); ?>" stroke-width="50" fill="none"/>
+      <path d="M 395 200 A 105 105 0 0 1 605 200 L 695 200" stroke="<?php echo esc_attr( $step_colors[1] ); ?>" stroke-width="50" fill="none"/>
+      <path d="M 695 200 A 105 105 0 0 0 905 200 L 995 200" stroke="<?php echo esc_attr( $step_colors[2] ); ?>" stroke-width="50" fill="none"/>
+      <path d="M 995 200 A 105 105 0 0 1 1205 200 L 1400 200" stroke="<?php echo esc_attr( $step_colors[3] ); ?>" stroke-width="50" fill="none"/>
+      <!-- 4 white spheres on top of the band -->
+      <?php
+      $cxs = [ 200, 500, 800, 1100 ];
+      foreach ( $cxs as $cx ) : ?>
+        <circle cx="<?php echo $cx; ?>" cy="200" r="80" fill="url(#pw-sphere)" filter="url(#pw-shadow)"/>
+      <?php endforeach; ?>
+      <!-- Step numbers in circles -->
+      <?php foreach ( $process as $i => $step ) :
+        $cx = $cxs[ $i ] ?? 0;
+      ?>
+        <text x="<?php echo $cx; ?>" y="215" text-anchor="middle" font-family="SctoGroteskA, sans-serif" font-size="44" font-weight="800" fill="#0a0a0a"><?php echo esc_html( $step['number'] ); ?></text>
+      <?php endforeach; ?>
     </svg>
-    <ol class="pw-steps">
+    <div class="pw-grid">
       <?php foreach ( $process as $i => $step ) :
           $color = $step_colors[ $i % 4 ];
           $place = ( $i % 2 === 0 ) ? 'above' : 'below';
       ?>
-        <li class="pw-step pw-step--<?php echo esc_attr( $place ); ?>" style="--accent: <?php echo esc_attr( $color ); ?>;">
+        <div class="pw-step pw-step--<?php echo esc_attr( $place ); ?>" style="--accent: <?php echo esc_attr( $color ); ?>;">
+          <span class="pw-dots" aria-hidden="true"></span>
           <div class="pw-content">
             <?php if ( ! empty( $step['time'] ) ) : ?>
               <span class="pw-time"><?php echo esc_html( $step['time'] ); ?></span>
@@ -2874,11 +2911,9 @@ button {
             <h3 class="pw-title"><?php echo esc_html( $step['title'] ); ?></h3>
             <p class="pw-body"><?php echo esc_html( $step['body'] ); ?></p>
           </div>
-          <span class="pw-connector" aria-hidden="true"></span>
-          <span class="pw-circle"><?php echo esc_html( $step['number'] ); ?></span>
-        </li>
+        </div>
       <?php endforeach; ?>
-    </ol>
+    </div>
   </div>
 </section>
 <?php endif; ?>
