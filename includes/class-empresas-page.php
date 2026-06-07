@@ -1365,6 +1365,52 @@ body.empresas-page .hero .lede {
   color: rgba(255,255,255,0.85) !important;
   max-width: 60ch !important;
 }
+
+/* Hero CTAs — yellow swipe-cta (site-wide standard locked at v1.5.112).
+   Both buttons use the same pink → teal → black sweep with yellow label
+   flip on hover, matching the homepage hero button behaviour. */
+body.empresas-page .hero .ctas {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 16px !important;
+  align-items: center !important;
+}
+body.empresas-page .hero .ctas .btn.swipe-cta {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #ffdd06 !important;
+  color: #0a0a0a !important;
+  border: 0 !important;
+  border-radius: 4px !important;
+  padding: 16px 26px !important;
+  font-weight: 600 !important;
+  font-size: 15px !important;
+  text-decoration: none !important;
+}
+body.empresas-page .hero .ctas .btn.swipe-cta .swipe-label {
+  color: #0a0a0a !important;
+}
+body.empresas-page .hero .ctas .btn.swipe-cta:hover .swipe-label {
+  color: #ffdd06 !important;
+}
+/* "Financiamento" notation — small label sitting above the second CTA,
+   visually grouping the secondary button as the financing pathway. */
+body.empresas-page .hero .ctas .empresas-cta-secondary {
+  position: relative !important;
+  overflow: visible !important;
+}
+body.empresas-page .hero .ctas .cta-notation {
+  position: absolute !important;
+  bottom: calc(100% + 6px) !important;
+  left: 0 !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.20em !important;
+  text-transform: uppercase !important;
+  color: var(--edit-yellow, #ffdd06) !important;
+  pointer-events: none !important;
+}
 CSS;
 
         echo "<style id=\"empresas-page-css\">\n" . $css . "\n" . $overrides . "\n</style>";
@@ -2605,8 +2651,19 @@ button {
     <h1>Forme a sua equipa nas competências <span class="accent">digitais</span> que o futuro exige.</h1>
     <p class="lede">Programas à medida em <strong>IA, Data, UX, Design, Marketing Digital e Programação</strong>. Entregues presencialmente em Lisboa e Porto, nas vossas instalações, ou em formato remoto. Elegíveis para Cheque‑Formação e Fundos de Compensação.</p>
     <div class="ctas">
-      <a href="#contacto" class="btn btn-primary">Pedir Proposta</a>
-      <a href="#metodologia" class="btn btn-secondary">Conhecer a Metodologia</a>
+      <a href="#contacto" class="btn btn-yellow swipe-cta empresas-cta-primary">
+        <span class="swipe-layer swipe-pink"></span>
+        <span class="swipe-layer swipe-teal"></span>
+        <span class="swipe-layer swipe-black"></span>
+        <span class="swipe-label">Pedir Proposta</span>
+      </a>
+      <a href="#financiamento" class="btn btn-yellow swipe-cta empresas-cta-secondary">
+        <span class="cta-notation">Financiamento</span>
+        <span class="swipe-layer swipe-pink"></span>
+        <span class="swipe-layer swipe-teal"></span>
+        <span class="swipe-layer swipe-black"></span>
+        <span class="swipe-label">Fundos de Compensação</span>
+      </a>
     </div>
   </div>
 </section>
