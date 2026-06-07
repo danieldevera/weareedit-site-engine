@@ -996,6 +996,22 @@ HTML;
       anchor.style.setProperty('width', 'auto', 'important');
       anchor.style.setProperty('height', 'auto', 'important');
     }
+    // Hamburger / search nuke: walk header buttons, blacken via filter +
+    // background overrides. Skip the brand anchor + Fala connosco CTA.
+    var allButtons = hdr.querySelectorAll('button, a[role="button"], [class*="toggle"], [aria-label*="menu" i], [aria-label*="navega" i], [aria-label*="search" i], [aria-label*="open" i]');
+    for (var k = 0; k < allButtons.length; k++) {
+      var btn = allButtons[k];
+      var cls = (btn.className && (btn.className.baseVal || btn.className) || '').toString().toLowerCase();
+      // Skip logo + Fala connosco CTA
+      if (cls.indexOf('connosco') > -1 || cls.indexOf('fala') > -1 || cls.indexOf('cta') > -1 || cls.indexOf('brand') > -1) continue;
+      if (btn.querySelector && btn.querySelector('img[src*="logo-empresas"]')) continue;
+      btn.style.setProperty('filter', 'brightness(0)', 'important');
+      var kids = btn.querySelectorAll('*');
+      for (var m = 0; m < kids.length; m++) {
+        kids[m].style.setProperty('filter', 'brightness(0)', 'important');
+        kids[m].style.setProperty('color', '#0a0a0a', 'important');
+      }
+    }
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', swap);
