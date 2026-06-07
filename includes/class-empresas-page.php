@@ -1288,14 +1288,33 @@ body.empresas-page .site-main {
   width: 100% !important;
 }
 
-/* Hero typography — pin sizing under .empresas-page so theme defaults
-   can't shrink/regress the approved layout. */
+/* Hero alignment + typography — match approved (image #34):
+   - All text LEFT-aligned (theme defaults to center; force it back)
+   - H1 max-width widened 16ch → 22ch (approved wraps at ~22 chars/line,
+     producing 3 lines: "Forme a sua equipa nas" / "competências [DIGITAIS]"
+     / "que o futuro exige." — vs current 4-line center-wrap)
+   - Lede + CTAs also left-aligned so they sit under the H1's left edge
+   - Container stays centred via the existing .wrap rules; what changes
+     is the internal alignment of the content within that container. */
+body.empresas-page .hero {
+  text-align: left !important;
+}
+body.empresas-page .hero .eyebrow,
+body.empresas-page .hero h1,
+body.empresas-page .hero .lede,
+body.empresas-page .hero .ctas,
+body.empresas-page .hero .wrap > * {
+  text-align: left !important;
+}
+body.empresas-page .hero .ctas {
+  justify-content: flex-start !important;
+}
 body.empresas-page .hero h1 {
   font-size: clamp(40px, 6.4vw, 88px) !important;
   line-height: 0.98 !important;
   letter-spacing: -0.035em !important;
   font-weight: 700 !important;
-  max-width: 16ch !important;
+  max-width: 22ch !important;
   color: #fff !important;
 }
 body.empresas-page .hero .eyebrow {
@@ -1303,6 +1322,7 @@ body.empresas-page .hero .eyebrow {
 }
 body.empresas-page .hero .lede {
   color: rgba(255,255,255,0.85) !important;
+  max-width: 60ch !important;
 }
 CSS;
 
