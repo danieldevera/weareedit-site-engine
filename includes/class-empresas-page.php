@@ -993,7 +993,8 @@ HTML;
     var lockup = document.createElement('span');
     lockup.className = 'empresas-lockup';
     lockup.innerHTML =
-      '<img class="lockup-img" src="{$logo_url}" alt="EDIT. for business" loading="eager">';
+      '<img class="lockup-img" src="{$logo_url}" alt="EDIT. for business" loading="eager">' +
+      '<span class="lockup-dot" aria-hidden="true"></span>';
     img.parentNode.replaceChild(lockup, img);
     // Walk header buttons just to TAG the hamburger with .empresas-menu-btn
     // (theme class names are unpredictable). All colour/filter work is now
@@ -1283,13 +1284,19 @@ body.empresas-page header[class*="menuOpen"] [class*="searchButton"] {
   opacity: 1 !important;
 }
 
-/* Single-PNG lockup (v1.5.359). ONE source of truth: the approved black
-   PNG. On menuOpen, CSS filter chain: invert(1) flips black→white
-   (preserving anti-aliased edges perfectly), then hue-rotate(180deg)
-   rotates the blue-inverted yellow BACK to yellow. Black/white are
-   unaffected by hue-rotate (zero saturation). Net result: black EDIT
-   → white EDIT, yellow dot stays yellow. No overlay needed, no
-   positioning math, no blue bleed. */
+/* Single-PNG lockup (v1.5.360). ONE source of truth: the approved black
+   PNG. On menuOpen, filter: invert(1) flips it to white (clean edges).
+   v1.5.359 tried invert + hue-rotate to keep yellow yellow but CSS
+   hue-rotate's matrix doesn't preserve colors symmetrically — applied
+   to inverted yellow (0,34,249) it yields ~(84,50,0) which is dark
+   brown, not yellow. Back to the overlay approach but generous-sized.
+
+   Yellow dot bbox in PNG: 12x12 at (384,52) in 397x115 canvas, centred
+   at (390,58) → 98.24% left, 50.43% top. At 60px render the dot is
+   ~6.26px but anti-aliased halo extends further. Overlay at 10px
+   covers solid + halo without leaking blue. In closed state the
+   overlay sits ON the existing yellow dot (yellow-on-yellow,
+   indistinguishable). In open state it covers the inverted-blue dot. */
 body.empresas-page header .empresas-lockup,
 body.empresas-page .headerDesktop .empresas-lockup,
 body.empresas-page .headerMobile .empresas-lockup {
@@ -1306,11 +1313,22 @@ body.empresas-page .headerMobile .empresas-lockup .lockup-img {
   transition: filter 180ms ease !important;
   filter: none !important;
 }
-/* Menu-open state: invert + hue-rotate keeps yellow yellow. */
+body.empresas-page .empresas-lockup .lockup-dot {
+  position: absolute !important;
+  left: 98.24% !important;
+  top: 50.43% !important;
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50% !important;
+  background: #FFDD06 !important;
+  transform: translate(-50%, -50%) !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
+}
 body.empresas-page header[class*="menuOpen"] .empresas-lockup .lockup-img,
 body.empresas-page .headerDesktop[class*="menuOpen"] .empresas-lockup .lockup-img,
 body.empresas-page .headerMobile[class*="menuOpen"] .empresas-lockup .lockup-img {
-  filter: invert(1) hue-rotate(180deg) !important;
+  filter: invert(1) !important;
 }
 /* Wider gap between hamburger and search. */
 body.empresas-page header [aria-label*="search" i],
