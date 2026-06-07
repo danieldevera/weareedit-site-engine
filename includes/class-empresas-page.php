@@ -969,11 +969,16 @@ HTML;
      * and swaps src to the empresas lockup.
      */
     public static function emit_logo_swap_js(): void {
-        // Approved logo: PNG with SctoGroteskA-Thin baked in via magick.
-        // Two variants — black for white top bar (default), white for the
-        // menu-open dark overlay state.
-        $logo_url       = esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-empresas-master-lockup.png' );
-        $logo_url_white = esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-empresas-master-lockup-white.png' );
+        // Inline SVG of the EDIT for business lockup. Single DOM element,
+        // colour controlled via CSS (currentColor cascades into all EDIT
+        // paths + FOR BUSINESS text), yellow dot hard-coded #FFDD06. No
+        // src swap on menu state changes — CSS just flips `color:` and
+        // every fill in the SVG follows. Eliminates the swap-time visual
+        // shift permanently. Source paths copied verbatim from approved
+        // logo-empresas-lockup-black.svg (with #0a0a0a → currentColor).
+        $svg_lockup = '<svg class="empresas-lockup" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 152 62" preserveAspectRatio="xMinYMin meet" aria-label="EDIT. for business" role="img"><defs><path id="el-clip" d="M0 40L151.351 40 151.351 0 0 0z"/></defs><g fill="none" fill-rule="evenodd"><path fill="currentColor" d="M56.596 27.055c3.57 0 6.178-2.69 6.178-6.281 0-3.566-2.608-6.256-6.178-6.256h-3.128v12.537h3.128zM49.922 11.72c0-.276.219-.52.497-.52h6.507c5.3 0 9.637 4.305 9.637 9.574 0 5.32-4.338 9.626-9.637 9.626h-6.507c-.278 0-.497-.246-.497-.521V11.72z"/><mask id="el-mask" fill="#fff"><use href="#el-clip"/></mask><path fill="currentColor" d="M39.396 37.827h35.313V2.174H39.396v35.653zM37.244 40h39.62V0h-39.62v40z" mask="url(#el-mask)"/><path fill="currentColor" d="M2.152 37.827h35.316V2.174H2.152v35.653zM0 40h39.62V0H0v40z" mask="url(#el-mask)"/><path fill="currentColor" d="M14.263 11.72c0-.272.23-.52.54-.52h11.599c.313 0 .54.248.54.52v2.25c0 .276-.227.52-.54.52h-8.434v4.5h7.038c.285 0 .542.246.542.52v2.277c0 .303-.257.522-.542.522h-7.038v4.801h8.434c.313 0 .54.247.54.52v2.25c0 .275-.227.52-.54.52H14.804c-.311 0-.54-.245-.54-.52V11.72z" mask="url(#el-mask)"/><path fill="currentColor" d="M76.638 37.827h35.316V2.174H76.638v35.653zM74.488 40h39.62V0h-39.62v40z" mask="url(#el-mask)"/><path fill="currentColor" d="M91.92 11.72c0-.272.329-.52.688-.52h3.375c.367 0 .692.248.692.52V29.88c0 .274-.325.521-.692.521h-3.375c-.36 0-.688-.247-.688-.521V11.72z" mask="url(#el-mask)"/><path fill="currentColor" d="M113.884 37.827h35.315V2.174h-35.315v35.653zM111.73 40h39.62V0h-39.62v40z" mask="url(#el-mask)"/><path fill="currentColor" d="M129 14.49h-4.084c-.292 0-.507-.246-.507-.52v-2.25c0-.272.215-.52.507-.52h11.663c.295 0 .509.248.509.52v2.25c0 .274-.214.52-.509.52h-4.083v15.388c0 .274-.24.522-.507.522h-2.483c-.265 0-.507-.248-.507-.522V14.491z" mask="url(#el-mask)"/><circle cx="141.04" cy="28" r="2.4" fill="#FFDD06"/></g><text x="3" y="58" style="font-family:\'SctoGroteskA\',sans-serif;font-weight:300;font-size:5.4px;letter-spacing:1.18px;fill:currentColor;text-transform:uppercase;">FOR BUSINESS</text></svg>';
+        // Pass as JSON-encoded string so JS gets it safely as a string literal.
+        $svg_json = wp_json_encode( $svg_lockup );
         echo <<<HTML
 <script>
 (function(){
@@ -982,17 +987,13 @@ HTML;
     if (!hdr) return;
     var img = hdr.querySelector('img');
     if (!img) return;
-    img.src = '{$logo_url}';
-    img.removeAttribute('srcset');
-    // Keep it minimal — over-constraining (v1.5.350) made the jump worse,
-    // likely by fighting the theme's flexbox parent layout. Both PNGs have
-    // identical 397x115 dimensions, so the browser-computed width from
-    // height:60px should be the same on every src swap. If a jump still
-    // appears, the cause is upstream (parent anchor, theme menuOpen layout
-    // rules) and needs DevTools inspection, not more inline constraints.
-    img.style.setProperty('height', '60px', 'important');
-    img.style.setProperty('width', 'auto', 'important');
-    img.style.setProperty('display', 'block', 'important');
+    // Replace the theme's <img> with our inline SVG lockup. After this
+    // there is NO image swap on menu open/close — the SVG's currentColor
+    // fills inherit from the parent's color property, which CSS flips
+    // between #0a0a0a (closed) and #ffffff (open) based on the menuOpen
+    // class on .headerDesktop. Zero src changes, zero visual shift.
+    var svgMarkup = {$svg_json};
+    img.outerHTML = svgMarkup;
     // Walk header buttons just to TAG the hamburger with .empresas-menu-btn
     // (theme class names are unpredictable). All colour/filter work is now
     // done via CSS scoped to header:not([class*="menuOpen"]) — see emit_inline_css —
@@ -1012,67 +1013,10 @@ HTML;
         btn.classList.add('empresas-menu-btn');
       }
     }
-    // Track menu open/close manually + observe theme class changes.
-    var logoImg = img;
-    var blackSrc = '{$logo_url}';
-    var whiteSrc = '{$logo_url_white}';
-    // Preload white variant so the first src swap doesn't flash a blank image
-    // (the "logo jumps" symptom). Using new Image() warms the HTTP cache.
-    var preload = new Image(); preload.src = whiteSrc;
-    var manualOpen = false;
-    function syncLogoForMenu() {
-      var b = document.body, h = document.documentElement;
-      var classes = (b.className + ' ' + h.className).toLowerCase();
-      var classOpen = /menu-open|nav-open|menu-active|is-open|mobile-menu-active|drawer-open|panel-open|sidebar-open|menuopen/.test(classes);
-      var ariaOpen = !!document.querySelector('header [aria-expanded="true"]');
-      // Theme signal: .headerDesktop gets a hashed class like "menuOpen___1Shr4" when menu opens.
-      var themeOpen = !!document.querySelector('header[class*="menuOpen"], .headerDesktop[class*="menuOpen"], .headerMobile[class*="menuOpen"]');
-      var isOpen = manualOpen || classOpen || ariaOpen || themeOpen;
-      logoImg.src = isOpen ? whiteSrc : blackSrc;
-    }
-    syncLogoForMenu();
-    // Watch the theme's headerDesktop / headerMobile elements for class changes
-    // (the menuOpen___[hash] class lands there, NOT on body/html).
-    if (window.MutationObserver) {
-      var headerEls = document.querySelectorAll('.headerDesktop, .headerMobile, header');
-      var headerObs = new MutationObserver(syncLogoForMenu);
-      for (var hi = 0; hi < headerEls.length; hi++) {
-        headerObs.observe(headerEls[hi], { attributes: true, attributeFilter: ['class'] });
-      }
-    }
-    // Hamburger click → toggle manualOpen + re-sync at several intervals
-    // to catch async theme transitions.
-    document.addEventListener('click', function(e){
-      if (!e.target || !e.target.closest) return;
-      if (e.target.closest('.empresas-menu-btn')) {
-        manualOpen = !manualOpen;
-        syncLogoForMenu();
-        setTimeout(syncLogoForMenu, 100);
-        setTimeout(syncLogoForMenu, 400);
-      }
-      // Click on overlay backdrop, close button, or menu item should close it.
-      else if (manualOpen && (
-        e.target.closest('[aria-label*="close" i]') ||
-        e.target.closest('.menu-close') ||
-        e.target.closest('.close-menu') ||
-        (e.target.closest('a[href]') && !e.target.closest('.empresas-menu-btn'))
-      )) {
-        manualOpen = false;
-        setTimeout(syncLogoForMenu, 50);
-      }
-    }, true);
-    // ESC key closes menu.
-    document.addEventListener('keydown', function(e){
-      if (e.key === 'Escape' && manualOpen) {
-        manualOpen = false;
-        setTimeout(syncLogoForMenu, 50);
-      }
-    });
-    if (window.MutationObserver) {
-      var obs = new MutationObserver(syncLogoForMenu);
-      obs.observe(document.body, { attributes: true, attributeFilter: ['class'] });
-      obs.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-    }
+    // Logo state tracking removed in v1.5.354 — CSS handles colour entirely
+    // via currentColor + header[class*="menuOpen"] cascade. No src swap, no
+    // preload, no observers needed for the logo. Hamburger tagging above is
+    // the only JS work this function still does.
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', swap);
@@ -1310,14 +1254,23 @@ body.empresas-page .headerMobile[class*="menuOpen"] .empresas-menu-btn {
   color: #ffffff !important;
 }
 
-/* Logo: only set height. Don't lock width — over-constraining the box
-   inside the theme's flex layout (v1.5.350 attempt) caused growth/nudge
-   regressions. Both PNGs are 397x115 so intrinsic-ratio width is identical. */
-body.empresas-page header img[src*="logo-empresas-master-lockup"],
-body.empresas-page .headerDesktop img[src*="logo-empresas-master-lockup"],
-body.empresas-page .headerMobile img[src*="logo-empresas-master-lockup"] {
+/* Inline SVG logo (v1.5.354). Replaces the PNG <img> swap mechanism.
+   color: cascades into every `currentColor` fill in the SVG, so flipping
+   #0a0a0a ↔ #ffffff between states recolours the entire EDIT lockup +
+   FOR BUSINESS tag instantly. Yellow dot is hard-coded #FFDD06 in the
+   SVG so it stays brand-yellow in both states. Zero swap, zero shift. */
+body.empresas-page header .empresas-lockup,
+body.empresas-page .headerDesktop .empresas-lockup,
+body.empresas-page .headerMobile .empresas-lockup {
   height: 60px !important;
+  width: auto !important;
   display: block !important;
+  color: #0a0a0a !important;
+}
+body.empresas-page header[class*="menuOpen"] .empresas-lockup,
+body.empresas-page .headerDesktop[class*="menuOpen"] .empresas-lockup,
+body.empresas-page .headerMobile[class*="menuOpen"] .empresas-lockup {
+  color: #ffffff !important;
 }
 /* Wider gap between hamburger and search. */
 body.empresas-page header [aria-label*="search" i],
