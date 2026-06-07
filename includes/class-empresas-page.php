@@ -2197,6 +2197,65 @@ button {
   }
 }
 
+/* ── FINANCING BANNER (v1.5.380) — visual break between logo wall +
+   process. Slim dark band, teaser copy, link down to the full
+   Financing section. */
+.financing-banner {
+  padding: 72px 0;
+  background: var(--ink);
+  color: #fff;
+  text-align: center;
+}
+.financing-banner .wrap {
+  max-width: 880px;
+}
+.fb-eyebrow {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.30em;
+  text-transform: uppercase;
+  color: var(--edit-yellow);
+  margin: 0 0 18px 0;
+}
+.fb-title {
+  font-size: clamp(28px, 3.4vw, 44px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 18px 0;
+}
+.fb-accent {
+  background: var(--edit-yellow);
+  color: var(--ink);
+  padding: 0 0.12em;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.fb-body {
+  font-size: 17px;
+  line-height: 1.55;
+  color: rgba(255,255,255,0.78);
+  max-width: 60ch;
+  margin: 0 auto 24px auto;
+}
+.fb-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--edit-yellow);
+  text-decoration: none;
+  border-bottom: 1px solid var(--edit-yellow);
+  padding-bottom: 2px;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.fb-link:hover {
+  color: #fff;
+  border-color: #fff;
+}
+
 /* ── FINANCING ───────────────────────────────────────────────────── */
 .financing {
   padding: 100px 0;
@@ -2843,6 +2902,18 @@ button {
   </div>
 </section>
 <?php endif; ?>
+
+<!-- ─── FINANCING BANNER (visual break between social proof and process,
+     v1.5.380) — teaser only; full Financing section with cards stays
+     further down the page. -->
+<section class="financing-banner">
+  <div class="wrap">
+    <p class="fb-eyebrow">Financiamento</p>
+    <h2 class="fb-title">Não é o motivo. É o <span class="fb-accent">desbloqueio</span>.</h2>
+    <p class="fb-body">As empresas portuguesas têm acesso a mecanismos de apoio à formação que poucas conhecem. Os nossos programas são elegíveis para os principais — e ajudamos no processo de candidatura.</p>
+    <a class="fb-link" href="#financiamento">Conhecer os apoios <span aria-hidden="true">→</span></a>
+  </div>
+</section>
 
 <!-- ─── PROCESS — exact infographic replica (v1.5.378) ───────────────
    Reference: image #51. Thick colored sleeves alternately wrap circles
