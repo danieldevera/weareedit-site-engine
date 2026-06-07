@@ -969,10 +969,11 @@ HTML;
      * and swaps src to the empresas lockup.
      */
     public static function emit_logo_swap_js(): void {
-        // Approved + locked empresas lockup (hybrid SVG: V2 master art as
-        // base64-embedded PNG + FOR BUSINESS tag as true SVG text in
-        // SctoGroteskA Thin). Scales infinitely from the SVG container.
-        $logo_url = esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-empresas-master-lockup.svg' );
+        // Approved logo: PNG with SctoGroteskA-Thin baked in via magick.
+        // SVG fallback was attempted but SVGs loaded as <img> can't access
+        // host-page fonts — FOR BUSINESS rendered with system sans fallback,
+        // visibly heavier than approved. PNG renders identically everywhere.
+        $logo_url = esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-empresas-master-lockup.png' );
         echo <<<HTML
 <script>
 (function(){
