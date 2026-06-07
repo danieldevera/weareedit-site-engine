@@ -1144,6 +1144,25 @@ body.empresas-page header a[href*="formacao-digital-para-empresas"] {
   display: none !important;
 }
 
+/* Hamburger box outline + spacing — match main site (where hamburger is in
+   a black-outlined box) AND give breathing room between hamburger and search. */
+body.empresas-page header button[aria-label*="menu" i],
+body.empresas-page header [class*="menu-toggle"],
+body.empresas-page header [class*="hamburger"],
+body.empresas-page header [class*="burger"] {
+  border: 2px solid #0a0a0a !important;
+  padding: 6px 10px !important;
+  margin-right: 18px !important;
+  background: transparent !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+body.empresas-page header [aria-label*="search" i],
+body.empresas-page header [class*="search"]:not(input):not(form) {
+  margin-left: 8px !important;
+}
+
 /* Strip any residual whitespace the theme adds above our hero. */
 body.empresas-page main,
 body.empresas-page #primary,
