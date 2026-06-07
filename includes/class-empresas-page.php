@@ -2066,61 +2066,135 @@ button {
   .areas-grid { grid-template-columns: 1fr; }
 }
 
-/* ── PROCESS ─────────────────────────────────────────────────────── */
+/* ── PROCESS — wavy 4-circle infographic (v1.5.377) ──────────────────
+   Full-bleed (sits outside .wrap), wave line crosses all 4 columns,
+   circles alternate top/bottom positions, text blocks alternate above/
+   below with dotted connectors. Each step gets a brand accent colour. */
 .process {
-  padding: 90px 0;
+  padding: 90px 0 110px 0;
 }
-.process-grid {
+.process-wave {
+  position: relative;
+  width: 100%;
+  margin-top: 56px;
+  padding: 40px 0;
+}
+.pw-curve {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 240px;
+  transform: translateY(-50%);
+  z-index: 1;
+  pointer-events: none;
+}
+.pw-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0 40px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 32px;
-  margin-top: 40px;
-}
-.process-step {
+  grid-template-rows: 1fr 120px 1fr;
+  gap: 0;
   position: relative;
+  z-index: 2;
+  align-items: stretch;
 }
-.process-step .num-tile {
-  display: inline-flex;
-  align-items: center; justify-content: center;
-  width: 56px; height: 56px;
-  background: var(--ink);
-  color: #fff;
-  font-weight: 800;
-  font-size: 18px;
-  letter-spacing: -0.02em;
-  border-radius: 6px;
-  margin-bottom: 18px;
+.pw-step {
+  position: relative;
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: 1 / span 3;
+  align-items: stretch;
+  justify-items: center;
 }
-.process-step .time-chip {
+.pw-step--above .pw-content { grid-row: 1; align-self: end; padding-bottom: 18px; }
+.pw-step--below .pw-content { grid-row: 3; align-self: start; padding-top: 18px; }
+.pw-step .pw-circle      { grid-row: 2; align-self: center; }
+.pw-step--above .pw-connector { grid-row: 1; align-self: end; }
+.pw-step--below .pw-connector { grid-row: 3; align-self: start; }
+
+.pw-content {
+  max-width: 260px;
+  text-align: center;
+  padding: 0 12px;
+}
+.pw-time {
   display: inline-block;
-  background: var(--edit-yellow);
+  background: var(--accent, var(--edit-yellow));
   color: var(--ink);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.04em;
-  padding: 3px 10px;
-  border-radius: 12px;
-  margin-bottom: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 10px;
 }
-.process-step h3 {
+.pw-step--above .pw-time { background: transparent; color: var(--accent); padding-left: 0; padding-right: 0; }
+.pw-step--below .pw-time { background: transparent; color: var(--accent); padding-left: 0; padding-right: 0; }
+.pw-title {
   font-size: 19px;
   font-weight: 700;
   letter-spacing: -0.01em;
-  margin: 0 0 10px 0;
+  margin: 0 0 8px 0;
   line-height: 1.25;
+  color: var(--ink);
 }
-.process-step p {
+.pw-body {
   font-size: 14.5px;
   color: var(--grey-4);
   line-height: 1.5;
   margin: 0;
 }
-
-@media (max-width: 880px) {
-  .process-grid { grid-template-columns: repeat(2, 1fr); gap: 40px 32px; }
+.pw-connector {
+  display: block;
+  width: 2px;
+  height: 28px;
+  background-image: linear-gradient(to bottom, var(--accent) 50%, transparent 50%);
+  background-size: 2px 6px;
+  background-repeat: repeat-y;
+  opacity: 0.5;
 }
-@media (max-width: 560px) {
-  .process-grid { grid-template-columns: 1fr; gap: 40px; }
+.pw-circle {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: #fff;
+  border: 6px solid var(--accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 26px;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  position: relative;
+  z-index: 3;
+}
+@media (max-width: 880px) {
+  .pw-curve { display: none; }
+  .pw-steps {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    padding: 0 24px;
+    gap: 48px;
+  }
+  .pw-step,
+  .pw-step--above,
+  .pw-step--below {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    grid-row: auto;
+  }
+  .pw-step--above .pw-content,
+  .pw-step--below .pw-content { padding: 0; text-align: left; max-width: none; }
+  .pw-step .pw-connector { display: none; }
+  .pw-step .pw-circle { margin-bottom: 16px; }
 }
 
 /* ── FINANCING ───────────────────────────────────────────────────── */
@@ -2770,24 +2844,41 @@ button {
 </section>
 <?php endif; ?>
 
-<!-- ─── PROCESS (moved here under logo-wall in v1.5.376) ───────────── -->
-<?php if ( ! empty( $process ) ) : ?>
+<!-- ─── PROCESS — wavy 4-circle infographic, full-bleed (v1.5.377) ───
+   Reference: image #49. Adapted to brand palette (pink → coral → yellow
+   → teal) and our 4-step data. Circles alternate top/bottom on the wave;
+   text alternates above/below with dotted connectors. Wave block sits
+   OUTSIDE .wrap so it spans full viewport width (per user image #50). -->
+<?php if ( ! empty( $process ) ) :
+    $step_colors = [ 'var(--edit-pink)', 'var(--edit-coral)', 'var(--edit-yellow)', 'var(--edit-teal)' ];
+?>
 <section class="process" id="processo">
   <div class="wrap">
     <p class="section-eyebrow">Como Trabalhamos</p>
     <h2 class="section-title">4 passos. Do briefing à medição de impacto.</h2>
-    <div class="process-grid">
-      <?php foreach ( $process as $step ) : ?>
-        <div class="process-step">
-          <div class="num-tile"><?php echo esc_html( $step['number'] ); ?></div>
-          <?php if ( ! empty( $step['time'] ) ) : ?>
-            <div class="time-chip"><?php echo esc_html( $step['time'] ); ?></div>
-          <?php endif; ?>
-          <h3><?php echo esc_html( $step['title'] ); ?></h3>
-          <p><?php echo esc_html( $step['body'] ); ?></p>
-        </div>
+  </div>
+  <div class="process-wave">
+    <svg class="pw-curve" viewBox="0 0 1200 240" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M 0 120 C 100 30, 200 30, 300 120 S 500 210, 600 120 S 800 30, 900 120 S 1100 210, 1200 120" fill="none" stroke="var(--grey-2)" stroke-width="3" />
+    </svg>
+    <ol class="pw-steps">
+      <?php foreach ( $process as $i => $step ) :
+          $color = $step_colors[ $i % 4 ];
+          $place = ( $i % 2 === 0 ) ? 'above' : 'below';
+      ?>
+        <li class="pw-step pw-step--<?php echo esc_attr( $place ); ?>" style="--accent: <?php echo esc_attr( $color ); ?>;">
+          <div class="pw-content">
+            <?php if ( ! empty( $step['time'] ) ) : ?>
+              <span class="pw-time"><?php echo esc_html( $step['time'] ); ?></span>
+            <?php endif; ?>
+            <h3 class="pw-title"><?php echo esc_html( $step['title'] ); ?></h3>
+            <p class="pw-body"><?php echo esc_html( $step['body'] ); ?></p>
+          </div>
+          <span class="pw-connector" aria-hidden="true"></span>
+          <span class="pw-circle"><?php echo esc_html( $step['number'] ); ?></span>
+        </li>
       <?php endforeach; ?>
-    </div>
+    </ol>
   </div>
 </section>
 <?php endif; ?>
