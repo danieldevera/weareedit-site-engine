@@ -970,10 +970,10 @@ HTML;
      */
     public static function emit_logo_swap_js(): void {
         // Approved logo: PNG with SctoGroteskA-Thin baked in via magick.
-        // SVG fallback was attempted but SVGs loaded as <img> can't access
-        // host-page fonts — FOR BUSINESS rendered with system sans fallback,
-        // visibly heavier than approved. PNG renders identically everywhere.
-        $logo_url = esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-empresas-master-lockup.png' );
+        // Two variants — black for white top bar (default), white for the
+        // menu-open dark overlay state.
+        $logo_url       = esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-empresas-master-lockup.png' );
+        $logo_url_white = esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-empresas-master-lockup-white.png' );
         echo <<<HTML
 <script>
 (function(){
@@ -1022,6 +1022,30 @@ HTML;
       if (isMenu && !isSearch) {
         btn.classList.add('empresas-menu-btn');
       }
+    }
+    // Observe menu-open state to flip logo black ↔ white.
+    var logoImg = img;
+    var blackSrc = '{$logo_url}';
+    var whiteSrc = '{$logo_url_white}';
+    function syncLogoForMenu() {
+      var b = document.body, h = document.documentElement;
+      var open = (b.className + ' ' + h.className).toLowerCase();
+      var isOpen = /menu-open|nav-open|menu-active|is-open|mobile-menu-active/.test(open) ||
+                   !!document.querySelector('header [aria-expanded="true"]');
+      logoImg.src = isOpen ? whiteSrc : blackSrc;
+    }
+    syncLogoForMenu();
+    if (window.MutationObserver) {
+      var obs = new MutationObserver(syncLogoForMenu);
+      obs.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+      obs.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+      // Re-check shortly after hamburger clicks (some themes toggle async).
+      document.addEventListener('click', function(e){
+        if (e.target && e.target.closest && e.target.closest('.empresas-menu-btn')) {
+          setTimeout(syncLogoForMenu, 100);
+          setTimeout(syncLogoForMenu, 400);
+        }
+      }, true);
     }
   }
   if (document.readyState === 'loading') {
