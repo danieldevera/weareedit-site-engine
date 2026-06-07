@@ -984,10 +984,16 @@ HTML;
     if (!img) return;
     img.src = '{$logo_url}';
     img.removeAttribute('srcset');
+    // Lock both box dimensions so the browser CAN'T recompute width on src
+    // swap. PNGs are 397x115 → at 60px tall the aspect-correct width is
+    // 207.13 → round to 207. Inline !important wins ties against stylesheet
+    // !important, so this is the authoritative size.
     img.style.setProperty('height', '60px', 'important');
-    img.style.setProperty('width', 'auto', 'important');
-    img.style.setProperty('max-width', 'none', 'important');
-    img.style.setProperty('max-height', 'none', 'important');
+    img.style.setProperty('width', '207px', 'important');
+    img.style.setProperty('min-width', '207px', 'important');
+    img.style.setProperty('max-width', '207px', 'important');
+    img.style.setProperty('min-height', '60px', 'important');
+    img.style.setProperty('max-height', '60px', 'important');
     img.style.setProperty('object-fit', 'contain', 'important');
     // Free the parent anchor too — themes often cap logo containers.
     var anchor = img.closest('a');
