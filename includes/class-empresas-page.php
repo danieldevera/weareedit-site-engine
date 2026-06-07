@@ -1866,6 +1866,65 @@ button {
   .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 36px 28px; }
 }
 
+/* ── FOUNDER QUOTE (replaced STATS in v1.5.372) ───────────────────── */
+.founder-quote {
+  padding: 96px 0;
+  background: var(--grey-1);
+}
+.fq-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+  max-width: 920px;
+  margin: 0 auto;
+}
+.fq-quote {
+  margin: 0;
+  font-size: clamp(24px, 2.4vw, 34px);
+  line-height: 1.32;
+  letter-spacing: -0.015em;
+  font-weight: 500;
+  color: var(--ink);
+  max-width: 30ch;
+}
+.fq-author {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.fq-photo {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 3px var(--edit-yellow);
+  display: block;
+  flex-shrink: 0;
+}
+.fq-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.fq-signature {
+  height: 48px;
+  width: auto;
+  display: block;
+}
+.fq-role {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--grey-3);
+}
+@media (max-width: 720px) {
+  .founder-quote { padding: 64px 0; }
+  .fq-author { gap: 14px; }
+  .fq-photo { width: 72px; height: 72px; }
+  .fq-signature { height: 36px; }
+}
+
 /* ── VALUE PROPS ─────────────────────────────────────────────────── */
 .value-props {
   padding: 90px 0;
@@ -2686,24 +2745,23 @@ button {
 </section>
 <?php endif; ?>
 
-<!-- ─── STATS ──────────────────────────────────────────────────── -->
-<?php if ( ! empty( $stats ) ) : ?>
-<section class="stats">
+<!-- ─── FOUNDER QUOTE (replaced STATS in v1.5.372) ─────────────────── -->
+<section class="founder-quote">
   <div class="wrap">
-    <div class="stats-grid">
-      <?php foreach ( $stats as $s ) : ?>
-        <div class="stat">
-          <div class="num"><?php echo esc_html( $s['number'] ); ?></div>
-          <div class="lbl"><?php echo esc_html( $s['label'] ); ?></div>
-          <?php if ( ! empty( $s['sub'] ) ) : ?>
-            <div class="sub"><?php echo esc_html( $s['sub'] ); ?></div>
-          <?php endif; ?>
+    <div class="fq-grid">
+      <blockquote class="fq-quote">
+        “We help individuals &amp; businesses grow in the Digital Ecosystem through our physical &amp; remote learning programs.”
+      </blockquote>
+      <div class="fq-author">
+        <img class="fq-photo" src="https://weareedit.io/wp-content/uploads/2026/05/daniel-devera-sign-off.png" alt="Daniel Devera" width="96" height="96" loading="lazy">
+        <div class="fq-meta">
+          <img class="fq-signature" src="https://weareedit.io/wp-content/uploads/2026/05/DANIEL-DEVERA-ASSINATURA.png" alt="Daniel Devera signature" loading="lazy">
+          <span class="fq-role">Founder · EDIT.</span>
         </div>
-      <?php endforeach; ?>
+      </div>
     </div>
   </div>
 </section>
-<?php endif; ?>
 
 <!-- ─── VALUE PROPS ────────────────────────────────────────────── -->
 <?php if ( ! empty( $value_props ) ) : ?>
