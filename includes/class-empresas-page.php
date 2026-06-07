@@ -1216,43 +1216,71 @@ body.empresas-page header .empresas-menu-btn {
   height: 36px !important;
 }
 
-/* Hide every descendant of the button so theme-injected content (text
-   "menu" closed, EDIT chair monogram open) can never bleed through. */
+/* Hamburger: single source of truth — same architecture as the logo fix.
+   Block every path the theme could use to paint into the button:
+     1. Hide every descendant (.menuButton__inner + anything nested deeper)
+     2. Kill any theme ::before content
+     3. Force background-image: none on the button itself
+   Then draw OUR 3 bars in a ::after that FULLY covers the button interior
+   (inset: 0) with an opaque per-state background. Theme content can't bleed
+   through opaque coverage at z-index 20. */
 body.empresas-page .empresas-menu-btn .menuButton__inner,
 body.empresas-page .empresas-menu-btn * {
   display: none !important;
 }
-
-/* Draw 3 bars via ::after overlay with currentColor + 3 linear-gradients.
-   z-index lifts above any theme background-image. currentColor switches
-   black↔white based on body's color cascade per state. v1.5.348 used
-   background-image: url(svg) but theme paints its own background on
-   menuOpen with apparently winning specificity — overlay can't be beaten
-   that way. */
+body.empresas-page .empresas-menu-btn::before {
+  content: none !important;
+  display: none !important;
+}
 body.empresas-page .empresas-menu-btn {
   position: relative !important;
   color: #0a0a0a !important;
+  background-image: none !important;
+  overflow: hidden !important;
 }
 body.empresas-page .empresas-menu-btn::after {
   content: '' !important;
   position: absolute !important;
-  left: 50% !important;
-  top: 50% !important;
-  width: 18px !important;
-  height: 14px !important;
-  transform: translate(-50%, -50%) !important;
+  inset: 0 !important;
   pointer-events: none !important;
-  z-index: 10 !important;
-  background:
-    linear-gradient(currentColor, currentColor) 0 0    / 100% 2px no-repeat,
-    linear-gradient(currentColor, currentColor) 0 50%  / 100% 2px no-repeat,
-    linear-gradient(currentColor, currentColor) 0 100% / 100% 2px no-repeat !important;
+  z-index: 20 !important;
+  background-color: #ffffff !important;
+  background-image:
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor),
+    linear-gradient(currentColor, currentColor) !important;
+  background-size: 18px 2px !important;
+  background-position: center 30%, center 50%, center 70% !important;
+  background-repeat: no-repeat !important;
 }
-/* Open state: white bars on the dark menu overlay. */
+/* Open state: bars switch to white via currentColor, ::after bg goes dark
+   to match the menu overlay so the visual blends seamlessly. */
 body.empresas-page header[class*="menuOpen"] .empresas-menu-btn,
 body.empresas-page .headerDesktop[class*="menuOpen"] .empresas-menu-btn,
 body.empresas-page .headerMobile[class*="menuOpen"] .empresas-menu-btn {
   color: #ffffff !important;
+}
+body.empresas-page header[class*="menuOpen"] .empresas-menu-btn::after,
+body.empresas-page .headerDesktop[class*="menuOpen"] .empresas-menu-btn::after,
+body.empresas-page .headerMobile[class*="menuOpen"] .empresas-menu-btn::after {
+  background-color: #0a0a0a !important;
+}
+
+/* Search container: theme collapses .headerDesktop__search on menuOpen so
+   the search icon disappears. Force it visible in BOTH states so the icon
+   stays present beside the hamburger. */
+body.empresas-page header[class*="menuOpen"] .headerDesktop__search,
+body.empresas-page header[class*="menuOpen"] .headerDesktop__middle,
+body.empresas-page header[class*="menuOpen"] [class*="autocomplete"],
+body.empresas-page header[class*="menuOpen"] img[src*="lupa"] {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+body.empresas-page header[class*="menuOpen"] [class*="searchButton"] {
+  display: inline-flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 /* Dual-PNG lockup (v1.5.355). Both approved FINAL PNGs rendered at the
