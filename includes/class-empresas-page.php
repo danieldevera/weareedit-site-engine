@@ -996,25 +996,17 @@ HTML;
       anchor.style.setProperty('width', 'auto', 'important');
       anchor.style.setProperty('height', 'auto', 'important');
     }
-    // Hamburger / search nuke: walk header buttons, blacken via filter +
-    // background overrides. Skip the brand anchor + Fala connosco CTA.
-    // Also tag the hamburger with .empresas-menu-btn so CSS can target it
-    // for the box outline (themes use unpredictable class names).
+    // Walk header buttons just to TAG the hamburger with .empresas-menu-btn
+    // (theme class names are unpredictable). All colour/filter work is now
+    // done via CSS scoped to header:not([class*="menuOpen"]) — see emit_inline_css —
+    // so the icons revert to natural white when the dark menu overlay opens.
     var allButtons = hdr.querySelectorAll('button, a[role="button"], [class*="toggle"], [aria-label*="menu" i], [aria-label*="navega" i], [aria-label*="search" i], [aria-label*="open" i]');
     for (var k = 0; k < allButtons.length; k++) {
       var btn = allButtons[k];
       var cls = (btn.className && (btn.className.baseVal || btn.className) || '').toString().toLowerCase();
       var aria = (btn.getAttribute('aria-label') || '').toLowerCase();
-      // Skip logo + Fala connosco CTA
       if (cls.indexOf('connosco') > -1 || cls.indexOf('fala') > -1 || cls.indexOf('cta') > -1 || cls.indexOf('brand') > -1) continue;
       if (btn.querySelector && btn.querySelector('img[src*="logo-empresas"]')) continue;
-      btn.style.setProperty('filter', 'brightness(0)', 'important');
-      var kids = btn.querySelectorAll('*');
-      for (var m = 0; m < kids.length; m++) {
-        kids[m].style.setProperty('filter', 'brightness(0)', 'important');
-        kids[m].style.setProperty('color', '#0a0a0a', 'important');
-      }
-      // If this looks like a hamburger (menu, not search), tag it for the box outline.
       var isMenu = aria.indexOf('menu') > -1 || aria.indexOf('navega') > -1 ||
                    cls.indexOf('menu') > -1 || cls.indexOf('hamburger') > -1 ||
                    cls.indexOf('burger') > -1 || cls.indexOf('toggle') > -1;
@@ -1027,6 +1019,9 @@ HTML;
     var logoImg = img;
     var blackSrc = '{$logo_url}';
     var whiteSrc = '{$logo_url_white}';
+    // Preload white variant so the first src swap doesn't flash a blank image
+    // (the "logo jumps" symptom). Using new Image() warms the HTTP cache.
+    var preload = new Image(); preload.src = whiteSrc;
     var manualOpen = false;
     function syncLogoForMenu() {
       var b = document.body, h = document.documentElement;
@@ -1163,6 +1158,28 @@ body.empresas-page textarea {
   font-family: 'SctoGroteskA', 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
 }
 
+/* Theme CSS-modules menu chrome (e.g. .primaryNav__heading___2SZOh,
+   .secondaryNavItem__link___3JbgC) ships with hashed classnames that escape
+   the h1-h5/p/a override above. The "SECÇÕES" label rendered in serif
+   because the theme's font-family declaration on those modules wasn't being
+   beaten by our overrides. Cast a wider net via attribute partial-matches
+   covering every menu / navigation / footer chrome module. */
+body.empresas-page [class*="primaryNav"],
+body.empresas-page [class*="primaryNavItem"],
+body.empresas-page [class*="secondaryNav"],
+body.empresas-page [class*="secondaryNavItem"],
+body.empresas-page [class*="navigation__"],
+body.empresas-page [class*="menu__"],
+body.empresas-page [class*="menu___"],
+body.empresas-page [class*="content__heading"],
+body.empresas-page [class*="content__inner"],
+body.empresas-page [class*="panel__"],
+body.empresas-page [class*="footer__"],
+body.empresas-page [class*="headerDesktop"],
+body.empresas-page [class*="headerMobile"] {
+  font-family: 'SctoGroteskA', 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+}
+
 /* Top bar — WHITE background (approved). EDIT. for Business lockup in BLACK on white. */
 body.empresas-page header,
 body.empresas-page .site-header,
@@ -1176,32 +1193,51 @@ body.empresas-page header a:not(.cta-yellow):not([class*="connosco"]),
 body.empresas-page .site-header a:not(.cta-yellow):not([class*="connosco"]) {
   color: #0a0a0a !important;
 }
-/* Catch-all: force any SVG icon in the header to pure black via filter.
-   Doesn't affect the EDIT. for Business logo (which is an <img>, not <svg>),
-   doesn't make solid black squares (preserves the icon's shape and
-   transparency), works regardless of whether the icon uses fill, stroke,
-   currentColor, or a CSS background. */
-body.empresas-page header svg {
+/* Closed-state icon overrides: blacken header icons so they show on the
+   WHITE top bar. Scoped to header WITHOUT the menuOpen___[hash] class —
+   when the menu opens, the bar becomes the dark overlay and we MUST let
+   the icons revert to their natural white state (theme designed them that
+   way), otherwise they vanish black-on-black (v1.5.346 bug). */
+body.empresas-page header:not([class*="menuOpen"]) svg,
+body.empresas-page .headerDesktop:not([class*="menuOpen"]) svg,
+body.empresas-page .headerMobile:not([class*="menuOpen"]) svg {
   filter: brightness(0) !important;
 }
-
-/* Icon font glyphs flip via color (currentColor pattern). */
-body.empresas-page header [class*="menu-toggle"],
-body.empresas-page header [class*="nav-toggle"],
-body.empresas-page header [class*="hamburger"],
-body.empresas-page header [aria-label*="menu" i],
-body.empresas-page header [aria-label*="search" i] {
+body.empresas-page header:not([class*="menuOpen"]) [class*="menu-toggle"],
+body.empresas-page header:not([class*="menuOpen"]) [class*="nav-toggle"],
+body.empresas-page header:not([class*="menuOpen"]) [class*="hamburger"],
+body.empresas-page header:not([class*="menuOpen"]) [aria-label*="menu" i],
+body.empresas-page header:not([class*="menuOpen"]) [aria-label*="search" i],
+body.empresas-page header:not([class*="menuOpen"]) .empresas-menu-btn,
+body.empresas-page header:not([class*="menuOpen"]) .empresas-menu-btn span,
+body.empresas-page header:not([class*="menuOpen"]) .menuButton__inner,
+body.empresas-page header:not([class*="menuOpen"]) .searchButton__inner___1NAyP {
   color: #0a0a0a !important;
 }
-
-/* CSS-bar hamburger variants (3 stacked spans/divs with background-color) —
-   only target spans inside menu-toggle/hamburger containers to avoid the
-   v1.5.333 regression where ALL header button spans became solid black. */
-body.empresas-page header [class*="menu-toggle"] span,
-body.empresas-page header [class*="nav-toggle"] span,
-body.empresas-page header [class*="hamburger"] span,
-body.empresas-page header [class*="hamburger"] div {
+body.empresas-page header:not([class*="menuOpen"]) [class*="menu-toggle"] span,
+body.empresas-page header:not([class*="menuOpen"]) [class*="nav-toggle"] span,
+body.empresas-page header:not([class*="menuOpen"]) [class*="hamburger"] span,
+body.empresas-page header:not([class*="menuOpen"]) [class*="hamburger"] div {
   background-color: #0a0a0a !important;
+}
+
+/* Open-state: explicitly revert filters so icons can show white on the dark overlay. */
+body.empresas-page header[class*="menuOpen"] svg,
+body.empresas-page .headerDesktop[class*="menuOpen"] svg,
+body.empresas-page .headerMobile[class*="menuOpen"] svg,
+body.empresas-page header[class*="menuOpen"] img:not([src*="logo-empresas"]),
+body.empresas-page header[class*="menuOpen"] .menuButton__inner,
+body.empresas-page header[class*="menuOpen"] .searchButton__inner___1NAyP {
+  filter: none !important;
+  color: #ffffff !important;
+}
+body.empresas-page header[class*="menuOpen"] .empresas-menu-btn {
+  border-color: #ffffff !important;
+}
+body.empresas-page header[class*="menuOpen"] .empresas-menu-btn span,
+body.empresas-page header[class*="menuOpen"] .empresas-menu-btn .menuButton__inner {
+  color: #ffffff !important;
+  filter: none !important;
 }
 
 /* "In-company" link is redundant — visitor is already on the empresas page.
@@ -1219,13 +1255,54 @@ body.empresas-page header a[href*="formacao-digital-para-empresas"] {
 body.empresas-page .empresas-menu-btn,
 body.empresas-page header .empresas-menu-btn {
   border: 2px solid #0a0a0a !important;
-  padding: 6px 10px !important;
+  padding: 0 !important;
   margin-right: 22px !important;
   background: transparent !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   box-sizing: border-box !important;
+  width: 36px !important;
+  height: 36px !important;
+}
+
+/* The theme uses the literal text "menu" as its hamburger icon
+   (<span class="menuButton__inner">menu</span>). On the main site it's hidden
+   via CSS-modules tricks; on empresas it leaks through as tiny stripes
+   ("lines are off" feedback). Hide the text + draw three proper bars: two via
+   ::before / ::after pseudo-elements, the middle via a 2px linear-gradient
+   centred on the span's background. */
+body.empresas-page .empresas-menu-btn .menuButton__inner {
+  position: relative !important;
+  display: inline-block !important;
+  width: 18px !important;
+  height: 14px !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+  color: transparent !important;
+  text-indent: -9999px !important;
+  overflow: hidden !important;
+  background: linear-gradient(#0a0a0a, #0a0a0a) center center / 100% 2px no-repeat !important;
+}
+body.empresas-page .empresas-menu-btn .menuButton__inner::before,
+body.empresas-page .empresas-menu-btn .menuButton__inner::after {
+  content: '' !important;
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 2px !important;
+  background: #0a0a0a !important;
+}
+body.empresas-page .empresas-menu-btn .menuButton__inner::before { top: 0 !important; }
+body.empresas-page .empresas-menu-btn .menuButton__inner::after { bottom: 0 !important; }
+
+/* Open state: bars switch to white on the dark overlay. */
+body.empresas-page header[class*="menuOpen"] .empresas-menu-btn .menuButton__inner {
+  background: linear-gradient(#ffffff, #ffffff) center center / 100% 2px no-repeat !important;
+}
+body.empresas-page header[class*="menuOpen"] .empresas-menu-btn .menuButton__inner::before,
+body.empresas-page header[class*="menuOpen"] .empresas-menu-btn .menuButton__inner::after {
+  background: #ffffff !important;
 }
 /* Wider gap between hamburger and search. */
 body.empresas-page header [aria-label*="search" i],
