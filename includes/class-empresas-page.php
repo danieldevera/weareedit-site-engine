@@ -1366,6 +1366,13 @@ body.empresas-page .hero .lede {
   max-width: 60ch !important;
 }
 
+/* Process section title: force black (matches image #48 user direction).
+   Some theme h2 inheritance was rendering it lighter than intended. */
+body.empresas-page .process .section-title,
+body.empresas-page .process h2 {
+  color: var(--ink, #0a0a0a) !important;
+}
+
 /* Hero CTAs — yellow swipe-cta (site-wide standard locked at v1.5.112).
    Both buttons use the same pink → teal → black sweep with yellow label
    flip on hover, matching the homepage hero button behaviour. */
@@ -2763,6 +2770,28 @@ button {
 </section>
 <?php endif; ?>
 
+<!-- ─── PROCESS (moved here under logo-wall in v1.5.376) ───────────── -->
+<?php if ( ! empty( $process ) ) : ?>
+<section class="process" id="processo">
+  <div class="wrap">
+    <p class="section-eyebrow">Como Trabalhamos</p>
+    <h2 class="section-title">4 passos. Do briefing à medição de impacto.</h2>
+    <div class="process-grid">
+      <?php foreach ( $process as $step ) : ?>
+        <div class="process-step">
+          <div class="num-tile"><?php echo esc_html( $step['number'] ); ?></div>
+          <?php if ( ! empty( $step['time'] ) ) : ?>
+            <div class="time-chip"><?php echo esc_html( $step['time'] ); ?></div>
+          <?php endif; ?>
+          <h3><?php echo esc_html( $step['title'] ); ?></h3>
+          <p><?php echo esc_html( $step['body'] ); ?></p>
+        </div>
+      <?php endforeach; ?>
+    </div>
+  </div>
+</section>
+<?php endif; ?>
+
 <!-- ─── FOUNDER QUOTE (replaced STATS in v1.5.372) ─────────────────── -->
 <section class="founder-quote">
   <div class="wrap">
@@ -2820,28 +2849,6 @@ button {
           </ul>
           <?php endif; ?>
         </article>
-      <?php endforeach; ?>
-    </div>
-  </div>
-</section>
-<?php endif; ?>
-
-<!-- ─── PROCESS ────────────────────────────────────────────────── -->
-<?php if ( ! empty( $process ) ) : ?>
-<section class="process" id="processo">
-  <div class="wrap">
-    <p class="section-eyebrow">Como Trabalhamos</p>
-    <h2 class="section-title">4 passos. Do briefing à medição de impacto.</h2>
-    <div class="process-grid">
-      <?php foreach ( $process as $step ) : ?>
-        <div class="process-step">
-          <div class="num-tile"><?php echo esc_html( $step['number'] ); ?></div>
-          <?php if ( ! empty( $step['time'] ) ) : ?>
-            <div class="time-chip"><?php echo esc_html( $step['time'] ); ?></div>
-          <?php endif; ?>
-          <h3><?php echo esc_html( $step['title'] ); ?></h3>
-          <p><?php echo esc_html( $step['body'] ); ?></p>
-        </div>
       <?php endforeach; ?>
     </div>
   </div>
