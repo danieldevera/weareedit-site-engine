@@ -2085,36 +2085,32 @@ button {
 .pw-grid {
   position: absolute;
   inset: 0;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: 1fr 1fr;
   pointer-events: none;
 }
 .pw-step {
-  padding: 0 20px;
+  position: absolute;
+  width: 280px;
+  margin-left: -140px;  /* offset by half width to centre on `left` */
   text-align: center;
   pointer-events: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 320px;
-  justify-self: center;
 }
+/* X positions match SVG circle cx values (200, 500, 800, 1100 in viewBox 1400). */
+.pw-step:nth-child(1) { left: 14.2857%; }
+.pw-step:nth-child(2) { left: 35.7143%; }
+.pw-step:nth-child(3) { left: 57.1429%; }
+.pw-step:nth-child(4) { left: 78.5714%; }
+/* Above: anchor block's bottom edge above the circle's top (30% from top). */
 .pw-step--above {
-  grid-row: 1;
-  align-self: end;
-  padding-bottom: 24px;
+  bottom: 72%;
+  flex-direction: column-reverse;  /* content on top, dots near circle */
 }
+/* Below: anchor block's top edge below the circle's bottom (70% from top). */
 .pw-step--below {
-  grid-row: 2;
-  align-self: start;
-  padding-top: 24px;
-  flex-direction: column-reverse;
+  top: 72%;
 }
-.pw-step:nth-child(1) { grid-column: 1; }
-.pw-step:nth-child(2) { grid-column: 2; }
-.pw-step:nth-child(3) { grid-column: 3; }
-.pw-step:nth-child(4) { grid-column: 4; }
 .pw-dots {
   display: block;
   width: 2px;
