@@ -625,8 +625,14 @@ HTML;
         // the canonical certified-entities page on the main DGERT site.
         // Idempotency guard: check for the anchor opener specifically.
         if ( strpos( $html, '<a class="dgert-cert-link"' ) === false ) {
+            // Negative lookahead `(?![^>]*data-skip-wrap)` excludes imgs marked
+            // with data-skip-wrap="1" — used by the empresas hero pill, which
+            // already lives inside a wrapping <a class="dgert-hero-pill">.
+            // Without the skip, the auto-wrap nests <a> inside <a>, browsers
+            // parse it as siblings, and the pill's CSS selector .dgert-hero-pill
+            // img no longer matches → image renders at intrinsic 1024×483.
             $html = preg_replace(
-                '#(<img[^>]*src="[^"]*dgert-entidade-formadora-(?:branco|negro)\.png"[^>]*>)#',
+                '#(<img(?![^>]*data-skip-wrap)[^>]*src="[^"]*dgert-entidade-formadora-(?:branco|negro)\.png"[^>]*>)#',
                 '<a class="dgert-cert-link" href="https://www.dgert.gov.pt/entidades-formadoras-certificadas" target="_blank" rel="noopener noreferrer" aria-label="DGERT — Entidades Formadoras Certificadas" title="DGERT — Entidades Formadoras Certificadas (entidade nº 18391)">$1</a>',
                 $html
             ) ?? $html;
