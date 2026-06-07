@@ -1271,25 +1271,43 @@ body.empresas-page header .empresas-menu-btn {
   height: 36px !important;
 }
 
-/* Hide whatever the theme paints inside the menu button (the literal text
-   "menu" closed, the EDIT chair monogram open) — we draw our own icon
-   via SVG data URI background on the button itself. Can't be overridden
-   by anything the theme injects into the inner span. */
+/* Hide every descendant of the button so theme-injected content (text
+   "menu" closed, EDIT chair monogram open) can never bleed through. */
 body.empresas-page .empresas-menu-btn .menuButton__inner,
-body.empresas-page .empresas-menu-btn > * {
+body.empresas-page .empresas-menu-btn * {
   display: none !important;
 }
+
+/* Draw 3 bars via ::after overlay with currentColor + 3 linear-gradients.
+   z-index lifts above any theme background-image. currentColor switches
+   black↔white based on body's color cascade per state. v1.5.348 used
+   background-image: url(svg) but theme paints its own background on
+   menuOpen with apparently winning specificity — overlay can't be beaten
+   that way. */
 body.empresas-page .empresas-menu-btn {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 14'><rect x='0' y='0' width='18' height='2' fill='%230a0a0a'/><rect x='0' y='6' width='18' height='2' fill='%230a0a0a'/><rect x='0' y='12' width='18' height='2' fill='%230a0a0a'/></svg>") !important;
-  background-repeat: no-repeat !important;
-  background-position: center center !important;
-  background-size: 18px 14px !important;
+  position: relative !important;
+  color: #0a0a0a !important;
 }
-/* Open state: switch the SVG to the white-fill variant. */
+body.empresas-page .empresas-menu-btn::after {
+  content: '' !important;
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  width: 18px !important;
+  height: 14px !important;
+  transform: translate(-50%, -50%) !important;
+  pointer-events: none !important;
+  z-index: 10 !important;
+  background:
+    linear-gradient(currentColor, currentColor) 0 0    / 100% 2px no-repeat,
+    linear-gradient(currentColor, currentColor) 0 50%  / 100% 2px no-repeat,
+    linear-gradient(currentColor, currentColor) 0 100% / 100% 2px no-repeat !important;
+}
+/* Open state: white bars on the dark menu overlay. */
 body.empresas-page header[class*="menuOpen"] .empresas-menu-btn,
 body.empresas-page .headerDesktop[class*="menuOpen"] .empresas-menu-btn,
 body.empresas-page .headerMobile[class*="menuOpen"] .empresas-menu-btn {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 14'><rect x='0' y='0' width='18' height='2' fill='%23ffffff'/><rect x='0' y='6' width='18' height='2' fill='%23ffffff'/><rect x='0' y='12' width='18' height='2' fill='%23ffffff'/></svg>") !important;
+  color: #ffffff !important;
 }
 
 /* Logo: only set height. Don't lock width — over-constraining the box
