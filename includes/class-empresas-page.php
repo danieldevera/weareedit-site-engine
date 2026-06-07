@@ -1200,7 +1200,15 @@ body.empresas-page .site-header a:not(.cta-yellow):not([class*="connosco"]) {
    way), otherwise they vanish black-on-black (v1.5.346 bug). */
 body.empresas-page header:not([class*="menuOpen"]) svg,
 body.empresas-page .headerDesktop:not([class*="menuOpen"]) svg,
-body.empresas-page .headerMobile:not([class*="menuOpen"]) svg {
+body.empresas-page .headerMobile:not([class*="menuOpen"]) svg,
+/* Theme's search uses <img src=".../lupa.svg"> (raster-like behaviour), not
+   inline <svg>, so the svg selector above doesn't catch it. The native asset
+   is white-on-transparent for use on dark headers; on our white bar it
+   vanishes without a brightness(0) flip. Match any header img that isn't
+   the EDIT lockup. */
+body.empresas-page header:not([class*="menuOpen"]) img:not([src*="logo-empresas"]):not([src*="logo-edit"]),
+body.empresas-page .headerDesktop:not([class*="menuOpen"]) img:not([src*="logo-empresas"]):not([src*="logo-edit"]),
+body.empresas-page .headerMobile:not([class*="menuOpen"]) img:not([src*="logo-empresas"]):not([src*="logo-edit"]) {
   filter: brightness(0) !important;
 }
 body.empresas-page header:not([class*="menuOpen"]) [class*="menu-toggle"],
