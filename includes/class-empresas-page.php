@@ -1031,12 +1031,23 @@ HTML;
     function syncLogoForMenu() {
       var b = document.body, h = document.documentElement;
       var classes = (b.className + ' ' + h.className).toLowerCase();
-      var classOpen = /menu-open|nav-open|menu-active|is-open|mobile-menu-active|drawer-open|panel-open|sidebar-open/.test(classes);
+      var classOpen = /menu-open|nav-open|menu-active|is-open|mobile-menu-active|drawer-open|panel-open|sidebar-open|menuopen/.test(classes);
       var ariaOpen = !!document.querySelector('header [aria-expanded="true"]');
-      var isOpen = manualOpen || classOpen || ariaOpen;
+      // Theme signal: .headerDesktop gets a hashed class like "menuOpen___1Shr4" when menu opens.
+      var themeOpen = !!document.querySelector('header[class*="menuOpen"], .headerDesktop[class*="menuOpen"], .headerMobile[class*="menuOpen"]');
+      var isOpen = manualOpen || classOpen || ariaOpen || themeOpen;
       logoImg.src = isOpen ? whiteSrc : blackSrc;
     }
     syncLogoForMenu();
+    // Watch the theme's headerDesktop / headerMobile elements for class changes
+    // (the menuOpen___[hash] class lands there, NOT on body/html).
+    if (window.MutationObserver) {
+      var headerEls = document.querySelectorAll('.headerDesktop, .headerMobile, header');
+      var headerObs = new MutationObserver(syncLogoForMenu);
+      for (var hi = 0; hi < headerEls.length; hi++) {
+        headerObs.observe(headerEls[hi], { attributes: true, attributeFilter: ['class'] });
+      }
+    }
     // Hamburger click → toggle manualOpen + re-sync at several intervals
     // to catch async theme transitions.
     document.addEventListener('click', function(e){
