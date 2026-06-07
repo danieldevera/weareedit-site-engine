@@ -1091,13 +1091,13 @@ body.empresas-page header a:not(.cta-yellow):not([class*="connosco"]),
 body.empresas-page .site-header a:not(.cta-yellow):not([class*="connosco"]) {
   color: #0a0a0a !important;
 }
-/* SVG icon glyphs — only target path/line/polyline children (NOT svg root
-   nor rect, which often shape the icon container/background). */
-body.empresas-page header svg path,
-body.empresas-page header svg line,
-body.empresas-page header svg polyline {
-  fill: #0a0a0a !important;
-  stroke: #0a0a0a !important;
+/* Catch-all: force any SVG icon in the header to pure black via filter.
+   Doesn't affect the EDIT. for Business logo (which is an <img>, not <svg>),
+   doesn't make solid black squares (preserves the icon's shape and
+   transparency), works regardless of whether the icon uses fill, stroke,
+   currentColor, or a CSS background. */
+body.empresas-page header svg {
+  filter: brightness(0) !important;
 }
 
 /* Icon font glyphs flip via color (currentColor pattern). */
@@ -1107,6 +1107,25 @@ body.empresas-page header [class*="hamburger"],
 body.empresas-page header [aria-label*="menu" i],
 body.empresas-page header [aria-label*="search" i] {
   color: #0a0a0a !important;
+}
+
+/* CSS-bar hamburger variants (3 stacked spans/divs with background-color) —
+   only target spans inside menu-toggle/hamburger containers to avoid the
+   v1.5.333 regression where ALL header button spans became solid black. */
+body.empresas-page header [class*="menu-toggle"] span,
+body.empresas-page header [class*="nav-toggle"] span,
+body.empresas-page header [class*="hamburger"] span,
+body.empresas-page header [class*="hamburger"] div {
+  background-color: #0a0a0a !important;
+}
+
+/* "In-company" link is redundant — visitor is already on the empresas page.
+   Hide via href match (any of the legacy slugs). */
+body.empresas-page header a[href*="in-company"],
+body.empresas-page header a[href*="formacao-corporativa"],
+body.empresas-page header a[href*="formacao-in-company"],
+body.empresas-page header a[href*="formacao-digital-para-empresas"] {
+  display: none !important;
 }
 
 /* Strip any residual whitespace the theme adds above our hero. */
