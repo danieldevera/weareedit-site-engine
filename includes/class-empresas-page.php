@@ -969,13 +969,16 @@ HTML;
      * and swaps src to the empresas lockup.
      */
     public static function emit_logo_swap_js(): void {
-        // Dual-PNG opacity-toggle lockup. Both approved FINAL PNGs are
-        // injected at the same time, stacked absolutely. CSS flips opacity
-        // 0↔1 based on the menuOpen class — no src swap, no jump, exact
-        // approved visual design. Black PNG is in normal flow (drives the
-        // wrapper's box size); white is absolutely positioned on top.
-        $logo_url       = esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-empresas-master-lockup.png' );
-        $logo_url_white = esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-empresas-master-lockup-white.png' );
+        // Single-PNG lockup with CSS state recolouring. ONE approved PNG
+        // (the black master) is the only source of truth. On menuOpen we
+        // apply filter: invert(1) which mathematically flips every pixel
+        // including anti-aliased edges — clean white with proper edges,
+        // identical geometry guaranteed because it's the SAME image. The
+        // yellow dot inverts to blue, so a CSS yellow circle overlay sits
+        // at its exact relative position to mask the inversion.
+        // Dot position measured: 384,52 size 12x12 in 397x115 canvas →
+        // left 96-99%, top 45-55%.
+        $logo_url = esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-empresas-master-lockup.png' );
         echo <<<HTML
 <script>
 (function(){
@@ -984,16 +987,14 @@ HTML;
     if (!hdr) return;
     var img = hdr.querySelector('img');
     if (!img) return;
-    // Replace the theme's <img> with a wrapper holding BOTH approved PNGs.
-    // Black PNG drives the wrapper size (position: static); white PNG is
-    // position: absolute on top, opacity 0. CSS toggles opacities on
-    // menuOpen state — both images already rendered, so swap is instant
-    // and zero layout shift.
+    // Replace the theme's <img> with a wrapper: ONE <img class="lockup-img">
+    // for the PNG itself, plus a yellow dot overlay span. CSS handles all
+    // state transitions via filter on the img + the dot stays yellow.
     var lockup = document.createElement('span');
     lockup.className = 'empresas-lockup';
     lockup.innerHTML =
-      '<img class="lockup-black" src="{$logo_url}" alt="EDIT. for business" loading="eager">' +
-      '<img class="lockup-white" src="{$logo_url_white}" alt="" loading="eager" aria-hidden="true">';
+      '<img class="lockup-img" src="{$logo_url}" alt="EDIT. for business" loading="eager">' +
+      '<span class="lockup-dot" aria-hidden="true"></span>';
     img.parentNode.replaceChild(lockup, img);
     // Walk header buttons just to TAG the hamburger with .empresas-menu-btn
     // (theme class names are unpredictable). All colour/filter work is now
@@ -1283,9 +1284,11 @@ body.empresas-page header[class*="menuOpen"] [class*="searchButton"] {
   opacity: 1 !important;
 }
 
-/* Dual-PNG lockup (v1.5.355). Both approved FINAL PNGs rendered at the
-   same time, stacked absolutely. Opacity toggles per menu state — no src
-   swap, no jump, exact approved design (matches logo-compare-black-vs-white.html). */
+/* Single-PNG lockup (v1.5.358). ONE source of truth: the approved black
+   PNG. CSS filter: invert(1) flips it to white on menuOpen — same exact
+   geometry/anti-aliasing in both states, mathematically guaranteed.
+   Yellow dot inversion becomes blue, masked by a fixed yellow circle
+   overlay positioned exactly over the dot in the PNG. */
 body.empresas-page header .empresas-lockup,
 body.empresas-page .headerDesktop .empresas-lockup,
 body.empresas-page .headerMobile .empresas-lockup {
@@ -1293,37 +1296,39 @@ body.empresas-page .headerMobile .empresas-lockup {
   display: inline-block !important;
   line-height: 0 !important;
 }
-body.empresas-page header .empresas-lockup img,
-body.empresas-page .headerDesktop .empresas-lockup img,
-body.empresas-page .headerMobile .empresas-lockup img {
+body.empresas-page header .empresas-lockup .lockup-img,
+body.empresas-page .headerDesktop .empresas-lockup .lockup-img,
+body.empresas-page .headerMobile .empresas-lockup .lockup-img {
   height: 60px !important;
   width: auto !important;
   display: block !important;
-  transition: opacity 180ms ease !important;
+  transition: filter 180ms ease !important;
+  filter: none !important;
 }
-/* Black drives the wrapper's size; white overlays on top. */
-body.empresas-page .empresas-lockup .lockup-black {
-  position: relative !important;
-  opacity: 1 !important;
-}
-body.empresas-page .empresas-lockup .lockup-white {
+/* Yellow dot overlay. Dot in PNG at bbox (384..396, 52..64) within
+   397x115 canvas → centered at (390, 58) → fractions of width 98.24%,
+   of height 50.43%. Diameter ~12 native px → at 60px-tall render
+   (scale 0.522) = 6.26px. Use 6.5px diameter to give a tiny margin.
+   Position with translate(-50%) so the dot center sits exactly on the
+   PNG's dot center regardless of rounding. */
+body.empresas-page .empresas-lockup .lockup-dot {
   position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  opacity: 0 !important;
+  left: 98.24% !important;
+  top: 50.43% !important;
+  width: 6.5px !important;
+  height: 6.5px !important;
+  border-radius: 50% !important;
+  background: #FFDD06 !important;
+  transform: translate(-50%, -50%) !important;
+  pointer-events: none !important;
+  z-index: 2 !important;
 }
-/* Menu-open state: flip opacities. Both images stay rendered at
-   identical positions — only their alpha changes — so the visual
-   transition is purely a cross-fade, zero layout shift. */
-body.empresas-page header[class*="menuOpen"] .empresas-lockup .lockup-black,
-body.empresas-page .headerDesktop[class*="menuOpen"] .empresas-lockup .lockup-black,
-body.empresas-page .headerMobile[class*="menuOpen"] .empresas-lockup .lockup-black {
-  opacity: 0 !important;
-}
-body.empresas-page header[class*="menuOpen"] .empresas-lockup .lockup-white,
-body.empresas-page .headerDesktop[class*="menuOpen"] .empresas-lockup .lockup-white,
-body.empresas-page .headerMobile[class*="menuOpen"] .empresas-lockup .lockup-white {
-  opacity: 1 !important;
+/* Menu-open state: invert the entire PNG → black becomes white, yellow
+   inversion becomes blue (covered by the always-yellow overlay above). */
+body.empresas-page header[class*="menuOpen"] .empresas-lockup .lockup-img,
+body.empresas-page .headerDesktop[class*="menuOpen"] .empresas-lockup .lockup-img,
+body.empresas-page .headerMobile[class*="menuOpen"] .empresas-lockup .lockup-img {
+  filter: invert(1) !important;
 }
 /* Wider gap between hamburger and search. */
 body.empresas-page header [aria-label*="search" i],
