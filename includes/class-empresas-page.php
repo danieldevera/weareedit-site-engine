@@ -993,8 +993,7 @@ HTML;
     var lockup = document.createElement('span');
     lockup.className = 'empresas-lockup';
     lockup.innerHTML =
-      '<img class="lockup-img" src="{$logo_url}" alt="EDIT. for business" loading="eager">' +
-      '<span class="lockup-dot" aria-hidden="true"></span>';
+      '<img class="lockup-img" src="{$logo_url}" alt="EDIT. for business" loading="eager">';
     img.parentNode.replaceChild(lockup, img);
     // Walk header buttons just to TAG the hamburger with .empresas-menu-btn
     // (theme class names are unpredictable). All colour/filter work is now
@@ -1284,11 +1283,13 @@ body.empresas-page header[class*="menuOpen"] [class*="searchButton"] {
   opacity: 1 !important;
 }
 
-/* Single-PNG lockup (v1.5.358). ONE source of truth: the approved black
-   PNG. CSS filter: invert(1) flips it to white on menuOpen — same exact
-   geometry/anti-aliasing in both states, mathematically guaranteed.
-   Yellow dot inversion becomes blue, masked by a fixed yellow circle
-   overlay positioned exactly over the dot in the PNG. */
+/* Single-PNG lockup (v1.5.359). ONE source of truth: the approved black
+   PNG. On menuOpen, CSS filter chain: invert(1) flips black→white
+   (preserving anti-aliased edges perfectly), then hue-rotate(180deg)
+   rotates the blue-inverted yellow BACK to yellow. Black/white are
+   unaffected by hue-rotate (zero saturation). Net result: black EDIT
+   → white EDIT, yellow dot stays yellow. No overlay needed, no
+   positioning math, no blue bleed. */
 body.empresas-page header .empresas-lockup,
 body.empresas-page .headerDesktop .empresas-lockup,
 body.empresas-page .headerMobile .empresas-lockup {
@@ -1305,30 +1306,11 @@ body.empresas-page .headerMobile .empresas-lockup .lockup-img {
   transition: filter 180ms ease !important;
   filter: none !important;
 }
-/* Yellow dot overlay. Dot in PNG at bbox (384..396, 52..64) within
-   397x115 canvas → centered at (390, 58) → fractions of width 98.24%,
-   of height 50.43%. Diameter ~12 native px → at 60px-tall render
-   (scale 0.522) = 6.26px. Use 6.5px diameter to give a tiny margin.
-   Position with translate(-50%) so the dot center sits exactly on the
-   PNG's dot center regardless of rounding. */
-body.empresas-page .empresas-lockup .lockup-dot {
-  position: absolute !important;
-  left: 98.24% !important;
-  top: 50.43% !important;
-  width: 6.5px !important;
-  height: 6.5px !important;
-  border-radius: 50% !important;
-  background: #FFDD06 !important;
-  transform: translate(-50%, -50%) !important;
-  pointer-events: none !important;
-  z-index: 2 !important;
-}
-/* Menu-open state: invert the entire PNG → black becomes white, yellow
-   inversion becomes blue (covered by the always-yellow overlay above). */
+/* Menu-open state: invert + hue-rotate keeps yellow yellow. */
 body.empresas-page header[class*="menuOpen"] .empresas-lockup .lockup-img,
 body.empresas-page .headerDesktop[class*="menuOpen"] .empresas-lockup .lockup-img,
 body.empresas-page .headerMobile[class*="menuOpen"] .empresas-lockup .lockup-img {
-  filter: invert(1) !important;
+  filter: invert(1) hue-rotate(180deg) !important;
 }
 /* Wider gap between hamburger and search. */
 body.empresas-page header [aria-label*="search" i],
