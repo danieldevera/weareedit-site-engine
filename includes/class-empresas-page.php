@@ -984,24 +984,15 @@ HTML;
     if (!img) return;
     img.src = '{$logo_url}';
     img.removeAttribute('srcset');
-    // Lock both box dimensions so the browser CAN'T recompute width on src
-    // swap. PNGs are 397x115 → at 60px tall the aspect-correct width is
-    // 207.13 → round to 207. Inline !important wins ties against stylesheet
-    // !important, so this is the authoritative size.
+    // Keep it minimal — over-constraining (v1.5.350) made the jump worse,
+    // likely by fighting the theme's flexbox parent layout. Both PNGs have
+    // identical 397x115 dimensions, so the browser-computed width from
+    // height:60px should be the same on every src swap. If a jump still
+    // appears, the cause is upstream (parent anchor, theme menuOpen layout
+    // rules) and needs DevTools inspection, not more inline constraints.
     img.style.setProperty('height', '60px', 'important');
-    img.style.setProperty('width', '207px', 'important');
-    img.style.setProperty('min-width', '207px', 'important');
-    img.style.setProperty('max-width', '207px', 'important');
-    img.style.setProperty('min-height', '60px', 'important');
-    img.style.setProperty('max-height', '60px', 'important');
-    img.style.setProperty('object-fit', 'contain', 'important');
-    // Free the parent anchor too — themes often cap logo containers.
-    var anchor = img.closest('a');
-    if (anchor) {
-      anchor.style.setProperty('max-width', 'none', 'important');
-      anchor.style.setProperty('width', 'auto', 'important');
-      anchor.style.setProperty('height', 'auto', 'important');
-    }
+    img.style.setProperty('width', 'auto', 'important');
+    img.style.setProperty('display', 'block', 'important');
     // Walk header buttons just to TAG the hamburger with .empresas-menu-btn
     // (theme class names are unpredictable). All colour/filter work is now
     // done via CSS scoped to header:not([class*="menuOpen"]) — see emit_inline_css —
@@ -1301,19 +1292,13 @@ body.empresas-page .headerMobile[class*="menuOpen"] .empresas-menu-btn {
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 14'><rect x='0' y='0' width='18' height='2' fill='%23ffffff'/><rect x='0' y='6' width='18' height='2' fill='%23ffffff'/><rect x='0' y='12' width='18' height='2' fill='%23ffffff'/></svg>") !important;
 }
 
-/* Logo dimensions — force exact pixel dimensions on BOTH src variants so the
-   browser can't re-compute width: auto with sub-pixel rounding differences
-   when src swaps black↔white. 397/115*60 = 207.13 → round to 207. */
+/* Logo: only set height. Don't lock width — over-constraining the box
+   inside the theme's flex layout (v1.5.350 attempt) caused growth/nudge
+   regressions. Both PNGs are 397x115 so intrinsic-ratio width is identical. */
 body.empresas-page header img[src*="logo-empresas-master-lockup"],
 body.empresas-page .headerDesktop img[src*="logo-empresas-master-lockup"],
 body.empresas-page .headerMobile img[src*="logo-empresas-master-lockup"] {
   height: 60px !important;
-  width: 207px !important;
-  min-width: 207px !important;
-  max-width: 207px !important;
-  min-height: 60px !important;
-  max-height: 60px !important;
-  object-fit: contain !important;
   display: block !important;
 }
 /* Wider gap between hamburger and search. */
