@@ -1869,38 +1869,41 @@ button {
   .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 36px 28px; }
 }
 
-/* ── FOUNDER QUOTE (replaced STATS in v1.5.372) ───────────────────── */
+/* ── FOUNDER QUOTE (replaced STATS in v1.5.372, refined v1.5.374) ─── */
 .founder-quote {
   padding: 96px 0;
-  background: var(--grey-1);
+  background: var(--grey-2);  /* darker grey than the old --grey-1 */
 }
 .fq-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 48px;
-  max-width: 920px;
+  gap: 64px;
+  max-width: 1080px;  /* widened from 920px */
   margin: 0 auto;
 }
 .fq-quote {
   margin: 0;
-  font-size: clamp(24px, 2.4vw, 34px);
-  line-height: 1.32;
+  font-size: clamp(24px, 2.6vw, 38px);
+  line-height: 1.30;
   letter-spacing: -0.015em;
   font-weight: 500;
   color: var(--ink);
-  max-width: 30ch;
+  max-width: 44ch;  /* widened from 30ch — quote textbox wider per user */
 }
+/* Founder signature card — matches [[locked-founder-signature-card]]:
+   84px photo + 3px PINK ring (not yellow) + cropped signature 180w +
+   FOUNDER label + email link below. */
 .fq-author {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 22px;
 }
 .fq-photo {
-  width: 96px;
-  height: 96px;
+  width: 84px;
+  height: 84px;
   border-radius: 50%;
   object-fit: cover;
-  box-shadow: 0 0 0 3px var(--edit-yellow);
+  box-shadow: 0 0 0 3px var(--edit-pink);  /* pink ring per locked spec */
   display: block;
   flex-shrink: 0;
 }
@@ -1908,24 +1911,34 @@ button {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  align-items: flex-start;
 }
 .fq-signature {
-  height: 48px;
-  width: auto;
+  width: 180px;
+  height: auto;
   display: block;
 }
 .fq-role {
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--grey-3);
+  color: var(--ink);
+  margin-top: 4px;
 }
+.fq-email {
+  font-size: 13px;
+  color: var(--grey-4);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.fq-email:hover { color: var(--ink); }
 @media (max-width: 720px) {
   .founder-quote { padding: 64px 0; }
-  .fq-author { gap: 14px; }
+  .fq-grid { gap: 40px; }
+  .fq-author { gap: 16px; }
   .fq-photo { width: 72px; height: 72px; }
-  .fq-signature { height: 36px; }
+  .fq-signature { width: 150px; }
 }
 
 /* ── VALUE PROPS ─────────────────────────────────────────────────── */
@@ -2758,10 +2771,11 @@ button {
         “We help individuals &amp; businesses grow in the Digital Ecosystem through our physical &amp; remote learning programs.”
       </blockquote>
       <div class="fq-author">
-        <img class="fq-photo" src="https://weareedit.io/wp-content/uploads/2026/05/daniel-devera-sign-off.png" alt="Daniel Devera" width="96" height="96" loading="lazy">
+        <img class="fq-photo" src="https://weareedit.io/wp-content/uploads/2026/05/daniel-devera-sign-off.png" alt="Daniel Devera" width="84" height="84" loading="lazy">
         <div class="fq-meta">
-          <img class="fq-signature" src="https://weareedit.io/wp-content/uploads/2026/05/DANIEL-DEVERA-ASSINATURA.png" alt="Daniel Devera signature" loading="lazy">
-          <span class="fq-role">Founder · EDIT.</span>
+          <img class="fq-signature" src="https://weareedit.io/wp-content/uploads/2026/05/DANIEL-DEVERA-ASSINATURA.png" alt="Daniel Devera" loading="lazy">
+          <span class="fq-role">Founder</span>
+          <a class="fq-email" href="mailto:daniel.devera@weareedit.io">daniel.devera@weareedit.io</a>
         </div>
       </div>
     </div>
