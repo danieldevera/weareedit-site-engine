@@ -1023,29 +1023,52 @@ HTML;
         btn.classList.add('empresas-menu-btn');
       }
     }
-    // Observe menu-open state to flip logo black ↔ white.
+    // Track menu open/close manually + observe theme class changes.
     var logoImg = img;
     var blackSrc = '{$logo_url}';
     var whiteSrc = '{$logo_url_white}';
+    var manualOpen = false;
     function syncLogoForMenu() {
       var b = document.body, h = document.documentElement;
-      var open = (b.className + ' ' + h.className).toLowerCase();
-      var isOpen = /menu-open|nav-open|menu-active|is-open|mobile-menu-active/.test(open) ||
-                   !!document.querySelector('header [aria-expanded="true"]');
+      var classes = (b.className + ' ' + h.className).toLowerCase();
+      var classOpen = /menu-open|nav-open|menu-active|is-open|mobile-menu-active|drawer-open|panel-open|sidebar-open/.test(classes);
+      var ariaOpen = !!document.querySelector('header [aria-expanded="true"]');
+      var isOpen = manualOpen || classOpen || ariaOpen;
       logoImg.src = isOpen ? whiteSrc : blackSrc;
     }
     syncLogoForMenu();
+    // Hamburger click → toggle manualOpen + re-sync at several intervals
+    // to catch async theme transitions.
+    document.addEventListener('click', function(e){
+      if (!e.target || !e.target.closest) return;
+      if (e.target.closest('.empresas-menu-btn')) {
+        manualOpen = !manualOpen;
+        syncLogoForMenu();
+        setTimeout(syncLogoForMenu, 100);
+        setTimeout(syncLogoForMenu, 400);
+      }
+      // Click on overlay backdrop, close button, or menu item should close it.
+      else if (manualOpen && (
+        e.target.closest('[aria-label*="close" i]') ||
+        e.target.closest('.menu-close') ||
+        e.target.closest('.close-menu') ||
+        (e.target.closest('a[href]') && !e.target.closest('.empresas-menu-btn'))
+      )) {
+        manualOpen = false;
+        setTimeout(syncLogoForMenu, 50);
+      }
+    }, true);
+    // ESC key closes menu.
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && manualOpen) {
+        manualOpen = false;
+        setTimeout(syncLogoForMenu, 50);
+      }
+    });
     if (window.MutationObserver) {
       var obs = new MutationObserver(syncLogoForMenu);
       obs.observe(document.body, { attributes: true, attributeFilter: ['class'] });
       obs.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-      // Re-check shortly after hamburger clicks (some themes toggle async).
-      document.addEventListener('click', function(e){
-        if (e.target && e.target.closest && e.target.closest('.empresas-menu-btn')) {
-          setTimeout(syncLogoForMenu, 100);
-          setTimeout(syncLogoForMenu, 400);
-        }
-      }, true);
     }
   }
   if (document.readyState === 'loading') {
