@@ -1787,8 +1787,8 @@ button {
   padding: 90px 0;
 }
 .section-eyebrow {
-  font-size: 12px; font-weight: 700;
-  letter-spacing: 0.22em; text-transform: uppercase;
+  font-size: 13px; font-weight: 500;
+  letter-spacing: 0.30em; text-transform: uppercase;
   color: var(--grey-3);
   margin: 0 0 12px 0;
 }
@@ -2382,8 +2382,8 @@ button {
   align-items: center;
 }
 .founders-nl .eyebrow {
-  font-size: 12px; font-weight: 700;
-  letter-spacing: 0.22em; text-transform: uppercase;
+  font-size: 13px; font-weight: 500;
+  letter-spacing: 0.30em; text-transform: uppercase;
   color: var(--edit-yellow);
   margin: 0 0 18px 0;
 }
@@ -2940,65 +2940,12 @@ button {
 })();
 </script>
 
-<!-- ─── FOUNDERS NL ────────────────────────────────────────────── -->
-<section class="founders-nl">
-  <div class="wrap">
-    <div class="nl-grid">
-      <div class="nl-copy">
-        <p class="eyebrow">Founder's note</p>
-        <h2>O que estou a aprender sobre upskill corporativo.</h2>
-        <p class="nl-lede">De duas em duas semanas escrevo um email curto sobre o que está a funcionar (e a falhar) em programas de formação digital nas empresas portuguesas. Direto da prática. Sem fluff.</p>
-      </div>
-      <form class="nl-form" id="founders-nl-form" novalidate>
-        <label for="fnl-email">Email corporativo</label>
-        <div class="nl-input-row">
-          <input type="email" id="fnl-email" name="email" placeholder="voce@empresa.pt" required autocomplete="email">
-          <button type="submit" class="btn-nl-submit">Subscrever</button>
-        </div>
-        <p class="nl-hint">Quinzenal · Cancela a qualquer momento · Sem spam</p>
-        <div class="nl-status" role="status" aria-live="polite"></div>
-      </form>
-    </div>
-  </div>
-</section>
-<script>
-(function(){
-  var form = document.getElementById('founders-nl-form');
-  if (!form) return;
-  var endpoint = '<?php echo esc_url( rest_url( 'edit/v1/newsletter-signup' ) ); ?>';
-  var status = form.querySelector('.nl-status');
-  var btn = form.querySelector('button');
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-    status.classList.remove('error');
-    status.textContent = '';
-    var email = form.querySelector('#fnl-email').value.trim();
-    if (!email) return;
-    btn.disabled = true;
-    var orig = btn.textContent;
-    btn.textContent = 'A enviar…';
-    fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email, source: 'empresas-founders-nl' })
-    }).then(function(r){ return r.json().catch(function(){return{};}).then(function(b){return{ok:r.ok,body:b};}); })
-      .then(function(res){
-        if (res.ok && (res.body.status === 'ok' || res.body.success)) {
-          status.textContent = 'Obrigado. O primeiro email chega em breve.';
-          form.querySelector('#fnl-email').value = '';
-        } else {
-          status.classList.add('error');
-          status.textContent = (res.body && res.body.message) || 'Não consegui registar. Tenta novamente.';
-        }
-      })
-      .catch(function(){
-        status.classList.add('error');
-        status.textContent = 'Erro de rede. Tenta novamente.';
-      })
-      .then(function(){ btn.disabled = false; btn.textContent = orig; });
-  });
-})();
-</script>
+<!-- ─── FOUNDERS NL REMOVED (v1.5.367) ─────────────────────────────
+   Was a dark band with its own "Founder's note" eyebrow + form. The
+   yellow sitewide Newsletter EDIT. strip ([[project-newsletter-strip-locked]])
+   serves the same purpose (newsletter signup + Daniel's signature)
+   and renders automatically on this page. Removing the dark variant
+   eliminates the duplicate. -->
 
 <!-- ─── FOOTER ─────────────────────────────────────────────────── -->
 <footer class="site-footer">
