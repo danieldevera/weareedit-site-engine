@@ -1198,63 +1198,28 @@ body.empresas-page header a[href*="formacao-digital-para-empresas"] {
   display: none !important;
 }
 
-/* Hamburger: 3 stacked horizontal lines, NO box outline (matches main
-   weareedit.io header — image #29 reference from user). Architecture:
-   single ::after = middle bar, top + bottom bars via box-shadow offsets.
-   More reliable than multi-layer linear-gradient backgrounds (v1.5.357's
-   approach showed only 1 bar in image #27).
-
-   Sizing: button 26x22 (close to search-icon footprint), bars 22px wide ×
-   2px tall, separation 7px between bar centres → top bar at y=4, middle
-   at y=11, bottom at y=18 within 22px height. currentColor drives state. */
-body.empresas-page .empresas-menu-btn,
-body.empresas-page header .empresas-menu-btn {
-  border: 0 !important;
-  padding: 0 !important;
-  margin-right: 18px !important;
-  background: transparent !important;
-  background-image: none !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  box-sizing: border-box !important;
-  width: 26px !important;
-  height: 22px !important;
-  position: relative !important;
-  color: #0a0a0a !important;
-}
-/* Hide every theme child + any theme ::before injection */
-body.empresas-page .empresas-menu-btn .menuButton__inner,
-body.empresas-page .empresas-menu-btn * {
-  display: none !important;
-}
-body.empresas-page .empresas-menu-btn::before {
-  content: none !important;
-  display: none !important;
-}
-/* Middle bar = ::after. Top + bottom bars = box-shadow offsets. */
-body.empresas-page .empresas-menu-btn::after {
-  content: '' !important;
-  position: absolute !important;
-  left: 50% !important;
-  top: 50% !important;
-  width: 22px !important;
-  height: 2px !important;
-  transform: translate(-50%, -50%) !important;
-  background: currentColor !important;
-  box-shadow:
-    0 -7px 0 currentColor,
-    0  7px 0 currentColor !important;
-  border-radius: 1px !important;
-  pointer-events: none !important;
-  z-index: 20 !important;
-}
-/* Open state: bars become white. Menu overlay shows behind directly
-   (no box around them) so no background-color toggle needed. */
+/* Hamburger: let the theme handle the entire 3-line + close-X animation
+   (matches main weareedit.io HP exactly — image #29 closed, image #30 open).
+   The theme has full hamburger architecture built in:
+     - .menuButton::before          = top bar (y=15, 30x2)
+     - .menuButton__inner::before   = middle bar (y=24, 30x2)
+     - .menuButton::after           = bottom bar (y=33, 30x2)
+     - .close___[hash] class triggers X animation:
+         top    → translateY(9px) rotate(135deg)
+         bottom → translateY(-9px) rotate(45deg)
+         middle → opacity: 0
+   All bars use currentColor, so we just need to drive the color per state.
+   ANY override beyond color breaks the theme animation — earlier ships
+   v1.5.346-362 were all consequences of fighting the theme. Stop fighting. */
 body.empresas-page header[class*="menuOpen"] .empresas-menu-btn,
 body.empresas-page .headerDesktop[class*="menuOpen"] .empresas-menu-btn,
 body.empresas-page .headerMobile[class*="menuOpen"] .empresas-menu-btn {
   color: #ffffff !important;
+}
+body.empresas-page header:not([class*="menuOpen"]) .empresas-menu-btn,
+body.empresas-page .headerDesktop:not([class*="menuOpen"]) .empresas-menu-btn,
+body.empresas-page .headerMobile:not([class*="menuOpen"]) .empresas-menu-btn {
+  color: #0a0a0a !important;
 }
 
 /* Search container: theme collapses .headerDesktop__search on menuOpen so
