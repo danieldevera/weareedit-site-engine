@@ -288,6 +288,14 @@ class EDIT_Newsletter_Signup {
 
     /** Resolve the current page's typology key for color mapping. */
     private static function current_typology(): string {
+        // Empresas subdomain: place the strip BEFORE the footer (not after hero
+        // like the homepage). Returning anything other than 'homepage' routes
+        // through the "before footer" injection branch in newsletter-signup.js.
+        $host = isset( $_SERVER['HTTP_HOST'] ) ? strtolower( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : '';
+        $host = preg_replace( '/:\d+$/', '', $host );
+        $host = preg_replace( '/^www\./', '', $host );
+        if ( $host === 'empresas.weareedit.io' ) return 'empresas';
+
         if ( is_front_page() ) return 'homepage';
         return self::detect_formacao_typology() ?? 'default';
     }
