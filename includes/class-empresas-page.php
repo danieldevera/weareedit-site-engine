@@ -1266,43 +1266,41 @@ body.empresas-page header .empresas-menu-btn {
   height: 36px !important;
 }
 
-/* The theme uses the literal text "menu" as its hamburger icon
-   (<span class="menuButton__inner">menu</span>). On the main site it's hidden
-   via CSS-modules tricks; on empresas it leaks through as tiny stripes
-   ("lines are off" feedback). Hide the text + draw three proper bars: two via
-   ::before / ::after pseudo-elements, the middle via a 2px linear-gradient
-   centred on the span's background. */
-body.empresas-page .empresas-menu-btn .menuButton__inner {
-  position: relative !important;
-  display: inline-block !important;
-  width: 18px !important;
-  height: 14px !important;
-  font-size: 0 !important;
-  line-height: 0 !important;
-  color: transparent !important;
-  text-indent: -9999px !important;
-  overflow: hidden !important;
-  background: linear-gradient(#0a0a0a, #0a0a0a) center center / 100% 2px no-repeat !important;
+/* Hide whatever the theme paints inside the menu button (the literal text
+   "menu" closed, the EDIT chair monogram open) — we draw our own icon
+   via SVG data URI background on the button itself. Can't be overridden
+   by anything the theme injects into the inner span. */
+body.empresas-page .empresas-menu-btn .menuButton__inner,
+body.empresas-page .empresas-menu-btn > * {
+  display: none !important;
 }
-body.empresas-page .empresas-menu-btn .menuButton__inner::before,
-body.empresas-page .empresas-menu-btn .menuButton__inner::after {
-  content: '' !important;
-  position: absolute !important;
-  left: 0 !important;
-  right: 0 !important;
-  height: 2px !important;
-  background: #0a0a0a !important;
+body.empresas-page .empresas-menu-btn {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 14'><rect x='0' y='0' width='18' height='2' fill='%230a0a0a'/><rect x='0' y='6' width='18' height='2' fill='%230a0a0a'/><rect x='0' y='12' width='18' height='2' fill='%230a0a0a'/></svg>") !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-size: 18px 14px !important;
 }
-body.empresas-page .empresas-menu-btn .menuButton__inner::before { top: 0 !important; }
-body.empresas-page .empresas-menu-btn .menuButton__inner::after { bottom: 0 !important; }
+/* Open state: switch the SVG to the white-fill variant. */
+body.empresas-page header[class*="menuOpen"] .empresas-menu-btn,
+body.empresas-page .headerDesktop[class*="menuOpen"] .empresas-menu-btn,
+body.empresas-page .headerMobile[class*="menuOpen"] .empresas-menu-btn {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 14'><rect x='0' y='0' width='18' height='2' fill='%23ffffff'/><rect x='0' y='6' width='18' height='2' fill='%23ffffff'/><rect x='0' y='12' width='18' height='2' fill='%23ffffff'/></svg>") !important;
+}
 
-/* Open state: bars switch to white on the dark overlay. */
-body.empresas-page header[class*="menuOpen"] .empresas-menu-btn .menuButton__inner {
-  background: linear-gradient(#ffffff, #ffffff) center center / 100% 2px no-repeat !important;
-}
-body.empresas-page header[class*="menuOpen"] .empresas-menu-btn .menuButton__inner::before,
-body.empresas-page header[class*="menuOpen"] .empresas-menu-btn .menuButton__inner::after {
-  background: #ffffff !important;
+/* Logo dimensions — force exact pixel dimensions on BOTH src variants so the
+   browser can't re-compute width: auto with sub-pixel rounding differences
+   when src swaps black↔white. 397/115*60 = 207.13 → round to 207. */
+body.empresas-page header img[src*="logo-empresas-master-lockup"],
+body.empresas-page .headerDesktop img[src*="logo-empresas-master-lockup"],
+body.empresas-page .headerMobile img[src*="logo-empresas-master-lockup"] {
+  height: 60px !important;
+  width: 207px !important;
+  min-width: 207px !important;
+  max-width: 207px !important;
+  min-height: 60px !important;
+  max-height: 60px !important;
+  object-fit: contain !important;
+  display: block !important;
 }
 /* Wider gap between hamburger and search. */
 body.empresas-page header [aria-label*="search" i],
