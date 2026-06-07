@@ -969,8 +969,9 @@ HTML;
      * and swaps src to the empresas lockup.
      */
     public static function emit_logo_swap_js(): void {
-        // BLACK lockup (approved) for the WHITE top bar.
-        $logo_url = esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-empresas-lockup-black.svg' );
+        // Approved + locked empresas lockup (V2 master + FOR BUSINESS tag, baked
+        // into a single trimmed transparent PNG via magick compose).
+        $logo_url = esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-empresas-master-lockup.png' );
         echo <<<HTML
 <script>
 (function(){
@@ -981,9 +982,9 @@ HTML;
     if (!img) return;
     img.src = '{$logo_url}';
     img.removeAttribute('srcset');
-    img.style.height = '36px';
+    img.style.height = '54px';
     img.style.width = 'auto';
-    img.style.maxWidth = '180px';
+    img.style.maxWidth = '230px';
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', swap);
