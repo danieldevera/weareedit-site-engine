@@ -2197,13 +2197,14 @@ button {
   }
 }
 
-/* ── FINANCING BANNER (v1.5.380) — visual break between logo wall +
-   process. Slim dark band, teaser copy, link down to the full
-   Financing section. */
+/* ── FINANCING BANNER (v1.5.381) — light brand-yellow break between
+   logo wall + process. Replaces v1.5.380's dark band per user light-
+   tone direction. Pink accent on "desbloqueio" instead of yellow-on-
+   yellow which would have disappeared. */
 .financing-banner {
   padding: 72px 0;
-  background: var(--ink);
-  color: #fff;
+  background: var(--edit-yellow);
+  color: var(--ink);
   text-align: center;
 }
 .financing-banner .wrap {
@@ -2214,7 +2215,7 @@ button {
   font-weight: 500;
   letter-spacing: 0.30em;
   text-transform: uppercase;
-  color: var(--edit-yellow);
+  color: var(--ink);
   margin: 0 0 18px 0;
 }
 .fb-title {
@@ -2222,12 +2223,12 @@ button {
   line-height: 1.1;
   letter-spacing: -0.02em;
   font-weight: 700;
-  color: #fff;
+  color: var(--ink);
   margin: 0 0 18px 0;
 }
 .fb-accent {
-  background: var(--edit-yellow);
-  color: var(--ink);
+  background: var(--ink);
+  color: var(--edit-yellow);
   padding: 0 0.12em;
   border-radius: 4px;
   white-space: nowrap;
@@ -2235,7 +2236,7 @@ button {
 .fb-body {
   font-size: 17px;
   line-height: 1.55;
-  color: rgba(255,255,255,0.78);
+  color: rgba(10,10,10,0.78);
   max-width: 60ch;
   margin: 0 auto 24px auto;
 }
@@ -2245,15 +2246,14 @@ button {
   gap: 6px;
   font-size: 14px;
   font-weight: 600;
-  color: var(--edit-yellow);
+  color: var(--ink);
   text-decoration: none;
-  border-bottom: 1px solid var(--edit-yellow);
+  border-bottom: 1px solid var(--ink);
   padding-bottom: 2px;
-  transition: color 0.2s ease, border-color 0.2s ease;
+  transition: opacity 0.2s ease;
 }
 .fb-link:hover {
-  color: #fff;
-  border-color: #fff;
+  opacity: 0.7;
 }
 
 /* ── FINANCING ───────────────────────────────────────────────────── */
