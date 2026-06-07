@@ -1080,42 +1080,22 @@ body.empresas-page header a:not(.cta-yellow):not([class*="connosco"]),
 body.empresas-page .site-header a:not(.cta-yellow):not([class*="connosco"]) {
   color: #0a0a0a !important;
 }
-/* SVG / icon strokes default to dark on the white bar. */
-body.empresas-page header svg,
-body.empresas-page header path,
-body.empresas-page header line,
-body.empresas-page header polyline,
-body.empresas-page header rect {
+/* SVG icon glyphs — only target path/line/polyline children (NOT svg root
+   nor rect, which often shape the icon container/background). */
+body.empresas-page header svg path,
+body.empresas-page header svg line,
+body.empresas-page header svg polyline {
   fill: #0a0a0a !important;
   stroke: #0a0a0a !important;
-  color: #0a0a0a !important;
 }
 
-/* Hamburger / menu-toggle / nav-toggle — flip CSS-bar variants to black too.
-   Covers most theme conventions: 3 stacked spans inside a button, divs with
-   background-color making the bars, ::before/::after pseudo-bars. */
-body.empresas-page header button,
-body.empresas-page header button span,
+/* Icon font glyphs flip via color (currentColor pattern). */
 body.empresas-page header [class*="menu-toggle"],
-body.empresas-page header [class*="menu-toggle"] span,
 body.empresas-page header [class*="nav-toggle"],
-body.empresas-page header [class*="nav-toggle"] span,
 body.empresas-page header [class*="hamburger"],
-body.empresas-page header [class*="hamburger"] span,
 body.empresas-page header [aria-label*="menu" i],
-body.empresas-page header [aria-label*="menu" i] span,
-body.empresas-page header [aria-label*="search" i],
-body.empresas-page header [aria-label*="search" i] svg {
+body.empresas-page header [aria-label*="search" i] {
   color: #0a0a0a !important;
-}
-body.empresas-page header button span,
-body.empresas-page header [class*="menu-toggle"] span,
-body.empresas-page header [class*="nav-toggle"] span,
-body.empresas-page header [class*="hamburger"] span,
-body.empresas-page header [class*="hamburger"]::before,
-body.empresas-page header [class*="hamburger"]::after {
-  background-color: #0a0a0a !important;
-  background: #0a0a0a !important;
 }
 
 /* Strip any residual whitespace the theme adds above our hero. */
