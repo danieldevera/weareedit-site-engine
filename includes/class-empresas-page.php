@@ -1319,6 +1319,9 @@ body.empresas-page .hero h1 {
 }
 body.empresas-page .hero .eyebrow {
   color: var(--edit-yellow, #ffdd06) !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.30em !important;
+  font-size: 13px !important;
 }
 body.empresas-page .hero .lede {
   color: rgba(255,255,255,0.85) !important;
