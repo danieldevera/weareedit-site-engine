@@ -969,16 +969,14 @@ HTML;
      * and swaps src to the empresas lockup.
      */
     public static function emit_logo_swap_js(): void {
-        // Single-PNG lockup with CSS state recolouring. ONE approved PNG
-        // (the black master) is the only source of truth. On menuOpen we
-        // apply filter: invert(1) which mathematically flips every pixel
-        // including anti-aliased edges — clean white with proper edges,
-        // identical geometry guaranteed because it's the SAME image. The
-        // yellow dot inverts to blue, so a CSS yellow circle overlay sits
-        // at its exact relative position to mask the inversion.
-        // Dot position measured: 384,52 size 12x12 in 397x115 canvas →
-        // left 96-99%, top 45-55%.
-        $logo_url = esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-empresas-master-lockup.png' );
+        // DOT-LESS PNG + CSS yellow dot overlay. The original FINAL.png
+        // had a baked-in yellow dot. v1.5.358-360 tried covering the
+        // inverted-blue version of it with a CSS overlay, but ANY size
+        // mismatch between PNG dot and overlay produced a visible blob.
+        // Solution: surgically remove the dot from the PNG (magick DstOut
+        // with a circular mask), then the CSS overlay is the ONLY dot.
+        // Single source of truth, no overlap artifacts possible.
+        $logo_url = esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/logo-empresas-master-lockup-nodot.png' );
         echo <<<HTML
 <script>
 (function(){
@@ -1284,25 +1282,22 @@ body.empresas-page header[class*="menuOpen"] [class*="searchButton"] {
   opacity: 1 !important;
 }
 
-/* Single-PNG lockup (v1.5.360). ONE source of truth: the approved black
-   PNG. On menuOpen, filter: invert(1) flips it to white (clean edges).
-   v1.5.359 tried invert + hue-rotate to keep yellow yellow but CSS
-   hue-rotate's matrix doesn't preserve colors symmetrically — applied
-   to inverted yellow (0,34,249) it yields ~(84,50,0) which is dark
-   brown, not yellow. Back to the overlay approach but generous-sized.
+/* Single-PNG-without-dot + CSS dot overlay (v1.5.361). The dot was
+   surgically removed from the PNG so the CSS overlay is the ONLY dot.
+   No PNG-vs-overlay alignment issues possible.
 
-   Yellow dot bbox in PNG: 12x12 at (384,52) in 397x115 canvas, centred
-   at (390,58) → 98.24% left, 50.43% top. At 60px render the dot is
-   ~6.26px but anti-aliased halo extends further. Overlay at 10px
-   covers solid + halo without leaking blue. In closed state the
-   overlay sits ON the existing yellow dot (yellow-on-yellow,
-   indistinguishable). In open state it covers the inverted-blue dot. */
+   Original dot bbox: 12x12 at (384,52) in 397x115 → centred at
+   (389.5, 57.5) → 98.11% left, 50% top. At 60px render that's 6.26px
+   diameter. Use 6.5px overlay (matches solid dot size + 0.24px margin).
+   Overlay stays yellow in BOTH states because it's outside the
+   filter:invert scope on the img. */
 body.empresas-page header .empresas-lockup,
 body.empresas-page .headerDesktop .empresas-lockup,
 body.empresas-page .headerMobile .empresas-lockup {
   position: relative !important;
   display: inline-block !important;
   line-height: 0 !important;
+  font-size: 0 !important;
 }
 body.empresas-page header .empresas-lockup .lockup-img,
 body.empresas-page .headerDesktop .empresas-lockup .lockup-img,
@@ -1315,10 +1310,10 @@ body.empresas-page .headerMobile .empresas-lockup .lockup-img {
 }
 body.empresas-page .empresas-lockup .lockup-dot {
   position: absolute !important;
-  left: 98.24% !important;
-  top: 50.43% !important;
-  width: 10px !important;
-  height: 10px !important;
+  left: 98.11% !important;
+  top: 50% !important;
+  width: 6.5px !important;
+  height: 6.5px !important;
   border-radius: 50% !important;
   background: #FFDD06 !important;
   transform: translate(-50%, -50%) !important;
