@@ -1323,6 +1323,44 @@ body.empresas-page .hero .eyebrow {
   letter-spacing: 0.30em !important;
   font-size: 13px !important;
 }
+
+/* DGERT pill — copied from homepage hero ([[hp-hero-locked-v1554]] spec).
+   Sits above the eyebrow, links to dgert.gov.pt in a new tab. */
+body.empresas-page .dgert-hero-pill {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  text-decoration: none !important;
+  color: #fff !important;
+  margin: 0 0 24px 0 !important;
+  transition: opacity 0.2s ease !important;
+  align-self: flex-start !important;
+}
+body.empresas-page .dgert-hero-pill:hover { opacity: 0.78 !important; }
+body.empresas-page .dgert-hero-pill img {
+  height: 40px !important;
+  width: auto !important;
+  display: block !important;
+  border: none !important;
+}
+body.empresas-page .dgert-hero-pill-text {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.01em !important;
+  color: #fff !important;
+}
+body.empresas-page .dgert-hero-pill-arrow {
+  font-size: 12px !important;
+  margin-left: 4px !important;
+  opacity: 0.6 !important;
+  color: #fff !important;
+}
+@media (max-width: 768px) {
+  body.empresas-page .dgert-hero-pill { margin-bottom: 16px !important; gap: 8px !important; }
+  body.empresas-page .dgert-hero-pill img { height: 28px !important; }
+  body.empresas-page .dgert-hero-pill-text { font-size: 12px !important; }
+  body.empresas-page .dgert-hero-pill-arrow { font-size: 10px !important; }
+}
 body.empresas-page .hero .lede {
   color: rgba(255,255,255,0.85) !important;
   max-width: 60ch !important;
@@ -2562,6 +2600,7 @@ button {
 <!-- ─── HERO ───────────────────────────────────────────────────── -->
 <section class="hero">
   <div class="wrap">
+    <a class="dgert-hero-pill" href="https://www.dgert.gov.pt/entidades-formadoras-certificadas" target="_blank" rel="noopener noreferrer" aria-label="DGERT — Entidade Formadora Certificada"><img width="1024" height="483" src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/dgert-entidade-formadora-branco.png" alt="DGERT" loading="eager"><span class="dgert-hero-pill-text">Entidade Formadora Certificada</span><span class="dgert-hero-pill-arrow" aria-hidden="true">&#x2197;</span></a>
     <p class="eyebrow">Formação para Empresas</p>
     <h1>Forme a sua equipa nas competências <span class="accent">digitais</span> que o futuro exige.</h1>
     <p class="lede">Programas à medida em <strong>IA, Data, UX, Design, Marketing Digital e Programação</strong>. Entregues presencialmente em Lisboa e Porto, nas vossas instalações, ou em formato remoto. Elegíveis para Cheque‑Formação e Fundos de Compensação.</p>
