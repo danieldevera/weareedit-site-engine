@@ -1222,22 +1222,10 @@ body.empresas-page .headerMobile:not([class*="menuOpen"]) .empresas-menu-btn {
   color: #0a0a0a !important;
 }
 
-/* Search container: theme collapses .headerDesktop__search on menuOpen so
-   the search icon disappears. Force it visible in BOTH states so the icon
-   stays present beside the hamburger. */
-body.empresas-page header[class*="menuOpen"] .headerDesktop__search,
-body.empresas-page header[class*="menuOpen"] .headerDesktop__middle,
-body.empresas-page header[class*="menuOpen"] [class*="autocomplete"],
-body.empresas-page header[class*="menuOpen"] img[src*="lupa"] {
-  display: block !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-body.empresas-page header[class*="menuOpen"] [class*="searchButton"] {
-  display: inline-flex !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
+/* Search container: theme correctly hides it on menuOpen (matches main HP
+   behavior — image #33 shows search gone, only X remains). Previously
+   v1.5.357 force-showed it thinking the theme was broken, but the main
+   HP intentionally hides search behind the menu overlay. Removed. */
 
 /* Single-PNG-without-dot + CSS dot overlay (v1.5.361). The dot was
    surgically removed from the PNG so the CSS overlay is the ONLY dot.
