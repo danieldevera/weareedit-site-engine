@@ -2064,7 +2064,10 @@ button {
   align-items: stretch;
 }
 .add-visual {
-  background: var(--accent);
+  background-color: var(--accent); /* fallback while image loads */
+  background-image: url('<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/areas-gradient.png' ); ?>');
+  background-size: cover;
+  background-position: center;
   border-radius: 8px;
   min-height: 320px;
   display: flex;
@@ -3209,9 +3212,7 @@ button {
                   <?php endforeach; ?>
                 </div>
               <?php endif; ?>
-              <a class="add-cta" href="<?php echo esc_url( $course_url ); ?>" target="_blank" rel="noopener">
-                Ver programa completo <span aria-hidden="true">→</span>
-              </a>
+              <meta itemprop="url" content="<?php echo esc_url( $course_url ); ?>">
             </div>
           </div>
         </div>
