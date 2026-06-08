@@ -2002,6 +2002,10 @@ button {
 }
 .areas-deep-dive .section-title {
   max-width: 28ch;
+  color: var(--ink);
+}
+.areas-deep-dive .section-eyebrow {
+  color: var(--ink);
 }
 
 /* Tab nav */
