@@ -1992,78 +1992,185 @@ button {
   .vp-grid { grid-template-columns: 1fr; gap: 40px; }
 }
 
-/* ── AREAS ───────────────────────────────────────────────────────── */
-.areas {
+/* ── AREAS — tabbed deep-dive (v1.5.382) ───────────────────────────
+   5 tabs across the top, panel below with brand-coloured visual side
+   + content side (sub-disciplinas + ferramentas + CTA). All panels
+   rendered into DOM for SEO/GEO; CSS hides non-active panels. */
+.areas-deep-dive {
   padding: 90px 0;
   background: var(--grey-1);
 }
-.areas-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  margin-top: 40px;
-}
-.area-card {
-  position: relative;
-  background: #fff;
-  padding: 32px 28px 28px;
-  border-radius: 6px;
-  border: 1px solid var(--grey-2);
-  transition: all 0.2s ease;
-  overflow: hidden;
-}
-.area-card:hover {
-  border-color: var(--ink);
-  transform: translateY(-2px);
-}
-.area-card .icon {
-  position: absolute;
-  top: 18px; right: 22px;
-  font-size: 56px;
-  font-weight: 900;
-  letter-spacing: -0.04em;
-  line-height: 1;
-  color: var(--edit-yellow);
-  opacity: 0.85;
-  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
-}
-.area-card h3 {
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  margin: 0 60px 12px 0;
-  line-height: 1.2;
-}
-.area-card .area-lede {
-  font-size: 14.5px;
-  color: var(--grey-4);
-  margin: 0 0 18px 0;
-  line-height: 1.55;
-}
-.area-card .topics {
-  list-style: none;
-  padding: 14px 0 0 0; margin: 0;
-  border-top: 1px solid var(--grey-2);
-}
-.area-card .topics li {
-  font-size: 13px;
-  color: var(--grey-4);
-  padding: 4px 0;
-  display: flex; align-items: center; gap: 8px;
-}
-.area-card .topics li::before {
-  content: '';
-  width: 6px; height: 6px;
-  background: var(--edit-yellow);
-  border-radius: 50%;
-  flex-shrink: 0;
+.areas-deep-dive .section-title {
+  max-width: 28ch;
 }
 
-@media (max-width: 880px) {
-  .areas-grid { grid-template-columns: repeat(2, 1fr); }
+/* Tab nav */
+.add-tabs {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+  margin-top: 48px;
+  border-bottom: 1px solid var(--grey-2);
 }
-@media (max-width: 560px) {
-  .areas-grid { grid-template-columns: 1fr; }
+.add-tab {
+  background: transparent;
+  border: 0;
+  padding: 20px 14px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -1px;
+  font-family: inherit;
+  transition: background 0.15s ease;
+  color: inherit;
+}
+.add-tab:hover { background: rgba(0,0,0,0.03); }
+.add-tab.active { border-bottom-color: var(--accent); }
+.add-tab-letter {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--grey-3);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+.add-tab.active .add-tab-letter { color: var(--accent); }
+.add-tab-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--grey-4);
+  text-align: center;
+  line-height: 1.3;
+  transition: color 0.2s ease;
+}
+.add-tab.active .add-tab-label { color: var(--ink); }
+
+/* Panels — server-rendered, CSS hides non-active */
+.add-panels { margin-top: 48px; }
+.add-panel { display: none; }
+.add-panel.active { display: block; }
+.add-panel-inner {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 56px;
+  align-items: stretch;
+}
+.add-visual {
+  background: var(--accent);
+  border-radius: 8px;
+  min-height: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 32px;
+  text-align: center;
+}
+.add-letter {
+  font-size: 200px;
+  font-weight: 900;
+  color: var(--ink);
+  line-height: 0.85;
+  letter-spacing: -0.06em;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+}
+.add-visual-label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink);
+  opacity: 0.72;
+}
+.add-content { padding-top: 4px; }
+.add-content h3 {
+  font-size: clamp(26px, 2.6vw, 34px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin: 0 0 12px 0;
+  line-height: 1.15;
+}
+.add-lede {
+  font-size: 16.5px;
+  color: var(--grey-4);
+  line-height: 1.55;
+  margin: 0 0 28px 0;
+  max-width: 60ch;
+}
+.add-section-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--grey-3);
+  margin: 28px 0 14px 0;
+}
+.add-subs {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 8px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.add-subs li {
+  font-size: 14.5px;
+  color: var(--ink);
+  padding: 10px 14px;
+  background: #fff;
+  border-radius: 999px;
+  border: 1px solid var(--grey-2);
+  font-weight: 500;
+  line-height: 1.2;
+}
+.add-subs li:hover {
+  border-color: var(--accent);
+  color: var(--ink);
+}
+.add-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 28px 0;
+}
+.add-tool {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--grey-4);
+  padding: 5px 11px;
+  background: rgba(0,0,0,0.05);
+  border-radius: 4px;
+  letter-spacing: 0.01em;
+}
+.add-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 2px;
+  transition: opacity 0.2s ease;
+}
+.add-cta:hover { opacity: 0.7; }
+
+@media (max-width: 880px) {
+  .add-tabs { grid-template-columns: repeat(2, 1fr); border-bottom: 0; }
+  .add-tab { border: 1px solid var(--grey-2); margin: 0; border-bottom: 3px solid transparent; }
+  .add-tab-letter { font-size: 28px; }
+  .add-tab-label { font-size: 11px; }
+  .add-panel-inner { grid-template-columns: 1fr; gap: 24px; }
+  .add-visual { min-height: 200px; }
+  .add-letter { font-size: 140px; }
+  .add-subs { grid-template-columns: 1fr; }
 }
 
 /* ── PROCESS — exact infographic replica (v1.5.378) ──────────────────
@@ -3022,30 +3129,111 @@ button {
 </section>
 <?php endif; ?>
 
-<!-- ─── AREAS ──────────────────────────────────────────────────── -->
+<!-- ─── AREAS — tabbed deep-dive (v1.5.382) ──────────────────────────
+   All 5 panels rendered server-side (SEO/GEO friendly: LLMs + crawlers
+   see every sub-vertical and tool name). CSS hides non-active panels;
+   JS toggles `active` class. Schema markup at the section + per-panel
+   level signals an EducationalOrganization OfferCatalog with Course
+   entries — major signal for GEO. -->
 <?php if ( ! empty( $areas ) ) : ?>
-<section class="areas" id="areas">
+<section class="areas-deep-dive" id="areas" itemscope itemtype="https://schema.org/EducationalOrganization">
+  <meta itemprop="name" content="EDIT. — Disruptive Digital Education">
+  <meta itemprop="url" content="https://weareedit.io">
   <div class="wrap">
     <p class="section-eyebrow">Áreas de Formação</p>
-    <h2 class="section-title">5 disciplinas digitais. Programas modulares ou completos.</h2>
-    <div class="areas-grid">
-      <?php foreach ( $areas as $area ) : ?>
-        <article class="area-card">
-          <div class="icon"><?php echo esc_html( $area['icon'] ?? '' ); ?></div>
-          <h3><?php echo esc_html( $area['title'] ); ?></h3>
-          <p class="area-lede"><?php echo esc_html( $area['lede'] ); ?></p>
-          <?php if ( ! empty( $area['topics'] ) ) : ?>
-          <ul class="topics">
-            <?php foreach ( $area['topics'] as $topic ) : ?>
-              <li><?php echo esc_html( $topic ); ?></li>
-            <?php endforeach; ?>
-          </ul>
-          <?php endif; ?>
-        </article>
+    <h2 class="section-title">5 disciplinas digitais. 30 sub-disciplinas. Programas modulares ou completos.</h2>
+    <!-- Tab nav -->
+    <div class="add-tabs" role="tablist" aria-label="Áreas de formação">
+      <?php foreach ( $areas as $i => $area ) :
+          $accent = $area['accent'] ?? '#0a0a0a';
+          $is_active = ( $i === 0 ) ? 'active' : '';
+      ?>
+        <button type="button"
+                class="add-tab <?php echo esc_attr( $is_active ); ?>"
+                role="tab"
+                aria-selected="<?php echo $i === 0 ? 'true' : 'false'; ?>"
+                aria-controls="add-panel-<?php echo $i; ?>"
+                id="add-tab-<?php echo $i; ?>"
+                data-target="add-panel-<?php echo $i; ?>"
+                style="--accent: <?php echo esc_attr( $accent ); ?>;">
+          <span class="add-tab-letter" aria-hidden="true"><?php echo esc_html( $area['icon'] ?? '' ); ?></span>
+          <span class="add-tab-label"><?php echo esc_html( $area['title'] ); ?></span>
+        </button>
+      <?php endforeach; ?>
+    </div>
+    <!-- Panels (all rendered, CSS hides non-active for users; LLMs see all) -->
+    <div class="add-panels" itemprop="hasOfferCatalog" itemscope itemtype="https://schema.org/OfferCatalog">
+      <meta itemprop="name" content="Disciplinas digitais">
+      <?php foreach ( $areas as $i => $area ) :
+          $accent  = $area['accent'] ?? '#0a0a0a';
+          $is_active = ( $i === 0 ) ? 'active' : '';
+          $course_url = 'https://weareedit.io/' . ltrim( $area['slug'] ?? '', '/' ) . '/';
+      ?>
+        <div class="add-panel <?php echo esc_attr( $is_active ); ?>"
+             id="add-panel-<?php echo $i; ?>"
+             role="tabpanel"
+             aria-labelledby="add-tab-<?php echo $i; ?>"
+             style="--accent: <?php echo esc_attr( $accent ); ?>;"
+             itemprop="itemListElement"
+             itemscope itemtype="https://schema.org/Offer">
+          <meta itemprop="position" content="<?php echo $i + 1; ?>">
+          <div class="add-panel-inner" itemprop="itemOffered" itemscope itemtype="https://schema.org/Course">
+            <meta itemprop="provider" content="EDIT. — Disruptive Digital Education">
+            <meta itemprop="url" content="<?php echo esc_url( $course_url ); ?>">
+            <!-- Visual side -->
+            <div class="add-visual">
+              <span class="add-letter" aria-hidden="true"><?php echo esc_html( $area['icon'] ?? '' ); ?></span>
+              <span class="add-visual-label"><?php echo esc_html( $area['title'] ); ?></span>
+            </div>
+            <!-- Content side -->
+            <div class="add-content">
+              <h3 itemprop="name"><?php echo esc_html( $area['title'] ); ?></h3>
+              <p class="add-lede" itemprop="description"><?php echo esc_html( $area['lede'] ); ?></p>
+              <?php if ( ! empty( $area['sub_verticals'] ) ) : ?>
+                <h4 class="add-section-title">Sub-disciplinas</h4>
+                <ul class="add-subs">
+                  <?php foreach ( $area['sub_verticals'] as $sub ) : ?>
+                    <li itemprop="teaches"><?php echo esc_html( $sub ); ?></li>
+                  <?php endforeach; ?>
+                </ul>
+              <?php endif; ?>
+              <?php if ( ! empty( $area['tools'] ) ) : ?>
+                <h4 class="add-section-title">Ferramentas que dominamos</h4>
+                <div class="add-tools">
+                  <?php foreach ( $area['tools'] as $tool ) : ?>
+                    <span class="add-tool"><?php echo esc_html( $tool ); ?></span>
+                  <?php endforeach; ?>
+                </div>
+              <?php endif; ?>
+              <a class="add-cta" href="<?php echo esc_url( $course_url ); ?>" target="_blank" rel="noopener">
+                Ver programa completo <span aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        </div>
       <?php endforeach; ?>
     </div>
   </div>
 </section>
+<script>
+(function(){
+  document.addEventListener('click', function(e){
+    var t = e.target.closest('.add-tab');
+    if (!t) return;
+    var section = t.closest('.areas-deep-dive');
+    if (!section) return;
+    var targetId = t.getAttribute('data-target');
+    section.querySelectorAll('.add-tab').forEach(function(x){
+      var on = x === t;
+      x.classList.toggle('active', on);
+      x.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    section.querySelectorAll('.add-panel').forEach(function(p){
+      p.classList.toggle('active', p.id === targetId);
+    });
+  });
+})();
+</script>
 <?php endif; ?>
 
 <!-- ─── FINANCING ──────────────────────────────────────────────── -->
