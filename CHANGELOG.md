@@ -1,4 +1,8 @@
 # Changelog
+## v1.5.392 — 2026-06-11 (Force opcache + transient cache refresh)
+- v1.5.391's URL override didn't take effect on live — PHP opcache was almost certainly serving the old v1.5.390 bytecode despite the new file being on disk. Bumped `CACHE_KEY` to `v4` so the transient is freshly populated, and version bump forces WP to re-extract files (which should trigger opcache invalidation via mtime change).
+- No functional code changes vs v1.5.391; same override logic. If override still doesn't fire after this deploy, opcache needs manual flush (host panel or `opcache_reset()` via WP-CLI).
+
 ## v1.5.391 — 2026-06-11 (Pillar cards: defensive SVG override for mis-tagged workshops/bootcamps)
 - 5+ workshop posts AND `digital-marketing-foundations-bootcamp-remote` have the wrong `formacao_tipo` taxonomy / Tipo Destaque in WP. Result: their `/formacao/` cards carry `data-bg="bg-curso.svg"` (yellow) instead of their correct typology bg.
 - `EDIT_Pillar_Courses::rewrite_for_pillar()` now detects URL pattern and forces the right SVG:

@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class EDIT_Pillar_Courses {
 
-    const CACHE_KEY = 'edit_pillar_card_map_v3';
+    const CACHE_KEY = 'edit_pillar_card_map_v4';
     const CACHE_TTL = HOUR_IN_SECONDS;
 
     public static function init(): void {
