@@ -1,4 +1,11 @@
 # Changelog
+## v1.5.408 — 2026-06-12 (Pillar hero: left-aligned + lighter H1 weight + smaller size)
+- Hero alignment switched from `text-align:center` to `text-align:left`, `align-items:center` to `flex-start`. Daniel preferred the left-aligned editorial feel over the centered homepage layout.
+- H1 weight reduced from 600 → 500 to match the homepage's lighter display feel (was too heavy).
+- H1 size reduced from clamp(64px, 11vw, 148px) → clamp(56px, 8.5vw, 120px). Less crowding on longer lines like "Inteligência Artificial".
+- Letter-spacing relaxed from -.04em → -.02em. Wider, more readable.
+- Line-height bumped from .95 → 1.0 for breathing room.
+
 ## v1.5.407 — 2026-06-12 (Fix: /internal-marketing-documents/ 404 — bump rewrite flush flag)
 - `/internal-marketing-documents/` started returning 404 after the v1.5.402 deactivate/reactivate cycle reset WordPress's rewrite rules. Our flush flag (`edit_imd_rewrites_flushed_v1`) was still set, so `EDIT_Internal_Marketing_Docs::maybe_flush_rewrites()` thought it had already done the work and skipped re-registration.
 - Bumped flag to `_v2` so the rules get re-flushed on next admin page load. Routes will resolve again immediately after this update.
