@@ -1,13 +1,17 @@
 <?php
 /**
- * Internal Marketing Documents — login-gated static HTML library.
+ * Internal Marketing Documents — link-only static HTML library.
  *
  * Routes:
  *   /internal-marketing-documents/             → index of available docs
  *   /internal-marketing-documents/{slug}/      → serves includes/templates/internal-docs/{slug}.html
  *
- * Access gate: is_user_logged_in(). Logged-out visitors get redirected to
- * wp-login.php with redirect_to set to the requested doc URL.
+ * Access: PUBLIC (no login). All responses carry X-Robots-Tag noindex/nofollow
+ * + <meta robots> so search engines skip these pages. Documents are
+ * discoverable only via the index URL or a directly shared slug URL — they
+ * aren't linked from any public page on the site.
+ *
+ * Login gate removed v1.5.386 — some team members don't have WP credentials.
  *
  * To add a doc: drop a new .html file in includes/templates/internal-docs/
  * named with the desired slug (e.g. brevo-playbook.html). It appears in the
@@ -63,14 +67,6 @@ class EDIT_Internal_Marketing_Docs {
     public static function maybe_render() {
         $doc = get_query_var( self::QUERY_VAR );
         if ( ! $doc ) return;
-
-        // Login gate.
-        if ( ! is_user_logged_in() ) {
-            $redirect_to = home_url( '/' . self::SLUG_BASE . '/' .
-                ( $doc !== self::INDEX_TOKEN ? rawurlencode( $doc ) . '/' : '' ) );
-            wp_safe_redirect( wp_login_url( $redirect_to ) );
-            exit;
-        }
 
         if ( $doc === self::INDEX_TOKEN ) {
             self::render_index();
@@ -129,8 +125,6 @@ class EDIT_Internal_Marketing_Docs {
 
     private static function render_index() {
         $docs = self::discover_docs();
-        $current_user = wp_get_current_user();
-        $user_name    = $current_user->display_name ?: $current_user->user_login;
 
         header( 'Content-Type: text/html; charset=utf-8' );
         header( 'X-Robots-Tag: noindex, nofollow', true );
@@ -148,8 +142,6 @@ class EDIT_Internal_Marketing_Docs {
   .eyebrow { font-size:11px; font-weight:700; color:var(--pink); letter-spacing:0.22em; text-transform:uppercase; margin-bottom:12px; }
   h1 { font-size:38px; font-weight:800; letter-spacing:-0.02em; margin-bottom:8px; }
   .sub { color:var(--grey); font-size:14px; margin-bottom:36px; }
-  .userbar { background:#fff; padding:12px 18px; border-radius:6px; margin-bottom:24px; display:flex; justify-content:space-between; align-items:center; font-size:13px; color:var(--grey); border:1px solid #e5e5e5; }
-  .userbar a { color:var(--pink); text-decoration:none; font-weight:600; }
   .docs { background:#fff; border:1px solid #e5e5e5; border-radius:8px; overflow:hidden; }
   .doc { padding:20px 24px; border-bottom:1px solid #f0f0f0; display:flex; justify-content:space-between; align-items:center; gap:16px; transition:background 0.15s; }
   .doc:last-child { border-bottom:none; }
@@ -166,12 +158,7 @@ class EDIT_Internal_Marketing_Docs {
 <div class="wrap">
   <p class="eyebrow">EDIT. Internal</p>
   <h1>Marketing Documents</h1>
-  <p class="sub">Playbooks, reports, and operational guides for the EDIT. marketing team. Authenticated access only.</p>
-
-  <div class="userbar">
-    <span>Sessão: <strong><?php echo esc_html( $user_name ); ?></strong></span>
-    <a href="<?php echo esc_url( wp_logout_url( home_url() ) ); ?>">Terminar sessão</a>
-  </div>
+  <p class="sub">Playbooks, relatórios e guias operacionais para o team de marketing da EDIT. Páginas marcadas <code>noindex</code> — só acessíveis via link directo.</p>
 
   <?php if ( empty( $docs ) ): ?>
     <div class="empty">

@@ -1,4 +1,11 @@
 # Changelog
+## v1.5.386 — 2026-06-11 (Internal Marketing Documents: drop login gate, link-only access)
+- Removed `is_user_logged_in()` gate from `EDIT_Internal_Marketing_Docs::maybe_render()`. Some team members (Carla, Naiara, contributors) don't have WP credentials and were getting bounced to wp-login.
+- Documents now accessible via direct link without authentication.
+- Discoverability remains low: `X-Robots-Tag: noindex, nofollow` + `<meta robots>` block search-engine indexing; no public page on the site links to `/internal-marketing-documents/`; only people you DM the URL to can find it.
+- Dropped the `.userbar` block from the index page (no session to show).
+- Updated index sub-copy to PT + explicit "noindex — só acessíveis via link directo" disclosure.
+
 ## v1.5.385 — 2026-06-11 (Internal Marketing Documents: login-gated static HTML library)
 - New module `EDIT_Internal_Marketing_Docs` (`includes/class-internal-marketing-docs.php`) serves login-gated static HTML files under `/internal-marketing-documents/`.
 - Routes: `/internal-marketing-documents/` shows an auto-generated index of all docs in `includes/templates/internal-docs/`; `/internal-marketing-documents/{slug}/` streams the matching `{slug}.html` file directly.
