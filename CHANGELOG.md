@@ -1,4 +1,11 @@
 # Changelog
+## v1.5.389 — 2026-06-11 (Marketing Digital pillar: typology colours, contrast, ghost CTA, reorder, hide stray Edit link)
+- **Typology-coloured catalog cards** per locked standard (see `project_newsletter_strip_locked.md` v1.5.186). Cards now render in their brand-typology colour: Bootcamp PINK (`#f92869`), Workshop TEAL (`#60c5b3`), Remote BLUE (`#0090eb`), Presencial YELLOW (`#ffdd06`). SVG backgrounds suppressed in favour of solid brand colours so the pillar matches the rest of the site's visual identity.
+- **Card title contrast fix** — force white text on bootcamp / workshop / remote cards (was unreadable dark text on dark backgrounds in the previous build). Presencial yellow keeps black text.
+- **Hero ghost CTA** — `Falar com um consultor` button now has solid 2px white border (was rgba `.3` invisible against black). Hover inverts to white-fill + black text.
+- **Catalog reorder** — Google Ads bootcamp leads the Bootcamps row (was position #2). Driven by Education Foresight & Growth Strategy 2026-06-10 finding that "google ads" is the dominant PT search term (44 avg interest, highest in Marketing Digital vertical) + CEO push 2026-06-11 to make this the funnel anchor.
+- **Hidden stray "Edit" admin link** — WP theme's `edit_post_link()` output was bleeding into the page for logged-in editors. Now hidden via CSS on `.md-pillar` scope.
+
 ## v1.5.388 — 2026-06-11 (Internal Marketing Documents: add PT translation of Education Foresight strategy)
 - Added `education-foresight-strategy-2026-06-10-pt.html` — full PT-PT translation of the strategy doc. Same data, same charts, prose translated.
 - Updated EN file title + H1 to include `· EN ·` marker so the two versions are distinguishable in the index. Both now show as paired siblings.

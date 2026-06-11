@@ -36,8 +36,10 @@ class EDIT_Marketing_Digital_Page {
      */
     const CATALOG = [
         'Bootcamps' => [
-            'digital-marketing-foundations-bootcamp-remote',
+            // Google Ads bootcamp leads — highest PT search volume (44 avg, per
+            // Education Foresight Strategy 2026-06-10). CEO push 2026-06-11.
             'bootcamp-online-google-ads-meta-ads',
+            'digital-marketing-foundations-bootcamp-remote',
             'bootcamp-generative-ai-aplicado-ao-marketing-digital',
         ],
         'Cursos' => [

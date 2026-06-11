@@ -25,8 +25,8 @@ html { scroll-behavior: smooth; }
 .md-btn { display:inline-flex; align-items:center; padding:14px 28px; font-size:15px; font-weight:600; text-decoration:none; border-radius:4px; transition:transform .2s ease, background .2s ease, color .2s ease; }
 .md-btn--primary { background:#ffdd06; color:#0a0a0a; }
 .md-btn--primary:hover { background:#fff; transform:translateY(-1px); }
-.md-btn--ghost { background:transparent; color:#fff; border:1px solid rgba(255,255,255,.3); }
-.md-btn--ghost:hover { background:rgba(255,255,255,.08); border-color:#fff; }
+.md-btn--ghost { background:transparent; color:#fff; border:2px solid #fff; }
+.md-btn--ghost:hover { background:#fff; color:#0a0a0a; }
 .md-btn--lg { padding:18px 36px; font-size:17px; }
 
 /* Section titles */
@@ -88,6 +88,43 @@ html { scroll-behavior: smooth; }
     .md-catalog__heading,
     .md-group__heading { padding-left:24px; padding-right:24px; }
 }
+
+/* Typology-coloured backgrounds per locked standard
+   (project_newsletter_strip_locked v1.5.186):
+   Bootcamp PINK · Workshop TEAL · Remote BLUE · Presencial YELLOW (default svg).
+   We suppress the SVG bg image and replace with solid brand colour. */
+.md-pillar .filter-result .course-box[data-bg*="bootcamp-bg"] {
+    background-image:none !important;
+    background-color:#f92869 !important;
+}
+.md-pillar .filter-result .course-box[data-bg*="workshop-bg"] {
+    background-image:none !important;
+    background-color:#60c5b3 !important;
+}
+.md-pillar .filter-result .course-box[data-bg*="bg-remote"] {
+    background-image:none !important;
+    background-color:#0090eb !important;
+}
+.md-pillar .filter-result .course-box[data-bg*="bg-curso"] {
+    background-image:none !important;
+    background-color:#ffdd06 !important;
+}
+
+/* Card title contrast — force readable white on coloured cards
+   (bootcamp pink + remote blue + workshop teal need white text;
+   presencial yellow keeps black inherited from .text-black). */
+.md-pillar .filter-result .course-box[data-bg*="bootcamp-bg"] .course-title,
+.md-pillar .filter-result .course-box[data-bg*="bootcamp-bg"] .course-view span,
+.md-pillar .filter-result .course-box[data-bg*="workshop-bg"] .course-title,
+.md-pillar .filter-result .course-box[data-bg*="workshop-bg"] .course-view span,
+.md-pillar .filter-result .course-box[data-bg*="bg-remote"] .course-title,
+.md-pillar .filter-result .course-box[data-bg*="bg-remote"] .course-view span { color:#fff !important; }
+
+/* Hide WP theme's "Edit" admin edit-post link bleeding through on pillar.
+   Visible only to logged-in editors; harmless but visual noise. */
+.md-pillar .post-edit-link,
+.md-pillar .edit-link,
+body.page-template-page-marketing-digital .post-edit-link { display:none !important; }
 
 /* Legacy md-card kept for any leftover refs but no longer the primary card */
 .md-card { display:flex; flex-direction:column; padding:28px 24px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:8px; text-decoration:none; color:#fff; transition:background .2s, border-color .2s, transform .2s; min-height:180px; position:relative; }
