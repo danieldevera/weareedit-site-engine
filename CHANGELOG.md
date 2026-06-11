@@ -1,4 +1,10 @@
 # Changelog
+## v1.5.400 — 2026-06-11 (Catalog header: applied 2-col section-header pattern + dropped Cheque Formação)
+- "Catálogo de Formação em Marketing Digital" header now uses the reusable `.md-section-header` 2-col layout (eyebrow + h2 title LEFT, lead body RIGHT). Matches the brand reference + the intro section pattern shipped in v1.5.398.
+- Eyebrow: "16 programas DGERT-certificados" — adds quantifier + credibility signal.
+- Lead body copy mentions SIFIDE (not Cheque Formação — program sunsetting per v1.5.399 brief update).
+- Generalised the CSS pattern as `.md-section-header` (was `.md-intro__header`) so it's reusable on tutors header, FAQ header, final CTA, and on the other 4 pillars when their V2 intros land.
+
 ## v1.5.399 — 2026-06-11 (Empresas LinkedIn brief: drop Cheque Formação — program sunsets Jun 30)
 - Cheque Formação + Digital program sunsets Jun 30, 2026 (~19 days). Brief was over-weighting it — the 100 Sep peak won't repeat in 2026 once the program is gone. Removed from H1, findings table flagged with sunset warning, Angle B and Angle C ad copy rewritten to drop the program mention, B2C long-tail keyword swapped from "academia digital cheque formação" to DGERT/SIFIDE variants, September seasonality narrative reframed as "uncertain post-sunset".
 - **New optimal H1:** `"Formação ChatGPT para Empresas. DGERT-certificada. SIFIDE-elegível."` (was: "...Cheque Formação elegível."). SIFIDE replaces Cheque Formação as the surviving financial-trigger anchor.

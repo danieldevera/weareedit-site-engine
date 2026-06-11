@@ -75,10 +75,26 @@ html { scroll-behavior: smooth; }
    own .filter-result > .container > .row wrapper, which already self-centers
    and gives each .course .col-md-4 the same archive grid (3-per-row desktop). */
 .md-catalog { padding:80px 0 60px; }
-.md-catalog__heading { max-width:1280px; margin:0 auto; padding:0 60px; }
+.md-catalog__heading { max-width:1280px; margin:0 auto 64px; padding:0 60px; }
 .md-group { margin:0 0 24px; }
 .md-group__heading { max-width:1280px; margin:0 auto 16px; padding:0 60px; }
 .md-group__title { font-size:22px; font-weight:600; color:#ffdd06; margin:0; text-transform:uppercase; letter-spacing:.1em; }
+
+/* Reusable 2-col section-header pattern (eyebrow + h2 LEFT, lead body RIGHT).
+   Canonical EDIT. editorial pattern. Use on catalog, tutors, FAQ, final-CTA. */
+.md-section-header { display:grid; grid-template-columns:1fr 1.4fr; gap:80px; align-items:start; }
+.md-section-header__left { display:flex; flex-direction:column; }
+.md-section-header__eyebrow { font-size:13px; letter-spacing:.18em; color:rgba(255,255,255,.55); font-weight:600; margin:0 0 28px; text-transform:uppercase; }
+.md-section-header__title { font-size:clamp(40px,4.5vw,56px); line-height:1.05; font-weight:700; margin:0; letter-spacing:-.02em; color:#fff; }
+.md-section-header__title span { color:#ffdd06; }
+.md-section-header__lead { font-size:19px; line-height:1.6; color:rgba(255,255,255,.75); margin:0; font-weight:400; max-width:640px; }
+@media (max-width:768px) {
+    .md-section-header { grid-template-columns:1fr; gap:32px; }
+    .md-section-header__title { font-size:clamp(32px,8vw,42px); }
+    .md-section-header__eyebrow { margin-bottom:20px; }
+    .md-section-header__lead { font-size:17px; }
+    .md-catalog__heading { margin:0 auto 40px; padding:0 24px; }
+}
 
 /* Compress the theme's .filter-result vertical rhythm so stacked groups don't
    leave 150-180px of dead space between sections. */

@@ -309,7 +309,13 @@ class EDIT_Marketing_Digital_Page {
 
             <div id="catalogo" class="md-catalog">
                 <div class="md-catalog__heading">
-                    <h2 class="md-section-title">Catálogo de Formação <span>em Marketing Digital</span></h2>
+                    <div class="md-section-header">
+                        <div class="md-section-header__left">
+                            <p class="md-section-header__eyebrow">16 programas DGERT-certificados</p>
+                            <h2 class="md-section-header__title">Catálogo de Formação <span>em Marketing Digital</span></h2>
+                        </div>
+                        <p class="md-section-header__lead">Bootcamps intensivos para career-changers, cursos completos para especialização profunda, e workshops curtos para upskilling pontual. Programas SIFIDE-elegíveis, leccionados por marketers em activo nas marcas que recrutam talento digital em Portugal.</p>
+                    </div>
                 </div>
                 <?php foreach ( self::CATALOG as $group => $slugs ) : ?>
                     <div class="md-group">
