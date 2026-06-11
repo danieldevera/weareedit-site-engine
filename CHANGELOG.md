@@ -1,4 +1,8 @@
 # Changelog
+## v1.5.395 — 2026-06-11 (Pillar brand font + Empresas LinkedIn brief)
+- **Pillar brand font fix:** `.md-pillar` headings + body text now explicitly set `font-family:'SctoGroteskA','Helvetica Neue',Helvetica,Arial,sans-serif`. Without this rule the shortcode-rendered headings were falling back to the system font, breaking visual consistency vs the rest of the site. Affects all 5 pillars.
+- **New internal doc:** `empresas-linkedin-acquisition-2026-06-11.html` — full strategy brief for the EDIT. Empresas LinkedIn acquisition push. 3-campaign architecture (Awareness + Lead Gen + Discovery Calls), audience definition, 3 creative angles, Lead Gen form → Brevo mapping, content-production plan, 4-week launch calendar, Day-1 launch checklist, risks. English. Available at `/internal-marketing-documents/empresas-linkedin-acquisition-2026-06-11/`.
+
 ## v1.5.394 — 2026-06-11 (Marketing Digital CATALOG: move Google Analytics 4 to Workshops)
 - `curso-google-analytics-4` slug renders as "Workshop Remote Learning Google Analytics 4" — was misplaced in the Cursos array, which with v1.5.393's group-based override would have coloured it yellow. Moved to Workshops so it renders teal.
 

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow">
+<title>EDIT. Empresas · LinkedIn Acquisition Campaign Brief · 2026-06-11</title>
+<style>
+  :root {
+    --yellow:#ffdd06; --pink:#f5366b; --teal:#60c5b3; --coral:#ec8172;
+    --magenta:#DF086F; --blue:#0090eb; --linkedin:#0a66c2;
+    --ink:#0a0a0a; --grey:#666; --bg:#fafafa; --soft:#f0f0f0;
+    --good:#1b9e3e; --bad:#d62728;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body {
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--bg); color:var(--ink); padding:32px 40px;
+    line-height:1.5; max-width:1320px; margin:0 auto; font-size:14px;
+  }
+  h1 { font-size:36px; font-weight:800; margin-bottom:4px; letter-spacing:-1px; }
+  h1 .pink { color: var(--pink); }
+  .subtitle { color:var(--grey); font-size:14px; margin-bottom:28px; }
+
+  .hero {
+    background: linear-gradient(135deg, var(--ink) 0%, #1a1a1a 100%);
+    color:#fff; padding:28px 32px; border-radius:8px; margin-bottom:24px;
+    border-left:6px solid var(--linkedin);
+  }
+  .hero h2 { color:var(--yellow); font-size:18px; margin-bottom:14px; letter-spacing:0.4px; text-transform:uppercase; }
+  .hero p { font-size:16px; margin-bottom:10px; }
+  .hero strong { color:var(--yellow); }
+  .hero .big-q { font-size:24px; font-weight:800; margin-top:14px; line-height:1.3; }
+  .hero .urgent { display:inline-block; background:var(--linkedin); color:#fff; padding:4px 12px; border-radius:14px; font-size:11px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; margin-bottom:10px; }
+
+  .grid-3 { display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; margin-bottom:24px; }
+  .kpi {
+    background:#fff; padding:20px 22px; border-radius:8px; border:1px solid #e5e5e5;
+    border-left:6px solid var(--teal);
+  }
+  .kpi.awareness { border-left-color:var(--yellow); }
+  .kpi.leadgen { border-left-color:var(--pink); }
+  .kpi.conversion { border-left-color:var(--linkedin); }
+  .kpi .stage { font-size:11px; text-transform:uppercase; letter-spacing:0.5px; color:var(--grey); margin-bottom:8px; font-weight:700; }
+  .kpi .title { font-size:20px; font-weight:800; color:var(--ink); margin-bottom:6px; line-height:1.2; }
+  .kpi .target { font-size:14px; color:var(--ink); margin-bottom:4px; }
+  .kpi .target strong { color:var(--pink); }
+  .kpi .budget { font-size:12px; color:var(--grey); margin-top:8px; font-style:italic; }
+
+  .panel {
+    background:#fff; padding:24px 28px; border-radius:8px; border:1px solid #e5e5e5;
+    margin-bottom:20px;
+  }
+  .panel h2 {
+    font-size:22px; margin-bottom:6px; border-bottom:3px solid var(--yellow);
+    padding-bottom:8px; display:flex; align-items:center; gap:10px;
+  }
+  .panel h2 .num {
+    background:var(--ink); color:var(--yellow); width:32px; height:32px;
+    border-radius:50%; font-size:16px; display:inline-flex; align-items:center;
+    justify-content:center; font-weight:800;
+  }
+  .panel h3 { font-size:15px; margin-top:20px; color:var(--pink); font-weight:700; }
+  .panel .note { color:var(--grey); font-size:13px; margin-bottom:16px; }
+
+  table { width:100%; border-collapse:collapse; font-size:13px; margin-top:10px; }
+  th { text-align:left; padding:10px 12px; background:var(--ink); color:var(--yellow); font-weight:700; border-bottom:2px solid #333; font-size:11px; text-transform:uppercase; letter-spacing:0.4px; }
+  td { padding:10px 12px; border-bottom:1px solid var(--soft); vertical-align:top; }
+  td.num, th.num { text-align:right; font-variant-numeric:tabular-nums; font-weight:600; }
+  .pill {
+    display:inline-block; padding:3px 9px; border-radius:4px; font-size:11px;
+    font-weight:700; letter-spacing:0.3px; text-transform:uppercase;
+  }
+  .pill.tofu { background:rgba(255,221,6,0.3); color:#8a7400; }
+  .pill.mofu { background:rgba(245,54,107,0.15); color:var(--pink); }
+  .pill.bofu { background:rgba(10,102,194,0.15); color:var(--linkedin); }
+  .pill.good { background:rgba(27,158,62,0.15); color:var(--good); }
+  .pill.warn { background:rgba(236,129,114,0.2); color:#a83d2a; }
+
+  .creative-card {
+    background:#fff; padding:24px 26px; border-radius:8px; border:1px solid #e5e5e5;
+    margin-bottom:14px; border-left:5px solid var(--pink);
+  }
+  .creative-card .angle-label { font-size:11px; font-weight:700; color:var(--pink); letter-spacing:0.4px; text-transform:uppercase; margin-bottom:8px; }
+  .creative-card h3 { font-size:20px; color:var(--ink); margin-bottom:10px; font-weight:800; line-height:1.25; }
+  .creative-card .copy { font-size:14px; color:var(--ink); line-height:1.5; margin-bottom:14px; background:var(--soft); padding:14px 18px; border-radius:4px; }
+  .creative-card .copy strong { color:var(--ink); }
+  .creative-card .meta { display:flex; gap:14px; flex-wrap:wrap; font-size:12px; color:var(--grey); }
+  .creative-card .meta span { padding:3px 9px; background:var(--soft); border-radius:3px; }
+
+  .calendar-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin:14px 0; }
+  .week-card { background:#fff; border:1px solid #e5e5e5; border-radius:6px; padding:16px 18px; }
+  .week-card .wk-label { font-size:11px; color:var(--grey); text-transform:uppercase; letter-spacing:0.5px; font-weight:700; }
+  .week-card .wk-title { font-size:15px; font-weight:800; margin:4px 0 10px 0; color:var(--ink); }
+  .week-card ul { padding-left:18px; }
+  .week-card li { font-size:12px; margin-bottom:5px; line-height:1.4; }
+  .week-card.w1 { border-top:4px solid var(--yellow); }
+  .week-card.w2 { border-top:4px solid var(--pink); }
+  .week-card.w3 { border-top:4px solid var(--linkedin); }
+  .week-card.w4 { border-top:4px solid var(--teal); }
+
+  .checklist { background:#fff; padding:24px 28px; border-radius:8px; border:1px solid #e5e5e5; margin-bottom:20px; }
+  .checklist h2 { font-size:20px; margin-bottom:14px; border-bottom:3px solid var(--linkedin); padding-bottom:8px; }
+  .checklist ol { padding-left:24px; }
+  .checklist li { font-size:14px; margin-bottom:8px; }
+  .checklist li strong { color:var(--linkedin); }
+  .checklist li .time { color:var(--grey); font-size:12px; font-weight:600; }
+
+  .content-table { width:100%; }
+  .content-table th { background:var(--linkedin); color:#fff; }
+  .content-table .yes { color:var(--good); font-weight:800; }
+  .content-table .no { color:var(--bad); font-weight:800; }
+  .content-table .partial { color:#8a7400; font-weight:800; }
+
+  footer { color:var(--grey); font-size:12px; text-align:center; padding:14px; margin-top:24px; border-top:1px solid #eee; }
+</style>
+</head>
+<body>
+
+<h1>EDIT. <span class="pink">Empresas</span> · LinkedIn Acquisition Campaign Brief</h1>
+<div class="subtitle">Built 2026-06-11 · Daniel Devera (Founder) · Target: empresas.weareedit.io · LinkedIn Ads — Lead Acquisition + Discovery Calls + Awareness</div>
+
+<!-- HERO -->
+<div class="hero">
+  <span class="urgent">LinkedIn Campaign — H2 2026</span>
+  <h2>The Empresas opportunity</h2>
+  <p>EDIT. Empresas is the new B2B positioning for in-company training. <strong>The product is built; the demand isn't activated yet.</strong> LinkedIn is the natural channel — every B2B decision-maker we need to reach (HR Directors, L&amp;D Managers, CTOs of mid-market companies) is on the platform daily.</p>
+  <p>Strategic context: we have 600+ alumni placed at Farfetch, Sonae, NOS, EDP, Galp and major agencies (We Are Social, Wunderman Thompson) and scale-ups (Bolt, Sword Health, Talkdesk). These are the same companies with <em>in-company training budget</em>. We're going to them directly.</p>
+  <p class="big-q">3 parallel campaigns · 1 funnel · ~€14K test budget over 4 weeks → target 8-12 qualified discovery calls.</p>
+</div>
+
+<!-- KPI GRID -->
+<div class="grid-3">
+  <div class="kpi awareness">
+    <div class="stage">Campaign #1 · Top of Funnel</div>
+    <div class="title">Brand Awareness</div>
+    <div class="target">Reach · Frequency · Video views</div>
+    <div class="target">KPI: <strong>500K impressions · CPM &lt;€35</strong></div>
+    <div class="budget">25% budget · €3,500 over 4 weeks</div>
+  </div>
+  <div class="kpi leadgen">
+    <div class="stage">Campaign #2 · Mid Funnel</div>
+    <div class="title">Lead Generation</div>
+    <div class="target">LinkedIn Lead Gen Forms (in-platform)</div>
+    <div class="target">KPI: <strong>80-120 leads · CPL &lt;€90</strong></div>
+    <div class="budget">50% budget · €7,000 over 4 weeks</div>
+  </div>
+  <div class="kpi conversion">
+    <div class="stage">Campaign #3 · Bottom of Funnel</div>
+    <div class="title">Discovery Calls</div>
+    <div class="target">Website conversion → empresas.weareedit.io</div>
+    <div class="target">KPI: <strong>8-12 discovery calls · CPA &lt;€280</strong></div>
+    <div class="budget">25% budget · €3,500 over 4 weeks</div>
+  </div>
+</div>
+
+<!-- AUDIENCE -->
+<div class="panel">
+  <h2><span class="num">1</span>Audience — one base, refined per campaign</h2>
+  <p class="note">LinkedIn doesn't allow mixed objectives within a single campaign, so we run 3 separate campaigns. They share the same audience base; we tighten seniority + exclusion filters per funnel stage.</p>
+
+  <table>
+    <tr><th>Dimension</th><th>Definition</th><th>Notes</th></tr>
+    <tr><td><strong>Geography</strong></td><td>Portugal (primary) · Spain (10% budget A/B)</td><td>Iberia has a similar buyer journey; test before scaling Spain</td></tr>
+    <tr><td><strong>Company size</strong></td><td>50–500 employees</td><td>Sweet spot for in-company training budget — large enough to allocate, small enough that they don't have internal L&amp;D yet</td></tr>
+    <tr><td><strong>Seniority</strong></td><td>Director · VP · Owner · CXO · Manager (Awareness only)</td><td>Lead Gen + Discovery limited to Director+; Awareness opens to Manager+</td></tr>
+    <tr><td><strong>Job functions</strong></td><td>Human Resources · Education · Marketing · Information Technology · Operations · Engineering</td><td>The decision-makers + influencers in a typical B2B training purchase</td></tr>
+    <tr><td><strong>Job titles (boost)</strong></td><td>Head of People · L&amp;D Manager · Talent Director · Chief People Officer · CTO · VP Engineering · Head of Marketing · Director of Digital</td><td>Tighten on Campaign #3 (BOFU) to titles with signing authority</td></tr>
+    <tr><td><strong>Industries</strong></td><td>Banking · Insurance · Retail/E-commerce · Tech/SaaS · Media · FMCG · Telecom · Consulting</td><td>Verticals where the training budget is established and recurring</td></tr>
+    <tr><td><strong>Exclusions</strong></td><td>Students · EDIT. employees · Existing alumni (upload Brevo list as Matched Audience for suppression)</td><td>Suppress current alumni so we don't pay to reach them again</td></tr>
+  </table>
+
+  <h3>Estimated audience size (LinkedIn Forecast)</h3>
+  <p>Broad base: ~85K-120K professionals in Portugal · ~250K-350K including Spain. Enough room for 4 weeks of testing without audience fatigue.</p>
+</div>
+
+<!-- CREATIVE ANGLES -->
+<div class="panel">
+  <h2><span class="num">2</span>Creative angles — 3 angles tested in rotation</h2>
+  <p class="note">Each angle is tested across all 3 funnel stages. Best performer gets scaled at week 3; underperformer is paused.</p>
+
+  <div class="creative-card">
+    <div class="angle-label">Angle A · Pain-first hook</div>
+    <h3>"AI changed your team. Did your training programs keep up?"</h3>
+    <div class="copy">
+      <strong>Hook (line 1):</strong> AI changed your team. Did your training programs keep up?<br><br>
+      <strong>Body:</strong> In 2026, your marketing team uses ChatGPT, your engineers use Claude Code, and HR still has no playbook to integrate this. EDIT. designs intensive upskilling programs for entire teams — in generative AI, Data Science, Digital Marketing, UX/UI, and Programming. DGERT-certified. SIFIDE-eligible.<br><br>
+      <strong>CTA:</strong> Book a 20-min call →
+    </div>
+    <div class="meta">
+      <span>Format: Single Image + Video 15s</span>
+      <span>Tone: Direct, founder voice</span>
+      <span>Audience fit: HR Director, CTO, COO</span>
+    </div>
+  </div>
+
+  <div class="creative-card">
+    <div class="angle-label">Angle B · Social proof + Logos</div>
+    <h3>"600+ alumni placed at Farfetch, NOS, Sonae. Now we bring EDIT. inside your company."</h3>
+    <div class="copy">
+      <strong>Hook:</strong> 600+ alumni placed at Farfetch, NOS, Sonae, EDP, Galp, and Bolt. Now we bring EDIT. inside your company.<br><br>
+      <strong>Body:</strong> Since 2011 we've trained the people who end up at these brands. EDIT. Empresas is the same curriculum, the same active-practitioner Tutors, applied <em>inside</em> your team. In-company bootcamps from 8 attendees up. Cheque Formação + Digital eligible through 30 Jun.<br><br>
+      <strong>CTA:</strong> See case studies →
+    </div>
+    <div class="meta">
+      <span>Format: Carousel 4 slides (client logos)</span>
+      <span>Tone: Authority + social proof</span>
+      <span>Audience fit: Head of Marketing, Director of Digital</span>
+    </div>
+  </div>
+
+  <div class="creative-card">
+    <div class="angle-label">Angle C · Financial / Decision-maker hook</div>
+    <h3>"DGERT-certified. SIFIDE-eligible. POPH. Cheque Formação + Digital."</h3>
+    <div class="copy">
+      <strong>Hook:</strong> The 4 funding mechanisms your CFO needs to know about corporate training in 2026.<br><br>
+      <strong>Body:</strong> EDIT. is DGERT-certified (nº 18391), which makes every program eligible for SIFIDE (up to 35% tax credit), POPH (EU funding), and Cheque Formação + Digital (through 30 Jun 2026). In-company programs with immediate fiscal payback. Request the ROI worksheet.<br><br>
+      <strong>CTA:</strong> Download the funding guide →
+    </div>
+    <div class="meta">
+      <span>Format: Document Ad (PDF download)</span>
+      <span>Tone: Financial analysis, ROI-led</span>
+      <span>Audience fit: CFO, COO, Finance Director</span>
+    </div>
+  </div>
+</div>
+
+<!-- LEAD GEN FORM -->
+<div class="panel">
+  <h2><span class="num">3</span>Lead Gen Form (Campaign #2) — fields + Brevo mapping</h2>
+  <p class="note">Form lives inside LinkedIn (no leaving the platform → minimal friction). Submission auto-creates a deal in Brevo via the custom-fields wiring shipped in v1.5.314.</p>
+
+  <table>
+    <tr><th>LinkedIn field</th><th>Pre-filled?</th><th>Brevo attribute</th><th>Required</th></tr>
+    <tr><td>Full name</td><td>✓ Auto</td><td>FIRSTNAME + LASTNAME</td><td>Yes</td></tr>
+    <tr><td>Work email</td><td>✓ Auto</td><td>EMAIL</td><td>Yes</td></tr>
+    <tr><td>Company</td><td>✓ Auto</td><td>COMPANY</td><td>Yes</td></tr>
+    <tr><td>Job title</td><td>✓ Auto</td><td>JOB_TITLE</td><td>Yes</td></tr>
+    <tr><td>Phone</td><td>Manual</td><td>SMS</td><td>Optional</td></tr>
+    <tr><td>Team size</td><td>Dropdown: 1-10 · 11-50 · 51-200 · 201-500 · 500+</td><td>TEAM_SIZE (new custom)</td><td>Yes</td></tr>
+    <tr><td>Area of interest</td><td>Multi-select: AI · Data Science · Digital Marketing · UX/UI · Programming</td><td>INTEREST_AREA (new custom multi)</td><td>Yes</td></tr>
+    <tr><td>Buying timeline</td><td>Dropdown: Next quarter · 6 months · 12 months · Just exploring</td><td>BUYING_TIMING (new custom)</td><td>Yes — qualifies the lead</td></tr>
+  </table>
+
+  <h3>Auto-tagging in Brevo</h3>
+  <p>Every lead created by the LinkedIn campaign is auto-tagged with: <code>source:linkedin_ads</code> · <code>campaign:empresas_2026_h2</code> · <code>funnel_stage:mofu</code>. Drives filters + follow-up workflows (welcome email + 2 follow-ups over 7 days).</p>
+</div>
+
+<!-- CONTENT PRODUCTION -->
+<div class="panel">
+  <h2><span class="num">4</span>Content to produce — yes/no per campaign</h2>
+  <p class="note">Your question: "Will we create specific content?" Yes, for 2 of the 3 campaigns. The third (Discovery Calls) reuses Lead Gen assets.</p>
+
+  <table class="content-table">
+    <tr>
+      <th>Asset</th>
+      <th>Campaign #1 Awareness</th>
+      <th>Campaign #2 Lead Gen</th>
+      <th>Campaign #3 Discovery</th>
+      <th>Producer</th>
+      <th>Deadline</th>
+    </tr>
+    <tr>
+      <td><strong>15s founder talking-head video</strong> — Daniel direct to camera, Angle A message</td>
+      <td><span class="yes">✓ Hero</span></td>
+      <td><span class="no">—</span></td>
+      <td><span class="no">—</span></td>
+      <td>Daniel + iPhone</td>
+      <td>Fri Jun 13</td>
+    </tr>
+    <tr>
+      <td><strong>Single image · Angle A</strong> — Hook + headline + EDIT. brand</td>
+      <td><span class="yes">✓</span></td>
+      <td><span class="yes">✓</span></td>
+      <td><span class="no">—</span></td>
+      <td>Mão Barros</td>
+      <td>Fri Jun 13</td>
+    </tr>
+    <tr>
+      <td><strong>4-slide carousel · Angle B</strong> — Client logos (Farfetch, NOS, Sonae, EDP)</td>
+      <td><span class="yes">✓</span></td>
+      <td><span class="yes">✓</span></td>
+      <td><span class="no">—</span></td>
+      <td>Mão Barros</td>
+      <td>Sat Jun 14</td>
+    </tr>
+    <tr>
+      <td><strong>Document Ad · Angle C</strong> — 8-page "2026 Funding Guide" PDF</td>
+      <td><span class="no">—</span></td>
+      <td><span class="yes">✓ Hero</span></td>
+      <td><span class="no">—</span></td>
+      <td>Daniel + Mão</td>
+      <td>Mon Jun 16</td>
+    </tr>
+    <tr>
+      <td><strong>Landing page asset</strong> — Form + cases + tutors at empresas.weareedit.io</td>
+      <td><span class="partial">Hero CTA</span></td>
+      <td><span class="no">— (LinkedIn form)</span></td>
+      <td><span class="yes">✓ Destination</span></td>
+      <td>Daniel</td>
+      <td>Fri Jun 13 (verify state)</td>
+    </tr>
+    <tr>
+      <td><strong>Testimonial video</strong> — Current EDIT. Empresas client talking about the program</td>
+      <td><span class="yes">✓</span></td>
+      <td><span class="partial">Mid-ad</span></td>
+      <td><span class="yes">✓ Anchor</span></td>
+      <td>Daniel — outreach to Sonae/EDP</td>
+      <td>Wed Jun 18</td>
+    </tr>
+    <tr>
+      <td><strong>Email follow-up sequence (3 emails)</strong> — after Lead Gen form fill</td>
+      <td><span class="no">—</span></td>
+      <td><span class="yes">✓ Required</span></td>
+      <td><span class="yes">✓</span></td>
+      <td>Daniel</td>
+      <td>Sun Jun 15</td>
+    </tr>
+  </table>
+
+  <h3>Production summary</h3>
+  <ul style="padding-left:24px;margin-top:10px;">
+    <li><strong>5 working days</strong> to have all content ready (Fri Jun 13 → Wed Jun 18)</li>
+    <li><strong>Daniel:</strong> founder video (15s), PDF guide, testimonial outreach, 3 follow-up emails</li>
+    <li><strong>Mão Barros:</strong> static images (Angles A + B), carousel design</li>
+    <li><strong>Optional pro video:</strong> ~€800-1,500 if we want a client-testimonial filmed on-site in a corporate setting</li>
+  </ul>
+</div>
+
+<!-- LAUNCH CALENDAR -->
+<div class="panel">
+  <h2><span class="num">5</span>4-week launch calendar</h2>
+  <p class="note">Setup + soft launch + scale + measure. Hard go/no-go decision at the end of week 4.</p>
+
+  <div class="calendar-grid">
+    <div class="week-card w1">
+      <div class="wk-label">Week 1 · Jun 16-22</div>
+      <div class="wk-title">Setup + Soft Launch</div>
+      <ul>
+        <li>LinkedIn Insight Tag verified on empresas</li>
+        <li>3 campaigns built in LinkedIn Ads Manager</li>
+        <li>Lead Gen Form connected to Brevo</li>
+        <li>Suppression list (Brevo alumni) uploaded</li>
+        <li>Angle A + B content live</li>
+        <li>Soft launch: €200/day (€1,400/week)</li>
+      </ul>
+    </div>
+    <div class="week-card w2">
+      <div class="wk-label">Week 2 · Jun 23-29</div>
+      <div class="wk-title">Optimization Round 1</div>
+      <ul>
+        <li>Document Ad (Angle C) live</li>
+        <li>CPL + CTR analysis per angle</li>
+        <li>Pause the underperforming angle</li>
+        <li>Bump budget to €500/day (€3,500/week)</li>
+        <li>First leads landing → Brevo workflow active</li>
+      </ul>
+    </div>
+    <div class="week-card w3">
+      <div class="wk-label">Week 3 · Jun 30 - Jul 6</div>
+      <div class="wk-title">Scale Winners 🚀</div>
+      <ul>
+        <li>Client testimonial video live</li>
+        <li>Best angle scales to €700/day</li>
+        <li>Spain audience A/B (10% budget)</li>
+        <li>Discovery calls start landing (target: 2-3 this week)</li>
+        <li>Daniel personal LinkedIn post — organic boost</li>
+      </ul>
+    </div>
+    <div class="week-card w4">
+      <div class="wk-label">Week 4 · Jul 7-13</div>
+      <div class="wk-title">Measure + Decide</div>
+      <ul>
+        <li>Full reporting: CPL, CPA, qualified-lead %</li>
+        <li>Discovery calls target: 8-12 total</li>
+        <li>Go/no-go: extend 90 days or pause</li>
+        <li>If go: budget €15-30K for H2</li>
+        <li>If no-go: rework angles OR pivot channel</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- TRACKING -->
+<div class="panel">
+  <h2><span class="num">6</span>Tracking + UTM convention</h2>
+
+  <h3>LinkedIn Insight Tag</h3>
+  <p>Before launch: verify that the <code>_linkedin_data_partner_id</code> tag is deployed on <code>empresas.weareedit.io</code>. If not: WP Admin → tag injection tool or Google Tag Manager.</p>
+
+  <h3>UTM parameters</h3>
+  <table>
+    <tr><th>Parameter</th><th>Value</th></tr>
+    <tr><td>utm_source</td><td><code>linkedin</code></td></tr>
+    <tr><td>utm_medium</td><td><code>cpc</code></td></tr>
+    <tr><td>utm_campaign</td><td><code>empresas_2026_h2</code></td></tr>
+    <tr><td>utm_content</td><td><code>{ad_id}_{angle_a|b|c}</code></td></tr>
+    <tr><td>utm_term</td><td><code>{audience_segment}</code> — optional</td></tr>
+  </table>
+
+  <h3>GA4 conversion events</h3>
+  <ul style="padding-left:24px;">
+    <li><code>empresas_form_submit</code> — Discovery call request form (Campaign #3 conversion)</li>
+    <li><code>empresas_pdf_download</code> — Funding guide download (Campaign #2 micro-conversion)</li>
+    <li><code>empresas_scroll_75</code> — Engagement signal (Campaign #1)</li>
+  </ul>
+
+  <h3>Brevo attribution</h3>
+  <p>Every deal auto-created in Brevo via the Lead Gen Form is tagged with <code>SOURCE_CHANNEL = linkedin_ads</code> + <code>UTM_CAMPAIGN = empresas_2026_h2</code>. This lets us calculate true cost-per-deal (not just cost-per-lead).</p>
+</div>
+
+<!-- LAUNCH CHECKLIST -->
+<div class="checklist">
+  <h2>🚀 Day-1 launch checklist (Mon Jun 16)</h2>
+  <ol>
+    <li><strong>0830</strong> <span class="time">— 30 min</span> · Verify LinkedIn Insight Tag on <code>empresas.weareedit.io</code> via Chrome DevTools or the LinkedIn Insight Tag Helper extension. No tag → no conversion tracking.</li>
+    <li><strong>0900</strong> <span class="time">— 45 min</span> · Confirm Brevo Empresas pipeline is active + custom attributes (TEAM_SIZE, INTEREST_AREA, BUYING_TIMING) exist. Reference: <code>project_brevo_deal_api_quirks</code>.</li>
+    <li><strong>0945</strong> <span class="time">— 30 min</span> · Upload Alumni list to LinkedIn as a Matched Audience for suppression. Brevo → Export contacts list → CSV → LinkedIn Ads → Audiences → Create Matched Audience.</li>
+    <li><strong>1015</strong> <span class="time">— 90 min</span> · Build 3 campaigns in LinkedIn Ads Manager:
+      <ul style="padding-left:20px;font-size:13px;">
+        <li>Awareness — Reach objective · CPM bidding · €500 daily cap</li>
+        <li>Lead Gen — Lead Gen objective · CPL bidding · €1,000 daily cap · LinkedIn Form attached</li>
+        <li>Conversions — Website Conversions objective · CPC bidding · €500 daily cap · GA4 event tracking</li>
+      </ul>
+    </li>
+    <li><strong>1145</strong> <span class="time">— 60 min</span> · Upload creative assets per campaign. Set up 3-5 ad variations per campaign. UTM parameters applied.</li>
+    <li><strong>1245</strong> <span class="time">— 30 min</span> · Set audience targeting per section 1. Save audience templates for future reuse.</li>
+    <li><strong>1315</strong> <span class="time">— 30 min</span> · Configure Lead Gen Form fields per section 3. Test submission flow + Brevo webhook integration.</li>
+    <li><strong>1345</strong> <span class="time">— 15 min</span> · Final review: budgets, schedules, audience overlap, frequency caps (3-4 per week for awareness).</li>
+    <li><strong>1400</strong> <span class="time">— LAUNCH</span> · Activate campaigns. Monitor first 24-48h for errors / underspend / audience mismatch.</li>
+    <li><strong>End-of-day</strong> · Log baseline state in <code>incidents_log.md</code>: budget set, audience size, ad copies live. For T+7d comparison.</li>
+  </ol>
+</div>
+
+<!-- RISKS -->
+<div class="panel">
+  <h2><span class="num">7</span>Risks + mitigations</h2>
+
+  <table>
+    <tr><th>Risk</th><th>Likelihood</th><th>Mitigation</th></tr>
+    <tr><td>CPL too high (&gt;€150)</td><td>Medium</td><td>Pause Angle C first (financial is more niche); reinforce Angle A pain-first</td></tr>
+    <tr><td>Low-quality leads (students, freelancers)</td><td>Medium-High</td><td>Lead Gen Form has TEAM_SIZE required — filter "1-10" as nurture-only, not discovery</td></tr>
+    <tr><td>Audience overlap across 3 campaigns</td><td>High</td><td>Set exclusions between campaigns — anyone who saw Awareness ad is suppressed from BOFU for 14 days</td></tr>
+    <tr><td>LinkedIn Insight Tag doesn't fire</td><td>Low-medium</td><td>Checklist step #1. No tag = no optimization, Campaign #3 fails. Verify with LinkedIn Insight Tag Helper.</td></tr>
+    <tr><td>Discovery calls booked but no-show</td><td>Medium</td><td>Calendly integration with SMS reminder 24h + 2h before; 3-question pre-call survey to confirm intent</td></tr>
+    <tr><td>Brevo deal-creation webhook fails</td><td>Low</td><td>Daily check first week: count LinkedIn-submitted leads vs Brevo-created deals; reconcile discrepancies</td></tr>
+    <tr><td>Empresas page not ready for paid traffic</td><td>Medium</td><td>Pre-launch QA: form works, mobile responsive, &lt;3s LCP, all CTAs point where they should</td></tr>
+  </table>
+</div>
+
+<footer>
+  Built 2026-06-11 22:35 · Daniel Devera (Founder) · Target: empresas.weareedit.io · LinkedIn Campaign Manager · Brevo Sales Hub (Empresas pipeline) · Next checkpoints: Day-1 launch (Mon Jun 16) + T+7d (Mon Jun 23) + T+30d (Mon Jul 14)
+</footer>
+
+</body>
+</html>

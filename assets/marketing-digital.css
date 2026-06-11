@@ -107,6 +107,21 @@ html { scroll-behavior: smooth; }
 .md-pillar .edit-link,
 body.page-template-page-marketing-digital .post-edit-link { display:none !important; }
 
+/* Brand font — SctoGroteskA (loaded site-wide by the theme). Without this
+   explicit family the pillar shortcode output falls back to system font on
+   some browsers because the theme's body inheritance doesn't reach the
+   shortcode-rendered headings reliably. */
+.md-pillar,
+.md-pillar h1,
+.md-pillar h2,
+.md-pillar h3,
+.md-pillar h4,
+.md-pillar p,
+.md-pillar span,
+.md-pillar a,
+.md-pillar li,
+.md-pillar button { font-family:'SctoGroteskA','Helvetica Neue',Helvetica,Arial,sans-serif; }
+
 /* Legacy md-card kept for any leftover refs but no longer the primary card */
 .md-card { display:flex; flex-direction:column; padding:28px 24px; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:8px; text-decoration:none; color:#fff; transition:background .2s, border-color .2s, transform .2s; min-height:180px; position:relative; }
 .md-card:hover { background:rgba(255,221,6,.08); border-color:#ffdd06; transform:translateY(-2px); }
