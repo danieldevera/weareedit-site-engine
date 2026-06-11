@@ -1,4 +1,8 @@
 # Changelog
+## v1.5.410 — 2026-06-12 (URL-pattern hijack — bypasses rewrite rules entirely)
+- Added `parse_request` hook (priority 1) that matches `/internal-marketing-documents/` and `/internal-marketing-documents/{slug}/` directly from `$_SERVER['REQUEST_URI']`. Runs before WP's 404 routing kicks in. Renders the doc and exits — no rewrite rule + .htaccess flush dependency at all.
+- The original rewrite-rule path is kept as the "clean" route, but the URL-hijack is now the resilient fallback that works regardless of opcache state, .htaccess permissions, or WP rewrite cache.
+
 ## v1.5.409 — 2026-06-12 (Version-keyed rewrite flush flag — kills the /internal-marketing-documents/ 404 for good)
 - The flush flag is now version-keyed: `edit_imd_rewrites_flushed_{version}`. Every plugin release triggers a one-time flush automatically. Removes the need to manually bump the flag suffix every time WP's rewrite rules get reset (e.g., on plugin deactivate/reactivate, opcache shenanigans, or theme switches).
 - Daniel manual fix that always works as a backup: WP Admin → Definições → Hiperligações permanentes → Guardar alterações.

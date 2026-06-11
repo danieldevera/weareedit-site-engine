@@ -31,10 +31,55 @@ class EDIT_Internal_Marketing_Docs {
     const FLUSH_FLAG_PREFIX = 'edit_imd_rewrites_flushed_';
 
     public static function init() {
+        // Belt + suspenders. Rewrite rules are the "clean URL" path but they
+        // require .htaccess flushing which can fail silently in shared/managed
+        // hosting. The parse_request hook below catches the URL directly from
+        // $_SERVER['REQUEST_URI'] so the route works regardless of whether
+        // rewrite rules were flushed correctly.
         add_action( 'init',              [ __CLASS__, 'register_rewrites' ] );
         add_filter( 'query_vars',        [ __CLASS__, 'add_query_var' ] );
         add_action( 'template_redirect', [ __CLASS__, 'maybe_render' ] );
         add_action( 'admin_init',        [ __CLASS__, 'maybe_flush_rewrites' ] );
+        // Direct URL-pattern hijack — fires at parse_request (very early in
+        // routing) BEFORE WP's 404 handler can run. Independent of rewrite rules.
+        add_action( 'parse_request',     [ __CLASS__, 'maybe_render_from_uri' ], 1 );
+    }
+
+    /**
+     * URL-pattern matcher that bypasses the rewrite-rule pipeline entirely.
+     * If the request URI matches /internal-marketing-documents/{?slug}/,
+     * render the doc directly and exit. Runs at parse_request (priority 1)
+     * so it fires before any WP routing/404 logic.
+     */
+    public static function maybe_render_from_uri( $wp ) {
+        $uri = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '';
+        $path = strtok( $uri, '?' ); // strip query string
+        $path = trim( $path, '/' );
+
+        // Match /internal-marketing-documents/ (index) or /.../{slug}/
+        if ( $path === self::SLUG_BASE ) {
+            self::render_index();
+            exit;
+        }
+        if ( preg_match( '#^' . preg_quote( self::SLUG_BASE, '#' ) . '/([^/]+)/?$#', $path, $m ) ) {
+            $slug = preg_replace( '/[^a-z0-9\-]/', '', strtolower( $m[1] ) );
+            if ( ! $slug ) {
+                status_header( 404 );
+                self::render_404( $m[1] );
+                exit;
+            }
+            $file = WEAREDIT_SITE_ENGINE_PATH . self::DOCS_DIR . $slug . '.html';
+            if ( ! file_exists( $file ) ) {
+                status_header( 404 );
+                self::render_404( $slug );
+                exit;
+            }
+            header( 'Content-Type: text/html; charset=utf-8' );
+            header( 'X-Robots-Tag: noindex, nofollow', true );
+            readfile( $file );
+            exit;
+        }
+        // Not our URL; let WP continue normally.
     }
 
     public static function register_rewrites() {
