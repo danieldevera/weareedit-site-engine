@@ -1,4 +1,10 @@
 # Changelog
+## v1.5.405 — 2026-06-12 (Pillar hero: match homepage spec — centered, pink/teal dots, no DGERT box)
+- **Centered the hero content** to match homepage layout (`text-align:center` + flex column with align-items center). Was left-aligned, now content stack centers like the homepage Future-Proof. Transformation. block.
+- **Fixed dot colors** — `.md-dot--pink` and `.md-dot--teal` were being overridden to yellow by the broad `.md-hero__title span` rule. Scoped that rule to `.md-hero__title:not(.md-hero__title--xl)` so the XL homepage-spec hero gets its real pink (#f92869) and teal (#60c5b3) dots.
+- **DGERT lockup styling** — removed border + background on the hero-top variant with `!important` overrides. Now inline like the homepage (no pill box). Smaller logo (38px), lighter text weight.
+- H1 weight reduced from 700 → 600 to match the homepage's lighter display weight.
+
 ## v1.5.404 — 2026-06-12 (Pillar hero replicates homepage structure + video bg, drops Cheque Formação)
 - **Hero restructured to mirror homepage hero** (per `project_hp_hero_locked`):
   - Video background: `/wp-content/uploads/2026/03/waves-sequence-compressed.mp4` (autoplay, muted, loop, playsinline, 0.7 opacity over a dark veil for legibility).
