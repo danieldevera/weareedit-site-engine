@@ -282,6 +282,11 @@ class EDIT_Marketing_Digital_Page {
                         <a class="md-btn md-btn--primary" href="#catalogo">Ver os 16 cursos</a>
                         <button type="button" class="md-btn md-btn--ghost swipe-cta" data-contact="true"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Falar com um consultor</span></button>
                     </div>
+                    <a class="md-dgert" href="https://www.dgert.gov.pt/entidades-formadoras-certificadas" target="_blank" rel="noopener">
+                        <img src="<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/dgert-entidade-formadora-branco.png' ); ?>" alt="DGERT — Entidade Formadora Certificada nº 18391" width="44" height="44">
+                        <span class="md-dgert__text">Entidade Formadora Certificada</span>
+                        <span class="md-dgert__arrow" aria-hidden="true">↗</span>
+                    </a>
                 </div>
             </div>
 
@@ -334,6 +339,19 @@ class EDIT_Marketing_Digital_Page {
                     </div>
                 <?php endforeach; ?>
             </div>
+
+            <!-- DGERT certification band — between catalog and tutors -->
+            <a class="md-dgert-band" href="https://www.dgert.gov.pt/entidades-formadoras-certificadas" target="_blank" rel="noopener">
+                <div class="md-dgert-band__inner">
+                    <img class="md-dgert-band__logo" src="<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/dgert-entidade-formadora-branco.png' ); ?>" alt="DGERT — Entidade Formadora Certificada nº 18391" width="72" height="72">
+                    <div class="md-dgert-band__copy">
+                        <p class="md-dgert-band__eyebrow">DGERT nº 18391</p>
+                        <h3 class="md-dgert-band__title">Entidade Formadora Certificada</h3>
+                        <p class="md-dgert-band__sub">Todas as formações elegíveis para SIFIDE — até 35% de crédito fiscal sobre o investimento em formação. Confirma a certificação no portal DGERT.</p>
+                    </div>
+                    <span class="md-dgert-band__arrow" aria-hidden="true">↗</span>
+                </div>
+            </a>
 
             <?php echo EDIT_Pillar_Tutors::render( self::TUTORS, 'Os tutores da EDIT. são paid media managers, performance leads e estrategistas em activo nas marcas que recrutam talento digital em Portugal.' ); ?>
 

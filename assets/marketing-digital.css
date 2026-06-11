@@ -80,6 +80,31 @@ html { scroll-behavior: smooth; }
 .md-group__heading { max-width:1280px; margin:0 auto 16px; padding:0 60px; }
 .md-group__title { font-size:13px; font-weight:600; color:rgba(255,255,255,.55); margin:0; text-transform:uppercase; letter-spacing:.18em; }
 
+/* DGERT lockup — inline in hero (small) + full-width band mid-page (large).
+   Asset: /assets/dgert-entidade-formadora-branco.png (already shipped). */
+.md-dgert { display:inline-flex; align-items:center; gap:14px; color:#fff; text-decoration:none; margin-top:28px; padding:10px 16px 10px 12px; border:1px solid rgba(255,255,255,.16); border-radius:6px; transition:background .2s, border-color .2s; }
+.md-dgert:hover { background:rgba(255,255,255,.04); border-color:rgba(255,255,255,.32); color:#fff; }
+.md-dgert img { width:44px; height:auto; flex-shrink:0; }
+.md-dgert__text { font-size:14px; font-weight:600; letter-spacing:.01em; }
+.md-dgert__arrow { font-size:13px; opacity:.7; }
+
+.md-dgert-band { display:block; text-decoration:none; padding:64px 60px; background:#0a0a0a; border-top:1px solid rgba(255,255,255,.08); border-bottom:1px solid rgba(255,255,255,.08); transition:background .2s; }
+.md-dgert-band:hover { background:#111; }
+.md-dgert-band__inner { max-width:1280px; margin:0 auto; display:grid; grid-template-columns:auto 1fr auto; gap:36px; align-items:center; color:#fff; }
+.md-dgert-band__logo { width:72px; height:auto; }
+.md-dgert-band__copy { display:flex; flex-direction:column; gap:6px; }
+.md-dgert-band__eyebrow { font-size:13px; letter-spacing:.18em; color:rgba(255,255,255,.55); font-weight:600; margin:0; text-transform:uppercase; }
+.md-dgert-band__title { font-size:clamp(24px,3vw,32px); font-weight:700; letter-spacing:-.01em; margin:0; color:#fff; line-height:1.1; }
+.md-dgert-band__sub { font-size:15px; line-height:1.5; color:rgba(255,255,255,.72); margin:0; max-width:780px; }
+.md-dgert-band__arrow { font-size:24px; color:rgba(255,255,255,.55); transition:color .2s, transform .2s; }
+.md-dgert-band:hover .md-dgert-band__arrow { color:#ffdd06; transform:translate(2px,-2px); }
+
+@media (max-width:768px) {
+    .md-dgert-band { padding:40px 24px; }
+    .md-dgert-band__inner { grid-template-columns:1fr; gap:20px; text-align:left; }
+    .md-dgert-band__arrow { display:none; }
+}
+
 /* Reusable 2-col section-header pattern (eyebrow + h2 LEFT, lead body RIGHT).
    Canonical EDIT. editorial pattern. Use on catalog, tutors, FAQ, final-CTA. */
 .md-section-header { display:grid; grid-template-columns:1fr 1.4fr; gap:80px; align-items:start; }

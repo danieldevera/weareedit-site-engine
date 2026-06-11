@@ -1,4 +1,10 @@
 # Changelog
+## v1.5.403 — 2026-06-11 (DGERT lockup in hero + mid-page banner)
+- Hero: small DGERT lockup added below the CTAs — logo + "Entidade Formadora Certificada" label + arrow link to the DGERT entidades certificadas portal.
+- Mid-page band: full-width DGERT banner inserted between the catalog and the tutors section. Logo + "DGERT nº 18391" eyebrow + "Entidade Formadora Certificada" title + SIFIDE-elegível sub-copy + arrow link to DGERT portal.
+- Whole band is clickable (link wrapper) with hover state (background lifts, arrow turns yellow + slides up-right). Mobile collapses to single-column.
+- DGERT logo asset reused: `/assets/dgert-entidade-formadora-branco.png` (already shipped site-wide).
+
 ## v1.5.402 — 2026-06-11 (Hero typography matches homepage spec + opcache activation hook)
 - `.md-hero__title` typography matched to the homepage hero locked spec (per `project_hp_hero_locked` v1.5.54): `clamp(56px, 9.5vw, 100px)` size + `-.0313em` letter-spacing (was `clamp(48px, 8vw, 96px)` and `-.02em`). Tighter, larger, more editorial — consistent across the site.
 - **`register_activation_hook` calls `opcache_reset()`** — defensive fix for the opcache-stuck-on-old-bytecode loop where the `upgrader_process_complete` hook in v1.5.398+ didn't fire because the OLD plugin code (loaded from stale opcache) didn't have the hook. Now a manual deactivate + reactivate cycle in WP Admin guarantees a fresh bytecode load. Required to recover card-color fixes from v1.5.393 if they didn't take effect.
