@@ -1,4 +1,18 @@
 # Changelog
+## v1.5.391 — 2026-06-11 (Pillar cards: defensive SVG override for mis-tagged workshops/bootcamps)
+- 5+ workshop posts AND `digital-marketing-foundations-bootcamp-remote` have the wrong `formacao_tipo` taxonomy / Tipo Destaque in WP. Result: their `/formacao/` cards carry `data-bg="bg-curso.svg"` (yellow) instead of their correct typology bg.
+- `EDIT_Pillar_Courses::rewrite_for_pillar()` now detects URL pattern and forces the right SVG:
+  - `/formacao/workshop-*` or `/formacao/remote-learning-workshop-*` → workshop-bg-1.svg (TEAL)
+  - `/formacao/bootcamp-*` or `digital-marketing-foundations-bootcamp` → bootcamp-bg.svg (PINK)
+- This is a defensive override that masks the upstream WP-data bug on the 5 pillar pages. The /formacao/ archive itself still renders the mis-tagged cards yellow — that needs per-post fixes in WP Admin (Tipo Destaque field).
+- TODO for content team: fix the Tipo Destaque field on these posts so /formacao/ archive also renders correctly:
+  - workshop-paid-media-performance
+  - workshop-data-analytics-with-ai-2
+  - workshop-loyalty-marketing (slug may differ — check)
+  - workshop-influencer-marketing (slug may differ — check)
+  - workshop-professional-growth-success
+  - digital-marketing-foundations-bootcamp-remote
+
 ## v1.5.390 — 2026-06-11 (Pillar cards: bake SVG bg inline + drop rocket-lazyload — applies to all 5 pillars)
 - **Root cause for the v1.5.389 mixed-colour state:** scraped cards arrive from /formacao/ with `class="course-box text-black rocket-lazyload"` and `style=""` and `data-bg="..."`. WP Rocket's lazy-load JS converts `data-bg` → `style.background-image` when the card scrolls into view — but that JS doesn't reliably fire for HTML injected by the pillar shortcode. Result: SOME cards rendered with their SVG bg (cached/eager-loaded), OTHERS rendered with no bg at all (yellow fallback).
 - **Fix:** `EDIT_Pillar_Courses::rewrite_for_pillar()` now strips `rocket-lazyload` class + inlines the background-image directly from `data-bg`. SVG renders on first paint, no JS dependency. Idempotent: cards without `data-bg` pass through unchanged.

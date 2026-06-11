@@ -60,8 +60,30 @@ class EDIT_Pillar_Courses {
      */
     private static function rewrite_for_pillar( string $html ): string {
         if ( ! preg_match( '/data-bg="([^"]+)"/', $html, $m ) ) return $html;
-        $bg_url = esc_url( $m[1] );
+        $bg_url = $m[1];
+
+        // Override upstream-mis-tagged cards. Some workshop + bootcamp posts
+        // in WP have the wrong "Tipo Destaque" / formacao_tipo taxonomy,
+        // resulting in data-bg pointing at bg-curso.svg (yellow) rather than
+        // their correct typology background. Detect by URL pattern and force
+        // the right SVG so the pillar renders the locked typology colours
+        // (bootcamp pink / workshop teal) even when WP data is wrong.
+        if ( preg_match( '#/formacao/(remote-learning-workshop-|workshop-)#', $html ) ) {
+            $bg_url = home_url( '/wp-content/uploads/2015/05/workshop-bg-1.svg' );
+        } elseif ( preg_match( '#/formacao/(bootcamp-|digital-marketing-foundations-bootcamp)#', $html ) ) {
+            $bg_url = home_url( '/wp-content/uploads/2021/12/bootcamp-bg.svg' );
+        }
+
+        $bg_url = esc_url( $bg_url );
         $html = preg_replace( '/\s+rocket-lazyload/', '', $html );
+        // Update both the data-bg attribute (for any downstream JS) and the
+        // inline style so the SVG renders on first paint.
+        $html = preg_replace(
+            '/data-bg="[^"]+"/',
+            'data-bg="' . $bg_url . '"',
+            $html,
+            1
+        );
         $html = preg_replace(
             '/style=""/',
             'style="background-image:url(\'' . $bg_url . '\')"',
