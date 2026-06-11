@@ -26,7 +26,9 @@ class EDIT_Internal_Marketing_Docs {
     const QUERY_VAR    = 'edit_imd_doc';
     const INDEX_TOKEN  = '__index__';
     const DOCS_DIR     = 'includes/templates/internal-docs/';
-    const FLUSH_FLAG   = 'edit_imd_rewrites_flushed_v2';
+    /** Version-keyed flush flag: every plugin release auto-flushes once.
+     *  Resilient to opcache + rewrite-rule resets without manual intervention. */
+    const FLUSH_FLAG_PREFIX = 'edit_imd_rewrites_flushed_';
 
     public static function init() {
         add_action( 'init',              [ __CLASS__, 'register_rewrites' ] );
@@ -58,10 +60,11 @@ class EDIT_Internal_Marketing_Docs {
      * without a manual permalink-save.
      */
     public static function maybe_flush_rewrites() {
-        if ( get_option( self::FLUSH_FLAG ) ) return;
+        $flag = self::FLUSH_FLAG_PREFIX . sanitize_key( WEAREDIT_SITE_ENGINE_VERSION );
+        if ( get_option( $flag ) ) return;
         self::register_rewrites();
         flush_rewrite_rules( false );
-        update_option( self::FLUSH_FLAG, 1 );
+        update_option( $flag, 1 );
     }
 
     public static function maybe_render() {

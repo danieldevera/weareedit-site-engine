@@ -1,4 +1,8 @@
 # Changelog
+## v1.5.409 — 2026-06-12 (Version-keyed rewrite flush flag — kills the /internal-marketing-documents/ 404 for good)
+- The flush flag is now version-keyed: `edit_imd_rewrites_flushed_{version}`. Every plugin release triggers a one-time flush automatically. Removes the need to manually bump the flag suffix every time WP's rewrite rules get reset (e.g., on plugin deactivate/reactivate, opcache shenanigans, or theme switches).
+- Daniel manual fix that always works as a backup: WP Admin → Definições → Hiperligações permanentes → Guardar alterações.
+
 ## v1.5.408 — 2026-06-12 (Pillar hero: left-aligned + lighter H1 weight + smaller size)
 - Hero alignment switched from `text-align:center` to `text-align:left`, `align-items:center` to `flex-start`. Daniel preferred the left-aligned editorial feel over the centered homepage layout.
 - H1 weight reduced from 600 → 500 to match the homepage's lighter display feel (was too heavy).
