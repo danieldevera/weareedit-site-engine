@@ -43,8 +43,32 @@ class EDIT_Pillar_Courses {
 
     public static function render_card( string $slug ): string {
         $map = self::get_card_map();
-        if ( isset( $map[ $slug ] ) ) return $map[ $slug ];
+        if ( isset( $map[ $slug ] ) ) return self::rewrite_for_pillar( $map[ $slug ] );
         return self::render_fallback_card( $slug );
+    }
+
+    /**
+     * Pillar-page card rewrite — neutralise WP Rocket lazy-load and bake the
+     * SVG background-image into the inline style so the card renders with its
+     * correct typology background (bootcamp pink / workshop teal / remote blue
+     * / curso yellow) on the first paint, without depending on lazy-load JS
+     * that doesn't reliably fire for HTML injected by the pillar shortcode.
+     *
+     * Preserves the data-bg attribute so other code paths (theme CSS, future
+     * JS) keep working unchanged. Idempotent: cards without data-bg pass
+     * through untouched.
+     */
+    private static function rewrite_for_pillar( string $html ): string {
+        if ( ! preg_match( '/data-bg="([^"]+)"/', $html, $m ) ) return $html;
+        $bg_url = esc_url( $m[1] );
+        $html = preg_replace( '/\s+rocket-lazyload/', '', $html );
+        $html = preg_replace(
+            '/style=""/',
+            'style="background-image:url(\'' . $bg_url . '\')"',
+            $html,
+            1
+        );
+        return $html;
     }
 
     private static function get_card_map(): array {

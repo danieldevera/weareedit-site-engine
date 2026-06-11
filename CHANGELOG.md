@@ -1,4 +1,11 @@
 # Changelog
+## v1.5.390 — 2026-06-11 (Pillar cards: bake SVG bg inline + drop rocket-lazyload — applies to all 5 pillars)
+- **Root cause for the v1.5.389 mixed-colour state:** scraped cards arrive from /formacao/ with `class="course-box text-black rocket-lazyload"` and `style=""` and `data-bg="..."`. WP Rocket's lazy-load JS converts `data-bg` → `style.background-image` when the card scrolls into view — but that JS doesn't reliably fire for HTML injected by the pillar shortcode. Result: SOME cards rendered with their SVG bg (cached/eager-loaded), OTHERS rendered with no bg at all (yellow fallback).
+- **Fix:** `EDIT_Pillar_Courses::rewrite_for_pillar()` now strips `rocket-lazyload` class + inlines the background-image directly from `data-bg`. SVG renders on first paint, no JS dependency. Idempotent: cards without `data-bg` pass through unchanged.
+- **Reverted v1.5.389's CSS [data-bg*=] color overrides** — fragile pattern matching that missed any card whose `data-bg` had already been consumed by lazy-load. Native SVG colors (bootcamp PINK / workshop TEAL / remote BLUE / curso YELLOW) are correct typology per locked standard.
+- Kept v1.5.389's ghost-CTA fix, hidden-edit-link rule, and Marketing Digital catalog reorder (Google Ads bootcamp leads).
+- Applies to all 5 pillar pages (Marketing Digital, Data Science, UX/UI Design, Inteligência Artificial, Programação) — they all share the same `EDIT_Pillar_Courses::render_card()` pipeline.
+
 ## v1.5.389 — 2026-06-11 (Marketing Digital pillar: typology colours, contrast, ghost CTA, reorder, hide stray Edit link)
 - **Typology-coloured catalog cards** per locked standard (see `project_newsletter_strip_locked.md` v1.5.186). Cards now render in their brand-typology colour: Bootcamp PINK (`#f92869`), Workshop TEAL (`#60c5b3`), Remote BLUE (`#0090eb`), Presencial YELLOW (`#ffdd06`). SVG backgrounds suppressed in favour of solid brand colours so the pillar matches the rest of the site's visual identity.
 - **Card title contrast fix** — force white text on bootcamp / workshop / remote cards (was unreadable dark text on dark backgrounds in the previous build). Presencial yellow keeps black text.

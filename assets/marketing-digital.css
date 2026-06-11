@@ -89,36 +89,17 @@ html { scroll-behavior: smooth; }
     .md-group__heading { padding-left:24px; padding-right:24px; }
 }
 
-/* Typology-coloured backgrounds per locked standard
-   (project_newsletter_strip_locked v1.5.186):
-   Bootcamp PINK · Workshop TEAL · Remote BLUE · Presencial YELLOW (default svg).
-   We suppress the SVG bg image and replace with solid brand colour. */
-.md-pillar .filter-result .course-box[data-bg*="bootcamp-bg"] {
-    background-image:none !important;
-    background-color:#f92869 !important;
-}
-.md-pillar .filter-result .course-box[data-bg*="workshop-bg"] {
-    background-image:none !important;
-    background-color:#60c5b3 !important;
-}
-.md-pillar .filter-result .course-box[data-bg*="bg-remote"] {
-    background-image:none !important;
-    background-color:#0090eb !important;
-}
-.md-pillar .filter-result .course-box[data-bg*="bg-curso"] {
-    background-image:none !important;
-    background-color:#ffdd06 !important;
-}
+/* Card typology colours are baked into the SVG backgrounds on /formacao/
+   (bootcamp-bg.svg → pink #F92869, workshop-bg-1.svg → teal #60C5B3,
+   bg-remote.svg → blue #0090EB, bg-curso.svg → yellow #FFDD06). The pillar
+   inherits these via the scraped HTML — see EDIT_Pillar_Courses::rewrite_for_pillar
+   which strips the rocket-lazyload class + inlines the background-image so
+   the SVG renders on first paint without needing the lazy-load JS to fire.
 
-/* Card title contrast — force readable white on coloured cards
-   (bootcamp pink + remote blue + workshop teal need white text;
-   presencial yellow keeps black inherited from .text-black). */
-.md-pillar .filter-result .course-box[data-bg*="bootcamp-bg"] .course-title,
-.md-pillar .filter-result .course-box[data-bg*="bootcamp-bg"] .course-view span,
-.md-pillar .filter-result .course-box[data-bg*="workshop-bg"] .course-title,
-.md-pillar .filter-result .course-box[data-bg*="workshop-bg"] .course-view span,
-.md-pillar .filter-result .course-box[data-bg*="bg-remote"] .course-title,
-.md-pillar .filter-result .course-box[data-bg*="bg-remote"] .course-view span { color:#fff !important; }
+   Previous v1.5.389 attempted to override these via CSS [data-bg*=] matchers,
+   which missed any card whose data-bg attribute had been consumed by lazy-load
+   already (replaced with style="background-image:..." instead). Reverted in
+   v1.5.390 in favour of letting the SVGs render natively. */
 
 /* Hide WP theme's "Edit" admin edit-post link bleeding through on pillar.
    Visible only to logged-in editors; harmless but visual noise. */
