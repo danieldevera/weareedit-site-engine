@@ -37,12 +37,20 @@ html { scroll-behavior: smooth; }
 .md-hero__rating-text { opacity:.85; }
 .md-hero__rating-logo { height:18px; width:auto; margin-left:4px; }
 
-/* DGERT lockup at top of hero — homepage-style placement (no border, inline, larger) */
-.md-dgert--hero-top { margin:0 0 56px 0; padding:0; border:none !important; background:transparent !important; gap:22px; }
+/* DGERT lockup at top of hero — homepage-matched (logo 56px, text 18px) */
+.md-dgert--hero-top { margin:0 0 64px 0; padding:0; border:none !important; background:transparent !important; gap:18px; }
 .md-dgert--hero-top:hover { background:transparent !important; opacity:.85; }
-.md-dgert--hero-top img { width:auto; height:80px; }
-.md-dgert--hero-top .md-dgert__text { font-size:22px; font-weight:500; letter-spacing:-.01em; }
-.md-dgert--hero-top .md-dgert__arrow { font-size:18px; opacity:.85; }
+.md-dgert--hero-top img { width:auto; height:56px; }
+.md-dgert--hero-top .md-dgert__text { font-size:18px; font-weight:500; letter-spacing:-.005em; }
+.md-dgert--hero-top .md-dgert__arrow { font-size:15px; opacity:.7; }
+
+/* Hide WP theme breadcrumbs on pillar pages — homepage hero has no breadcrumbs above it */
+.md-pillar ~ * .breadcrumb,
+body:has(.md-pillar) .breadcrumb,
+body:has(.md-pillar) .breadcrumbs,
+body:has(.md-pillar) #breadcrumbs,
+body:has(.md-pillar) .yoast-breadcrumb,
+body:has(.md-pillar) .rank-math-breadcrumb { display:none !important; }
 
 /* Buttons */
 .md-btn { display:inline-flex; align-items:center; padding:14px 28px; font-size:15px; font-weight:600; text-decoration:none; border-radius:4px; transition:transform .2s ease, background .2s ease, color .2s ease; }
