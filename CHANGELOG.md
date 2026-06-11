@@ -1,4 +1,14 @@
 # Changelog
+## v1.5.385 — 2026-06-11 (Internal Marketing Documents: login-gated static HTML library)
+- New module `EDIT_Internal_Marketing_Docs` (`includes/class-internal-marketing-docs.php`) serves login-gated static HTML files under `/internal-marketing-documents/`.
+- Routes: `/internal-marketing-documents/` shows an auto-generated index of all docs in `includes/templates/internal-docs/`; `/internal-marketing-documents/{slug}/` streams the matching `{slug}.html` file directly.
+- Login gate: `is_user_logged_in()` check; logged-out visitors redirected to `wp-login.php` with `redirect_to` preserving the requested doc URL.
+- `X-Robots-Tag: noindex, nofollow` + `<meta robots>` on the index — internal docs stay out of Google.
+- One-shot rewrite flush via `edit_imd_rewrites_flushed_v1` option flag so routes resolve immediately after deploy (no manual permalink-save).
+- Index auto-discovers `.html` files, reads `<title>` for label, sorts newest-first by mtime.
+- First doc shipped: `instagram-playbook-2026-06-11.html` — PT translation of the IG growth-sprint playbook with today's Ed#2 distribution schedule at the top.
+- Future docs: drop new `.html` into `includes/templates/internal-docs/`, release plugin, doc appears in the index automatically.
+
 ## v1.5.162 — 2026-05-31 (Success state: left-to-right box reveal + staggered text + delayed confetti)
 - Success box now reveals with a left-to-right wipe (clip-path inset, 680ms easeInOutExpo).
 - Strong title slides up + fades in at 480ms delay (620ms ease).

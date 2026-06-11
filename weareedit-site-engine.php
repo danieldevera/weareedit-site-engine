@@ -3,7 +3,7 @@
  * Plugin Name: * weareedit.io Site Engine
  * Plugin URI:  https://github.com/danieldevera/weareedit-site-engine
  * Description: Custom site engine for weareedit.io — SEO (meta tags, OG, schema.org, sitemap, hreflang), GEO/LLM optimization (llms.txt, AI crawler rules, Wikidata-linked Person/Organization schema), brand customization (hero typography, dot accents, CTA hover animations), Google Reviews aggregation, output-buffer HTML rewrites, virtual pages, WP Rocket cache integration, and one-time data fixes.
- * Version:     1.5.384
+ * Version:     1.5.385
  * Author:      Daniel Devera
  * License:     GPL-2.0+
  * Text Domain: weareedit-site-engine
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.384' );
+define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.385' );
 define( 'WEAREDIT_SITE_ENGINE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WEAREDIT_SITE_ENGINE_URL', plugin_dir_url( __FILE__ ) );
 
@@ -239,6 +239,7 @@ require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-brevo-mail-router.php';
 require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-jquery-alias.php';
 require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-admin-panel.php';
 require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-email-engines-panel.php';
+require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-internal-marketing-docs.php';
 
 /**
  * Bootstrap all SEO fix modules.
@@ -292,6 +293,7 @@ function weareedit_site_engine_init() {
     EDIT_Brevo_Mail_Router::init();
     EDIT_JQuery_Alias::init();
     EDIT_Email_Engines_Panel::init();
+    EDIT_Internal_Marketing_Docs::init();
     EDIT_Admin_Panel::init();
 }
 add_action( 'init', 'weareedit_site_engine_init' );
