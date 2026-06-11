@@ -1,4 +1,8 @@
 # Changelog
+## v1.5.411 — 2026-06-12 (Pillar hero: DGERT lockup at homepage size + move content up)
+- **DGERT lockup enlarged to homepage spec:** logo 38px → 80px height, text 14px → 22px, gap 14px → 22px between logo and text. Now matches the homepage prominence.
+- **Hero content moved up:** changed flex alignment from `align-items:center` (vertically centered in viewport) to `align-items:flex-start` (anchored to top). Padding-top bumped 64px → 96px. Min-height 100vh → 90vh. Hero content now sits near the top of the viewport — content pushed down look is gone.
+
 ## v1.5.410 — 2026-06-12 (URL-pattern hijack — bypasses rewrite rules entirely)
 - Added `parse_request` hook (priority 1) that matches `/internal-marketing-documents/` and `/internal-marketing-documents/{slug}/` directly from `$_SERVER['REQUEST_URI']`. Runs before WP's 404 routing kicks in. Renders the doc and exits — no rewrite rule + .htaccess flush dependency at all.
 - The original rewrite-rule path is kept as the "clean" route, but the URL-hijack is now the resilient fallback that works regardless of opcache state, .htaccess permissions, or WP rewrite cache.
