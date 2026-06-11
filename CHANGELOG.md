@@ -1,4 +1,15 @@
 # Changelog
+## v1.5.397 — 2026-06-11 (Empresas LinkedIn brief: corrected vocabulary + B2C "academia digital" play)
+- **New PT vocabulary findings (Google Trends, same-query comparison):**
+  - **ChatGPT empresas** — avg ~65, peaks 100, year-round. PT buyers anchor on the TOOL NAME, not concepts.
+  - **formação ChatGPT** — avg ~55-65, peaks 100 (Feb 16) · 84 (Jul 6) · 72 (Sep 14). Strong training-buyer intent.
+  - **formação IA** — sporadic but real (73 in Jul, 57 in Oct).
+  - **academia digital** — high (avg ~55, peaks 100) BUT brand-fragmented across Santander · BPI · NOS · EDP · IEFP/Câmara programs · minor Google variants. Bad B2B anchor (competing with banks); GOOD B2C opportunity.
+  - **Zero-volume confirmed:** IA para empresas · curso IA empresas · agentes IA empresas · automação IA empresas · Copilot empresas · upskilling IA. PT corporate buyers search the tool, not the abstract concept.
+- **New optimal H1** for empresas.weareedit.io: **"Formação ChatGPT para Empresas. DGERT-certificada. Cheque Formação elegível."** — compounds the 3 anchors EDIT. can actually win (high volume + clear intent + uncontested by big PT brands).
+- **Added "Bonus play — B2C tap into Academia Digital sphere"** section: 7 tactics ranked by leverage for EDIT.'s B2C funnel to capture the academia digital intent without head-term competition with bank academies. Includes SEO pillar at /academia-digital/, long-tail comparison content, tagline adoption, long-tail PPC, alumni reviews boost, comparison landing page, competitor-brand keyword bids.
+- **Reframed Angle A** in the brief from generic "AI changed your team" → specific "ChatGPT changed how your team works" — matches the dominant PT search query.
+
 ## v1.5.396 — 2026-06-11 (Empresas LinkedIn brief: Google Trends data + minimal-investment Phase 0)
 - Added **Section 0 "Search demand reality check"** to the LinkedIn brief — Google Trends data for B2B Portuguese vocabulary over the last 12 months. Pulled live via Supermetrics MCP.
 - **Major strategic finding:** "formação corporativa", "upskilling", "reskilling", "formação para empresas", "formação à medida" all have **zero PT search volume**. Real high-volume PT B2B search vocabulary is **DGERT (25 avg, peak 62) + Cheque Formação (peak 100 in Sep 2025) + SIFIDE (11 avg, niche but steady)**. Both DGERT and Cheque Formação spike sharply in W37/2025 (Sep 14) — annual buying window.
