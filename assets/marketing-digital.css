@@ -37,11 +37,17 @@ html { scroll-behavior: smooth; }
    Editorial layout — single column at 880px max for readable line length.
    Generous vertical rhythm so the body copy doesn't feel like a wall. */
 .md-intro { padding:96px 60px 32px; }
-.md-intro__inner { max-width:880px; margin:0 auto; }
-.md-intro__eyebrow { font-size:12px; letter-spacing:.2em; color:#ffdd06; font-weight:600; margin:0 0 18px; text-transform:uppercase; }
-.md-intro__title { font-size:clamp(32px,4.5vw,48px); line-height:1.1; font-weight:700; margin:0 0 28px; letter-spacing:-.01em; color:#fff; }
-.md-intro__title span { color:#ffdd06; }
-.md-intro__lead { font-size:19px; line-height:1.6; color:rgba(255,255,255,.85); margin:0 0 56px; font-weight:400; }
+.md-intro__inner { max-width:1280px; margin:0 auto; }
+
+/* Editorial section header — eyebrow + h2 title left, supporting body right.
+   Canonical pattern across pillar pages. Applied to the intro section first;
+   other sections (tutors, FAQ, final CTA) can reuse via the same grid. */
+.md-intro__header { display:grid; grid-template-columns:1fr 1.4fr; gap:80px; align-items:start; margin-bottom:80px; }
+.md-intro__header-left { display:flex; flex-direction:column; }
+.md-intro__eyebrow { font-size:13px; letter-spacing:.18em; color:rgba(255,255,255,.55); font-weight:600; margin:0 0 28px; text-transform:uppercase; }
+.md-intro__title { font-size:clamp(40px,4.5vw,56px); line-height:1.05; font-weight:700; margin:0; letter-spacing:-.02em; color:#fff; }
+.md-intro__title span { color:#fff; }
+.md-intro__lead { font-size:19px; line-height:1.6; color:rgba(255,255,255,.75); margin:0; font-weight:400; max-width:640px; }
 .md-intro__blocks { display:flex; flex-direction:column; gap:48px; }
 .md-intro__block { display:flex; flex-direction:column; gap:14px; }
 .md-intro__block-title { font-size:24px; font-weight:700; line-height:1.25; margin:0; color:#fff; padding-left:18px; border-left:3px solid #ffdd06; }
@@ -54,7 +60,10 @@ html { scroll-behavior: smooth; }
 
 @media (max-width:768px) {
     .md-intro { padding:64px 24px 16px; }
-    .md-intro__lead { font-size:17px; margin:0 0 40px; }
+    .md-intro__header { grid-template-columns:1fr; gap:32px; margin-bottom:56px; }
+    .md-intro__title { font-size:clamp(32px,8vw,42px); }
+    .md-intro__eyebrow { margin-bottom:20px; }
+    .md-intro__lead { font-size:17px; }
     .md-intro__blocks { gap:36px; }
     .md-intro__block-title { font-size:21px; padding-left:14px; }
     .md-intro__block-body { font-size:15px; }

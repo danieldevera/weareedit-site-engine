@@ -1,4 +1,11 @@
 # Changelog
+## v1.5.398 — 2026-06-11 (Pillar intro: editorial 2-col header — eyebrow + h2 left / lead body right)
+- Refactored `.md-intro` section header to use a 2-column editorial layout: eyebrow + H2 title in the left column, lead paragraph in the right column. Matches the canonical EDIT. section-header pattern (per Daniel's brand reference screenshot 2026-06-11).
+- CSS: 1fr / 1.4fr grid, 80px gap, 1280px container. Mobile falls back to single column with 32px gap.
+- Typography: eyebrow grey at 55% opacity (was bright yellow — softer, more editorial). H2 lifted to clamp(40px, 4.5vw, 56px). Lead at 75% opacity, max-width 640px.
+- PHP: `class-marketing-digital-page.php` wraps the eyebrow + title in `.md-intro__header-left` and the lead paragraph beside it inside `.md-intro__header` grid.
+- Currently only Marketing Digital has the V2 long-form intro (per `task_pillar_pages_v2.md`); the same `.md-intro__header` pattern is ready to be applied to Data Science, UX/UI Design, IA, Programação when their V2 intros are written.
+
 ## v1.5.397 — 2026-06-11 (Empresas LinkedIn brief: corrected vocabulary + B2C "academia digital" play)
 - **New PT vocabulary findings (Google Trends, same-query comparison):**
   - **ChatGPT empresas** — avg ~65, peaks 100, year-round. PT buyers anchor on the TOOL NAME, not concepts.

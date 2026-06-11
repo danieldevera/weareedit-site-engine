@@ -288,9 +288,13 @@ class EDIT_Marketing_Digital_Page {
             <!-- V2 long-form intro (between hero and catalog) ─────────── -->
             <section class="md-intro">
                 <div class="md-intro__inner">
-                    <p class="md-intro__eyebrow"><?php echo esc_html( self::INTRO['eyebrow'] ); ?></p>
-                    <h2 class="md-intro__title"><?php echo wp_kses_post( self::INTRO['title'] ); ?></h2>
-                    <p class="md-intro__lead"><?php echo wp_kses_post( self::INTRO['lead'] ); ?></p>
+                    <div class="md-intro__header">
+                        <div class="md-intro__header-left">
+                            <p class="md-intro__eyebrow"><?php echo esc_html( self::INTRO['eyebrow'] ); ?></p>
+                            <h2 class="md-intro__title"><?php echo wp_kses_post( self::INTRO['title'] ); ?></h2>
+                        </div>
+                        <p class="md-intro__lead"><?php echo wp_kses_post( self::INTRO['lead'] ); ?></p>
+                    </div>
                     <div class="md-intro__blocks">
                         <?php foreach ( self::INTRO['blocks'] as $b ) : ?>
                             <div class="md-intro__block">
