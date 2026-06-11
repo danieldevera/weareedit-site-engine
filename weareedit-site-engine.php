@@ -3,7 +3,7 @@
  * Plugin Name: * weareedit.io Site Engine
  * Plugin URI:  https://github.com/danieldevera/weareedit-site-engine
  * Description: Custom site engine for weareedit.io — SEO (meta tags, OG, schema.org, sitemap, hreflang), GEO/LLM optimization (llms.txt, AI crawler rules, Wikidata-linked Person/Organization schema), brand customization (hero typography, dot accents, CTA hover animations), Google Reviews aggregation, output-buffer HTML rewrites, virtual pages, WP Rocket cache integration, and one-time data fixes.
- * Version:     1.5.401
+ * Version:     1.5.402
  * Author:      Daniel Devera
  * License:     GPL-2.0+
  * Text Domain: weareedit-site-engine
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.401' );
+define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.402' );
 
 // Reset PHP opcache after plugin updates so new class bytecode is loaded
 // immediately instead of on the next opcache TTL. Mitigates v1.5.391/392
@@ -26,6 +26,16 @@ add_action( 'upgrader_process_complete', function ( $upgrader, $hook_extra ) {
         }
     }
 }, 10, 2 );
+
+// Defensive opcache reset on plugin activation. Breaks the opcache-stuck-on-
+// old-bytecode loop where the upgrader_process_complete hook above didn't run
+// because the OLD plugin code (loaded from stale opcache) didn't have the hook
+// registered. Manual deactivate + reactivate cycle now guarantees a fresh
+// bytecode load. Use this when card colors / new features aren't taking effect
+// after a plugin update.
+register_activation_hook( __FILE__, function () {
+    if ( function_exists( 'opcache_reset' ) ) opcache_reset();
+} );
 define( 'WEAREDIT_SITE_ENGINE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WEAREDIT_SITE_ENGINE_URL', plugin_dir_url( __FILE__ ) );
 

@@ -1,4 +1,8 @@
 # Changelog
+## v1.5.402 — 2026-06-11 (Hero typography matches homepage spec + opcache activation hook)
+- `.md-hero__title` typography matched to the homepage hero locked spec (per `project_hp_hero_locked` v1.5.54): `clamp(56px, 9.5vw, 100px)` size + `-.0313em` letter-spacing (was `clamp(48px, 8vw, 96px)` and `-.02em`). Tighter, larger, more editorial — consistent across the site.
+- **`register_activation_hook` calls `opcache_reset()`** — defensive fix for the opcache-stuck-on-old-bytecode loop where the `upgrader_process_complete` hook in v1.5.398+ didn't fire because the OLD plugin code (loaded from stale opcache) didn't have the hook. Now a manual deactivate + reactivate cycle in WP Admin guarantees a fresh bytecode load. Required to recover card-color fixes from v1.5.393 if they didn't take effect.
+
 ## v1.5.401 — 2026-06-11 (Group titles: match standard eyebrow style)
 - `.md-group__title` (BOOTCAMPS, CURSOS, WORKSHOPS, CROSSOVER IA labels) was 22px yellow with .1em letter-spacing — too dominant. Now matches the standard eyebrow style established by `.md-section-header__eyebrow`: 13px, grey at 55% opacity, .18em letter-spacing, uppercase, 600 weight. Creates consistent visual hierarchy.
 
