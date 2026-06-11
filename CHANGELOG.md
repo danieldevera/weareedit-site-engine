@@ -1,4 +1,8 @@
 # Changelog
+## v1.5.406 — 2026-06-12 (Pillar H1: "na EDIT" → "Inteligência Artificial" — signals IA as transversal layer)
+- H1 line 2 changed from "na EDIT." to "Inteligência Artificial." — every EDIT. pillar now signals the pillar topic + IA transversal positioning. Marketing Digital + IA. Data Science + IA. UX/UI + IA. The IA layer is the through-line across all 5 verticals.
+- Pattern to apply to the other 4 pillars when they get the homepage-style hero treatment.
+
 ## v1.5.405 — 2026-06-12 (Pillar hero: match homepage spec — centered, pink/teal dots, no DGERT box)
 - **Centered the hero content** to match homepage layout (`text-align:center` + flex column with align-items center). Was left-aligned, now content stack centers like the homepage Future-Proof. Transformation. block.
 - **Fixed dot colors** — `.md-dot--pink` and `.md-dot--teal` were being overridden to yellow by the broad `.md-hero__title span` rule. Scoped that rule to `.md-hero__title:not(.md-hero__title--xl)` so the XL homepage-spec hero gets its real pink (#f92869) and teal (#60c5b3) dots.

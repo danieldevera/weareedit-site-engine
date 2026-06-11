@@ -278,7 +278,7 @@ class EDIT_Marketing_Digital_Page {
                         <span class="md-dgert__text">Entidade Formadora Certificada</span>
                         <span class="md-dgert__arrow" aria-hidden="true">↗</span>
                     </a>
-                    <h1 class="md-hero__title md-hero__title--xl">Marketing Digital<span class="md-dot md-dot--pink">.</span><br>na&nbsp;EDIT<span class="md-dot md-dot--teal">.</span></h1>
+                    <h1 class="md-hero__title md-hero__title--xl">Marketing Digital<span class="md-dot md-dot--pink">.</span><br>Inteligência Artificial<span class="md-dot md-dot--teal">.</span></h1>
                     <p class="md-hero__lede md-hero__lede--yellow">16 formações DGERT-certificadas em Lisboa, Porto e online. Bootcamps, cursos e workshops desenhados com marcas que recrutam talento digital em Portugal. Programas SIFIDE-elegíveis.</p>
                     <div class="md-hero__cta">
                         <a class="md-btn md-btn--primary md-btn--lg" href="#catalogo">Ver os 16 cursos</a>
