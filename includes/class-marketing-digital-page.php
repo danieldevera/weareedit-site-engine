@@ -46,7 +46,6 @@ class EDIT_Marketing_Digital_Page {
             'curso-marketing-digital-online',
             'curso-marketing-digital-porto',
             'curso-remote-learning-digital-marketing-leadership',
-            'curso-google-analytics-4',
         ],
         'Workshops' => [
             'workshop-tiktok-ads-strategy-online',
@@ -55,6 +54,7 @@ class EDIT_Marketing_Digital_Page {
             'remote-learning-workshop-loyalty-marketing',
             'influencer-marketing-online',
             'workshop-professional-growth-success',
+            'curso-google-analytics-4', // titled "Workshop Remote Learning Google Analytics 4" — moved from Cursos
         ],
         'Crossover IA' => [
             'agentes-inteligentes-para-marketing',

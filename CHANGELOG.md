@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.394 — 2026-06-11 (Marketing Digital CATALOG: move Google Analytics 4 to Workshops)
+- `curso-google-analytics-4` slug renders as "Workshop Remote Learning Google Analytics 4" — was misplaced in the Cursos array, which with v1.5.393's group-based override would have coloured it yellow. Moved to Workshops so it renders teal.
+
 ## v1.5.393 — 2026-06-11 (Pillar cards: group-driven SVG bg + opcache reset on update)
 - Replaced fragile URL-pattern regex (v1.5.391) with authoritative group-based override. The pillar PHP files already know which group each card belongs to ("Bootcamps", "Workshops", "Cursos", "Crossover IA"); now they pass that hint to `EDIT_Pillar_Courses::render_card($slug, $group)`. Override is deterministic, no regex gymnastics, catches all mis-tagged cards regardless of slug shape.
 - `GROUP_BG` map is the source of truth: Bootcamps + Crossover IA → bootcamp-bg.svg (pink), Workshops → workshop-bg-1.svg (teal), Cursos → bg-curso.svg (yellow) with `-online` / `-remote` / `remote-learning-` variants overridden to bg-remote.svg (blue).
