@@ -240,7 +240,7 @@ class EDIT_Inteligencia_Artificial_Page {
                             <div class="container">
                                 <div class="row">
                                     <?php foreach ( $slugs as $slug ) {
-                                        echo EDIT_Pillar_Courses::render_card( $slug );
+                                        echo EDIT_Pillar_Courses::render_card( $slug, $group );
                                     } ?>
                                 </div>
                             </div>

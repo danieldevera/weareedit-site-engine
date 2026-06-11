@@ -1,4 +1,10 @@
 # Changelog
+## v1.5.393 — 2026-06-11 (Pillar cards: group-driven SVG bg + opcache reset on update)
+- Replaced fragile URL-pattern regex (v1.5.391) with authoritative group-based override. The pillar PHP files already know which group each card belongs to ("Bootcamps", "Workshops", "Cursos", "Crossover IA"); now they pass that hint to `EDIT_Pillar_Courses::render_card($slug, $group)`. Override is deterministic, no regex gymnastics, catches all mis-tagged cards regardless of slug shape.
+- `GROUP_BG` map is the source of truth: Bootcamps + Crossover IA → bootcamp-bg.svg (pink), Workshops → workshop-bg-1.svg (teal), Cursos → bg-curso.svg (yellow) with `-online` / `-remote` / `remote-learning-` variants overridden to bg-remote.svg (blue).
+- All 5 pillar PHP files (Marketing Digital, Data Science, UX/UI Design, Inteligência Artificial, Programação) updated to pass `$group` as 2nd arg. Backwards-compatible: `render_card($slug)` still works (empty hint → no override).
+- **`opcache_reset()` hook on `upgrader_process_complete`** — when this plugin is updated via WP one-click update, PHP opcache is flushed so new class bytecode loads immediately. Diagnosis from v1.5.391/392: new code on disk wasn't being executed because opcache served stale v1.5.390 bytecode for ~10-30 min after update.
+
 ## v1.5.392 — 2026-06-11 (Force opcache + transient cache refresh)
 - v1.5.391's URL override didn't take effect on live — PHP opcache was almost certainly serving the old v1.5.390 bytecode despite the new file being on disk. Bumped `CACHE_KEY` to `v4` so the transient is freshly populated, and version bump forces WP to re-extract files (which should trigger opcache invalidation via mtime change).
 - No functional code changes vs v1.5.391; same override logic. If override still doesn't fire after this deploy, opcache needs manual flush (host panel or `opcache_reset()` via WP-CLI).

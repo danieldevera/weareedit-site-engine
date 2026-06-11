@@ -41,43 +41,57 @@ class EDIT_Pillar_Courses {
         if ( isset( $post->post_type ) && $post->post_type === 'formacao' ) self::invalidate_cache();
     }
 
-    public static function render_card( string $slug ): string {
+    /**
+     * Group → SVG bg URL map. Source of truth for pillar card typology
+     * colours. Authoritative override for upstream WP-data quirks (mis-set
+     * formacao_tipo taxonomy on individual posts).
+     */
+    const GROUP_BG = [
+        'bootcamps'    => '/wp-content/uploads/2021/12/bootcamp-bg.svg',     // PINK
+        'workshops'    => '/wp-content/uploads/2015/05/workshop-bg-1.svg',   // TEAL
+        'crossover ia' => '/wp-content/uploads/2021/12/bootcamp-bg.svg',     // PINK (bootcamp cohort)
+        'cursos'       => '/wp-content/uploads/2015/05/bg-curso.svg',        // YELLOW (presencial default)
+    ];
+
+    public static function render_card( string $slug, string $group_hint = '' ): string {
         $map = self::get_card_map();
-        if ( isset( $map[ $slug ] ) ) return self::rewrite_for_pillar( $map[ $slug ] );
+        if ( isset( $map[ $slug ] ) ) return self::rewrite_for_pillar( $map[ $slug ], $slug, $group_hint );
         return self::render_fallback_card( $slug );
     }
 
     /**
      * Pillar-page card rewrite — neutralise WP Rocket lazy-load and bake the
      * SVG background-image into the inline style so the card renders with its
-     * correct typology background (bootcamp pink / workshop teal / remote blue
-     * / curso yellow) on the first paint, without depending on lazy-load JS
-     * that doesn't reliably fire for HTML injected by the pillar shortcode.
+     * correct typology background on first paint, independent of lazy-load JS.
      *
-     * Preserves the data-bg attribute so other code paths (theme CSS, future
-     * JS) keep working unchanged. Idempotent: cards without data-bg pass
-     * through untouched.
+     * Authoritative override: the $group_hint passed from the pillar's CATALOG
+     * tells us what bucket the card belongs to ("Bootcamps", "Workshops",
+     * "Cursos", "Crossover IA"). This wins over whatever the /formacao/ scrape
+     * surfaced — necessary because some WP posts have mis-set formacao_tipo
+     * (rendering with bg-curso.svg yellow when they should be teal/pink).
+     *
+     * For "Cursos" specifically: slug suffix (`-online`, `-remote`,
+     * `remote-learning-`) picks BLUE (bg-remote.svg) over the default YELLOW.
      */
-    private static function rewrite_for_pillar( string $html ): string {
+    private static function rewrite_for_pillar( string $html, string $slug = '', string $group_hint = '' ): string {
         if ( ! preg_match( '/data-bg="([^"]+)"/', $html, $m ) ) return $html;
         $bg_url = $m[1];
 
-        // Override upstream-mis-tagged cards. Some workshop + bootcamp posts
-        // in WP have the wrong "Tipo Destaque" / formacao_tipo taxonomy,
-        // resulting in data-bg pointing at bg-curso.svg (yellow) rather than
-        // their correct typology background. Detect by URL pattern and force
-        // the right SVG so the pillar renders the locked typology colours
-        // (bootcamp pink / workshop teal) even when WP data is wrong.
-        if ( preg_match( '#/formacao/(remote-learning-workshop-|workshop-)#', $html ) ) {
-            $bg_url = home_url( '/wp-content/uploads/2015/05/workshop-bg-1.svg' );
-        } elseif ( preg_match( '#/formacao/(bootcamp-|digital-marketing-foundations-bootcamp)#', $html ) ) {
-            $bg_url = home_url( '/wp-content/uploads/2021/12/bootcamp-bg.svg' );
+        $group_key = strtolower( trim( $group_hint ) );
+        if ( $group_key && isset( self::GROUP_BG[ $group_key ] ) ) {
+            $bg_url = home_url( self::GROUP_BG[ $group_key ] );
+            // Cursos: remote/online variants get the blue SVG instead of yellow.
+            if ( $group_key === 'cursos' && $slug && (
+                strpos( $slug, '-online' ) !== false ||
+                strpos( $slug, '-remote' ) !== false ||
+                strpos( $slug, 'remote-learning' ) !== false
+            ) ) {
+                $bg_url = home_url( '/wp-content/uploads/2020/03/bg-remote.svg' );
+            }
         }
 
         $bg_url = esc_url( $bg_url );
         $html = preg_replace( '/\s+rocket-lazyload/', '', $html );
-        // Update both the data-bg attribute (for any downstream JS) and the
-        // inline style so the SVG renders on first paint.
         $html = preg_replace(
             '/data-bg="[^"]+"/',
             'data-bg="' . $bg_url . '"',
