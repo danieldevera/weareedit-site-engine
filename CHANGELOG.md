@@ -1,4 +1,11 @@
 # Changelog
+## v1.5.396 — 2026-06-11 (Empresas LinkedIn brief: Google Trends data + minimal-investment Phase 0)
+- Added **Section 0 "Search demand reality check"** to the LinkedIn brief — Google Trends data for B2B Portuguese vocabulary over the last 12 months. Pulled live via Supermetrics MCP.
+- **Major strategic finding:** "formação corporativa", "upskilling", "reskilling", "formação para empresas", "formação à medida" all have **zero PT search volume**. Real high-volume PT B2B search vocabulary is **DGERT (25 avg, peak 62) + Cheque Formação (peak 100 in Sep 2025) + SIFIDE (11 avg, niche but steady)**. Both DGERT and Cheque Formação spike sharply in W37/2025 (Sep 14) — annual buying window.
+- **Implication for the campaign:** doubles the strength of Angle C (Financial/CFO hook). Landing page H1 + ad headlines should anchor on DGERT + Cheque Formação + SIFIDE.
+- **Pivoted budget approach to minimal-investment Phase 0:** Days 1-30 = €0 cash (max €200 for boost-post tests if an organic post overperforms) · 100% content-led · grow EDIT. Business Page followers (target +500-1,000) · all 3 angles tested in organic posts. Paid 3-campaign structure deferred to Phase 1 (Days 31-90) only if Day-30 follower / inbound DM signals validate. Worst-case 30-day exposure: €0-200.
+- Chart.js time-series visualisation embedded showing the 12-month trends for DGERT, Cheque Formação, SIFIDE.
+
 ## v1.5.395 — 2026-06-11 (Pillar brand font + Empresas LinkedIn brief)
 - **Pillar brand font fix:** `.md-pillar` headings + body text now explicitly set `font-family:'SctoGroteskA','Helvetica Neue',Helvetica,Arial,sans-serif`. Without this rule the shortcode-rendered headings were falling back to the system font, breaking visual consistency vs the rest of the site. Affects all 5 pillars.
 - **New internal doc:** `empresas-linkedin-acquisition-2026-06-11.html` — full strategy brief for the EDIT. Empresas LinkedIn acquisition push. 3-campaign architecture (Awareness + Lead Gen + Discovery Calls), audience definition, 3 creative angles, Lead Gen form → Brevo mapping, content-production plan, 4-week launch calendar, Day-1 launch checklist, risks. English. Available at `/internal-marketing-documents/empresas-linkedin-acquisition-2026-06-11/`.
