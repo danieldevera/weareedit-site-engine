@@ -78,7 +78,7 @@ html { scroll-behavior: smooth; }
 .md-catalog__heading { max-width:1280px; margin:0 auto 64px; padding:0 60px; }
 .md-group { margin:0 0 24px; }
 .md-group__heading { max-width:1280px; margin:0 auto 16px; padding:0 60px; }
-.md-group__title { font-size:22px; font-weight:600; color:#ffdd06; margin:0; text-transform:uppercase; letter-spacing:.1em; }
+.md-group__title { font-size:13px; font-weight:600; color:rgba(255,255,255,.55); margin:0; text-transform:uppercase; letter-spacing:.18em; }
 
 /* Reusable 2-col section-header pattern (eyebrow + h2 LEFT, lead body RIGHT).
    Canonical EDIT. editorial pattern. Use on catalog, tutors, FAQ, final-CTA. */

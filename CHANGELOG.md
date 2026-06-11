@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.401 — 2026-06-11 (Group titles: match standard eyebrow style)
+- `.md-group__title` (BOOTCAMPS, CURSOS, WORKSHOPS, CROSSOVER IA labels) was 22px yellow with .1em letter-spacing — too dominant. Now matches the standard eyebrow style established by `.md-section-header__eyebrow`: 13px, grey at 55% opacity, .18em letter-spacing, uppercase, 600 weight. Creates consistent visual hierarchy.
+
 ## v1.5.400 — 2026-06-11 (Catalog header: applied 2-col section-header pattern + dropped Cheque Formação)
 - "Catálogo de Formação em Marketing Digital" header now uses the reusable `.md-section-header` 2-col layout (eyebrow + h2 title LEFT, lead body RIGHT). Matches the brand reference + the intro section pattern shipped in v1.5.398.
 - Eyebrow: "16 programas DGERT-certificados" — adds quantifier + credibility signal.
