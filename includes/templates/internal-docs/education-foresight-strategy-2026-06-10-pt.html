@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<title>EDIT. Education Foresight & Growth Strategy · PT · 2026-06-10</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+  :root {
+    --yellow:#ffdd06; --pink:#f5366b; --teal:#60c5b3; --coral:#ec8172;
+    --magenta:#DF086F; --ink:#0a0a0a; --grey:#666; --bg:#fafafa;
+    --soft:#f0f0f0; --good:#1b9e3e; --bad:#d62728; --warn:#ec8172;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body {
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:var(--bg); color:var(--ink); padding:32px 40px;
+    line-height:1.5; max-width:1320px; margin:0 auto; font-size:14px;
+  }
+  h1 { font-size:36px; font-weight:800; margin-bottom:4px; letter-spacing:-1px; }
+  h1 .pink { color: var(--pink); }
+  .subtitle { color:var(--grey); font-size:14px; margin-bottom:28px; }
+
+  .hero {
+    background: linear-gradient(135deg, var(--ink) 0%, #1a1a1a 100%);
+    color:#fff; padding:28px 32px; border-radius:8px; margin-bottom:24px;
+    border-left:6px solid var(--pink);
+  }
+  .hero h2 { color:var(--yellow); font-size:18px; margin-bottom:14px; letter-spacing:0.4px; text-transform:uppercase; }
+  .hero p { font-size:16px; margin-bottom:10px; }
+  .hero strong { color:var(--yellow); }
+  .hero .big-q { font-size:24px; font-weight:800; margin-top:14px; line-height:1.3; }
+  .hero .urgent { display:inline-block; background:var(--pink); color:#fff; padding:4px 12px; border-radius:14px; font-size:11px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; margin-bottom:10px; }
+
+  .grid-6 { display:grid; grid-template-columns:repeat(6, 1fr); gap:12px; margin-bottom:24px; }
+  .kpi {
+    background:#fff; padding:16px 18px; border-radius:6px; border:1px solid #e5e5e5;
+    border-left:4px solid var(--teal);
+  }
+  .kpi.pink { border-left-color:var(--pink); }
+  .kpi.yellow { border-left-color:var(--yellow); }
+  .kpi.coral { border-left-color:var(--coral); }
+  .kpi.ink { border-left-color:var(--ink); }
+  .kpi.magenta { border-left-color:var(--magenta); }
+  .kpi.bad { border-left-color:var(--bad); }
+  .kpi .vertical { font-size:10px; text-transform:uppercase; letter-spacing:0.5px; color:var(--grey); margin-bottom:6px; font-weight:700; }
+  .kpi .term { font-size:18px; font-weight:800; color:var(--ink); margin-bottom:2px; line-height:1.2; }
+  .kpi .score { font-size:12px; color:var(--pink); font-weight:700; margin-top:4px; }
+  .kpi .sub { font-size:11px; color:var(--grey); margin-top:2px; }
+
+  .panel {
+    background:#fff; padding:24px 28px; border-radius:8px; border:1px solid #e5e5e5;
+    margin-bottom:20px;
+  }
+  .panel h2 {
+    font-size:22px; margin-bottom:6px; border-bottom:3px solid var(--yellow);
+    padding-bottom:8px; display:flex; align-items:center; gap:10px;
+  }
+  .panel h2 .num {
+    background:var(--ink); color:var(--yellow); width:32px; height:32px;
+    border-radius:50%; font-size:16px; display:inline-flex; align-items:center;
+    justify-content:center; font-weight:800;
+  }
+  .panel h3 { font-size:15px; margin-top:20px; color:var(--pink); font-weight:700; }
+  .panel .note { color:var(--grey); font-size:13px; margin-bottom:16px; }
+
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px; }
+  .three-col { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:20px; }
+  .chart-box { position:relative; height:300px; }
+  .chart-box.tall { height:380px; }
+
+  table { width:100%; border-collapse:collapse; font-size:13px; margin-top:10px; }
+  th { text-align:left; padding:10px 12px; background:var(--ink); color:var(--yellow); font-weight:700; border-bottom:2px solid #333; font-size:11px; text-transform:uppercase; letter-spacing:0.4px; }
+  td { padding:10px 12px; border-bottom:1px solid var(--soft); vertical-align:middle; }
+  td.num, th.num { text-align:right; font-variant-numeric:tabular-nums; font-weight:600; }
+  .pill {
+    display:inline-block; padding:3px 9px; border-radius:4px; font-size:11px;
+    font-weight:700; letter-spacing:0.3px; text-transform:uppercase;
+  }
+  .pill.up { background:rgba(27,158,62,0.15); color:var(--good); }
+  .pill.down { background:rgba(214,39,40,0.15); color:var(--bad); }
+  .pill.flat { background:var(--soft); color:var(--grey); }
+  .pill.rank-1 { background:var(--yellow); color:var(--ink); }
+  .pill.rank-2 { background:rgba(96,197,179,0.18); color:#2a8378; }
+  .pill.rank-3 { background:rgba(255,221,6,0.3); color:#8a7400; }
+
+  .vertical-card {
+    background:#fff; padding:20px 22px; border-radius:8px; border:1px solid #e5e5e5;
+  }
+  .vertical-card h3 {
+    color:var(--ink); font-size:17px; margin-bottom:4px; font-weight:800;
+    padding-bottom:8px; border-bottom:3px solid var(--pink);
+  }
+  .vertical-card .v-sub { font-size:12px; color:var(--grey); margin-bottom:14px; }
+  .vertical-card.mkt h3 { border-color:var(--pink); }
+  .vertical-card.ux h3 { border-color:var(--teal); }
+  .vertical-card.data h3 { border-color:var(--yellow); }
+  .vertical-card.ppm h3 { border-color:var(--coral); }
+  .vertical-card.fe h3 { border-color:var(--magenta); }
+  .vertical-card.ai h3 { border-color:var(--ink); }
+
+  .strategic-take {
+    background:linear-gradient(135deg, var(--yellow) 0%, var(--coral) 100%);
+    padding:20px 24px; border-radius:6px; margin-top:14px;
+  }
+  .strategic-take h4 { font-size:13px; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:10px; color:var(--ink); }
+  .strategic-take p { font-size:13px; color:var(--ink); line-height:1.5; }
+  .strategic-take strong { color:var(--ink); font-weight:800; }
+
+  /* Trend strip */
+  .trend {
+    display:inline-block; padding:1px 7px; border-radius:3px; font-size:11px;
+    font-weight:700; margin-left:6px;
+  }
+  .trend.up { background:rgba(27,158,62,0.15); color:var(--good); }
+  .trend.down { background:rgba(214,39,40,0.15); color:var(--bad); }
+  .trend.flat { background:var(--soft); color:var(--grey); }
+
+  .caveat {
+    background:#fff8e6; border-left:5px solid var(--yellow); padding:14px 18px;
+    border-radius:4px; font-size:13px; margin:14px 0; color:#5a5000;
+  }
+  .caveat strong { color:var(--ink); }
+
+  footer { color:var(--grey); font-size:12px; text-align:center; padding:14px; margin-top:24px; border-top:1px solid #eee; }
+</style>
+</head>
+<body>
+
+<h1>EDIT. <span class="pink">Education Foresight</span> & Growth Strategy · PT</h1>
+<div class="subtitle">Construído a 2026-06-10 · v2 (extendida) · Janela: 12 meses (10 Jun 2025 → 10 Jun 2026) · Dados: Google Trends via Supermetrics MCP · Mercados: PT primário + benchmarks GB · DE · NL · ES + queries em ascensão</div>
+
+<!-- HERO -->
+<div class="hero">
+  <span class="urgent">Intel estratégico</span>
+  <h2>O que Portugal está realmente a pesquisar</h2>
+  <p>Por vertical de educação, ordenado pela média de 90 dias do interesse de pesquisa. <strong>Usa estes termos como âncora de SEO + âncora do copy de anúncio + lead do H1 nas páginas de curso</strong> — não os nomes formais dos cursos EDIT.</p>
+  <p>As duas maiores lacunas entre o que vendemos e o que as pessoas pesquisam: <strong>Figma</strong> domina a pesquisa de UX/UI 11× mais do que o próprio "ux design", e <strong>ChatGPT</strong> domina a pesquisa de IA 22× mais do que "inteligência artificial". <em>Lidera com a marca que o consumidor reconhece; faz a ponte para o curso mais amplo lá dentro.</em></p>
+  <p class="big-q">Brand-name os teus cursos com o termo de pesquisa dominante — ou continua a perder o clique para o Coursera/Udemy.</p>
+</div>
+
+<!-- TOP TERM PER VERTICAL KPI GRID -->
+<div class="grid-6">
+  <div class="kpi pink">
+    <div class="vertical">Marketing Digital</div>
+    <div class="term">google ads</div>
+    <div class="score">média 44 / 100</div>
+    <div class="sub">⚠ tendência ↓ 33% (90d)</div>
+  </div>
+  <div class="kpi">
+    <div class="vertical">UX/UI Design</div>
+    <div class="term">figma</div>
+    <div class="score">média 55 / 100</div>
+    <div class="sub">⚠ tendência ↓ 33% (90d)</div>
+  </div>
+  <div class="kpi yellow">
+    <div class="vertical">Data Science / IA</div>
+    <div class="term">python</div>
+    <div class="score">média 17 / 100</div>
+    <div class="sub">⚠ tendência ↓ 54% (90d)</div>
+  </div>
+  <div class="kpi coral">
+    <div class="vertical">Product / Project Mgmt</div>
+    <div class="term">project management</div>
+    <div class="score">média 28 / 100</div>
+    <div class="sub">estável; agile colado em 2.º</div>
+  </div>
+  <div class="kpi magenta">
+    <div class="vertical">Front-End / Programação</div>
+    <div class="term">react</div>
+    <div class="score">média 28 / 100</div>
+    <div class="sub">⚠ tendência ↓ 40% (90d)</div>
+  </div>
+  <div class="kpi ink">
+    <div class="vertical">Inteligência Artificial</div>
+    <div class="term">chatgpt</div>
+    <div class="score">média 68 / 100</div>
+    <div class="sub">ligeira ↓ mas mantém 60+ diário</div>
+  </div>
+</div>
+
+<!-- READING THE DATA -->
+<div class="panel">
+  <h2><span class="num">1</span>Como ler isto</h2>
+  <p class="note">O "interesse" do Google Trends é 0–100, relativo ao dia de pico dentro de cada query individual. <strong>Os valores NÃO são comparáveis entre verticais</strong> — cada vertical tem a sua própria escala 0-100. Dentro de uma vertical, a ordem relativa diz-te o que Portugal está a pesquisar.</p>
+  <div class="caveat">
+    <strong>Nota sobre as tendências descendentes:</strong> A maioria dos termos mostra interesse a cair de Março → Junho. Isto é em parte sazonal (o ciclo de férias português começa em Maio; as inscrições de Setembro reduzem a actividade de pesquisa até final de Agosto) e em parte um artefacto da forma como o Google Trends normaliza valores diários. Trata o <em>ranking relativo</em> dentro de cada vertical como o sinal de alta confiança; trata os declives absolutos como meramente direccionais.
+  </div>
+</div>
+
+<!-- TOP 3 PER VERTICAL TABLE -->
+<div class="panel">
+  <h2><span class="num">2</span>Top 3 termos de pesquisa em tendência por vertical de educação</h2>
+  <p class="note">Pontuação média de interesse a 90 dias dentro da query de cada vertical. Tendência = média móvel de 30 dias vs média móvel dos primeiros 30 dias.</p>
+  <table>
+    <tr>
+      <th>Vertical</th><th>Rank</th><th>Termo de pesquisa (PT)</th>
+      <th class="num">Média 90d</th><th class="num">Pico</th><th class="num">Últimos 30d</th>
+      <th>Tendência (90d)</th>
+      <th>Alinhamento com curso EDIT.</th>
+    </tr>
+
+    <!-- Marketing Digital -->
+    <tr><td rowspan="3"><strong>Marketing Digital</strong></td>
+      <td><span class="pill rank-1">#1</span></td><td><strong>google ads</strong></td>
+      <td class="num">44</td><td class="num">100</td><td class="num">35</td>
+      <td><span class="trend down">↓ -33%</span></td>
+      <td>Bootcamp <strong>Google Ads & Meta Ads</strong> ✓</td></tr>
+    <tr><td><span class="pill rank-2">#2</span></td><td><strong>marketing digital</strong></td>
+      <td class="num">38</td><td class="num">68</td><td class="num">26</td>
+      <td><span class="trend down">↓ -43%</span></td>
+      <td>Curso <strong>Digital Marketing & Strategy</strong> ✓</td></tr>
+    <tr><td><span class="pill rank-3">#3</span></td><td><strong>meta ads</strong></td>
+      <td class="num">25</td><td class="num">54</td><td class="num">16</td>
+      <td><span class="trend down">↓ -57%</span></td>
+      <td>Bundle com o bootcamp Google Ads ✓</td></tr>
+
+    <!-- UX/UI Design -->
+    <tr><td rowspan="3"><strong>UX/UI Design</strong></td>
+      <td><span class="pill rank-1">#1</span></td><td><strong>figma</strong></td>
+      <td class="num">55</td><td class="num">100</td><td class="num">42</td>
+      <td><span class="trend down">↓ -33%</span></td>
+      <td>Workshop <strong>Figma</strong> ✓ mas sub-promovido</td></tr>
+    <tr><td><span class="pill rank-2">#2</span></td><td><strong>ux design</strong></td>
+      <td class="num">5</td><td class="num">29</td><td class="num">3</td>
+      <td><span class="trend flat">~ plano (base baixa)</span></td>
+      <td>Curso <strong>UX/UI Design</strong> — o nome enterra este termo</td></tr>
+    <tr><td><span class="pill rank-3">#3</span></td><td><strong>design digital</strong></td>
+      <td class="num">5</td><td class="num">25</td><td class="num">3</td>
+      <td><span class="trend flat">~ plano (base baixa)</span></td>
+      <td>Sem SKU dedicado — lacuna de oportunidade</td></tr>
+
+    <!-- Data Science / AI -->
+    <tr><td rowspan="3"><strong>Data Science & AI Analytics</strong></td>
+      <td><span class="pill rank-1">#1</span></td><td><strong>python</strong></td>
+      <td class="num">17</td><td class="num">100</td><td class="num">11</td>
+      <td><span class="trend down">↓ -54%</span></td>
+      <td>Curso <strong>Python</strong> existe ✓ mas isolado</td></tr>
+    <tr><td><span class="pill rank-2">#2</span></td><td><strong>power bi</strong></td>
+      <td class="num">5</td><td class="num">10</td><td class="num">3</td>
+      <td><span class="trend down">↓ -49%</span></td>
+      <td>Curso <strong>Power BI</strong> com Marina Azevedo ✓</td></tr>
+    <tr><td><span class="pill rank-3">#3</span></td><td><strong>machine learning</strong></td>
+      <td class="num">4</td><td class="num">14</td><td class="num">2</td>
+      <td><span class="trend down">↓ -47%</span></td>
+      <td>Coberto dentro de <strong>Data Science & AI Analytics</strong></td></tr>
+
+    <!-- Product & Project Mgmt -->
+    <tr><td rowspan="3"><strong>Product / Project Management</strong></td>
+      <td><span class="pill rank-1">#1</span></td><td><strong>project management</strong></td>
+      <td class="num">28</td><td class="num">100</td><td class="num">14</td>
+      <td><span class="trend down">↓ -69% (sazonal)</span></td>
+      <td>Curso <strong>Product & Project Management</strong> ✓</td></tr>
+    <tr><td><span class="pill rank-2">#2</span></td><td><strong>agile</strong></td>
+      <td class="num">26</td><td class="num">97</td><td class="num">15</td>
+      <td><span class="trend down">↓ -64%</span></td>
+      <td>Usar como ângulo de conteúdo / hook na página de PPM</td></tr>
+    <tr><td><span class="pill rank-3">#3</span></td><td><strong>scrum</strong></td>
+      <td class="num">10</td><td class="num">70</td><td class="num">10</td>
+      <td><span class="trend flat">~ plano</span></td>
+      <td>Tópico bundle no currículo de PPM</td></tr>
+
+    <!-- Front-End -->
+    <tr><td rowspan="3"><strong>Front-End / Programação</strong></td>
+      <td><span class="pill rank-1">#1</span></td><td><strong>react</strong></td>
+      <td class="num">28</td><td class="num">90</td><td class="num">17</td>
+      <td><span class="trend down">↓ -40%</span></td>
+      <td>⚠ NÃO está no currículo actual de Front-End?</td></tr>
+    <tr><td><span class="pill rank-2">#2</span></td><td><strong>javascript</strong></td>
+      <td class="num">17</td><td class="num">100</td><td class="num">11</td>
+      <td><span class="trend down">↓ -52%</span></td>
+      <td>Coberto como fundamentos em <strong>Front-End Engineer</strong> ✓</td></tr>
+    <tr><td><span class="pill rank-3">#3</span></td><td><strong>no code</strong></td>
+      <td class="num">14</td><td class="num">48</td><td class="num">9</td>
+      <td><span class="trend down">↓ -45%</span></td>
+      <td>Bootcamp <strong>Lovable</strong> + <strong>Webflow 2.0</strong> ✓</td></tr>
+
+    <!-- IA -->
+    <tr><td rowspan="3"><strong>Inteligência Artificial</strong></td>
+      <td><span class="pill rank-1">#1</span></td><td><strong>chatgpt</strong></td>
+      <td class="num">68</td><td class="num">100</td><td class="num">63</td>
+      <td><span class="trend flat">~ -7% (estável)</span></td>
+      <td>SEM SKU dedicado de ChatGPT — maior lacuna</td></tr>
+    <tr><td><span class="pill rank-2">#2</span></td><td><strong>claude ai</strong></td>
+      <td class="num">3</td><td class="num">5</td><td class="num">3</td>
+      <td><span class="trend flat">~ plano</span></td>
+      <td>Coberto dentro do <strong>AAI Bootcamp</strong> (Naiara) ✓</td></tr>
+    <tr><td><span class="pill rank-3">#3</span></td><td><strong>inteligencia artificial</strong></td>
+      <td class="num">1</td><td class="num">1</td><td class="num">1</td>
+      <td><span class="trend flat">plano (baixo)</span></td>
+      <td>Curso <strong>AAI</strong> usa este nome ✓</td></tr>
+  </table>
+</div>
+
+<!-- PER-VERTICAL TREND CHARTS -->
+<div class="panel">
+  <h2><span class="num">3</span>Curvas de interesse de pesquisa por vertical</h2>
+  <p class="note">Cada gráfico mostra o interesse de pesquisa diário (0-100, relativo dentro da vertical). A escala do eixo Y é por vertical, por isso a altura visual deve ser comparada <em>dentro</em> do gráfico, não entre gráficos.</p>
+
+  <div class="three-col">
+    <div class="vertical-card mkt">
+      <h3>Marketing Digital</h3>
+      <div class="v-sub">Google Ads domina · 1.8× sobre "marketing digital"</div>
+      <div class="chart-box"><canvas id="chartMkt"></canvas></div>
+    </div>
+    <div class="vertical-card ux">
+      <h3>UX/UI Design</h3>
+      <div class="v-sub">Figma é a marca · 11× sobre "ux design"</div>
+      <div class="chart-box"><canvas id="chartUx"></canvas></div>
+    </div>
+    <div class="vertical-card data">
+      <h3>Data Science & IA</h3>
+      <div class="v-sub">Python é a porta de entrada · 3× sobre "power bi"</div>
+      <div class="chart-box"><canvas id="chartData"></canvas></div>
+    </div>
+  </div>
+
+  <div class="three-col">
+    <div class="vertical-card ppm">
+      <h3>Product / Project Mgmt</h3>
+      <div class="v-sub">Project Mgmt ≈ Agile · corrida pelo #1</div>
+      <div class="chart-box"><canvas id="chartPpm"></canvas></div>
+    </div>
+    <div class="vertical-card fe">
+      <h3>Front-End / Programação</h3>
+      <div class="v-sub">React ≈ JavaScript · no-code em terceiro</div>
+      <div class="chart-box"><canvas id="chartFe"></canvas></div>
+    </div>
+    <div class="vertical-card ai">
+      <h3>Inteligência Artificial</h3>
+      <div class="v-sub">ChatGPT é dono da categoria · 22× sobre Claude</div>
+      <div class="chart-box"><canvas id="chartAi"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- STRATEGIC IMPLICATIONS -->
+<div class="panel">
+  <h2><span class="num">4</span>Implicações estratégicas — o que mudar esta semana</h2>
+  <p class="note">Cada implicação ligada a uma acção concreta de página de curso / copy de anúncio / SEO que move um funil conhecido.</p>
+
+  <div class="strategic-take">
+    <h4>🎯 Marketing Digital — ancorar em "google ads"</h4>
+    <p><strong>Acção:</strong> a landing page do curso Digital Marketing & Strategy já menciona Google Ads — torna-o proeminente no H1. Hook do copy de anúncio: "Domina Google Ads + Meta Ads em 2026" em vez de "Marketing Digital & Strategy". O Bootcamp Google Ads & Meta Ads já está alinhado; <strong>cross-link a partir da página principal do curso</strong>.</p>
+  </div>
+
+  <div class="strategic-take">
+    <h4>🎯 UX/UI Design — o headline Figma</h4>
+    <p><strong>Acção:</strong> Figma é a pesquisa UX/UI dominante em Portugal por 11×. A EDIT. tem um workshop de Figma com a Madalena Costa das Ladies That UX — <strong>isto devia ser agressivamente promovido</strong> como porta de entrada para o curso UX/UI de 200h. Trata "Figma" como âncora de SEO, "UX/UI Design" como keyword secundária. Novo hook de copy de anúncio: "Aprende Figma com a Madalena Costa (Ladies That UX)" → leva-os para a página de UX/UI.</p>
+  </div>
+
+  <div class="strategic-take">
+    <h4>🎯 Data Science — Python como porta de entrada</h4>
+    <p><strong>Acção:</strong> Python é o termo que Portugal pesquisa no espaço de data, 3× mais do que Power BI. O Curso Python com Luís Fernandes (DAGI) é o teu <strong>SKU de descoberta</strong>. Usa-o como entrada do funil: "Python para Data Science" → upsell para DSBA. O Power BI mantém a sua landing dedicada porque a Marina Azevedo tem audience pull, mas não deve liderar a vertical.</p>
+  </div>
+
+  <div class="strategic-take">
+    <h4>🎯 Project Management — chama-lhe pelo nome</h4>
+    <p><strong>Acção:</strong> o termo de pesquisa é "project management" — o teu curso é "Product & Project Management". A parte de Product está bem para posicionamento académico, mas considera <strong>dividir o funil SEO</strong>: uma landing page apontada a "project management" (com Agile + Scrum como conteúdo de apoio), outra apontada a "product management". Actualmente o título fundido pode diluir ambas as keywords.</p>
+  </div>
+
+  <div class="strategic-take">
+    <h4>⚠ Front-End — lacuna React a resolver</h4>
+    <p><strong>Acção:</strong> React é o termo #1 de Front-End em PT, mas o posicionamento do currículo Front-End Engineer da EDIT. enfatiza frameworks modernos de forma genérica. <strong>Confirma com o Miguel:</strong> o React já está no syllabus? Se sim, traz-lo para o H1 do curso ("Front-End Engineer: HTML, CSS, JavaScript & React"). Se não, é uma lacuna de currículo a fechar para o cohort de Setembro 2026. O ângulo no-code (bootcamps Webflow / Lovable) está bem coberto.</p>
+  </div>
+
+  <div class="strategic-take">
+    <h4>🎯 Inteligência Artificial — falta o SKU ChatGPT</h4>
+    <p><strong>Acção:</strong> ChatGPT é o termo IA mais pesquisado em PT (média 68/100 vs Claude a 3). O AAI Bootcamp cobre ChatGPT mas o <strong>nome do curso não o inclui</strong>. Considera: (1) renomear o H1 da landing do AAI Bootcamp para "Advanced AI Bootcamp — ChatGPT, Claude & Agentes". (2) Ou lançar um workshop curto chamado "ChatGPT para Profissionais" como porta de entrada — a Naiara já tem o conteúdo a partir da tese da Disruptive News Ed#1 do Daniel. Esta é a maior lacuna isolada de visibilidade em todo o portfólio.</p>
+  </div>
+</div>
+
+<!-- ALIGNMENT SUMMARY -->
+<div class="panel">
+  <h2><span class="num">5</span>Scorecard de alinhamento do portfólio de cursos</h2>
+  <p class="note">Quão bem os cursos nomeados pela EDIT. correspondem ao que Portugal realmente pesquisa. Pontuação: ✓ alinhado · ⚠ parcial · ✗ lacuna.</p>
+
+  <table>
+    <tr><th>Vertical</th><th>Termo de pesquisa dominante</th><th>Nome do SKU EDIT.</th><th>Alinhamento</th><th>Correcção</th></tr>
+    <tr><td>Marketing Digital</td><td>google ads</td><td>Bootcamp Google Ads & Meta Ads</td><td><span class="pill rank-1">✓ Alinhado</span></td><td>Promover mais o bootcamp na página principal de DM</td></tr>
+    <tr><td>UX/UI Design</td><td>figma</td><td>Workshop Figma + Curso UX/UI Design</td><td><span class="pill rank-3">⚠ Parcial</span></td><td>Liderar com Figma no funil; UX/UI como upsell</td></tr>
+    <tr><td>Data Science</td><td>python</td><td>Curso Python + DSBA</td><td><span class="pill rank-3">⚠ Parcial</span></td><td>Python como SKU de entrada; ponte para DSBA</td></tr>
+    <tr><td>Product / Project Mgmt</td><td>project management</td><td>Curso Product & Project Management</td><td><span class="pill rank-3">⚠ Parcial</span></td><td>Considerar landing pages SEO separadas</td></tr>
+    <tr><td>Front-End</td><td>react</td><td>Curso Front-End Engineer</td><td><span class="pill down">✗ Confirmar</span></td><td>Verificar React no syllabus; expor no H1</td></tr>
+    <tr><td>Inteligência Artificial</td><td>chatgpt</td><td>Bootcamp Advanced AI</td><td><span class="pill down">✗ Lacuna grande</span></td><td>Renomear H1 / lançar workshop de descoberta ChatGPT</td></tr>
+  </table>
+</div>
+
+<!-- ============================================================== -->
+<!--                    v2 EXTENSION — 12-MONTH                     -->
+<!-- ============================================================== -->
+
+<div class="panel">
+  <h2><span class="num">6</span>PT 12 meses em profundidade — ciclo de sazonalidade descoberto</h2>
+  <p class="note">Esticar a janela para 52 semanas revela o verdadeiro ritmo de pesquisa português. A queda de Junho que víamos nos dados a 90 dias NÃO é um declínio real — é o fundo de um ciclo anual que volta a disparar em Set-Nov e novamente em Fev-Mar.</p>
+
+  <div class="two-col">
+    <div>
+      <h3>Top 5 termos âncora — semanal, 12 meses</h3>
+      <div class="chart-box tall"><canvas id="chartPt12mo"></canvas></div>
+    </div>
+    <div>
+      <h3>Pulso de sazonalidade — os dois picos</h3>
+      <div class="strategic-take">
+        <h4>🍂 Surge #1 — Set–Nov (pós-verão "back to upskilling")</h4>
+        <p>Subida acentuada em <strong>figma · python · project management · agile · marketing digital</strong>. Picos em Outubro/Novembro semanal. <strong>Esta é a zona de ouro para o cohort Setembro 2026.</strong> O EARLY15 a fechar a 30 Jun captura a *intenção* antes da queda de verão; a próxima grande janela de compra abre estilo Set 2025 a partir de 8 Set.</p>
+      </div>
+      <div class="strategic-take">
+        <h4>❄️ Surge #2 — Fev–Mar (pós-Natal "resolução de ano novo")</h4>
+        <p>Os maiores picos anuais para <strong>python · figma · react · chatgpt · agile · project management</strong> aterram nas semanas 6–11 do ano. Portugal toma as suas maiores decisões de aprendizagem em Fev-Março, NÃO em Setembro. Esta é a janela para <strong>cohorts estilo Maio 2026</strong> + marcações de workshop.</p>
+      </div>
+      <div class="strategic-take">
+        <h4>🌴 O chão de verão — Jun–Ago</h4>
+        <p>Queda universal em todos os termos. 23 Jun–31 Ago. <strong>Não queimes budget em aquisição fria</strong> nesta janela. Usa-a para: editorial (newsletter), marca (LinkedIn share pessoal), retargeting de cohorts mornos que viram o EARLY15 — não para aquisição net-new.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>O que mudou quando alargámos de 90d → 12mo</h3>
+  <table>
+    <tr><th>Termo</th><th class="num">Média 90d</th><th class="num">Média 12mo</th><th class="num">Pico Y/Y</th><th class="num">Semana de pico</th><th>Leitura</th></tr>
+    <tr><td><strong>chatgpt</strong></td><td class="num">68</td><td class="num">80</td><td class="num">100</td><td class="num">W11/2026 (Mar)</td><td><span class="pill rank-1">✓ NÃO está em declínio — banda consistente 75-100 todo o ano</span></td></tr>
+    <tr><td><strong>figma</strong></td><td class="num">55</td><td class="num">71</td><td class="num">100</td><td class="num">W10/2026 (Mar)</td><td><span class="pill rank-1">✓ Ciclo forte, picos duplos (Out + Mar)</span></td></tr>
+    <tr><td><strong>python</strong></td><td class="num">17</td><td class="num">49</td><td class="num">100</td><td class="num">W7/2026 (Fev)</td><td><span class="pill rank-1">✓ 12mo massivo — muito maior do que os 90d sugeriam</span></td></tr>
+    <tr><td><strong>project management</strong></td><td class="num">28</td><td class="num">29</td><td class="num">92</td><td class="num">W9/2026 (Fev)</td><td><span class="pill rank-2">~ Pico forte Fev-Mar, de resto plano</span></td></tr>
+    <tr><td><strong>agile</strong></td><td class="num">26</td><td class="num">28</td><td class="num">100</td><td class="num">W8/2026 (Fev)</td><td><span class="pill rank-2">~ Mesmo padrão que project mgmt</span></td></tr>
+    <tr><td><strong>google ads</strong></td><td class="num">44</td><td class="num">76</td><td class="num">100</td><td class="num">W45/2025 (Nov)</td><td><span class="pill rank-1">✓ Consistente todo o ano, ligeiro pico em Nov</span></td></tr>
+    <tr><td><strong>react</strong></td><td class="num">28</td><td class="num">61</td><td class="num">100</td><td class="num">W13/2026 (Mar)</td><td><span class="pill rank-1">✓ Estável + spike de Mar</span></td></tr>
+    <tr><td><strong>no code</strong></td><td class="num">14</td><td class="num">22</td><td class="num">47</td><td class="num">W14/2026 (Abr)</td><td><span class="pill rank-2">~ A crescer — a subida de Set-Nov 2025 foi real</span></td></tr>
+    <tr><td><strong>claude ai</strong></td><td class="num">3</td><td class="num">2</td><td class="num">5</td><td class="num">W20/2026 (Mai)</td><td><span class="pill warn">⚠ Triplicou de 1 → 5 ao longo do ano, ainda minúsculo</span></td></tr>
+  </table>
+</div>
+
+<!-- EU COMPARISON -->
+<div class="panel">
+  <h2><span class="num">7</span>Benchmark UE — PT vs GB · DE · NL · ES</h2>
+  <p class="note">Os mesmos 5 termos âncora consultados independentemente para cada país. Valores 0-100 relativos dentro da query de cada país. A pergunta interessante: quando é que cada mercado fez PICO em ChatGPT? Essa é a proxy para "onde está cada país na curva de adopção de IA".</p>
+
+  <div class="caveat">
+    <strong>Sobre a comparação entre países:</strong> os valores são relativos dentro da query de cada país. Podemos comparar QUANDO cada mercado faz pico, mas não volumes absolutos. Para tornar a comparação real, a tabela abaixo mostra a semana de pico por país para o termo dominante, ChatGPT.
+  </div>
+
+  <h3>Timing do pico ChatGPT — o relógio de adopção de IA</h3>
+  <table>
+    <tr><th>País</th><th>Semana de pico ChatGPT</th><th>Mês civil</th><th class="num">Meses desde o pico</th><th>Estado actual</th></tr>
+    <tr><td>🇪🇸 Espanha</td><td>W43/2025</td><td>Outubro 2025</td><td class="num">8</td><td><span class="pill flat">Saturado · estável 70-80</span></td></tr>
+    <tr><td>🇬🇧 Reino Unido</td><td>W46/2025</td><td>Novembro 2025</td><td class="num">7</td><td><span class="pill flat">Saturado · estável 80-92</span></td></tr>
+    <tr><td>🇳🇱 Países Baixos</td><td>W49/2025</td><td>Dezembro 2025</td><td class="num">6</td><td><span class="pill flat">Saturado · estável 75-90</span></td></tr>
+    <tr><td>🇵🇹 <strong>Portugal</strong></td><td>W11/2026</td><td>Março 2026</td><td class="num">3</td><td><span class="pill rank-2">Perto do pico · banda 79-98</span></td></tr>
+    <tr><td>🇩🇪 Alemanha</td><td>W24/2026</td><td>Junho 2026 (agora)</td><td class="num">0</td><td><span class="pill rank-1">⭐ A FAZER PICO AGORA · 100</span></td></tr>
+  </table>
+
+  <div class="strategic-take">
+    <h4>⚠ A tua hipótese ("PT 6-12 meses atrasado") — parcialmente validada, parcialmente não</h4>
+    <p><strong>Para IA mainstream de consumo (ChatGPT):</strong> <em>NÃO, PT NÃO está 6-12 meses atrasado.</em> PT fez pico há 3 meses, enquanto a Alemanha está a fazer pico agora. PT está mesmo no meio da curva de adopção UE — ligeiramente atrás de UK/NL/ES mas à frente da DE. <strong>Isto significa que a tese do atraso de adopção de IA não é um preditor fiável para ferramentas de consumo.</strong></p>
+    <p><strong>Para tooling profissional avançado (agentes IA · Claude Code · MCP · Figma+IA):</strong> <em>SIM, PT está atrasado em relação a UK provavelmente 6-12 meses.</em> Ver a secção de queries em ascensão abaixo — UK está a pesquisar fortemente "claude code", "ai agents", "context engineering", "figma mcp" — nada disto regista ainda nos dados PT. <strong>É aqui que PT está genuinamente atrás, e onde o pipeline de produto da EDIT. deve ancorar.</strong></p>
+    <p><strong>Tradução prática:</strong> Não tentes prever a adopção mainstream em PT a partir de dados mainstream do UK (o gap é curto ou inexistente). PREVÊ a adopção profissional/especialista em PT a partir das queries em ascensão do UK (sinal real de 6-12 meses).</p>
+  </div>
+</div>
+
+<!-- UK RISING QUERIES -->
+<div class="panel">
+  <h2><span class="num">8</span>Queries em ascensão GB · DE · NL · ES — "O que lançar em PT em 6-12 meses"</h2>
+  <p class="note">Relatório de rising queries do Google Trends em 4 mercados líderes da UE ao longo de 12 meses. Termos a crescer em interesse de pesquisa absoluto. Onde múltiplos mercados convergem na mesma ferramenta ou metodologia emergente, esse é um sinal de alta confiança para a próxima oportunidade de cohort da EDIT. <em>As queries ES bateram a quota diária do Supermetrics; retry amanhã para cobertura completa.</em></p>
+
+  <h3>🤖 Agentes IA — em ascensão entre mercados</h3>
+  <table>
+    <tr><th>Query</th><th class="num">GB</th><th class="num">DE</th><th class="num">NL</th><th>Sinal</th></tr>
+    <tr><td><strong>claude code</strong></td><td class="num">100</td><td class="num">82.9</td><td class="num">0.1</td><td><span class="pill rank-1">UNIVERSAL #1 — agente de coding por CLI da Anthropic</span></td></tr>
+    <tr><td><strong>openclaw</strong></td><td class="num">96.7</td><td class="num">100</td><td class="num">58.7</td><td><span class="pill rank-1">UNIVERSAL — ferramenta emergente a investigar</span></td></tr>
+    <tr><td><strong>codex / openai codex</strong></td><td class="num">—</td><td class="num">75.3</td><td class="num">—</td><td>Agente de coding da OpenAI</td></tr>
+    <tr><td>openai news</td><td class="num">—</td><td class="num">64.2</td><td class="num">—</td><td>Interesse de notícias/categoria</td></tr>
+    <tr><td><strong>effective context engineering for ai agents</strong></td><td class="num">7.6</td><td class="num">—</td><td class="num">—</td><td><span class="pill rank-2">Profundidade metodológica — ângulo de curso</span></td></tr>
+    <tr><td><strong>mckinsey ai agents</strong></td><td class="num">—</td><td class="num">—</td><td class="num">25.3</td><td><span class="pill rank-2">Sinal de audiência consulting / executiva</span></td></tr>
+    <tr><td><strong>social media for ai agents</strong></td><td class="num">—</td><td class="num">—</td><td class="num">22.3</td><td><span class="pill rank-2">NOVO CASO DE USO — IA a gerir social media</span></td></tr>
+    <tr><td>agents md</td><td class="num">—</td><td class="num">18.5</td><td class="num">—</td><td>Agentes baseados em Markdown</td></tr>
+    <tr><td>hermes ai / hermes agent</td><td class="num">—</td><td class="num">17.2</td><td class="num">6.1</td><td>Ferramenta emergente (cross-market)</td></tr>
+    <tr><td>opencode</td><td class="num">—</td><td class="num">—</td><td class="num">14.6</td><td>Ferramenta de dev emergente</td></tr>
+    <tr><td>microsoft ai agents for beginners</td><td class="num">6.2</td><td class="num">—</td><td class="num">—</td><td>Intro com marca Microsoft</td></tr>
+    <tr><td>claude managed agents</td><td class="num">5.6</td><td class="num">6.7</td><td class="num">—</td><td>Sinal Anthropic cross-market</td></tr>
+    <tr><td>principles of building ai agents</td><td class="num">—</td><td class="num">—</td><td class="num">2.7</td><td><span class="pill rank-2">Título de curso fundacional</span></td></tr>
+    <tr><td>future of work with ai agents</td><td class="num">—</td><td class="num">—</td><td class="num">1.9</td><td>Ângulo editorial/executivo</td></tr>
+    <tr><td>5-day ai agents intensive course with google</td><td class="num">2.1</td><td class="num">—</td><td class="num">—</td><td><span class="pill rank-2">Título de curso concorrente</span></td></tr>
+    <tr><td>autonomous ai agents</td><td class="num">0.08</td><td class="num">—</td><td class="num">—</td><td>Conceito emergente</td></tr>
+    <tr><td>building ai agents</td><td class="num">0.03</td><td class="num">—</td><td class="num">—</td><td>Query fundacional</td></tr>
+  </table>
+
+  <h3>🎨 Figma + Design — em ascensão entre mercados</h3>
+  <table>
+    <tr><th>Query</th><th class="num">GB</th><th class="num">DE</th><th class="num">NL</th><th>Sinal</th></tr>
+    <tr><td><strong>claude code</strong></td><td class="num">4.3</td><td class="num">8.4</td><td class="num">100</td><td><span class="pill rank-1">NL lidera — claude code É o tópico figma em NL!</span></td></tr>
+    <tr><td><strong>figma mcp server</strong></td><td class="num">1.3</td><td class="num">2.5</td><td class="num">86.6</td><td><span class="pill rank-1">UNIVERSAL — MCP server do Figma a explodir</span></td></tr>
+    <tr><td>figma stock price / aktie / news</td><td class="num">100</td><td class="num">~10</td><td class="num">72.0</td><td>Cobertura do evento IPO</td></tr>
+    <tr><td><strong>figma weave</strong></td><td class="num">17.4</td><td class="num">49.3</td><td class="num">23.8</td><td><span class="pill rank-1">UNIVERSAL — novo produto Figma</span></td></tr>
+    <tr><td>figma weavy</td><td class="num">—</td><td class="num">25.6</td><td class="num">14.8</td><td>Variação de figma weave</td></tr>
+    <tr><td><strong>figma mcp claude code</strong></td><td class="num">—</td><td class="num">7.5</td><td class="num">33.1</td><td><span class="pill rank-1">A integração específica é a tendência</span></td></tr>
+    <tr><td><strong>claude design / claude design to figma</strong></td><td class="num">29.4</td><td class="num">4.1+2.2</td><td class="num">22.6+2.4</td><td><span class="pill rank-1">UNIVERSAL — funcionalidade de design do Claude</span></td></tr>
+    <tr><td>figma config 2026</td><td class="num">—</td><td class="num">18.7</td><td class="num">—</td><td>Conferência anual da Figma</td></tr>
+    <tr><td>google stitch / stitch</td><td class="num">13.7</td><td class="num">2.7</td><td class="num">0.7</td><td>IA de design emergente da Google</td></tr>
+    <tr><td>claude figma</td><td class="num">—</td><td class="num">3.8</td><td class="num">—</td><td>Integração directa</td></tr>
+    <tr><td><strong>figma agents / figma agent / figma design agent / figma ai agent</strong></td><td class="num">—</td><td class="num">3.4+1.9+2.3+1.9</td><td class="num">0.6+0.6</td><td><span class="pill rank-2">Agentes IA do Figma emergentes (4 variações)</span></td></tr>
+    <tr><td>figma mcp</td><td class="num">1.1</td><td class="num">3.2</td><td class="num">1.4</td><td>Forma abreviada universal</td></tr>
+    <tr><td>figma ai design</td><td class="num">—</td><td class="num">—</td><td class="num">0.2</td><td>Query fundacional</td></tr>
+    <tr><td>figma check designs</td><td class="num">—</td><td class="num">1.7</td><td class="num">0.5</td><td>Workflow de QA de design</td></tr>
+    <tr><td>adobe stock</td><td class="num">—</td><td class="num">—</td><td class="num">16.1</td><td>Interesse competitivo Adobe</td></tr>
+  </table>
+
+  <h3>💡 ChatGPT — em ascensão entre mercados</h3>
+  <table>
+    <tr><th>Query</th><th class="num">GB</th><th class="num">DE</th><th class="num">NL</th><th>Sinal</th></tr>
+    <tr><td><strong>chatgpt codex</strong></td><td class="num">100</td><td class="num">100</td><td class="num">100</td><td><span class="pill rank-1">UNIVERSAL #1 — agente de coding a emergir nos 3 mercados</span></td></tr>
+    <tr><td>claude oder/vs chatgpt</td><td class="num">11.9</td><td class="num">25.6+12.8</td><td class="num">10.7</td><td><span class="pill rank-2">Comparison shopping — sinal de mercado maduro</span></td></tr>
+    <tr><td><strong>FADIGA DE SUBSCRIÇÕES</strong> (cancel/kündigen/abonnement)</td><td class="num">22.2</td><td class="num">7.7+3.1</td><td class="num">3.6</td><td><span class="pill rank-2">Sinal universal de mercado maduro</span></td></tr>
+    <tr><td>chatgpt plus / pro</td><td class="num">9.6</td><td class="num">6.2+5.1</td><td class="num">7.9+10</td><td>Avaliação de tier</td></tr>
+    <tr><td>chatgpt foto / foto bewerken</td><td class="num">—</td><td class="num">—</td><td class="num">10+3.6</td><td><span class="pill rank-2">NOVO CASO DE USO — edição de fotos com ChatGPT</span></td></tr>
+    <tr><td>chatgpt ads</td><td class="num">8.9</td><td class="num">—</td><td class="num">—</td><td><span class="pill rank-2">Canal pago emergente</span></td></tr>
+    <tr><td>chatgpt app / download</td><td class="num">4.4</td><td class="num">3.1</td><td class="num">4.3+3.6</td><td>Adopção mobile/nativa</td></tr>
+    <tr><td>was kostet chatgpt plus</td><td class="num">—</td><td class="num">4.1</td><td class="num">—</td><td>Pesquisa de preços (DE)</td></tr>
+    <tr><td>dola ai</td><td class="num">51.9</td><td class="num">—</td><td class="num">—</td><td>Ferramenta emergente</td></tr>
+  </table>
+
+  <div class="strategic-take">
+    <h4>🎯 Oportunidades de curso — o que construir, ordenado por força do sinal cross-market</h4>
+
+    <p><strong>1. Bootcamp AI Coding & Agents</strong> — <span class="pill rank-1">Convergência em 3 mercados (GB+DE+NL)</span><br>
+    "claude code" sobe nos 3 mercados · "chatgpt codex" universalmente #1 rising query ChatGPT · "openclaw" sobe nos 3 (investigar que ferramenta é). Mais profundidade metodológica de DE ("context engineering", "claude managed agents", "agents md") e NL ("principles of building ai agents", "mckinsey ai agents"). A Naiara está posicionada. <strong>Título do curso: "Vibe Coding & AI Agents: Claude Code, Codex, e a engenharia de contextos".</strong> Alvo: cohort Jan-Fev 2027 (pico PT Fev-Mar).</p>
+
+    <p><strong>2. Workshop Figma + AI Workflows</strong> — <span class="pill rank-1">Convergência em 3 mercados (GB+DE+NL)</span><br>
+    "figma mcp server", "figma weave", "figma mcp claude code", "claude design", "figma agents" todos a subir nos 3 mercados. NL particularmente forte com "claude code" a aparecer como a #1 rising query do figma (100). DE mostra 4+ variações de figma agent. A Madalena está posicionada. <strong>Título do curso: "Design na Era IA: Figma MCP + Claude Design + Figma Weave".</strong> Alvo: Out-Nov 2026 (pico de outono PT).</p>
+
+    <p><strong>3. AI for Social Media Management</strong> — <span class="pill rank-2">Específico de NL (22.3 em ascensão)</span><br>
+    "social media for ai agents" aparece como rising query forte em NL. Encaixa na track Marketing Digital da EDIT. Casa com a estratégia editorial de IA (automação de newsletter, cadência de conteúdo). <strong>Título do curso: "Social Media com Agentes IA: do calendário ao publish".</strong> Alvo: formato workshop Q4 2026.</p>
+
+    <p><strong>4. Workshop AI Image / Photo Editing</strong> — <span class="pill rank-2">Específico de NL (10 em ascensão)</span><br>
+    "chatgpt foto bewerken" + "chatgpt foto" ambos a subir em NL — um caso de uso ainda não visível nas pesquisas PT. Casa com o curso existente Generative AI Audiovisual / Cinema. <strong>Título do curso: "Edição de Fotografia com IA: ChatGPT + Midjourney + workflow profissional".</strong> Alvo: workshop Q4 2026.</p>
+
+    <p><strong>5. Workshop Marketing na Era das Subscrições</strong> — <span class="pill rank-2">Convergência em 3 mercados (sinal maduro)</span><br>
+    Queries de cancelar subscrição a subir em GB (22.2), DE (7.7+3.1 com "abo kündigen") e NL (3.6 com "abonnement"). Categoria universal de fadiga de SaaS a emergir. Para as tracks Marketing/Product da EDIT. <strong>Título do curso: "Retenção e Churn na economia de subscrições".</strong> Alvo: monitorizar + cohort inicial de 2027.</p>
+
+    <p><strong>6. Workshop Executive AI Strategy ("MBA-lite")</strong> — <span class="pill rank-2">Específico de NL (sinal mckinsey)</span><br>
+    "mckinsey ai agents" + "future of work with ai agents" a subir em NL — interesse claro de C-suite em adopção de IA liderada por frameworks. Pode ser uma oferta B2B / In-Company para a vertical Empresas da EDIT. Alvo: pipeline de vendas corporativas 2027.</p>
+
+    <p><strong>7. Workshop AI Ads</strong> — <span class="pill rank-2">Específico do UK (8.9 em ascensão)</span><br>
+    "chatgpt ads" a subir apenas no UK — canal de paid media emergente. Se a OpenAI abrir publicidade de forma alargada, isto torna-se green-field. Casa com o bootcamp Google Ads + Meta Ads da EDIT. <strong>Posicionar quando ChatGPT Ads abrir a PT.</strong></p>
+
+    <p><strong>Investigar a seguir:</strong> "openclaw" (a subir em 3 mercados, ferramenta desconhecida — pesquisar o que é); "agents md" (DE, possivelmente sistema de agentes baseado em Markdown); "moltbook" (UK, desconhecido); "dola ai" (UK, emergente). Podem ser ferramentas branded ou typos que vale a pena verificar.</p>
+  </div>
+</div>
+
+<!-- VERDICT -->
+<div class="decision">
+  <h2>🎯 Veredicto final sobre "PT 6-12 meses atrasado"</h2>
+  <div class="rule-grid" style="grid-template-columns:repeat(3, 1fr);">
+    <div class="rule">
+      <div class="metric">IA de consumo (ChatGPT/Claude)</div>
+      <div class="now">Hipótese: PT 6-12mo atrás do UK</div>
+      <div class="target">REJEITADA</div>
+      <div class="metric" style="margin-top:4px;">PT fez pico há 3mo · UK fez pico há 7mo · DE a fazer pico agora. PT está no meio do pelotão, não atrasado.</div>
+    </div>
+    <div class="rule">
+      <div class="metric">IA especialista (Agentes · MCP · Code)</div>
+      <div class="now">Hipótese: PT 6-12mo atrás do UK</div>
+      <div class="target">CONFIRMADA</div>
+      <div class="metric" style="margin-top:4px;">As rising queries do UK revelam um ecossistema emergente vibrante (claude code, ai agents, figma MCP) — nada visível ainda nos dados PT. Gap ~6-12mo.</div>
+    </div>
+    <div class="rule">
+      <div class="metric">Design + tooling IA</div>
+      <div class="now">Hipótese: PT 6-12mo atrás do UK</div>
+      <div class="target">CONFIRMADA</div>
+      <div class="metric" style="margin-top:4px;">figma mcp · claude design · google stitch todos em ascensão no UK. As pesquisas PT ainda no figma básico. Grande janela de oportunidade.</div>
+    </div>
+  </div>
+  <div class="verdict">
+    <strong>Tese refinada:</strong> Não prevejas a adopção *mainstream* de IA em PT a partir de dados mainstream do UK (o atraso é curto ou zero). PREVÊ a adopção *especialista/profissional* de tooling IA em PT a partir das rising queries do UK — há uma janela real de 6-12 meses. <strong>É aqui que a EDIT. deve ancorar o seu roadmap de produto para 2026 H2 + 2027 H1.</strong> Apostas concretas: Bootcamp AI Agents (Q1 2027), Workshop Figma+IA (Set-Nov 2026), Workshop ChatGPT Codex (Q4 2026).
+  </div>
+</div>
+
+<footer>
+  Construído a 2026-06-10 · v2 extendida · Daniel Devera (Founder) · Dados: Google Trends via Supermetrics MCP · Primário: PT · Benchmarks: GB · DE · NL · ES + rising queries UK · Janela: 12 meses · Formato de dashboard bloqueado por <code>feedback_dashboard_format_locked.md</code>
+</footer>
+
+<script>
+// ============================================================== //
+//                  v2 EXTENSION CHARTS                            //
+// ============================================================== //
+
+const weekLabels12mo = ['Jun25','Jul25','Ago25','Set25','Out25','Nov25','Dez25','Jan26','Fev26','Mar26','Abr26','Mai26','Jun26'];
+
+// Aggregating weeks to monthly buckets for cleaner readability
+function weeklyToMonthly(weeks52) {
+  const buckets = [];
+  for (let i = 0; i < 13; i++) {
+    const slice = weeks52.slice(i*4, i*4+4);
+    const valid = slice.filter(v => v !== null && v !== undefined);
+    buckets.push(valid.length ? Math.round(valid.reduce((a,b)=>a+b,0)/valid.length) : null);
+  }
+  return buckets;
+}
+
+// PT 12-month — 5 anchor terms weekly
+const pt12 = {
+  chatgpt: [82,78,83,76,70,68,73,66,64,58,59,63,68,73,82,82,75,82,77,79,76,76,79,83,90,91,93,90,63,64,92,99,92,88,84,84,72,83,98,100,98,99,78,77,86,81,70,81,92,91,79,68,69],
+  figma: [60,70,58,60,65,64,68,94,67,47,56,50,62,51,61,70,88,79,88,87,79,91,94,94,79,77,74,67,36,39,70,67,84,67,66,63,65,84,100,91,97,88,71,70,89,75,67,74,64,77,61,62,47],
+  python: [40,38,37,39,40,39,39,36,34,33,31,34,37,38,45,46,51,54,53,54,56,63,63,58,55,57,54,49,34,34,48,45,66,66,55,100,61,59,55,51,54,81,69,65,50,43,41,44,43,40,33,26,27],
+  'google ads': [72,64,78,81,81,74,68,58,64,63,56,68,73,66,72,74,73,69,82,63,80,100,96,83,85,72,83,84,52,46,58,85,95,84,85,66,61,68,92,74,80,88,97,83,85,83,77,73,71,87,68,59,60],
+  react: [55,55,63,60,64,62,61,61,63,50,50,53,58,58,61,61,61,63,60,59,59,71,64,60,67,65,67,64,40,48,50,52,84,78,55,75,65,75,66,66,65,100,84,50,51,37,53,48,52,41,43,34,31]
+};
+
+new Chart(document.getElementById('chartPt12mo'), {
+  type: 'line',
+  data: {
+    labels: weekLabels12mo,
+    datasets: [
+      { label:'chatgpt', data:weeklyToMonthly(pt12.chatgpt), borderColor:'#0a0a0a', backgroundColor:'#0a0a0a', borderWidth:2.5, spanGaps:true },
+      { label:'figma', data:weeklyToMonthly(pt12.figma), borderColor:'#60c5b3', backgroundColor:'#60c5b3', borderWidth:2.5, spanGaps:true },
+      { label:'python', data:weeklyToMonthly(pt12.python), borderColor:'#ffdd06', backgroundColor:'#ffdd06', borderWidth:2.5, spanGaps:true },
+      { label:'google ads', data:weeklyToMonthly(pt12['google ads']), borderColor:'#f5366b', backgroundColor:'#f5366b', borderWidth:2.5, spanGaps:true },
+      { label:'react', data:weeklyToMonthly(pt12.react), borderColor:'#DF086F', backgroundColor:'#DF086F', borderWidth:2.5, spanGaps:true }
+    ]
+  },
+  options: {
+    plugins: {
+      legend: { display: true, position: 'bottom', labels: { font: { size: 11 }, boxWidth: 12 } },
+      datalabels: { display: false },
+      tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.raw } }
+    },
+    scales: {
+      x: { ticks: { font: { size: 10 } } },
+      y: { beginAtZero: true, max: 100, title: { display: true, text: 'Interesse (média semanal)', font: { size: 10 } } }
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { intersect: false, mode: 'index' },
+    elements: { point: { radius: 2 }, line: { tension: 0.35 } }
+  }
+});
+
+// Common chart config (for v1 panel 3 charts)
+const chartCommon = {
+  plugins: {
+    legend: { display: true, position: 'bottom', labels: { font: { size: 10 }, boxWidth: 12 } },
+    datalabels: { display: false },
+    tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.raw } }
+  },
+  scales: {
+    x: { ticks: { font: { size: 9 }, maxRotation: 60, minRotation: 60 } },
+    y: { beginAtZero: true, max: 100, title: { display: true, text: 'Interesse', font: { size: 10 } } }
+  },
+  responsive: true,
+  maintainAspectRatio: false,
+  interaction: { intersect: false, mode: 'index' },
+  elements: { point: { radius: 0 }, line: { tension: 0.3 } }
+};
+
+// Date labels (every 5th day to avoid clutter)
+const fullDates = [];
+const start = new Date('2026-03-12T00:00:00');
+for (let i = 0; i < 91; i++) {
+  const d = new Date(start); d.setDate(start.getDate() + i);
+  fullDates.push(d.toISOString().slice(5, 10));
+}
+
+// --- Marketing Digital ---
+const mktData = {
+  'google ads': [53,null,34,null,53,41,68,50,45,null,null,63,33,52,41,40,72,36,100,71,54,41,null,null,null,80,62,50,43,null,34,41,59,68,59,37,66,null,null,63,49,40,69,50,38,null,78,52,56,56,42,36,null,44,54,46,52,56,35,null,47,33,45,61,32,null,41,52,76,47,49,45,57,39,44,36,38,44,31,23,20,43,45,37,27,33,24,25,35,46,31],
+  'marketing digital': [58,50,null,null,49,38,57,42,41,35,null,47,33,68,42,null,38,48,47,55,47,44,null,null,null,34,52,52,51,null,null,39,null,53,58,46,59,null,51,53,47,40,36,34,null,null,43,56,47,31,null,32,null,null,41,67,48,null,38,41,32,55,64,42,31,null,null,41,33,null,31,null,null,35,34,61,26,29,24,19,16,30,25,25,22,26,17,18,26,27,27],
+  'meta ads': [38,null,null,null,30,null,null,null,null,null,null,36,null,null,null,null,44,null,null,null,null,null,null,null,null,null,null,null,null,null,51,null,null,null,null,32,null,null,null,37,null,null,null,null,null,47,38,null,null,null,null,null,null,null,41,31,30,30,null,null,null,null,33,33,null,null,null,40,null,30,36,null,null,null,40,null,16,16,14,7,9,14,16,16,11,16,12,10,16,19,20]
+};
+new Chart(document.getElementById('chartMkt'), {
+  type: 'line',
+  data: {
+    labels: fullDates,
+    datasets: [
+      { label:'google ads', data:mktData['google ads'], borderColor:'#f5366b', backgroundColor:'#f5366b', spanGaps:true, borderWidth:2 },
+      { label:'marketing digital', data:mktData['marketing digital'], borderColor:'#60c5b3', backgroundColor:'#60c5b3', spanGaps:true, borderWidth:2 },
+      { label:'meta ads', data:mktData['meta ads'], borderColor:'#ffdd06', backgroundColor:'#ffdd06', spanGaps:true, borderWidth:2 }
+    ]
+  },
+  options: chartCommon
+});
+
+// --- UX/UI ---
+const uxData = {
+  'figma': [100,76,47,55,81,76,90,91,80,49,38,84,93,62,80,71,null,42,48,72,80,42,51,49,31,43,60,82,68,60,null,40,87,63,71,85,76,45,40,81,82,71,76,37,null,34,69,68,67,54,39,39,27,72,71,58,69,57,40,null,51,53,60,61,46,null,31,62,56,78,52,59,27,29,44,51,58,57,50,24,20,55,50,45,32,40,21,23,41,43,26],
+  'ux design': [29,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,3,3,3,null,3,3,3,2,2,null,null,2,3,null],
+  'design digital': [null,null,null,null,null,null,null,null,24,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,25,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,25,null,null,null,null,null,null,3,4,3,2,6,3,3,3,2,3,3,null,3,4,null]
+};
+new Chart(document.getElementById('chartUx'), {
+  type: 'line',
+  data: {
+    labels: fullDates,
+    datasets: [
+      { label:'figma', data:uxData['figma'], borderColor:'#60c5b3', backgroundColor:'#60c5b3', spanGaps:true, borderWidth:2 },
+      { label:'ux design', data:uxData['ux design'], borderColor:'#f5366b', backgroundColor:'#f5366b', spanGaps:true, borderWidth:2 },
+      { label:'design digital', data:uxData['design digital'], borderColor:'#ffdd06', backgroundColor:'#ffdd06', spanGaps:true, borderWidth:2 }
+    ]
+  },
+  options: chartCommon
+});
+
+// --- Data Science ---
+const dataData = {
+  'python': [19,23,16,12,23,21,28,27,23,17,16,29,46,20,25,53,40,37,37,31,26,17,10,32,100,15,20,18,22,14,12,32,21,20,21,20,22,16,11,20,16,19,19,22,12,11,19,19,24,17,14,11,11,16,18,20,21,21,16,12,20,18,22,20,15,8,10,15,15,21,19,16,12,11,13,16,13,14,12,7,7,13,13,11,10,10,8,7,12,13,8],
+  'power bi': [6,null,null,3,5,4,7,8,6,null,null,5,6,5,10,6,4,7,6,3,6,3,null,null,null,3,4,7,5,null,null,3,7,6,6,7,3,null,null,5,7,6,7,3,null,4,4,4,6,5,null,null,null,4,5,7,6,6,null,null,4,6,6,6,3,null,null,4,5,5,4,null,null,5,5,5,4,4,3,1,1,4,4,4,2,3,1,1,3,3,2],
+  'machine learning': [6,5,5,null,3,3,6,4,5,5,4,14,14,4,6,13,10,9,9,8,6,3,null,5,6,3,4,null,null,3,3,3,3,3,3,3,3,null,3,4,3,4,4,5,5,3,4,3,4,5,6,null,4,3,5,5,3,null,null,null,4,5,4,6,5,null,null,4,4,4,3,null,3,4,3,5,2,2,2,1,2,2,2,1,2,1,1,2,2,1,1]
+};
+new Chart(document.getElementById('chartData'), {
+  type: 'line',
+  data: {
+    labels: fullDates,
+    datasets: [
+      { label:'python', data:dataData['python'], borderColor:'#ffdd06', backgroundColor:'#ffdd06', spanGaps:true, borderWidth:2 },
+      { label:'power bi', data:dataData['power bi'], borderColor:'#f5366b', backgroundColor:'#f5366b', spanGaps:true, borderWidth:2 },
+      { label:'machine learning', data:dataData['machine learning'], borderColor:'#60c5b3', backgroundColor:'#60c5b3', spanGaps:true, borderWidth:2 }
+    ]
+  },
+  options: chartCommon
+});
+
+// --- PPM ---
+const ppmData = {
+  'project management': [null,66,null,null,80,55,null,50,null,58,null,89,61,null,null,null,83,100,81,null,null,null,null,59,null,null,null,null,null,null,null,null,null,null,45,47,null,null,null,72,null,null,55,null,55,null,null,null,51,null,null,null,55,null,null,63,71,50,55,null,64,null,null,null,null,null,null,null,null,null,null,null,null,null,null,13,24,15,11,17,21,15,15,14,12,5,8,16,16,15],
+  'agile': [50,null,null,null,null,56,null,81,null,null,null,97,64,55,56,60,94,59,79,52,72,null,null,null,null,null,54,null,null,null,null,null,55,48,59,null,null,null,null,null,null,null,null,null,null,null,null,null,null,50,null,null,null,null,null,null,null,null,null,null,50,null,null,null,null,null,null,null,null,null,null,null,null,null,27,25,20,12,17,30,22,18,12,15,11,11,18,17,null],
+  'scrum': [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,45,null,null,null,null,null,null,null,null,47,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,70,null,null,null,null,null,null,null,null,49,null,null,null,null,null,null,null,null,null,null,null,18,14,17,6,5,13,18,15,9,9,6,7,14,10,null]
+};
+new Chart(document.getElementById('chartPpm'), {
+  type: 'line',
+  data: {
+    labels: fullDates,
+    datasets: [
+      { label:'project management', data:ppmData['project management'], borderColor:'#ec8172', backgroundColor:'#ec8172', spanGaps:true, borderWidth:2 },
+      { label:'agile', data:ppmData['agile'], borderColor:'#f5366b', backgroundColor:'#f5366b', spanGaps:true, borderWidth:2 },
+      { label:'scrum', data:ppmData['scrum'], borderColor:'#60c5b3', backgroundColor:'#60c5b3', spanGaps:true, borderWidth:2 }
+    ]
+  },
+  options: chartCommon
+});
+
+// --- Front-End ---
+const feData = {
+  'react': [46,39,22,23,41,33,39,36,35,40,24,64,69,35,33,90,88,59,59,79,54,28,26,38,27,24,25,23,31,31,26,null,31,36,27,28,40,38,27,23,18,17,18,30,null,15,30,37,34,41,37,14,26,24,33,35,27,29,24,24,28,32,29,36,28,null,24,22,22,30,28,18,null,30,31,29,21,23,19,14,15,24,21,19,16,17,13,13,18,21,12],
+  'javascript': [22,20,16,null,25,31,15,36,23,null,19,24,41,22,33,44,48,47,27,45,34,null,null,30,100,16,12,14,13,20,null,null,23,27,19,13,22,null,18,null,28,17,27,null,null,14,17,13,18,16,21,null,null,19,22,22,18,25,null,null,22,26,29,23,14,null,null,24,13,19,22,20,null,16,17,17,13,11,12,7,10,14,12,10,7,11,8,8,11,12,5],
+  'no code': [18,17,null,null,15,null,19,16,19,16,null,23,16,27,13,27,40,47,48,23,24,null,17,22,16,18,21,13,null,null,null,18,null,13,14,13,20,null,null,26,14,14,20,15,null,19,17,17,19,18,19,16,null,15,31,21,21,28,18,17,24,18,25,12,null,16,null,14,16,15,21,null,23,15,21,21,10,11,11,8,10,9,10,8,9,8,9,null,8,8,6]
+};
+new Chart(document.getElementById('chartFe'), {
+  type: 'line',
+  data: {
+    labels: fullDates,
+    datasets: [
+      { label:'react', data:feData['react'], borderColor:'#DF086F', backgroundColor:'#DF086F', spanGaps:true, borderWidth:2 },
+      { label:'javascript', data:feData['javascript'], borderColor:'#ffdd06', backgroundColor:'#ffdd06', spanGaps:true, borderWidth:2 },
+      { label:'no code', data:feData['no code'], borderColor:'#60c5b3', backgroundColor:'#60c5b3', spanGaps:true, borderWidth:2 }
+    ]
+  },
+  options: chartCommon
+});
+
+// --- AI ---
+const aiData = {
+  'chatgpt': [87,86,58,66,92,84,87,86,78,56,62,81,92,97,100,80,55,57,81,77,79,70,50,46,49,63,72,74,73,73,50,58,82,83,90,73,66,43,44,83,71,72,70,65,40,50,72,73,72,64,39,39,48,67,75,73,78,75,55,63,87,85,86,82,77,50,61,88,86,86,76,69,48,49,78,78,78,71,66,42,48,73,69,62,49,63,41,49,70,65,44],
+  'claude ai': [3,3,2,2,4,3,3,3,3,2,3,3,4,4,3,4,3,3,3,3,4,3,3,1,3,3,3,3,4,3,3,3,4,4,4,4,4,3,3,4,5,4,3,4,2,3,4,4,3,4,2,2,3,4,4,4,4,3,3,3,5,4,4,4,4,3,4,5,3,3,4,4,3,3,4,3,3,4,3,2,3,4,4,3,3,3,2,3,4,3,3],
+  'inteligencia artificial': [1,null,null,null,1,1,1,1,1,null,null,1,null,1,1,1,1,null,null,null,1,null,null,null,null,null,null,1,null,null,1,null,1,null,1,1,1,null,null,null,1,1,1,1,1,null,1,1,1,1,null,null,null,1,null,1,1,1,null,1,1,1,1,1,1,null,null,null,null,1,1,1,null,null,1,1,1,1,1,null,null,1,1,1,1,1,null,1,1,1,1]
+};
+new Chart(document.getElementById('chartAi'), {
+  type: 'line',
+  data: {
+    labels: fullDates,
+    datasets: [
+      { label:'chatgpt', data:aiData['chatgpt'], borderColor:'#0a0a0a', backgroundColor:'#0a0a0a', spanGaps:true, borderWidth:2 },
+      { label:'claude ai', data:aiData['claude ai'], borderColor:'#f5366b', backgroundColor:'#f5366b', spanGaps:true, borderWidth:2 },
+      { label:'inteligencia artificial', data:aiData['inteligencia artificial'], borderColor:'#60c5b3', backgroundColor:'#60c5b3', spanGaps:true, borderWidth:2 }
+    ]
+  },
+  options: chartCommon
+});
+</script>
+
+</body>
+</html>

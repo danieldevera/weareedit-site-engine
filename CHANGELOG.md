@@ -1,4 +1,10 @@
 # Changelog
+## v1.5.388 — 2026-06-11 (Internal Marketing Documents: add PT translation of Education Foresight strategy)
+- Added `education-foresight-strategy-2026-06-10-pt.html` — full PT-PT translation of the strategy doc. Same data, same charts, prose translated.
+- Updated EN file title + H1 to include `· EN ·` marker so the two versions are distinguishable in the index. Both now show as paired siblings.
+- Translation: 60,081 chars (3% longer than EN, expected drift). All numeric data + Chart.js code preserved verbatim.
+- Library now contains 3 docs (IG playbook + EN strategy + PT strategy).
+
 ## v1.5.387 — 2026-06-11 (Internal Marketing Documents: add Education Foresight & Growth Strategy doc)
 - Added `includes/templates/internal-docs/education-foresight-strategy-2026-06-10.html` — the EDIT. Education Foresight & Growth Strategy report built 2026-06-10. Appears in the index at `/internal-marketing-documents/` automatically.
 - Doc covers: course-topic trends, funnel data, LLM citation baseline + dominance roadmap. Strategic snapshot for the team to align on the "why" behind editorial + Google Ads investment.
