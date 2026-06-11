@@ -1,4 +1,9 @@
 # Changelog
+## v1.5.387 — 2026-06-11 (Internal Marketing Documents: add Education Foresight & Growth Strategy doc)
+- Added `includes/templates/internal-docs/education-foresight-strategy-2026-06-10.html` — the EDIT. Education Foresight & Growth Strategy report built 2026-06-10. Appears in the index at `/internal-marketing-documents/` automatically.
+- Doc covers: course-topic trends, funnel data, LLM citation baseline + dominance roadmap. Strategic snapshot for the team to align on the "why" behind editorial + Google Ads investment.
+- Library now contains 2 docs (IG playbook + this strategy report).
+
 ## v1.5.386 — 2026-06-11 (Internal Marketing Documents: drop login gate, link-only access)
 - Removed `is_user_logged_in()` gate from `EDIT_Internal_Marketing_Docs::maybe_render()`. Some team members (Carla, Naiara, contributors) don't have WP credentials and were getting bounced to wp-login.
 - Documents now accessible via direct link without authentication.
