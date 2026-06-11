@@ -1,4 +1,20 @@
 # Changelog
+## v1.5.404 — 2026-06-12 (Pillar hero replicates homepage structure + video bg, drops Cheque Formação)
+- **Hero restructured to mirror homepage hero** (per `project_hp_hero_locked`):
+  - Video background: `/wp-content/uploads/2026/03/waves-sequence-compressed.mp4` (autoplay, muted, loop, playsinline, 0.7 opacity over a dark veil for legibility).
+  - DGERT lockup moved to TOP of the hero (subtle no-border variant — homepage style).
+  - Eyebrow dropped (header sits inside the video).
+  - H1 enlarged to clamp(64px, 11vw, 148px) with -.04em tracking, pink dot after "Marketing Digital", teal dot after "EDIT". Matches the homepage Future-Proof. Transformation. dot pattern.
+  - Lede colour changed to brand yellow (clamp 20-26px). Tighter line-height. Up to 980px width.
+  - CTA simplified: single yellow primary button + inline `★ 4.1 / 67 reviews no Google` rating link (replaces the 4-pill bar + ghost button).
+  - Removed the pill bar (DGERT pill + reviews pill + 600+ alumni pill + Lisboa Porto Online pill) — info redistributed into the lede + the rating link + the DGERT lockup.
+- **Cheque Formação removed** from pillar body copy (per the program sunset Jun 30, 2026):
+  - Hero lede: `...Cheque Formação + Digital elegível.` → `...Programas SIFIDE-elegíveis.`
+  - "Porquê EDIT." bullet: `SIFIDE, POPH, e Cheque Formação + Digital` → `SIFIDE (crédito fiscal até 35% sobre o investimento em formação)`
+  - Intro CTA lead: `...Todos elegíveis para Cheque Formação + Digital.` → `...Todos elegíveis para SIFIDE.`
+  - FAQ #3 reframed: `Posso usar o Cheque Formação + Digital?` → `Que opções de financiamento existem para a formação?` with SIFIDE-led answer.
+  - Rank Math description updated: SIFIDE-elegíveis (not Cheque Formação) + adds employer-name social proof (Farfetch, Sonae, NOS, EDP).
+
 ## v1.5.403 — 2026-06-11 (DGERT lockup in hero + mid-page banner)
 - Hero: small DGERT lockup added below the CTAs — logo + "Entidade Formadora Certificada" label + arrow link to the DGERT entidades certificadas portal.
 - Mid-page band: full-width DGERT banner inserted between the catalog and the tutors section. Logo + "DGERT nº 18391" eyebrow + "Entidade Formadora Certificada" title + SIFIDE-elegível sub-copy + arrow link to DGERT portal.

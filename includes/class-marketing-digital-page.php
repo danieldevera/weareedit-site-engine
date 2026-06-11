@@ -91,10 +91,10 @@ class EDIT_Marketing_Digital_Page {
             ],
             [
                 'title' => 'Porquê a EDIT.',
-                'body'  => '<ul><li><strong>DGERT-certificada (nº 18391)</strong> — todas as formações elegíveis para SIFIDE, POPH, e Cheque Formação + Digital.</li><li><strong>Tutores em activo</strong> — paid media managers e marketing leads nas empresas que recrutam talento digital em Portugal, não académicos.</li><li><strong>Cases reais sobre marcas reais</strong> — trabalhamos com briefs e dados de clientes consentidos, não exemplos fabricados.</li><li><strong>4.1 ★ / 67 reviews no Google</strong> — feedback verificável dos alumni de Lisboa e Porto.</li><li><strong>Disruptive Jobs</strong> — agência de recrutamento própria da EDIT., dedicada a ligar alunos a marcas. Mais do que formação: um pipeline de carreira.</li></ul>',
+                'body'  => '<ul><li><strong>DGERT-certificada (nº 18391)</strong> — todas as formações elegíveis para SIFIDE (crédito fiscal até 35% sobre o investimento em formação).</li><li><strong>Tutores em activo</strong> — paid media managers e marketing leads nas empresas que recrutam talento digital em Portugal, não académicos.</li><li><strong>Cases reais sobre marcas reais</strong> — trabalhamos com briefs e dados de clientes consentidos, não exemplos fabricados.</li><li><strong>4.1 ★ / 67 reviews no Google</strong> — feedback verificável dos alumni de Lisboa e Porto.</li><li><strong>Disruptive Jobs</strong> — agência de recrutamento própria da EDIT., dedicada a ligar alunos a marcas. Mais do que formação: um pipeline de carreira.</li></ul>',
             ],
         ],
-        'cta_lead' => 'Abaixo estão os 16 programas activos em Marketing Digital — Bootcamps intensivos para career-changers, Cursos completos para especialização profunda, e Workshops curtos para upskilling pontual. Todos elegíveis para Cheque Formação + Digital.',
+        'cta_lead' => 'Abaixo estão os 16 programas activos em Marketing Digital — Bootcamps intensivos para career-changers, Cursos completos para especialização profunda, e Workshops curtos para upskilling pontual. Todos elegíveis para SIFIDE.',
     ];
 
     /**
@@ -112,8 +112,8 @@ class EDIT_Marketing_Digital_Page {
             'a' => 'Bootcamps duram entre 8 e 12 semanas em formato intensivo. Cursos completos têm 60 a 120 horas distribuídas por 3 a 4 meses em regime pós-laboral. Workshops são módulos curtos de 6 a 16 horas, geralmente em fim-de-semana ou pós-laboral.',
         ],
         [
-            'q' => 'Posso usar o Cheque Formação + Digital?',
-            'a' => 'Sim, todos os cursos de Marketing Digital da EDIT. são elegíveis ao Cheque Formação + Digital até <strong>30 de Junho de 2026</strong>. A EDIT. é entidade formadora certificada pela DGERT (nº 18391). Após essa data, aguardam-se novidades sobre o programa de substituição.',
+            'q' => 'Que opções de financiamento existem para a formação?',
+            'a' => 'A EDIT. é entidade formadora certificada pela DGERT (nº 18391), o que torna todas as formações elegíveis ao <strong>SIFIDE</strong> — crédito fiscal até 35% sobre o investimento em formação para empresas. Para particulares, existem opções de pagamento faseado (até 12 prestações sem juros) e descontos para alumni e early-birds. O Cheque Formação + Digital esteve em vigor até 30 de Junho de 2026; aguardam-se novidades sobre o programa de substituição.',
         ],
         [
             'q' => 'A EDIT. ajuda na colocação profissional?',
@@ -193,7 +193,7 @@ class EDIT_Marketing_Digital_Page {
 
     private static function set_rank_math_meta( int $page_id ): void {
         update_post_meta( $page_id, 'rank_math_title',       'Curso Marketing Digital Lisboa & Porto | EDIT. — 16 Programas DGERT' );
-        update_post_meta( $page_id, 'rank_math_description', '16 formações em Marketing Digital, DGERT certificadas, com Cheque Formação + Digital. Bootcamps, cursos e workshops em Lisboa, Porto e online. 600+ alumni colocados.' );
+        update_post_meta( $page_id, 'rank_math_description', '16 formações em Marketing Digital, DGERT certificadas, SIFIDE-elegíveis. Bootcamps, cursos e workshops em Lisboa, Porto e online. 600+ alumni colocados em Farfetch, Sonae, NOS, EDP.' );
         update_post_meta( $page_id, 'rank_math_focus_keyword', 'curso marketing digital' );
         update_post_meta( $page_id, 'rank_math_robots',      [ 'index', 'follow' ] );
     }
@@ -267,26 +267,29 @@ class EDIT_Marketing_Digital_Page {
         ob_start();
         ?>
         <section class="md-pillar">
-            <div class="md-hero">
+            <div class="md-hero md-hero--video">
+                <video class="md-hero__video" autoplay muted loop playsinline aria-hidden="true">
+                    <source src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/03/waves-sequence-compressed.mp4' ) ); ?>" type="video/mp4">
+                </video>
+                <div class="md-hero__veil" aria-hidden="true"></div>
                 <div class="md-hero__inner">
-                    <p class="md-hero__eyebrow">FORMAÇÃO ESPECIALIZADA</p>
-                    <h1 class="md-hero__title">Marketing Digital<br><span>na EDIT.</span></h1>
-                    <p class="md-hero__lede">16 formações DGERT certificadas em Lisboa, Porto e online. Bootcamps, cursos e workshops desenhados com marcas que recrutam talento digital. Cheque Formação + Digital elegível.</p>
-                    <div class="md-hero__bar">
-                        <span class="md-pill">DGERT nº 18391</span>
-                        <span class="md-pill">★ 4.1 / 67 reviews Google</span>
-                        <span class="md-pill">600+ alumni colocados</span>
-                        <span class="md-pill">Lisboa · Porto · Online</span>
-                    </div>
-                    <div class="md-hero__cta">
-                        <a class="md-btn md-btn--primary" href="#catalogo">Ver os 16 cursos</a>
-                        <button type="button" class="md-btn md-btn--ghost swipe-cta" data-contact="true"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Falar com um consultor</span></button>
-                    </div>
-                    <a class="md-dgert" href="https://www.dgert.gov.pt/entidades-formadoras-certificadas" target="_blank" rel="noopener">
+                    <a class="md-dgert md-dgert--hero-top" href="https://www.dgert.gov.pt/entidades-formadoras-certificadas" target="_blank" rel="noopener">
                         <img src="<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/dgert-entidade-formadora-branco.png' ); ?>" alt="DGERT — Entidade Formadora Certificada nº 18391" width="44" height="44">
                         <span class="md-dgert__text">Entidade Formadora Certificada</span>
                         <span class="md-dgert__arrow" aria-hidden="true">↗</span>
                     </a>
+                    <h1 class="md-hero__title md-hero__title--xl">Marketing Digital<span class="md-dot md-dot--pink">.</span><br>na&nbsp;EDIT<span class="md-dot md-dot--teal">.</span></h1>
+                    <p class="md-hero__lede md-hero__lede--yellow">16 formações DGERT-certificadas em Lisboa, Porto e online. Bootcamps, cursos e workshops desenhados com marcas que recrutam talento digital em Portugal. Programas SIFIDE-elegíveis.</p>
+                    <div class="md-hero__cta">
+                        <a class="md-btn md-btn--primary md-btn--lg" href="#catalogo">Ver os 16 cursos</a>
+                        <a class="md-hero__rating" href="https://weareedit.io/avaliacoes-google/" rel="noopener">
+                            <span class="md-hero__rating-star">★</span>
+                            <strong>4.1</strong>
+                            <span class="md-hero__rating-sep">/</span>
+                            <span class="md-hero__rating-text">67 reviews no</span>
+                            <img class="md-hero__rating-logo" src="<?php echo esc_url( home_url( '/wp-content/uploads/2024/04/google-logo.png' ) ); ?>" alt="Google" width="58" height="20" onerror="this.style.display='none'">
+                        </a>
+                    </div>
                 </div>
             </div>
 
