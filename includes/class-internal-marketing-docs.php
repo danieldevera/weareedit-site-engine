@@ -26,7 +26,7 @@ class EDIT_Internal_Marketing_Docs {
     const QUERY_VAR    = 'edit_imd_doc';
     const INDEX_TOKEN  = '__index__';
     const DOCS_DIR     = 'includes/templates/internal-docs/';
-    const FLUSH_FLAG   = 'edit_imd_rewrites_flushed_v1';
+    const FLUSH_FLAG   = 'edit_imd_rewrites_flushed_v2';
 
     public static function init() {
         add_action( 'init',              [ __CLASS__, 'register_rewrites' ] );

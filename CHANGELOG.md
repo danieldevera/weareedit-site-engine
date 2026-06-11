@@ -1,4 +1,8 @@
 # Changelog
+## v1.5.407 — 2026-06-12 (Fix: /internal-marketing-documents/ 404 — bump rewrite flush flag)
+- `/internal-marketing-documents/` started returning 404 after the v1.5.402 deactivate/reactivate cycle reset WordPress's rewrite rules. Our flush flag (`edit_imd_rewrites_flushed_v1`) was still set, so `EDIT_Internal_Marketing_Docs::maybe_flush_rewrites()` thought it had already done the work and skipped re-registration.
+- Bumped flag to `_v2` so the rules get re-flushed on next admin page load. Routes will resolve again immediately after this update.
+
 ## v1.5.406 — 2026-06-12 (Pillar H1: "na EDIT" → "Inteligência Artificial" — signals IA as transversal layer)
 - H1 line 2 changed from "na EDIT." to "Inteligência Artificial." — every EDIT. pillar now signals the pillar topic + IA transversal positioning. Marketing Digital + IA. Data Science + IA. UX/UI + IA. The IA layer is the through-line across all 5 verticals.
 - Pattern to apply to the other 4 pillars when they get the homepage-style hero treatment.
