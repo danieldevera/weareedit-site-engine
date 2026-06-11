@@ -1,4 +1,10 @@
 # Changelog
+## v1.5.399 — 2026-06-11 (Empresas LinkedIn brief: drop Cheque Formação — program sunsets Jun 30)
+- Cheque Formação + Digital program sunsets Jun 30, 2026 (~19 days). Brief was over-weighting it — the 100 Sep peak won't repeat in 2026 once the program is gone. Removed from H1, findings table flagged with sunset warning, Angle B and Angle C ad copy rewritten to drop the program mention, B2C long-tail keyword swapped from "academia digital cheque formação" to DGERT/SIFIDE variants, September seasonality narrative reframed as "uncertain post-sunset".
+- **New optimal H1:** `"Formação ChatGPT para Empresas. DGERT-certificada. SIFIDE-elegível."` (was: "...Cheque Formação elegível."). SIFIDE replaces Cheque Formação as the surviving financial-trigger anchor.
+- Added a candid note inside the strategic implication block explaining the "formação digital para empresas" zero-volume reading: Google Trends has a detection threshold (~1-5 searches/week minimum) below which terms show null even when there ARE real searches. The verbatim phrase isn't dominant, but the underlying intent was being carried in the data by adjacent terms (Cheque Formação as program brand, formação ChatGPT, DGERT). With Cheque Formação sunsetting, that proxy signal disappears — confirming why Cheque Formação shouldn't anchor the campaign.
+- Chart label updated: "cheque formação (sunset Jun 30 2026)" so anyone reading the chart understands the trend won't repeat.
+
 ## v1.5.398 — 2026-06-11 (Pillar intro: editorial 2-col header — eyebrow + h2 left / lead body right)
 - Refactored `.md-intro` section header to use a 2-column editorial layout: eyebrow + H2 title in the left column, lead paragraph in the right column. Matches the canonical EDIT. section-header pattern (per Daniel's brand reference screenshot 2026-06-11).
 - CSS: 1fr / 1.4fr grid, 80px gap, 1280px container. Mobile falls back to single column with 32px gap.
