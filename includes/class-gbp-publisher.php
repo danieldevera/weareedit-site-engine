@@ -72,7 +72,11 @@ class EDIT_GBP_Publisher {
     }
 
     private static function redirect_uri(): string {
-        return admin_url( 'admin.php?page=edit-gbp-publisher&action=oauth-callback' );
+        // NOTE: 'action' is a reserved Google OAuth param — Google rejects any
+        // redirect_uri containing 'action=' with 'invalid_request'. Using
+        // 'gbp_callback=1' instead. If you change this, also update the
+        // Authorised redirect URI in Google Cloud Console.
+        return admin_url( 'admin.php?page=edit-gbp-publisher&gbp_callback=1' );
     }
 
     private static function credentials_configured(): bool {
@@ -139,7 +143,11 @@ class EDIT_GBP_Publisher {
         if ( ! is_admin() ) return;
         if ( ! current_user_can( 'manage_options' ) ) return;
         if ( ( $_GET['page'] ?? '' ) !== 'edit-gbp-publisher' ) return;
-        if ( ( $_GET['action'] ?? '' ) !== 'oauth-callback' ) return;
+        // Accept both the new gbp_callback param (post-v1.5.459) AND the legacy
+        // action=oauth-callback for OAuth clients registered before the rename.
+        $is_callback = ( $_GET['gbp_callback'] ?? '' ) === '1'
+            || ( $_GET['action'] ?? '' ) === 'oauth-callback';
+        if ( ! $is_callback ) return;
 
         $state_ok = isset( $_GET['state'] )
             && get_option( 'edit_gbp_oauth_state' ) === $_GET['state'];
