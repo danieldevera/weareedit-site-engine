@@ -343,14 +343,36 @@ class EDIT_GBP_Publisher {
             }
         }
 
+        // Rate-limit backoff. GBP's My Business APIs default to ~1 req/min on
+        // fresh Cloud projects. If a previous call hit the per-minute quota,
+        // skip the next fetch for 90 seconds rather than re-hit and re-fail.
+        $backoff = (int) get_option( 'edit_gbp_quota_backoff_until', 0 );
+        if ( $backoff > time() ) {
+            $secs_left = $backoff - time();
+            update_option( 'edit_gbp_last_error',
+                'Backoff de quota activo — aguarda ' . $secs_left . 's antes de tentar novamente. ' .
+                'Pede aumento de quota em support.google.com/business/contact/api_default.',
+                false
+            );
+            $cached = get_option( self::OPT_LOCATIONS_CACHE );
+            return is_array( $cached['data'] ?? null ) ? $cached['data'] : [];
+        }
+
         $out = [];
         $errors = [];
         $accounts_res = self::fetch_accounts();
         if ( is_wp_error( $accounts_res ) ) {
             $errors[] = 'fetch_accounts: ' . $accounts_res->get_error_message();
+            // If quota error, set 90s backoff so subsequent reloads don't
+            // hammer the same dead end.
+            if ( strpos( $accounts_res->get_error_message(), 'Quota exceeded' ) !== false ) {
+                update_option( 'edit_gbp_quota_backoff_until', time() + 90, false );
+            }
             update_option( 'edit_gbp_last_error', implode( ' | ', $errors ), false );
             return [];
         }
+        // Successful call clears any prior backoff.
+        delete_option( 'edit_gbp_quota_backoff_until' );
         $accounts = $accounts_res['accounts'] ?? [];
         if ( empty( $accounts ) ) {
             update_option( 'edit_gbp_last_error', 'fetch_accounts returned 0 accounts. Raw body: ' . wp_json_encode( $accounts_res ), false );
