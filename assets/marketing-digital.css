@@ -480,6 +480,13 @@ body:has(.md-pillar--light) footer .social-footer a,
 body:has(.md-pillar--light) footer .social-footer .icon { color:#0a0a0a !important; }
 body:has(.md-pillar--light) footer hr,
 body:has(.md-pillar--light) footer .light-grey { border-color:rgba(10,10,10,.10) !important; background:rgba(10,10,10,.10) !important; }
-/* Theme footer's logo images often ship in white — flip via filter on light */
+/* Theme footer's logo images ship as white-on-transparent assets for the
+   dark footer. On the light variant we flip them to black via brightness(0).
+   Covers: main EDIT. logo, DGERT badge, and the four 'Outros projetos'
+   brand marks (EDIT Work, Disruptive Jobs, Transformation Space, io.foundation). */
 body:has(.md-pillar--light) footer img[src*="logo-edit"],
-body:has(.md-pillar--light) footer img[src*="dgert-entidade-formadora-branco"] { filter:brightness(0); }
+body:has(.md-pillar--light) footer img[src*="dgert-entidade-formadora-branco"],
+body:has(.md-pillar--light) footer img[src*="edit-work"],
+body:has(.md-pillar--light) footer img[src*="disruptive-jobs"],
+body:has(.md-pillar--light) footer img[src*="Frame-352"],
+body:has(.md-pillar--light) footer img[src*="logoIo"] { filter:brightness(0); }
