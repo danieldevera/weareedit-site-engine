@@ -126,7 +126,7 @@ body:has(.md-pillar) #edit-newsletter-strip { margin:0 !important; }
 .md-pillar .md-hero--video { padding-top:120px !important; min-height:auto !important; }
 
 /* Buttons */
-.md-btn { display:inline-flex; align-items:center; padding:14px 28px; font-size:15px; font-weight:600; text-decoration:none; border-radius:4px; transition:transform .2s ease, background .2s ease, color .2s ease; }
+.md-btn { display:inline-flex; align-items:center; padding:14px 28px; font-size:15px; font-weight:600; text-decoration:none; border-radius:0; transition:transform .2s ease, background .2s ease, color .2s ease; }
 .md-btn--primary { background:#ffdd06; color:#0a0a0a; }
 .md-btn--primary:hover { background:#fff; transform:translateY(-1px); }
 .md-btn--ghost { background:transparent; color:#fff; border:2px solid #fff; }
