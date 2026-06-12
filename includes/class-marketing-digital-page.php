@@ -28,6 +28,8 @@ class EDIT_Marketing_Digital_Page {
 
     /** Featured tutors for this pillar (equipa slugs). Resolved by EDIT_Pillar_Tutors. */
     const TUTORS = [ 'catarina-sp-neves', 'daniel-devera', 'naiara-back', 'mao-barros' ];
+    /** Keywords matched against tutors' ACF profile_knowsabout (comma-separated areas). */
+    const TUTOR_AREAS = [ 'Marketing Digital', 'Paid Media', 'Performance', 'Estratégia Digital', 'Social Media', 'SEO', 'CRM', 'Creative Direction', 'Conteúdo', 'Inteligência Artificial', 'Artificial Intelligence', 'Generative AI', 'IA Generativa' ];
 
     /**
      * Course catalog — grouped by intensity. Source-of-truth slugs on the
@@ -371,7 +373,7 @@ class EDIT_Marketing_Digital_Page {
                 </div>
             </section>
 
-            <?php echo EDIT_Pillar_Tutors::render( self::TUTORS, 'Os tutores da EDIT. são paid media managers, performance leads e estrategistas em activo nas marcas que recrutam talento digital em Portugal.' ); ?>
+            <?php echo EDIT_Pillar_Tutors::render_by_area( self::TUTOR_AREAS, 'Os tutores da EDIT. são paid media managers, performance leads e estrategistas em activo nas marcas que recrutam talento digital em Portugal.', 15, self::TUTORS ); ?>
 
             <div id="faq" class="md-faq">
                 <h2 class="md-section-title">Perguntas <span>Frequentes</span></h2>

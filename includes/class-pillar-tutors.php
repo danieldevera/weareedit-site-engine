@@ -17,6 +17,62 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class EDIT_Pillar_Tutors {
 
     /**
+     * Render tutors filtered by area-tag keywords (ACF `profile_knowsabout`
+     * comma-separated values). Returns the 15 most-recently-published equipa
+     * posts whose knowsAbout array contains ANY of the supplied keywords
+     * (case-insensitive substring match).
+     *
+     * Pillar callers pass their pillar-specific keywords PLUS the IA terms,
+     * so each pillar shows both relevant-area tutors and IA specialists.
+     *
+     * Falls back to the supplied static slugs list if dynamic resolution
+     * returns no matches (defensive: prevents an empty section if the
+     * profile_knowsabout field is unset on every tutor).
+     */
+    public static function render_by_area( array $area_keywords, string $section_title = 'Aprende com profissionais em activo', int $limit = 15, array $fallback_slugs = [] ): string {
+        $slugs = self::get_tutor_slugs_by_area( $area_keywords, $limit );
+        if ( empty( $slugs ) && ! empty( $fallback_slugs ) ) {
+            $slugs = $fallback_slugs;
+        }
+        return self::render( $slugs, $section_title );
+    }
+
+    /**
+     * Query equipa posts and filter by keywords matched against the
+     * comma-separated `profile_knowsabout` ACF textarea field.
+     */
+    public static function get_tutor_slugs_by_area( array $keywords, int $limit = 15 ): array {
+        if ( empty( $keywords ) ) return [];
+        // Pull a generous pool, then filter — equipa CPT has ~95 posts as of 2026-06-12.
+        $posts = get_posts( [
+            'post_type'      => 'equipa',
+            'posts_per_page' => 200,
+            'post_status'    => 'publish',
+            'orderby'        => 'date',
+            'order'          => 'DESC',
+            'no_found_rows'  => true,
+        ] );
+
+        $matched = [];
+        foreach ( $posts as $p ) {
+            if ( count( $matched ) >= $limit ) break;
+            $knows = function_exists( 'get_field' ) ? get_field( 'profile_knowsabout', $p->ID ) : get_post_meta( $p->ID, 'profile_knowsabout', true );
+            if ( ! is_string( $knows ) || $knows === '' ) continue;
+            $areas = array_filter( array_map( 'trim', explode( ',', $knows ) ) );
+            foreach ( $areas as $a ) {
+                foreach ( $keywords as $kw ) {
+                    if ( $kw === '' ) continue;
+                    if ( stripos( $a, $kw ) !== false ) {
+                        $matched[ $p->post_name ] = true;
+                        continue 3; // next tutor
+                    }
+                }
+            }
+        }
+        return array_keys( $matched );
+    }
+
+    /**
      * Render a tutors grid HTML for an array of equipa slugs.
      * Section title and CTA copy provided by the calling pillar.
      */

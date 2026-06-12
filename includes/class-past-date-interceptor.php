@@ -95,9 +95,17 @@ class EDIT_Past_Date_Interceptor {
             $html
         );
 
-        // PHASE 1 — past dates near an "Início" label become "Brevemente".
+        // Date pattern: matches "15 de Abril de 2023", "15 de Abril, 2023",
+        // "15 Abril, 2023" or "15 Abril 2023" (with or without 'de' connector
+        // and with or without comma before the year).
+        $DATE = '(\d{1,2})(?:\s+de)?\s+([A-Za-zçÇãéíóÁÉÍÓ]+)(?:\s*,)?(?:\s+de)?\s+(\d{4})';
+
+        // PHASE 1 — past dates after an "Início" label become "Brevemente".
+        // Use .{0,400} (with /s flag) so we can span across sibling tags —
+        // the label and the date often sit in separate elements
+        // (<label>Início</label> ... <div class="value">15 Abril, 2023</div>).
         $html = preg_replace_callback(
-            '/(Início[^<]{0,80}?)(\d{1,2})(?:\s+de)?\s+([A-Za-zçÇãéíóÁÉÍÓ]+)(?:\s+de)?\s+(\d{4})/iu',
+            '/(>\s*Início\s*<\/[a-z]+>.{0,400}?>)\s*' . $DATE . '/siu',
             function ( $m ) {
                 if ( self::is_pt_date_past( $m[2], $m[3], $m[4] ) ) {
                     return $m[1] . self::START_REPLACEMENT;
@@ -107,9 +115,9 @@ class EDIT_Past_Date_Interceptor {
             $html
         );
 
-        // PHASE 2 — past dates near a "Fim" label become "A definir".
+        // PHASE 2 — past dates after a "Fim" label become "A definir".
         $html = preg_replace_callback(
-            '/(Fim[^<]{0,80}?)(\d{1,2})(?:\s+de)?\s+([A-Za-zçÇãéíóÁÉÍÓ]+)(?:\s+de)?\s+(\d{4})/iu',
+            '/(>\s*Fim\s*<\/[a-z]+>.{0,400}?>)\s*' . $DATE . '/siu',
             function ( $m ) {
                 if ( self::is_pt_date_past( $m[2], $m[3], $m[4] ) ) {
                     return $m[1] . self::END_REPLACEMENT;
@@ -119,13 +127,27 @@ class EDIT_Past_Date_Interceptor {
             $html
         );
 
-        // PHASE 3 — unlabelled `.course-date` (archive card) inherits start semantics.
+        // PHASE 3 — `.course-date` (archive card) inherits start semantics.
         $html = preg_replace_callback(
-            '/(class="[^"]*course-date[^"]*"[^>]*>)([^<]*?)(\d{1,2})(?:\s+de)?\s+([A-Za-zçÇãéíóÁÉÍÓ]+)(?:\s+de)?\s+(\d{4})([^<]*)/iu',
+            '/(class="[^"]*course-date[^"]*"[^>]*>)([^<]*?)' . $DATE . '([^<]*)/iu',
             function ( $m ) {
                 if ( self::is_pt_date_past( $m[3], $m[4], $m[5] ) ) {
-                    // Preserve any trailing text (e.g., ", Remote") that isn't the date.
                     return $m[1] . $m[2] . self::START_REPLACEMENT . $m[6];
+                }
+                return $m[0];
+            },
+            $html
+        );
+
+        // PHASE 4 — fallback: any `.value` div that contains ONLY a date string
+        // (common pattern on product page sidebar) and is past → "Brevemente".
+        // Catches cases the labelled phases missed (label nested differently
+        // than expected, e.g. distant siblings).
+        $html = preg_replace_callback(
+            '/(<div class="value"[^>]*>)\s*' . $DATE . '\s*(<\/div>)/iu',
+            function ( $m ) {
+                if ( self::is_pt_date_past( $m[2], $m[3], $m[4] ) ) {
+                    return $m[1] . self::START_REPLACEMENT . $m[5];
                 }
                 return $m[0];
             },
