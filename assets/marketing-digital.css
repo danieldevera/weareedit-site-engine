@@ -383,35 +383,11 @@ body.page-template-page-marketing-digital .post-edit-link { display:none !import
 /* Canvas → cream/off-white */
 .md-pillar--light { background:#f7f5f0; color:#0a0a0a; }
 
-/* Hero — keep waves video but flip the veil to a light tint with a bias
-   toward the bottom so headline against the upper darker frames stays
-   legible while the lower copy sits on a light wash. */
-.md-pillar--light .md-hero { background:#f7f5f0; }
-.md-pillar--light .md-hero__veil {
-    background:linear-gradient(180deg, rgba(247,245,240,0) 0%, rgba(247,245,240,.62) 55%, rgba(247,245,240,.92) 100%);
-}
-.md-pillar--light .md-hero__video {
-    /* The waves video has a WHITE DGERT lockup baked in. On the cream canvas
-       the lockup needs to read as BLACK to match the team's request.
-       filter:invert(1) flips: white DGERT -> black, dark waves -> light.
-       Opacity tames the inverted waves so they sit as a quiet texture. */
-    filter:invert(1) brightness(0.92) !important;
-    opacity:.55 !important;
-}
-/* Hero text → dark */
-.md-pillar--light .md-hero__title--xl { color:#0a0a0a !important; }
-.md-pillar--light .md-hero__lede--yellow { color:#0a0a0a !important; }
-/* Hero DGERT pill on light theme — small black mark, distinct from the
-   bigger video-embedded DGERT lockup that's now also black via the
-   filter:invert on .md-hero__video. */
-.md-pillar--light .md-hero .dgert-hero-pill { color:#0a0a0a !important; }
-.md-pillar--light .md-hero .dgert-hero-pill img { filter:brightness(0) !important; }
-.md-pillar--light .md-hero .dgert-hero-pill-text,
-.md-pillar--light .md-hero .dgert-hero-pill-arrow { color:#0a0a0a !important; }
-/* Hero reviews badge → dark legible */
-.md-pillar--light .md-hero .hero-reviews { color:#444 !important; }
-.md-pillar--light .md-hero .hero-reviews .hr-rating { color:#0a0a0a !important; }
-.md-pillar--light .md-hero .hero-reviews .hr-count { color:#444 !important; }
+/* HERO: KEEP DARK (canonical) on the light variant. Daniel: 'Revert the hero
+   to its original state (Dark) only apply light version changes below the hero.'
+   No overrides here — the dark .md-hero / .md-hero__veil / .md-hero__video /
+   .md-hero__title--xl / .md-hero__lede--yellow / .dgert-hero-pill /
+   .hero-reviews defaults from earlier in this file are kept verbatim. */
 
 /* Intro long-form block */
 .md-pillar--light .md-intro { background:#f7f5f0; }
