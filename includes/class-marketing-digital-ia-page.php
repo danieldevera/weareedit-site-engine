@@ -142,8 +142,30 @@ class EDIT_Marketing_Digital_IA_Page {
         add_shortcode( self::SHORTCODE,    [ __CLASS__, 'render_shortcode' ] );
         add_action( 'admin_init',          [ __CLASS__, 'ensure_page_exists' ] );
         add_action( 'wp_enqueue_scripts',  [ __CLASS__, 'enqueue_assets' ] );
-        // Preview-only — no schema emission, no SERP indexing.
         add_action( 'wp_head',             [ __CLASS__, 'emit_noindex' ], 1 );
+        // Bypass-the-page-content path. The WP page at this slug has its
+        // post_content stripped by some filter between save and render
+        // (origin unknown — Rank Math? security plugin? WP itself?), so the
+        // shortcode never executes. We sidestep by rendering directly via
+        // template_redirect inside the theme's header/footer wrappers.
+        add_action( 'template_redirect',   [ __CLASS__, 'maybe_render_preview' ], 5 );
+    }
+
+    /**
+     * Direct render path: detect this slug, emit theme chrome + our pillar
+     * shortcode output, exit before WP/theme runs its main loop. Avoids
+     * dependency on post_content being populated AND the empty-content
+     * fallback to a Bootcamp taxonomy archive.
+     */
+    public static function maybe_render_preview() {
+        if ( is_admin() ) return;
+        if ( ! is_page( self::SLUG ) ) return;
+        // Headers — same noindex emission the wp_head hook would do.
+        header( 'X-Robots-Tag: noindex, nofollow', true );
+        get_header();
+        echo self::render_shortcode();
+        get_footer();
+        exit;
     }
 
     public static function emit_noindex(): void {
