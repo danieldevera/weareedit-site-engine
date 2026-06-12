@@ -478,6 +478,16 @@ body:has(.md-pillar--light) footer .social-footer { background:#f7f5f0 !importan
 body:has(.md-pillar--light) footer .copyright a,
 body:has(.md-pillar--light) footer .social-footer a,
 body:has(.md-pillar--light) footer .social-footer .icon { color:#0a0a0a !important; }
+/* Social-icon font ligatures (icon-facebook / icon-instagram / icon-vimeo /
+   icon-youtube / icon-linked-in) — color the glyph itself + ::before. */
+body:has(.md-pillar--light) footer [class^="icon-"],
+body:has(.md-pillar--light) footer [class*=" icon-"] { color:#0a0a0a !important; }
+body:has(.md-pillar--light) footer [class^="icon-"]::before,
+body:has(.md-pillar--light) footer [class*=" icon-"]::before { color:#0a0a0a !important; }
+body:has(.md-pillar--light) footer .social-footer a:hover [class^="icon-"],
+body:has(.md-pillar--light) footer .social-footer a:hover [class*=" icon-"],
+body:has(.md-pillar--light) footer .social-footer a:hover [class^="icon-"]::before,
+body:has(.md-pillar--light) footer .social-footer a:hover [class*=" icon-"]::before { color:#f92869 !important; }
 body:has(.md-pillar--light) footer hr,
 body:has(.md-pillar--light) footer .light-grey { border-color:rgba(10,10,10,.10) !important; background:rgba(10,10,10,.10) !important; }
 /* Theme footer's logo images ship as white-on-transparent assets for the
