@@ -59,6 +59,73 @@ body:has(.md-pillar) [class*="breadcrumb"] { display:none !important; }
    final-CTA above and the footer below with zero gap. */
 body:has(.md-pillar) #edit-newsletter-strip { margin:0 !important; }
 
+/* ─────────────────────────────────────────────────────────────────────────
+   HP HERO ALIGNMENT
+   Hero contents emit the same theme classes as the homepage (dgert-hero-pill,
+   h1-dot, btn-yellow swipe-cta, hero-reviews). Theme inline CSS scopes the
+   HP styling to body.page-template-page-home, so we replicate it here scoped
+   to .md-pillar .md-hero. Single source of truth = HP — change here mirrors HP.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* DGERT hero pill */
+.md-pillar .md-hero .dgert-hero-pill {
+    display:inline-flex; align-items:center; gap:12px;
+    text-decoration:none; color:#fff !important;
+    margin:0 0 32px 0;
+    transition:opacity 0.2s ease;
+    align-self:flex-start;
+}
+.md-pillar .md-hero .dgert-hero-pill:hover { opacity:0.78; }
+.md-pillar .md-hero .dgert-hero-pill img { height:40px !important; width:auto !important; display:block; border:none; }
+.md-pillar .md-hero .dgert-hero-pill-text { font-size:14px !important; font-weight:500 !important; letter-spacing:0.01em; color:#fff !important; }
+.md-pillar .md-hero .dgert-hero-pill-arrow { font-size:12px !important; margin-left:4px; opacity:0.6; color:#fff !important; }
+
+/* H1 dot accents */
+.md-pillar .md-hero h1 .h1-dot { display:inline-block; }
+.md-pillar .md-hero h1 .h1-dot-pink { color:#f92869 !important; }
+.md-pillar .md-hero h1 .h1-dot-teal { color:#60c5b3 !important; }
+
+/* Yellow swipe CTA (swipe-layer hover anim comes from global .swipe-cta) */
+.md-pillar .md-hero .btn-yellow.swipe-cta {
+    display:inline-flex; align-items:center; justify-content:center;
+    padding:18px 40px;
+    background:#ffdd06; color:#0a0a0a;
+    font-family:inherit; font-size:15px; font-weight:600;
+    letter-spacing:-0.005em;
+    text-decoration:none;
+    border-radius:0; border:0;
+    position:relative; overflow:hidden;
+    isolation:isolate; z-index:0;
+    cursor:pointer;
+}
+.md-pillar .md-hero .btn-yellow.swipe-cta .swipe-label { position:relative; z-index:4; transition:color 0.18s ease 0.50s; }
+
+/* Hero reviews badge with Google wordmark */
+.md-pillar .md-hero .hero-reviews {
+    display:inline-flex; align-items:center; gap:8px;
+    color:#c8c8c8 !important; text-decoration:none !important;
+    font-size:13px;
+}
+.md-pillar .md-hero .hero-reviews .hr-star { color:#ffdd06 !important; font-size:16px; position:relative; top:-1px; }
+.md-pillar .md-hero .hero-reviews .hr-rating { color:#fff !important; font-weight:700; font-size:14px; }
+.md-pillar .md-hero .hero-reviews .hr-sep { opacity:0.4; margin:0 2px; }
+.md-pillar .md-hero .hero-reviews .hr-count { color:#c8c8c8 !important; margin-right:4px; }
+.md-pillar .md-hero .hero-reviews .g-wordmark {
+    display:inline-flex; align-items:baseline; gap:0;
+    font-family:"Helvetica Neue",Arial,sans-serif;
+    font-weight:500; font-size:15px; line-height:1;
+    letter-spacing:-0.005em;
+}
+.md-pillar .md-hero .hero-reviews .g-G { color:#4285F4 !important; }
+.md-pillar .md-hero .hero-reviews .g-o1 { color:#EA4335 !important; }
+.md-pillar .md-hero .hero-reviews .g-o2 { color:#FBBC04 !important; }
+.md-pillar .md-hero .hero-reviews .g-g { color:#4285F4 !important; }
+.md-pillar .md-hero .hero-reviews .g-l { color:#34A853 !important; }
+.md-pillar .md-hero .hero-reviews .g-e { color:#EA4335 !important; }
+
+/* Hero top padding shrink — pull content up to match HP positioning */
+.md-pillar .md-hero--video { padding-top:48px !important; min-height:auto !important; }
+
 /* Buttons */
 .md-btn { display:inline-flex; align-items:center; padding:14px 28px; font-size:15px; font-weight:600; text-decoration:none; border-radius:4px; transition:transform .2s ease, background .2s ease, color .2s ease; }
 .md-btn--primary { background:#ffdd06; color:#0a0a0a; }

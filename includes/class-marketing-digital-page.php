@@ -273,21 +273,21 @@ class EDIT_Marketing_Digital_Page {
                 </video>
                 <div class="md-hero__veil" aria-hidden="true"></div>
                 <div class="md-hero__inner">
-                    <a class="md-dgert md-dgert--hero-top" href="https://www.dgert.gov.pt/entidades-formadoras-certificadas" target="_blank" rel="noopener">
-                        <img src="<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/dgert-entidade-formadora-branco.png' ); ?>" alt="DGERT — Entidade Formadora Certificada nº 18391" width="44" height="44">
-                        <span class="md-dgert__text">Entidade Formadora Certificada</span>
-                        <span class="md-dgert__arrow" aria-hidden="true">↗</span>
+                    <a class="dgert-hero-pill" href="https://www.dgert.gov.pt/entidades-formadoras-certificadas" target="_blank" rel="noopener noreferrer" aria-label="DGERT — Entidade Formadora Certificada">
+                        <img width="1024" height="483" src="<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/dgert-entidade-formadora-branco.png' ); ?>" alt="DGERT" loading="eager">
+                        <span class="dgert-hero-pill-text">Entidade Formadora Certificada</span>
+                        <span class="dgert-hero-pill-arrow" aria-hidden="true">↗</span>
                     </a>
-                    <h1 class="md-hero__title md-hero__title--xl">Marketing Digital<span class="md-dot md-dot--pink">.</span><br>Inteligência Artificial<span class="md-dot md-dot--teal">.</span></h1>
+                    <h1 class="md-hero__title md-hero__title--xl">Marketing Digital<span class="h1-dot h1-dot-pink">.</span><br>Inteligência Artificial<span class="h1-dot h1-dot-teal">.</span></h1>
                     <p class="md-hero__lede md-hero__lede--yellow">16 formações DGERT-certificadas em Lisboa, Porto e online. Bootcamps, cursos e workshops desenhados com marcas que recrutam talento digital em Portugal. Programas SIFIDE-elegíveis.</p>
                     <div class="md-hero__cta">
-                        <a class="md-btn md-btn--primary md-btn--lg" href="#catalogo">Ver os 16 cursos</a>
-                        <a class="md-hero__rating" href="https://weareedit.io/avaliacoes-google/" rel="noopener">
-                            <span class="md-hero__rating-star">★</span>
-                            <strong>4.1</strong>
-                            <span class="md-hero__rating-sep">/</span>
-                            <span class="md-hero__rating-text">67 reviews no</span>
-                            <img class="md-hero__rating-logo" src="<?php echo esc_url( home_url( '/wp-content/uploads/2024/04/google-logo.png' ) ); ?>" alt="Google" width="58" height="20" onerror="this.style.display='none'">
+                        <a class="btn btn-yellow swipe-cta" href="#catalogo"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Ver os 16 cursos</span></a>
+                        <a class="hero-reviews" href="https://weareedit.io/avaliacoes-google/" rel="noopener">
+                            <span class="hr-star">★</span>
+                            <span class="hr-rating">4.1</span>
+                            <span class="hr-sep">/</span>
+                            <span class="hr-count">67 reviews no</span>
+                            <span class="g-wordmark"><span class="g-G">G</span><span class="g-o1">o</span><span class="g-o2">o</span><span class="g-g">g</span><span class="g-l">l</span><span class="g-e">e</span></span>
                         </a>
                     </div>
                 </div>
