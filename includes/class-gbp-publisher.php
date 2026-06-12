@@ -38,6 +38,8 @@ class EDIT_GBP_Publisher {
     const OPT_LOCATION_LISBOA   = 'edit_gbp_location_lisboa';      // location_id for fast targeting
     const OPT_LOCATION_PORTO    = 'edit_gbp_location_porto';
     const OPT_LOCATION_SP       = 'edit_gbp_location_sp';
+    const OPT_CLIENT_ID         = 'edit_gbp_client_id';            // plain (it's a public value)
+    const OPT_CLIENT_SECRET     = 'edit_gbp_client_secret';        // encrypted blob
 
     const OAUTH_AUTH_URL        = 'https://accounts.google.com/o/oauth2/v2/auth';
     const OAUTH_TOKEN_URL       = 'https://oauth2.googleapis.com/token';
@@ -56,11 +58,17 @@ class EDIT_GBP_Publisher {
        ────────────────────────────────────────────────────────────────── */
 
     private static function client_id(): string {
-        return defined( 'EDIT_GBP_CLIENT_ID' ) ? (string) EDIT_GBP_CLIENT_ID : '';
+        // wp-config constants take precedence (more secure); fall back to
+        // encrypted wp_options for environments where editing wp-config
+        // isn't convenient.
+        if ( defined( 'EDIT_GBP_CLIENT_ID' ) && EDIT_GBP_CLIENT_ID ) return (string) EDIT_GBP_CLIENT_ID;
+        return (string) get_option( self::OPT_CLIENT_ID, '' );
     }
 
     private static function client_secret(): string {
-        return defined( 'EDIT_GBP_CLIENT_SECRET' ) ? (string) EDIT_GBP_CLIENT_SECRET : '';
+        if ( defined( 'EDIT_GBP_CLIENT_SECRET' ) && EDIT_GBP_CLIENT_SECRET ) return (string) EDIT_GBP_CLIENT_SECRET;
+        $blob = get_option( self::OPT_CLIENT_SECRET, '' );
+        return $blob ? self::decrypt( (string) $blob ) : '';
     }
 
     private static function redirect_uri(): string {
@@ -269,6 +277,26 @@ class EDIT_GBP_Publisher {
         );
     }
 
+    private static function render_credentials_form(): void {
+        ?>
+        <form method="post" style="display:flex;flex-direction:column;gap:12px;max-width:680px;">
+            <?php wp_nonce_field( 'edit_gbp_save_creds' ); ?>
+            <label style="display:flex;flex-direction:column;gap:4px;">
+                <span style="font-size:13px;color:#444;font-weight:600;">Client ID</span>
+                <input type="text" name="client_id" placeholder="XXXXXXXX.apps.googleusercontent.com" required style="padding:8px 10px;border:1px solid #ccc;border-radius:3px;font-family:monospace;font-size:13px;">
+            </label>
+            <label style="display:flex;flex-direction:column;gap:4px;">
+                <span style="font-size:13px;color:#444;font-weight:600;">Client Secret</span>
+                <input type="password" name="client_secret" placeholder="GOCSPX-XXXXXXXX" required style="padding:8px 10px;border:1px solid #ccc;border-radius:3px;font-family:monospace;font-size:13px;">
+            </label>
+            <div>
+                <button type="submit" name="edit_gbp_save_creds" value="1" class="button button-primary">Guardar credenciais</button>
+                <span style="margin-left:12px;font-size:12px;color:#666;">Secret encriptado em base de dados via AES-256-CBC.</span>
+            </div>
+        </form>
+        <?php
+    }
+
     public static function render_admin_page(): void {
         if ( ! current_user_can( 'manage_options' ) ) return;
 
@@ -277,6 +305,18 @@ class EDIT_GBP_Publisher {
             self::disconnect();
             wp_safe_redirect( admin_url( 'admin.php?page=edit-gbp-publisher&disconnected=1' ) );
             exit;
+        }
+
+        // Handle credentials save (POST form below).
+        if ( isset( $_POST['edit_gbp_save_creds'] ) && check_admin_referer( 'edit_gbp_save_creds' ) ) {
+            $cid = isset( $_POST['client_id'] ) ? trim( sanitize_text_field( wp_unslash( $_POST['client_id'] ) ) ) : '';
+            $cs  = isset( $_POST['client_secret'] ) ? trim( sanitize_text_field( wp_unslash( $_POST['client_secret'] ) ) ) : '';
+            if ( $cid && $cs ) {
+                update_option( self::OPT_CLIENT_ID, $cid, false );
+                update_option( self::OPT_CLIENT_SECRET, self::encrypt( $cs ), false );
+                wp_safe_redirect( admin_url( 'admin.php?page=edit-gbp-publisher&creds_saved=1' ) );
+                exit;
+            }
         }
 
         $connected   = self::is_connected();
@@ -298,15 +338,23 @@ class EDIT_GBP_Publisher {
             <?php if ( isset( $_GET['gbp_error'] ) ): ?>
                 <div class="notice notice-error"><p>Erro OAuth: <code><?php echo esc_html( sanitize_text_field( wp_unslash( $_GET['gbp_error'] ) ) ); ?></code></p></div>
             <?php endif; ?>
+            <?php if ( isset( $_GET['creds_saved'] ) ): ?>
+                <div class="notice notice-success"><p>Credenciais OAuth guardadas com sucesso.</p></div>
+            <?php endif; ?>
 
             <div style="background:#fff;border:1px solid #e0e0e0;padding:24px 28px;margin-bottom:24px;">
-                <h2 style="margin:0 0 16px;font-size:18px;">1. Credenciais</h2>
+                <h2 style="margin:0 0 16px;font-size:18px;">1. Credenciais OAuth</h2>
                 <?php if ( $configured ): ?>
-                    <p style="margin:0;color:#1f6e1f;">✅ Credenciais OAuth configuradas em <code>wp-config.php</code>.</p>
+                    <p style="margin:0 0 12px;color:#1f6e1f;">✅ Credenciais OAuth configuradas.</p>
+                    <details>
+                        <summary style="cursor:pointer;color:#666;font-size:13px;">Substituir credenciais</summary>
+                        <div style="margin-top:14px;">
+                            <?php self::render_credentials_form(); ?>
+                        </div>
+                    </details>
                 <?php else: ?>
-                    <p style="margin:0 0 12px;color:#b45309;">⚠️ Adicione as constantes em <code>wp-config.php</code>:</p>
-                    <pre style="background:#f5f5f5;padding:14px 18px;border-radius:4px;font-size:13px;overflow-x:auto;">define( 'EDIT_GBP_CLIENT_ID',     'XXX.apps.googleusercontent.com' );
-define( 'EDIT_GBP_CLIENT_SECRET', 'GOCSPX-XXX' );</pre>
+                    <p style="margin:0 0 12px;color:#444;">Cola o <strong>Client ID</strong> e o <strong>Client secret</strong> do ficheiro JSON descarregado da Google Cloud Console.</p>
+                    <?php self::render_credentials_form(); ?>
                 <?php endif; ?>
             </div>
 
