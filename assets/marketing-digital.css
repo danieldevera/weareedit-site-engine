@@ -488,6 +488,14 @@ body:has(.md-pillar--light) footer .social-footer a:hover [class^="icon-"],
 body:has(.md-pillar--light) footer .social-footer a:hover [class*=" icon-"],
 body:has(.md-pillar--light) footer .social-footer a:hover [class^="icon-"]::before,
 body:has(.md-pillar--light) footer .social-footer a:hover [class*=" icon-"]::before { color:#f92869 !important; }
+
+/* Footer 'Subscrever Newsletter' swipe-cta — preserve the locked yellow
+   button (background, dark text on the label) on the light footer. The
+   broad `footer span { color:#0a0a0a }` rule above made .swipe-label dark
+   text, but the cta lost its yellow bg distinction — explicit re-pin. */
+body:has(.md-pillar--light) footer .btn-yellow.swipe-cta { background:#ffdd06 !important; color:#0a0a0a !important; }
+body:has(.md-pillar--light) footer .btn-yellow.swipe-cta .swipe-label { color:#0a0a0a !important; }
+body:has(.md-pillar--light) footer .btn-yellow.swipe-cta:hover .swipe-label { color:#ffdd06 !important; }
 body:has(.md-pillar--light) footer hr,
 body:has(.md-pillar--light) footer .light-grey { border-color:rgba(10,10,10,.10) !important; background:rgba(10,10,10,.10) !important; }
 /* Theme footer's logo images ship as white-on-transparent assets for the
