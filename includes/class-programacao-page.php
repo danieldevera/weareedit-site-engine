@@ -33,6 +33,8 @@ class EDIT_Programacao_Page {
             'bootcamp-prompt-engineering-2',
             'bootcamp-python-para-data',
             'seo-engineering-automacao-claude-code',
+            'bootcamp-criacao-de-sites',
+            'bootcamp-tailwind-css',
         ],
         'Workshops' => [
             'workshop-introducao-a-programacao',
@@ -133,7 +135,7 @@ class EDIT_Programacao_Page {
 
     private static function set_rank_math_meta( int $page_id ): void {
         update_post_meta( $page_id, 'rank_math_title',       'Curso Programação Web Lisboa & Porto | EDIT. — 8 Programas DGERT' );
-        update_post_meta( $page_id, 'rank_math_description', '8 formações em Programação: Front-End Engineer, Data Engineering, Webflow, Prompt Engineering, automação com IA. DGERT certificada, Cheque Formação + Digital elegível.' );
+        update_post_meta( $page_id, 'rank_math_description', '10 formações em Programação: Front-End Engineer, Data Engineering, Webflow, Prompt Engineering, automação com IA. DGERT certificada, SIFIDE-elegível.' );
         update_post_meta( $page_id, 'rank_math_focus_keyword', 'curso programação' );
         update_post_meta( $page_id, 'rank_math_robots',      [ 'index', 'follow' ] );
     }
@@ -218,9 +220,9 @@ class EDIT_Programacao_Page {
                         <span class="dgert-hero-pill-arrow" aria-hidden="true">↗</span>
                     </a>
                     <h1 class="md-hero__title md-hero__title--xl">Programação<span class="h1-dot h1-dot-pink">.</span><br>Inteligência Artificial<span class="h1-dot h1-dot-teal">.</span></h1>
-                    <p class="md-hero__lede md-hero__lede--yellow">8 formações DGERT-certificadas em Lisboa, Porto e online. Bootcamps e workshops em Front-End Engineering, Data Engineering, Webflow e automação com IA — leccionados por developers em activo nas marcas que mais recrutam talento técnico em Portugal. Programas SIFIDE-elegíveis.</p>
+                    <p class="md-hero__lede md-hero__lede--yellow">10 formações DGERT-certificadas em Lisboa, Porto e online. Bootcamps e workshops em Front-End Engineering, Data Engineering, Webflow e automação com IA — leccionados por developers em activo nas marcas que mais recrutam talento técnico em Portugal. Programas SIFIDE-elegíveis.</p>
                     <div class="md-hero__cta">
-                        <a class="btn btn-yellow swipe-cta" href="#catalogo"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Ver os 8 cursos</span></a>
+                        <a class="btn btn-yellow swipe-cta" href="#catalogo"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Ver os 10 cursos</span></a>
                         <a class="hero-reviews" href="https://weareedit.io/avaliacoes-google/" rel="noopener">
                             <span class="hr-star">★</span>
                             <span class="hr-rating">4.1</span>

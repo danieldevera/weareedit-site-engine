@@ -46,6 +46,7 @@ class EDIT_Marketing_Digital_Page {
             'curso-marketing-digital-online',
             'curso-marketing-digital-porto',
             'curso-remote-learning-digital-marketing-leadership',
+            'curso-online-product-and-project-management',
         ],
         'Workshops' => [
             'workshop-tiktok-ads-strategy-online',
@@ -55,6 +56,8 @@ class EDIT_Marketing_Digital_Page {
             'influencer-marketing-online',
             'workshop-professional-growth-success',
             'curso-google-analytics-4', // titled "Workshop Remote Learning Google Analytics 4" — moved from Cursos
+            'workshop-linkedln-ads-strategy-online', // typo slug — Task #26 will rename to workshop-linkedin-…
+            'remote-learning-workshop-digital-project-management-foundations',
         ],
         'Crossover IA' => [
             'agentes-inteligentes-para-marketing',
@@ -193,7 +196,7 @@ class EDIT_Marketing_Digital_Page {
 
     private static function set_rank_math_meta( int $page_id ): void {
         update_post_meta( $page_id, 'rank_math_title',       'Curso Marketing Digital Lisboa & Porto | EDIT. — 16 Programas DGERT' );
-        update_post_meta( $page_id, 'rank_math_description', '16 formações em Marketing Digital, DGERT certificadas, SIFIDE-elegíveis. Bootcamps, cursos e workshops em Lisboa, Porto e online. 600+ alumni colocados em Farfetch, Sonae, NOS, EDP.' );
+        update_post_meta( $page_id, 'rank_math_description', '19 formações em Marketing Digital, DGERT certificadas, SIFIDE-elegíveis. Bootcamps, cursos e workshops em Lisboa, Porto e online. 600+ alumni colocados em Farfetch, Sonae, NOS, EDP.' );
         update_post_meta( $page_id, 'rank_math_focus_keyword', 'curso marketing digital' );
         update_post_meta( $page_id, 'rank_math_robots',      [ 'index', 'follow' ] );
     }
@@ -279,9 +282,9 @@ class EDIT_Marketing_Digital_Page {
                         <span class="dgert-hero-pill-arrow" aria-hidden="true">↗</span>
                     </a>
                     <h1 class="md-hero__title md-hero__title--xl">Marketing Digital<span class="h1-dot h1-dot-pink">.</span><br>Inteligência Artificial<span class="h1-dot h1-dot-teal">.</span></h1>
-                    <p class="md-hero__lede md-hero__lede--yellow">16 formações DGERT-certificadas em Lisboa, Porto e online. Bootcamps, cursos e workshops desenhados com marcas que recrutam talento digital em Portugal. Programas SIFIDE-elegíveis.</p>
+                    <p class="md-hero__lede md-hero__lede--yellow">19 formações DGERT-certificadas em Lisboa, Porto e online. Bootcamps, cursos e workshops desenhados com marcas que recrutam talento digital em Portugal. Programas SIFIDE-elegíveis.</p>
                     <div class="md-hero__cta">
-                        <a class="btn btn-yellow swipe-cta" href="#catalogo"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Ver os 16 cursos</span></a>
+                        <a class="btn btn-yellow swipe-cta" href="#catalogo"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Ver os 19 cursos</span></a>
                         <a class="hero-reviews" href="https://weareedit.io/avaliacoes-google/" rel="noopener">
                             <span class="hr-star">★</span>
                             <span class="hr-rating">4.1</span>
