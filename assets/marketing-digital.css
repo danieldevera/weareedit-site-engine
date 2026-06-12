@@ -196,7 +196,7 @@ body:has(.md-pillar) #edit-newsletter-strip { margin:0 !important; }
 .md-dgert-band { display:block; text-decoration:none; padding:64px 60px; background:#0a0a0a; border-top:1px solid rgba(255,255,255,.08); border-bottom:1px solid rgba(255,255,255,.08); transition:background .2s; }
 .md-dgert-band:hover { background:#111; }
 .md-dgert-band__inner { max-width:1280px; margin:0 auto; display:grid; grid-template-columns:auto 1fr auto; gap:36px; align-items:center; color:#fff; }
-.md-dgert-band__logo { width:72px; height:auto; }
+.md-dgert-band__logo { width:120px; height:auto; }
 .md-dgert-band__copy { display:flex; flex-direction:column; gap:6px; }
 .md-dgert-band__eyebrow { font-size:13px; letter-spacing:.18em; color:rgba(255,255,255,.55); font-weight:600; margin:0; text-transform:uppercase; }
 .md-dgert-band__title { font-size:clamp(24px,3vw,32px); font-weight:700; letter-spacing:-.01em; margin:0; color:#fff; line-height:1.1; }
