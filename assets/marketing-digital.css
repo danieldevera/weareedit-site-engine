@@ -391,7 +391,7 @@ body.page-template-page-marketing-digital .post-edit-link { display:none !import
 
 /* Intro long-form block */
 .md-pillar--light .md-intro { background:#f7f5f0; }
-.md-pillar--light .md-intro__eyebrow { color:#9a8e74; }
+.md-pillar--light .md-intro__eyebrow { color:#0a0a0a; }
 .md-pillar--light .md-intro__title { color:#0a0a0a; }
 .md-pillar--light .md-intro__title span { color:#f92869; }
 .md-pillar--light .md-intro__lead { color:#2a2a2a; }
@@ -404,13 +404,13 @@ body.page-template-page-marketing-digital .post-edit-link { display:none !import
 
 /* Catalog section header */
 .md-pillar--light .md-catalog { background:#f7f5f0; }
-.md-pillar--light .md-section-header__eyebrow { color:#9a8e74; }
+.md-pillar--light .md-section-header__eyebrow { color:#0a0a0a; }
 .md-pillar--light .md-section-header__title { color:#0a0a0a; }
 .md-pillar--light .md-section-header__title span { color:#f92869; }
 .md-pillar--light .md-section-header__lead { color:#2a2a2a; }
 .md-pillar--light .md-section-title { color:#0a0a0a; }
 .md-pillar--light .md-section-title span { color:#f92869; }
-.md-pillar--light .md-group__title { color:#9a8e74; }
+.md-pillar--light .md-group__title { color:#0a0a0a; }
 
 /* DGERT band — light variant: white card on cream canvas */
 .md-pillar--light .md-dgert-band {
@@ -418,11 +418,11 @@ body.page-template-page-marketing-digital .post-edit-link { display:none !import
 }
 .md-pillar--light .md-dgert-band:hover { background:#fafafa; }
 .md-pillar--light .md-dgert-band__inner { color:#0a0a0a; }
-.md-pillar--light .md-dgert-band__eyebrow { color:#9a8e74; }
+.md-pillar--light .md-dgert-band__eyebrow { color:#0a0a0a; }
 .md-pillar--light .md-dgert-band__title { color:#0a0a0a; }
 .md-pillar--light .md-dgert-band__sub { color:#444; }
 .md-pillar--light .md-dgert-band__logo { filter:brightness(0); }
-.md-pillar--light .md-dgert-band__arrow { color:#9a8e74; }
+.md-pillar--light .md-dgert-band__arrow { color:#0a0a0a; }
 .md-pillar--light .md-dgert-band:hover .md-dgert-band__arrow { color:#f92869; }
 
 /* Empresas CTA banner — stays cinematic-dark (intentional visual rest) */
@@ -442,7 +442,44 @@ body.page-template-page-marketing-digital .post-edit-link { display:none !import
 .md-pillar--light .md-faq__q-text { color:#0a0a0a; }
 .md-pillar--light .md-faq__a { color:#2a2a2a; }
 
-/* Final CTA — keep dark for visual hierarchy (last surface before footer) */
-.md-pillar--light .md-final-cta { background:#0a0a0a; color:#fff; padding:80px 60px; }
+/* Final CTA — bleeds full width on light variant (no cream gutters) */
+.md-pillar--light .md-final-cta { background:#0a0a0a; color:#fff; padding:80px 60px; max-width:none !important; margin:0 !important; width:100% !important; }
 .md-pillar--light .md-final-cta h2 { color:#fff; }
 .md-pillar--light .md-final-cta p { color:rgba(255,255,255,.75); }
+
+/* FAQ accordion — yellow active state doesn't pop on cream; use pink instead. */
+.md-pillar--light .md-faq__q-text { color:#0a0a0a; }
+.md-pillar--light .md-faq__q::before { color:rgba(10,10,10,.4); }
+.md-pillar--light .md-faq__q::after { color:rgba(10,10,10,.55); }
+.md-pillar--light .md-faq__item { border-top-color:rgba(10,10,10,.10); }
+.md-pillar--light .md-faq__item:last-child { border-bottom-color:rgba(10,10,10,.10); }
+.md-pillar--light .md-faq__item:hover { background:rgba(249,40,105,.04); }
+.md-pillar--light .md-faq__item[open] { background:rgba(249,40,105,.04); }
+.md-pillar--light .md-faq__item:hover .md-faq__q-text,
+.md-pillar--light .md-faq__item[open] .md-faq__q-text { color:#f92869; }
+.md-pillar--light .md-faq__item:hover .md-faq__q::before,
+.md-pillar--light .md-faq__item[open] .md-faq__q::before { color:rgba(249,40,105,.7); }
+.md-pillar--light .md-faq__item:hover .md-faq__q::after,
+.md-pillar--light .md-faq__item[open] .md-faq__q::after { color:#f92869; }
+
+/* Theme footer light variant — when this preview page is the surface,
+   recolor the WP theme's dark footer chrome to match the cream canvas. */
+body:has(.md-pillar--light) footer { background:#f7f5f0 !important; color:#0a0a0a !important; }
+body:has(.md-pillar--light) footer a,
+body:has(.md-pillar--light) footer h3,
+body:has(.md-pillar--light) footer span,
+body:has(.md-pillar--light) footer p,
+body:has(.md-pillar--light) footer li,
+body:has(.md-pillar--light) footer div { color:#0a0a0a !important; }
+body:has(.md-pillar--light) footer a:hover { color:#f92869 !important; }
+body:has(.md-pillar--light) footer .footer-newsletter,
+body:has(.md-pillar--light) footer .copyright,
+body:has(.md-pillar--light) footer .social-footer { background:#f7f5f0 !important; }
+body:has(.md-pillar--light) footer .copyright a,
+body:has(.md-pillar--light) footer .social-footer a,
+body:has(.md-pillar--light) footer .social-footer .icon { color:#0a0a0a !important; }
+body:has(.md-pillar--light) footer hr,
+body:has(.md-pillar--light) footer .light-grey { border-color:rgba(10,10,10,.10) !important; background:rgba(10,10,10,.10) !important; }
+/* Theme footer's logo images often ship in white — flip via filter on light */
+body:has(.md-pillar--light) footer img[src*="logo-edit"],
+body:has(.md-pillar--light) footer img[src*="dgert-entidade-formadora-branco"] { filter:brightness(0); }

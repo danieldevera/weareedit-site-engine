@@ -336,7 +336,7 @@ class EDIT_Marketing_Digital_IA_Page {
             <!-- DGERT certification band — between catalog and tutors -->
             <a class="md-dgert-band" href="https://www.dgert.gov.pt/entidades-formadoras-certificadas" target="_blank" rel="noopener">
                 <div class="md-dgert-band__inner">
-                    <img class="md-dgert-band__logo" src="<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/dgert-entidade-formadora-branco.png' ); ?>" alt="DGERT — Entidade Formadora Certificada nº 18391" width="72" height="72">
+                    <img data-skip-wrap="1" class="md-dgert-band__logo" src="<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/dgert-entidade-formadora-branco.png' ); ?>" alt="DGERT — Entidade Formadora Certificada nº 18391" width="72" height="72">
                     <div class="md-dgert-band__copy">
                         <p class="md-dgert-band__eyebrow">DGERT nº 18391</p>
                         <h3 class="md-dgert-band__title">Entidade Formadora Certificada</h3>
