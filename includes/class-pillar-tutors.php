@@ -29,12 +29,18 @@ class EDIT_Pillar_Tutors {
      * returns no matches (defensive: prevents an empty section if the
      * profile_knowsabout field is unset on every tutor).
      */
-    public static function render_by_area( array $area_keywords, string $section_title = 'Aprende com profissionais em activo', int $limit = 15, array $fallback_slugs = [] ): string {
-        $slugs = self::get_tutor_slugs_by_area( $area_keywords, $limit );
-        if ( empty( $slugs ) && ! empty( $fallback_slugs ) ) {
-            $slugs = $fallback_slugs;
+    public static function render_by_area( array $area_keywords, string $section_title = 'Aprende com profissionais em activo', int $limit = 15, array $core_slugs = [] ): string {
+        // Merge strategy: dynamic results first (recency wins), then the core
+        // fallback list appended for any not already surfaced. Guarantees the
+        // hand-curated team always shows even when their profile_knowsabout
+        // ACF field is unset (true for most equipa posts pre-2026-05).
+        $dynamic = self::get_tutor_slugs_by_area( $area_keywords, $limit );
+        $merged  = $dynamic;
+        foreach ( $core_slugs as $slug ) {
+            if ( ! in_array( $slug, $merged, true ) ) $merged[] = $slug;
         }
-        return self::render( $slugs, $section_title );
+        $merged = array_slice( $merged, 0, $limit );
+        return self::render( $merged, $section_title );
     }
 
     /**

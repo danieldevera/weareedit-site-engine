@@ -95,59 +95,45 @@ class EDIT_Past_Date_Interceptor {
             $html
         );
 
-        // Date pattern: matches "15 de Abril de 2023", "15 de Abril, 2023",
-        // "15 Abril, 2023" or "15 Abril 2023" (with or without 'de' connector
-        // and with or without comma before the year).
-        $DATE = '(\d{1,2})(?:\s+de)?\s+([A-Za-zçÇãéíóÁÉÍÓ]+)(?:\s*,)?(?:\s+de)?\s+(\d{4})';
+        // Element-level approach: target each `<label>X</label> ... <div class=value>CONTENT</div>`
+        // pair, strip CONTENT to plain text, parse the date, and replace the
+        // ENTIRE CONTENT atomically. Survives:
+        //   - Inner <span class="desktoponly">2026</span>/<span class="mobileonly">'26</span>
+        //     wrappers that split month and year across text nodes.
+        //   - Single or double quotes on the value div class attribute.
+        //   - Trailing whitespace inside the value div.
 
-        // PHASE 1 — past dates after an "Início" label become "Brevemente".
-        // Use .{0,400} (with /s flag) so we can span across sibling tags —
-        // the label and the date often sit in separate elements
-        // (<label>Início</label> ... <div class="value">15 Abril, 2023</div>).
+        // PHASE 1 — Início label → past date inside .value div → "Brevemente"
         $html = preg_replace_callback(
-            '/(>\s*Início\s*<\/[a-z]+>.{0,400}?>)\s*' . $DATE . '/siu',
+            '#(<label[^>]*>\s*Início\s*</label>.{0,400}?<div\s+class=["\']value["\'][^>]*>)(.*?)(</div>)#siu',
             function ( $m ) {
-                if ( self::is_pt_date_past( $m[2], $m[3], $m[4] ) ) {
-                    return $m[1] . self::START_REPLACEMENT;
+                if ( self::value_div_holds_past_date( $m[2] ) ) {
+                    return $m[1] . self::START_REPLACEMENT . $m[3];
                 }
                 return $m[0];
             },
             $html
         );
 
-        // PHASE 2 — past dates after a "Fim" label become "A definir".
+        // PHASE 2 — Fim label → past date inside .value div → "A definir"
         $html = preg_replace_callback(
-            '/(>\s*Fim\s*<\/[a-z]+>.{0,400}?>)\s*' . $DATE . '/siu',
+            '#(<label[^>]*>\s*Fim\s*</label>.{0,400}?<div\s+class=["\']value["\'][^>]*>)(.*?)(</div>)#siu',
             function ( $m ) {
-                if ( self::is_pt_date_past( $m[2], $m[3], $m[4] ) ) {
-                    return $m[1] . self::END_REPLACEMENT;
+                if ( self::value_div_holds_past_date( $m[2] ) ) {
+                    return $m[1] . self::END_REPLACEMENT . $m[3];
                 }
                 return $m[0];
             },
             $html
         );
 
-        // PHASE 3 — `.course-date` (archive card) inherits start semantics.
+        // PHASE 3 — `.course-date` archive cards. Inline text node, simpler.
+        $CARD_DATE = '(\d{1,2})(?:\s+de)?\s+([A-Za-zçÇãéíóÁÉÍÓ]+)(?:\s*,)?(?:\s+de)?\s+(\d{4})';
         $html = preg_replace_callback(
-            '/(class="[^"]*course-date[^"]*"[^>]*>)([^<]*?)' . $DATE . '([^<]*)/iu',
+            '/(class="[^"]*course-date[^"]*"[^>]*>)([^<]*?)' . $CARD_DATE . '([^<]*)/iu',
             function ( $m ) {
                 if ( self::is_pt_date_past( $m[3], $m[4], $m[5] ) ) {
                     return $m[1] . $m[2] . self::START_REPLACEMENT . $m[6];
-                }
-                return $m[0];
-            },
-            $html
-        );
-
-        // PHASE 4 — fallback: any `.value` div that contains ONLY a date string
-        // (common pattern on product page sidebar) and is past → "Brevemente".
-        // Catches cases the labelled phases missed (label nested differently
-        // than expected, e.g. distant siblings).
-        $html = preg_replace_callback(
-            '/(<div class="value"[^>]*>)\s*' . $DATE . '\s*(<\/div>)/iu',
-            function ( $m ) {
-                if ( self::is_pt_date_past( $m[2], $m[3], $m[4] ) ) {
-                    return $m[1] . self::START_REPLACEMENT . $m[5];
                 }
                 return $m[0];
             },
@@ -166,6 +152,28 @@ class EDIT_Past_Date_Interceptor {
         }
 
         return $html;
+    }
+
+    /**
+     * Plain-text-strip the .value div content, parse for a PT date,
+     * return true if it's strictly before today.
+     *
+     * Handles markup like:
+     *   14 Fevereiro, <span class="desktoponly">2026</span><span class="mobileonly">'26</span>
+     * by reducing to: "14 Fevereiro, 2026 '26" → first matching PT date wins.
+     */
+    private static function value_div_holds_past_date( string $inner ): bool {
+        // Strip tags + decode entities, collapse whitespace.
+        $text = preg_replace( '/\s+/', ' ', trim( wp_strip_all_tags( $inner ) ) );
+        if ( $text === '' ) return false;
+        if ( ! preg_match(
+            '/(\d{1,2})(?:\s+de)?\s+([A-Za-zçÇãéíóÁÉÍÓ]+)(?:\s*,)?(?:\s+de)?\s+(\d{4})/u',
+            $text,
+            $m
+        ) ) {
+            return false;
+        }
+        return self::is_pt_date_past( $m[1], $m[2], $m[3] );
     }
 
     /**
