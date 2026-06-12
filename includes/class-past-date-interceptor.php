@@ -64,16 +64,11 @@ class EDIT_Past_Date_Interceptor {
     }
 
     private static function is_target_surface(): bool {
-        // /formacao/ archive
-        if ( is_post_type_archive( 'formacao' ) ) return true;
-        // /formacao/<slug>/ single
-        if ( is_singular( 'formacao' ) ) return true;
-        // pillar pages (have md-pillar wrapper, listed by SLUG)
-        $pillar_slugs = [ 'marketing-digital', 'data-science', 'curso-uxui-design', 'curso-inteligencia-artificial', 'curso-programacao' ];
-        foreach ( $pillar_slugs as $slug ) {
-            if ( is_page( $slug ) ) return true;
-        }
-        return false;
+        // ONLY /formacao/<slug>/ single course pages. Pillar pages were
+        // included until v1.5.428 but caused layout regressions on certain
+        // theme/cache combinations — pillar dates are short-form and rare,
+        // not worth the blast radius.
+        return is_singular( 'formacao' );
     }
 
     /**

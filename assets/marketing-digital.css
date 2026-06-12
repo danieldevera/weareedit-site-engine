@@ -51,8 +51,7 @@ body:has(.md-pillar) .breadcrumbs,
 body:has(.md-pillar) #breadcrumbs,
 body:has(.md-pillar) .yoast-breadcrumb,
 body:has(.md-pillar) .rank-math-breadcrumb,
-body:has(.md-pillar) .edit-breadcrumbs,
-body:has(.md-pillar) [class*="breadcrumb"] { display:none !important; }
+body:has(.md-pillar) .edit-breadcrumbs { display:none !important; }
 
 /* Newsletter strip: edge-to-edge on pillar pages — homepage spec keeps the
    56/80 breathing room; pillar pages butt the yellow against the dark
@@ -217,9 +216,9 @@ body:has(.md-pillar) #edit-newsletter-strip { margin:0 !important; }
    gradient veil so headline contrast is locked. CTA uses the locked
    site-wide swipe-cta yellow button (project_swipe_cta_standard).
    ───────────────────────────────────────────────────────────────────────── */
-.md-empresas-cta { position:relative; padding:120px 60px; background:#0a0a0a; overflow:hidden; text-align:left; }
-.md-empresas-cta__bg { position:absolute; inset:0; background-position:center 30%; background-size:cover; background-repeat:no-repeat; z-index:0; }
-.md-empresas-cta__veil { position:absolute; inset:0; background:linear-gradient(180deg, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0.82) 100%); z-index:1; }
+.md-empresas-cta { position:relative; padding:120px 60px; background:#0a0a0a; overflow:hidden; text-align:left; isolation:isolate; contain:layout paint; }
+.md-empresas-cta__bg { position:absolute; top:0; left:0; right:0; bottom:0; background-position:center 30%; background-size:cover; background-repeat:no-repeat; z-index:0; pointer-events:none; }
+.md-empresas-cta__veil { position:absolute; top:0; left:0; right:0; bottom:0; background:linear-gradient(180deg, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0.82) 100%); z-index:1; pointer-events:none; }
 .md-empresas-cta__inner { position:relative; z-index:2; max-width:1280px; margin:0 auto; }
 .md-empresas-cta__eyebrow { font-size:12px; letter-spacing:.22em; color:#ffdd06; font-weight:700; margin:0 0 18px; text-transform:uppercase; }
 .md-empresas-cta__title { font-size:clamp(36px,5vw,64px); line-height:1.05; font-weight:600; margin:0 0 28px; color:#fff; letter-spacing:-.02em; max-width:900px; }
