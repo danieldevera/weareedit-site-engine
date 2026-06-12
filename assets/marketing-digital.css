@@ -54,6 +54,11 @@ body:has(.md-pillar) .rank-math-breadcrumb,
 body:has(.md-pillar) .edit-breadcrumbs,
 body:has(.md-pillar) [class*="breadcrumb"] { display:none !important; }
 
+/* Newsletter strip: edge-to-edge on pillar pages — homepage spec keeps the
+   56/80 breathing room; pillar pages butt the yellow against the dark
+   final-CTA above and the footer below with zero gap. */
+body:has(.md-pillar) #edit-newsletter-strip { margin:0 !important; }
+
 /* Buttons */
 .md-btn { display:inline-flex; align-items:center; padding:14px 28px; font-size:15px; font-weight:600; text-decoration:none; border-radius:4px; transition:transform .2s ease, background .2s ease, color .2s ease; }
 .md-btn--primary { background:#ffdd06; color:#0a0a0a; }
