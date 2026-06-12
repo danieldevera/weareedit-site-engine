@@ -21,9 +21,13 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class EDIT_Marketing_Digital_IA_Page {
 
-    const SLUG       = 'digital-marketing-ia';
+    // SLUG changed from 'digital-marketing-ia' (v1.5.432-435) → 'preview-marketing-light' (v1.5.436)
+    // because the old slug collided with a theme rewrite rule that routed
+    // any /digital-marketing-*/ URL to the Bootcamp formacao_tipo archive.
+    // 'preview-' prefix is a safe namespace — no theme rules match it.
+    const SLUG       = 'preview-marketing-light';
     const TITLE      = 'Marketing Digital + IA — Variante Light (Preview)';
-    const OPTION_KEY = 'edit_seo_fix_marketing_digital_ia_page_id';
+    const OPTION_KEY = 'edit_seo_fix_marketing_digital_preview_light_page_id';
     const SHORTCODE  = 'edit_marketing_digital_ia_pillar';
 
     /** Featured tutors for this pillar (equipa slugs). Resolved by EDIT_Pillar_Tutors. */
@@ -229,7 +233,7 @@ class EDIT_Marketing_Digital_IA_Page {
         ob_start();
         ?>
         <!-- Preview ribbon — alternate light-theme variant of /marketing-digital/ for team approval. -->
-        <div class="md-preview-ribbon">VARIANTE LIGHT · PREVIEW INTERNO · /digital-marketing-ia/</div>
+        <div class="md-preview-ribbon">VARIANTE LIGHT · PREVIEW INTERNO · /preview-marketing-light/</div>
         <section class="md-pillar md-pillar--light">
             <div class="md-hero md-hero--video">
                 <video class="md-hero__video" autoplay muted loop playsinline aria-hidden="true">
