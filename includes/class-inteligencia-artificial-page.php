@@ -21,6 +21,8 @@ class EDIT_Inteligencia_Artificial_Page {
     const SHORTCODE  = 'edit_inteligencia_artificial_pillar';
 
     const TUTORS = [ 'naiara-back', 'daniel-devera', 'miguel-rao-vieira', 'catarina-sp-neves' ];
+    /** Keywords matched against tutors' ACF profile_knowsabout (comma-separated areas). */
+    const TUTOR_AREAS = [ 'Inteligência Artificial', 'Artificial Intelligence', 'Generative AI', 'IA Generativa', 'IA Aplicada', 'Machine Learning', 'LLM', 'Prompt Engineering', 'AI Engineering', 'Gen AI', 'Agentes Inteligentes', 'Data Science' ];
 
     const CATALOG = [
         'Bootcamps' => [
@@ -269,7 +271,7 @@ class EDIT_Inteligencia_Artificial_Page {
                 </div>
             </section>
 
-            <?php echo EDIT_Pillar_Tutors::render( self::TUTORS, 'Os tutores da EDIT. usam IA em projetos reais — desde geração de imagem e vídeo para cinema, a agentes inteligentes para marketing, a UX research assistido por LLMs.' ); ?>
+            <?php echo EDIT_Pillar_Tutors::render_by_area( self::TUTOR_AREAS, 'Os tutores da EDIT. usam IA em projetos reais — desde geração de imagem e vídeo para cinema, a agentes inteligentes para marketing, a UX research assistido por LLMs.', 15, self::TUTORS ); ?>
 
             <div id="faq" class="md-faq">
                 <h2 class="md-section-title">Perguntas <span>Frequentes</span></h2>

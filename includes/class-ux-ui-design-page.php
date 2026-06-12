@@ -23,6 +23,8 @@ class EDIT_UX_UI_Design_Page {
     const SHORTCODE  = 'edit_ux_ui_design_pillar';
 
     const TUTORS = [ 'mao-barros', 'miguel-rao-vieira', 'daniel-devera', 'naiara-back' ];
+    /** Keywords matched against tutors' ACF profile_knowsabout (comma-separated areas). */
+    const TUTOR_AREAS = [ 'UX Design', 'UI Design', 'UX/UI', 'UX', 'UI', 'Product Design', 'Design Thinking', 'UX Research', 'Research', 'Figma', 'Design Ops', 'Inteligência Artificial', 'Artificial Intelligence', 'Generative AI', 'IA Generativa' ];
 
     const CATALOG = [
         'Bootcamps' => [
@@ -277,7 +279,7 @@ class EDIT_UX_UI_Design_Page {
                 </div>
             </section>
 
-            <?php echo EDIT_Pillar_Tutors::render( self::TUTORS, 'Os tutores da EDIT. são UX leads, product designers e research specialists em activo nos produtos digitais que recrutam talento UX em Portugal.' ); ?>
+            <?php echo EDIT_Pillar_Tutors::render_by_area( self::TUTOR_AREAS, 'Os tutores da EDIT. são UX leads, product designers e research specialists em activo nos produtos digitais que recrutam talento UX em Portugal.', 15, self::TUTORS ); ?>
 
             <div id="faq" class="md-faq">
                 <h2 class="md-section-title">Perguntas <span>Frequentes</span></h2>

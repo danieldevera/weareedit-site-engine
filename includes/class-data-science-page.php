@@ -20,6 +20,8 @@ class EDIT_Data_Science_Page {
     const SHORTCODE  = 'edit_data_science_pillar';
 
     const TUTORS = [ 'carla-geraldes', 'naiara-back', 'daniel-devera', 'mao-barros' ];
+    /** Keywords matched against tutors' ACF profile_knowsabout (comma-separated areas). */
+    const TUTOR_AREAS = [ 'Data Science', 'Data &', 'Data Engineering', 'Analytics', 'Machine Learning', 'Business Intelligence', 'BI', 'Python', 'SQL', 'Inteligência Artificial', 'Artificial Intelligence', 'Generative AI', 'IA Generativa' ];
 
     const CATALOG = [
         'Bootcamps' => [
@@ -266,7 +268,7 @@ class EDIT_Data_Science_Page {
                 </div>
             </section>
 
-            <?php echo EDIT_Pillar_Tutors::render( self::TUTORS, 'Os tutores da EDIT. são data scientists, analytics leads e engineers em activo em produtos e empresas que processam dados a sério.' ); ?>
+            <?php echo EDIT_Pillar_Tutors::render_by_area( self::TUTOR_AREAS, 'Os tutores da EDIT. são data scientists, analytics leads e engineers em activo em produtos e empresas que processam dados a sério.', 15, self::TUTORS ); ?>
 
             <div id="faq" class="md-faq">
                 <h2 class="md-section-title">Perguntas <span>Frequentes</span></h2>

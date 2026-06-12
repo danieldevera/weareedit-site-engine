@@ -21,6 +21,8 @@ class EDIT_Programacao_Page {
     const SHORTCODE  = 'edit_programacao_pillar';
 
     const TUTORS = [ 'daniel-devera', 'naiara-back', 'miguel-rao-vieira', 'mao-barros' ];
+    /** Keywords matched against tutors' ACF profile_knowsabout (comma-separated areas). */
+    const TUTOR_AREAS = [ 'Programação', 'Front-End', 'Back-End', 'Full-Stack', 'Engineering', 'Development', 'DevOps', 'Webflow', 'Web Dev', 'JavaScript', 'React', 'Python', 'Data Engineering', 'Inteligência Artificial', 'Artificial Intelligence', 'AI Engineering', 'Prompt Engineering' ];
 
     const CATALOG = [
         'Cursos' => [
@@ -268,7 +270,7 @@ class EDIT_Programacao_Page {
                 </div>
             </section>
 
-            <?php echo EDIT_Pillar_Tutors::render( self::TUTORS, 'Os tutores da EDIT. são front-end engineers, data engineers e developers em activo — em produtos, agências e em projetos próprios.' ); ?>
+            <?php echo EDIT_Pillar_Tutors::render_by_area( self::TUTOR_AREAS, 'Os tutores da EDIT. são front-end engineers, data engineers e developers em activo — em produtos, agências e em projetos próprios.', 15, self::TUTORS ); ?>
 
             <div id="faq" class="md-faq">
                 <h2 class="md-section-title">Perguntas <span>Frequentes</span></h2>
