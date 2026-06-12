@@ -49,6 +49,16 @@
   .signoff strong { color:var(--ink); }
   a { color:var(--ink); text-decoration:underline; text-decoration-color:var(--pink); text-decoration-thickness:2px; text-underline-offset:3px; }
   a:hover { color:var(--pink); }
+
+  /* Preview link card */
+  .preview-link { display:flex; align-items:center; justify-content:space-between; gap:24px; padding:24px 28px; background:#f7f5f0; border:1px solid rgba(10,10,10,0.10); border-radius:6px; text-decoration:none; color:var(--ink); margin:32px 0; transition:border-color 0.15s, transform 0.15s; }
+  .preview-link:hover { border-color:var(--pink); transform:translateY(-1px); color:var(--ink); }
+  .preview-link .meta { flex:1; }
+  .preview-link .meta .label { font-size:11px; letter-spacing:0.22em; color:var(--pink); font-weight:700; text-transform:uppercase; margin-bottom:6px; display:block; }
+  .preview-link .meta .url { font-size:17px; font-weight:700; word-break:break-all; }
+  .preview-link .meta .note { font-size:13px; color:var(--grey); margin-top:4px; }
+  .preview-link .arrow { font-size:28px; color:var(--ink); flex-shrink:0; transition:transform 0.15s; }
+  .preview-link:hover .arrow { transform:translate(3px, -3px); color:var(--pink); }
 </style>
 </head>
 <body>
@@ -106,6 +116,18 @@
     <strong>Tese central</strong>
     <p>A coabitação dos dois registos não é uma quebra de marca. É um vocabulário expandido — a mesma EDIT., a falar duas línguas diferentes para dois momentos diferentes da mesma decisão de compra.</p>
   </div>
+
+  <h2>Ver a variante em produção</h2>
+  <p>A versão light está implementada na pillar de Marketing Digital como surface de preview. Use o link abaixo para abrir num separador novo e comparar lado a lado com a versão canónica em <a href="https://weareedit.io/marketing-digital/" target="_blank">/marketing-digital/</a>.</p>
+
+  <a class="preview-link" href="https://weareedit.io/preview-marketing-light/" target="_blank">
+    <div class="meta">
+      <span class="label">Preview Interno</span>
+      <span class="url">weareedit.io/preview-marketing-light/</span>
+      <p class="note">noindex/nofollow · marcada como variante light dentro do plugin</p>
+    </div>
+    <span class="arrow">↗</span>
+  </a>
 
   <h2>O que precisamos validar</h2>
   <ul>
