@@ -56,7 +56,7 @@ class EDIT_Pillar_Courses {
     public static function render_card( string $slug, string $group_hint = '' ): string {
         $map = self::get_card_map();
         if ( isset( $map[ $slug ] ) ) return self::rewrite_for_pillar( $map[ $slug ], $slug, $group_hint );
-        return self::render_fallback_card( $slug );
+        return self::render_fallback_card( $slug, $group_hint );
     }
 
     /**
@@ -156,7 +156,7 @@ class EDIT_Pillar_Courses {
      * archived, or hidden from the filter). Same outer wrapper so it fits
      * the same .row / col-md-4 grid as the real cards.
      */
-    private static function render_fallback_card( string $slug ): string {
+    private static function render_fallback_card( string $slug, string $group_hint = '' ): string {
         $post = get_page_by_path( $slug, OBJECT, 'formacao' );
         if ( ! $post || $post->post_status !== 'publish' ) return '';
 
@@ -179,6 +179,21 @@ class EDIT_Pillar_Courses {
             }
         }
         $cfg = $type_map[ $type_key ];
+
+        // Authoritative override: when the pillar tells us the group
+        // ("Workshops"/"Bootcamps"/"Cursos"/"Crossover IA"), it wins over
+        // whatever the post's mis-set formacao_tipo taxonomy says.
+        $group_key = strtolower( trim( $group_hint ) );
+        if ( $group_key && isset( self::GROUP_BG[ $group_key ] ) ) {
+            $cfg['bg'] = home_url( self::GROUP_BG[ $group_key ] );
+            if ( $group_key === 'cursos' && (
+                strpos( $slug, '-online' ) !== false ||
+                strpos( $slug, '-remote' ) !== false ||
+                strpos( $slug, 'remote-learning' ) !== false
+            ) ) {
+                $cfg['bg'] = home_url( '/wp-content/uploads/2020/03/bg-remote.svg' );
+            }
+        }
 
         ob_start();
         ?>
