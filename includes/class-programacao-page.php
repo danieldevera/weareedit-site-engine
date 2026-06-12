@@ -270,7 +270,7 @@ class EDIT_Programacao_Page {
                 </div>
             </section>
 
-            <?php echo EDIT_Pillar_Tutors::render_by_area( self::TUTOR_AREAS, 'Os tutores da EDIT. são front-end engineers, data engineers e developers em activo — em produtos, agências e em projetos próprios.', 15, self::TUTORS ); ?>
+            <?php echo EDIT_Pillar_Tutors::render_by_area( self::TUTOR_AREAS, 'Os tutores da EDIT. são front-end engineers, data engineers e developers em activo — em produtos, agências e em projetos próprios.', 20, self::TUTORS ); ?>
 
             <div id="faq" class="md-faq">
                 <h2 class="md-section-title">Perguntas <span>Frequentes</span></h2>

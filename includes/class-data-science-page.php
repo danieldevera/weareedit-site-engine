@@ -268,7 +268,7 @@ class EDIT_Data_Science_Page {
                 </div>
             </section>
 
-            <?php echo EDIT_Pillar_Tutors::render_by_area( self::TUTOR_AREAS, 'Os tutores da EDIT. são data scientists, analytics leads e engineers em activo em produtos e empresas que processam dados a sério.', 15, self::TUTORS ); ?>
+            <?php echo EDIT_Pillar_Tutors::render_by_area( self::TUTOR_AREAS, 'Os tutores da EDIT. são data scientists, analytics leads e engineers em activo em produtos e empresas que processam dados a sério.', 20, self::TUTORS ); ?>
 
             <div id="faq" class="md-faq">
                 <h2 class="md-section-title">Perguntas <span>Frequentes</span></h2>

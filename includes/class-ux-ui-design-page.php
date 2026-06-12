@@ -279,7 +279,7 @@ class EDIT_UX_UI_Design_Page {
                 </div>
             </section>
 
-            <?php echo EDIT_Pillar_Tutors::render_by_area( self::TUTOR_AREAS, 'Os tutores da EDIT. são UX leads, product designers e research specialists em activo nos produtos digitais que recrutam talento UX em Portugal.', 15, self::TUTORS ); ?>
+            <?php echo EDIT_Pillar_Tutors::render_by_area( self::TUTOR_AREAS, 'Os tutores da EDIT. são UX leads, product designers e research specialists em activo nos produtos digitais que recrutam talento UX em Portugal.', 20, self::TUTORS ); ?>
 
             <div id="faq" class="md-faq">
                 <h2 class="md-section-title">Perguntas <span>Frequentes</span></h2>

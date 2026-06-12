@@ -29,11 +29,10 @@ class EDIT_Pillar_Tutors {
      * returns no matches (defensive: prevents an empty section if the
      * profile_knowsabout field is unset on every tutor).
      */
-    public static function render_by_area( array $area_keywords, string $section_title = 'Aprende com profissionais em activo', int $limit = 15, array $core_slugs = [] ): string {
+    public static function render_by_area( array $area_keywords, string $section_title = 'Aprende com profissionais em activo', int $limit = 20, array $core_slugs = [] ): string {
         // Merge strategy: dynamic results first (recency wins), then the core
         // fallback list appended for any not already surfaced. Guarantees the
-        // hand-curated team always shows even when their profile_knowsabout
-        // ACF field is unset (true for most equipa posts pre-2026-05).
+        // hand-curated team always shows even when no cargo/knowsAbout match.
         $dynamic = self::get_tutor_slugs_by_area( $area_keywords, $limit );
         $merged  = $dynamic;
         foreach ( $core_slugs as $slug ) {
@@ -44,17 +43,26 @@ class EDIT_Pillar_Tutors {
     }
 
     /**
-     * Query equipa posts and filter by keywords matched against the
-     * comma-separated `profile_knowsabout` ACF textarea field.
+     * Query equipa posts and filter by keywords matched against:
+     *   1. ACF `profile_knowsabout` (comma-separated areas) — primary signal
+     *   2. ACF `hero_cargo` (job title) — fallback signal (e.g. "Paid Media
+     *      Specialist" matches Marketing Digital pillar keywords)
+     *   3. ACF `hero_empresa` (employer) — softest signal
+     *
+     * Most equipa posts pre-2026-05 have profile_knowsabout unset, so the
+     * cargo fallback dramatically broadens the pool. Cargo is set on
+     * virtually every tutor.
      */
-    public static function get_tutor_slugs_by_area( array $keywords, int $limit = 15 ): array {
+    public static function get_tutor_slugs_by_area( array $keywords, int $limit = 20 ): array {
         if ( empty( $keywords ) ) return [];
         // Pull a generous pool, then filter — equipa CPT has ~95 posts as of 2026-06-12.
+        // Order by post_modified (last edit) so freshly-touched profiles surface
+        // first — covers both newly-created and recently-updated tutors.
         $posts = get_posts( [
             'post_type'      => 'equipa',
             'posts_per_page' => 200,
             'post_status'    => 'publish',
-            'orderby'        => 'date',
+            'orderby'        => 'modified',
             'order'          => 'DESC',
             'no_found_rows'  => true,
         ] );
@@ -62,16 +70,24 @@ class EDIT_Pillar_Tutors {
         $matched = [];
         foreach ( $posts as $p ) {
             if ( count( $matched ) >= $limit ) break;
+
+            // Aggregate searchable surface: knowsAbout + cargo + empresa.
+            $haystack_parts = [];
             $knows = function_exists( 'get_field' ) ? get_field( 'profile_knowsabout', $p->ID ) : get_post_meta( $p->ID, 'profile_knowsabout', true );
-            if ( ! is_string( $knows ) || $knows === '' ) continue;
-            $areas = array_filter( array_map( 'trim', explode( ',', $knows ) ) );
-            foreach ( $areas as $a ) {
-                foreach ( $keywords as $kw ) {
-                    if ( $kw === '' ) continue;
-                    if ( stripos( $a, $kw ) !== false ) {
-                        $matched[ $p->post_name ] = true;
-                        continue 3; // next tutor
-                    }
+            if ( is_string( $knows ) && $knows !== '' ) $haystack_parts[] = $knows;
+            $cargo = function_exists( 'get_field' ) ? get_field( 'hero_cargo', $p->ID ) : get_post_meta( $p->ID, 'hero_cargo', true );
+            if ( is_string( $cargo ) && $cargo !== '' ) $haystack_parts[] = $cargo;
+            $empresa = function_exists( 'get_field' ) ? get_field( 'hero_empresa', $p->ID ) : get_post_meta( $p->ID, 'hero_empresa', true );
+            if ( is_string( $empresa ) && $empresa !== '' ) $haystack_parts[] = $empresa;
+
+            if ( empty( $haystack_parts ) ) continue;
+            $haystack = implode( ' | ', $haystack_parts );
+
+            foreach ( $keywords as $kw ) {
+                if ( $kw === '' ) continue;
+                if ( stripos( $haystack, $kw ) !== false ) {
+                    $matched[ $p->post_name ] = true;
+                    break;
                 }
             }
         }
@@ -111,6 +127,11 @@ class EDIT_Pillar_Tutors {
                             <a href="<?php echo esc_url( $t['url'] ); ?>">
                                 <div class="adaptImage">
                                     <div class="adaptImage__inner">
+                                        <?php if ( ! empty( $t['flag'] ) ) : ?>
+                                            <div class="bandeiraPais">
+                                                <img src="<?php echo esc_url( $t['flag'] ); ?>" alt="<?php echo esc_attr( $t['name'] ); ?> country" loading="lazy">
+                                            </div>
+                                        <?php endif; ?>
                                         <div class="adaptImage__aspect" style="padding-bottom:145%;">
                                             <img class="adaptImage__image" src="<?php echo esc_url( $t['photo'] ); ?>" alt="<?php echo esc_attr( $t['name'] ); ?>" loading="lazy">
                                         </div>
@@ -189,11 +210,20 @@ class EDIT_Pillar_Tutors {
             $empresa = (string) ( get_field( 'hero_empresa', $pid ) ?: get_field( 'empresa', $pid ) );
         }
 
+        // Nationality flag — defer to edit-profiles plugin's resolver which
+        // handles legacy ACF field aliases + ISO-code lookup + the UK
+        // underscore quirk (`uk_.png`).
+        $flag = '';
+        if ( class_exists( 'EDIT_Team_Listing' ) && method_exists( 'EDIT_Team_Listing', 'resolve_country_flag' ) ) {
+            $flag = (string) EDIT_Team_Listing::resolve_country_flag( $pid );
+        }
+
         return [
             'name'    => wp_strip_all_tags( $post->post_title ),
             'cargo'   => $cargo,
             'empresa' => $empresa,
             'photo'   => $photo,
+            'flag'    => $flag,
             'url'     => get_permalink( $post ),
         ];
     }

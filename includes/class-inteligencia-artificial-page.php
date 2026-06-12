@@ -271,7 +271,7 @@ class EDIT_Inteligencia_Artificial_Page {
                 </div>
             </section>
 
-            <?php echo EDIT_Pillar_Tutors::render_by_area( self::TUTOR_AREAS, 'Os tutores da EDIT. usam IA em projetos reais — desde geração de imagem e vídeo para cinema, a agentes inteligentes para marketing, a UX research assistido por LLMs.', 15, self::TUTORS ); ?>
+            <?php echo EDIT_Pillar_Tutors::render_by_area( self::TUTOR_AREAS, 'Os tutores da EDIT. usam IA em projetos reais — desde geração de imagem e vídeo para cinema, a agentes inteligentes para marketing, a UX research assistido por LLMs.', 20, self::TUTORS ); ?>
 
             <div id="faq" class="md-faq">
                 <h2 class="md-section-title">Perguntas <span>Frequentes</span></h2>
