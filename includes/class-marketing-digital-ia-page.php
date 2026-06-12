@@ -264,7 +264,7 @@ class EDIT_Marketing_Digital_IA_Page {
                 <div class="md-hero__veil" aria-hidden="true"></div>
                 <div class="md-hero__inner">
                     <a class="dgert-hero-pill" href="https://www.dgert.gov.pt/entidades-formadoras-certificadas" target="_blank" rel="noopener noreferrer" aria-label="DGERT — Entidade Formadora Certificada">
-                        <img width="1024" height="483" src="<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/dgert-entidade-formadora-branco.png' ); ?>" alt="DGERT" loading="eager">
+                        <img data-skip-wrap="1" width="1024" height="483" src="<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/dgert-entidade-formadora-branco.png' ); ?>" alt="DGERT" loading="eager">
                         <span class="dgert-hero-pill-text">Entidade Formadora Certificada</span>
                         <span class="dgert-hero-pill-arrow" aria-hidden="true">↗</span>
                     </a>
