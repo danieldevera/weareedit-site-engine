@@ -210,6 +210,27 @@ body:has(.md-pillar) #edit-newsletter-strip { margin:0 !important; }
     .md-dgert-band__arrow { display:none; }
 }
 
+/* ─────────────────────────────────────────────────────────────────────────
+   EDIT. PARA EMPRESAS CTA — cinematic banner driving traffic to
+   empresas.weareedit.io. Placed between catalog and tutors on every pillar.
+   BG: empresas-hero.jpg (same image as empresas subdomain hero), with a
+   gradient veil so headline contrast is locked. CTA uses the locked
+   site-wide swipe-cta yellow button (project_swipe_cta_standard).
+   ───────────────────────────────────────────────────────────────────────── */
+.md-empresas-cta { position:relative; padding:120px 60px; background:#0a0a0a; overflow:hidden; text-align:left; }
+.md-empresas-cta__bg { position:absolute; inset:0; background-position:center 30%; background-size:cover; background-repeat:no-repeat; z-index:0; }
+.md-empresas-cta__veil { position:absolute; inset:0; background:linear-gradient(180deg, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0.82) 100%); z-index:1; }
+.md-empresas-cta__inner { position:relative; z-index:2; max-width:1280px; margin:0 auto; }
+.md-empresas-cta__eyebrow { font-size:12px; letter-spacing:.22em; color:#ffdd06; font-weight:700; margin:0 0 18px; text-transform:uppercase; }
+.md-empresas-cta__title { font-size:clamp(36px,5vw,64px); line-height:1.05; font-weight:600; margin:0 0 28px; color:#fff; letter-spacing:-.02em; max-width:900px; }
+.md-empresas-cta__title .md-dot--pink { color:#f92869; }
+.md-empresas-cta__lede { font-size:18px; line-height:1.5; color:rgba(255,255,255,.85); max-width:760px; margin:0 0 36px; }
+.md-empresas-cta .btn.btn-yellow.swipe-cta { display:inline-flex; align-items:center; justify-content:center; padding:18px 40px; background:#ffdd06; color:#0a0a0a; font-family:inherit; font-size:15px; font-weight:600; letter-spacing:-.005em; text-decoration:none; border-radius:0; border:0; position:relative; overflow:hidden; isolation:isolate; z-index:0; cursor:pointer; }
+.md-empresas-cta .btn.btn-yellow.swipe-cta .swipe-label { position:relative; z-index:4; transition:color 0.18s ease 0.50s; }
+@media (max-width:768px) {
+    .md-empresas-cta { padding:72px 24px; }
+}
+
 /* Reusable 2-col section-header pattern (eyebrow + h2 LEFT, lead body RIGHT).
    Canonical EDIT. editorial pattern. Use on catalog, tutors, FAQ, final-CTA. */
 .md-section-header { display:grid; grid-template-columns:1fr 1.4fr; gap:80px; align-items:start; }

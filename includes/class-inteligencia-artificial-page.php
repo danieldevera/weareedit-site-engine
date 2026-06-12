@@ -257,6 +257,18 @@ class EDIT_Inteligencia_Artificial_Page {
                 <?php endforeach; ?>
             </div>
 
+            <!-- EDIT. para Empresas — cinematic banner driving traffic to empresas subdomain -->
+            <section class="md-empresas-cta">
+                <div class="md-empresas-cta__bg" style="background-image:url('<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/empresas-hero.jpg' ); ?>');" aria-hidden="true"></div>
+                <div class="md-empresas-cta__veil" aria-hidden="true"></div>
+                <div class="md-empresas-cta__inner">
+                    <p class="md-empresas-cta__eyebrow">EDIT. PARA EMPRESAS</p>
+                    <h2 class="md-empresas-cta__title">Sobe o nível da tua equipa digital<span class="md-dot md-dot--pink">.</span></h2>
+                    <p class="md-empresas-cta__lede">Bootcamps, cursos e workshops à medida da tua organização. DGERT-certificados, SIFIDE-elegíveis, leccionados por marketers em activo nas marcas que recrutam talento digital em Portugal.</p>
+                    <a class="btn btn-yellow swipe-cta" href="https://empresas.weareedit.io/" target="_blank" rel="noopener"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Conhecer EDIT. Empresas →</span></a>
+                </div>
+            </section>
+
             <?php echo EDIT_Pillar_Tutors::render( self::TUTORS, 'Os tutores da EDIT. usam IA em projetos reais — desde geração de imagem e vídeo para cinema, a agentes inteligentes para marketing, a UX research assistido por LLMs.' ); ?>
 
             <div id="faq" class="md-faq">
