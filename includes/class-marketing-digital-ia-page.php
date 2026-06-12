@@ -140,6 +140,22 @@ class EDIT_Marketing_Digital_IA_Page {
         add_action( 'wp_enqueue_scripts',  [ __CLASS__, 'enqueue_assets' ] );
         // Preview-only — no schema emission, no SERP indexing.
         add_action( 'wp_head',             [ __CLASS__, 'emit_noindex' ], 1 );
+        // Belt + suspenders: ALWAYS render the pillar shortcode output when
+        // viewing this preview page, regardless of whether post_content was
+        // populated with the shortcode. Survives the case where
+        // ensure_page_exists hasn't fired with new code yet (post sits with
+        // empty content + theme falls back to rendering related-courses).
+        add_filter( 'the_content',         [ __CLASS__, 'force_content' ], 99 );
+    }
+
+    public static function force_content( $content ) {
+        if ( is_admin() ) return $content;
+        if ( ! is_page( self::SLUG ) ) return $content;
+        if ( ! in_the_loop() || ! is_main_query() ) return $content;
+        // If post_content already has our shortcode, do_shortcode will
+        // render it via standard WP path — don't double-render.
+        if ( strpos( $content, '[' . self::SHORTCODE . ']' ) !== false ) return $content;
+        return self::render_shortcode();
     }
 
     public static function emit_noindex(): void {
