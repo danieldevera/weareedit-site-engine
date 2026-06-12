@@ -363,3 +363,98 @@ body.page-template-page-marketing-digital .post-edit-link { display:none !import
     .md-tutores-section .container { padding:0 24px; }
     .md-faq__q { font-size:16px; padding:20px 24px; padding-right:50px; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LIGHT THEME VARIANT — /digital-marketing-ia/ preview surface.
+   Scoped to .md-pillar--light so the dark canonical /marketing-digital/
+   page is untouched. If approved, propagate the same variant tokens to
+   each pillar by adding md-pillar--light to its root section.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Preview ribbon — sticky top bar so the team always knows this is preview */
+.md-preview-ribbon {
+    position:sticky; top:0; z-index:9999;
+    background:#f92869; color:#fff;
+    padding:10px 24px; font-size:12px; font-weight:700; letter-spacing:.18em;
+    text-transform:uppercase; text-align:center;
+    box-shadow:0 2px 8px rgba(0,0,0,.18);
+}
+
+/* Canvas → cream/off-white */
+.md-pillar--light { background:#f7f5f0; color:#0a0a0a; }
+
+/* Hero — keep waves video but flip the veil to a light tint with a bias
+   toward the bottom so headline against the upper darker frames stays
+   legible while the lower copy sits on a light wash. */
+.md-pillar--light .md-hero { background:#f7f5f0; }
+.md-pillar--light .md-hero__veil {
+    background:linear-gradient(180deg, rgba(247,245,240,0) 0%, rgba(247,245,240,.62) 55%, rgba(247,245,240,.92) 100%);
+}
+.md-pillar--light .md-hero__video { opacity:.35; }
+/* Hero text → dark */
+.md-pillar--light .md-hero__title--xl { color:#0a0a0a !important; }
+.md-pillar--light .md-hero__lede--yellow { color:#0a0a0a !important; }
+/* Hero DGERT pill → use DARK logo + dark text */
+.md-pillar--light .md-hero .dgert-hero-pill { color:#0a0a0a !important; }
+.md-pillar--light .md-hero .dgert-hero-pill img { filter:invert(1) hue-rotate(180deg); }
+.md-pillar--light .md-hero .dgert-hero-pill-text,
+.md-pillar--light .md-hero .dgert-hero-pill-arrow { color:#0a0a0a !important; }
+/* Hero reviews badge → dark legible */
+.md-pillar--light .md-hero .hero-reviews { color:#444 !important; }
+.md-pillar--light .md-hero .hero-reviews .hr-rating { color:#0a0a0a !important; }
+.md-pillar--light .md-hero .hero-reviews .hr-count { color:#444 !important; }
+
+/* Intro long-form block */
+.md-pillar--light .md-intro { background:#f7f5f0; }
+.md-pillar--light .md-intro__eyebrow { color:#9a8e74; }
+.md-pillar--light .md-intro__title { color:#0a0a0a; }
+.md-pillar--light .md-intro__title span { color:#f92869; }
+.md-pillar--light .md-intro__lead { color:#2a2a2a; }
+.md-pillar--light .md-intro__block-title { color:#0a0a0a; }
+.md-pillar--light .md-intro__block-body { color:#2a2a2a; }
+.md-pillar--light .md-intro__block { border-top:1px solid rgba(10,10,10,.10); }
+
+/* Catalog section header */
+.md-pillar--light .md-catalog { background:#f7f5f0; }
+.md-pillar--light .md-section-header__eyebrow { color:#9a8e74; }
+.md-pillar--light .md-section-header__title { color:#0a0a0a; }
+.md-pillar--light .md-section-header__title span { color:#f92869; }
+.md-pillar--light .md-section-header__lead { color:#2a2a2a; }
+.md-pillar--light .md-section-title { color:#0a0a0a; }
+.md-pillar--light .md-section-title span { color:#f92869; }
+.md-pillar--light .md-group__title { color:#9a8e74; }
+
+/* DGERT band — light variant: white card on cream canvas */
+.md-pillar--light .md-dgert-band {
+    background:#fff; border-top:1px solid rgba(10,10,10,.08); border-bottom:1px solid rgba(10,10,10,.08);
+}
+.md-pillar--light .md-dgert-band:hover { background:#fafafa; }
+.md-pillar--light .md-dgert-band__inner { color:#0a0a0a; }
+.md-pillar--light .md-dgert-band__eyebrow { color:#9a8e74; }
+.md-pillar--light .md-dgert-band__title { color:#0a0a0a; }
+.md-pillar--light .md-dgert-band__sub { color:#444; }
+.md-pillar--light .md-dgert-band__logo { filter:invert(1) hue-rotate(180deg); }
+.md-pillar--light .md-dgert-band__arrow { color:#9a8e74; }
+.md-pillar--light .md-dgert-band:hover .md-dgert-band__arrow { color:#f92869; }
+
+/* Empresas CTA banner — stays cinematic-dark (intentional visual rest) */
+
+/* Tutores section */
+.md-pillar--light .md-tutores-section { background:#f7f5f0; }
+.md-pillar--light .md-tutores-section .md-section-title { color:#0a0a0a; }
+.md-pillar--light .md-tutores-section .md-section-title span { color:#f92869; }
+.md-pillar--light .md-tutores__lede { color:#2a2a2a; }
+
+/* FAQ */
+.md-pillar--light .md-faq { background:#fff; border-top:1px solid rgba(10,10,10,.08); border-bottom:1px solid rgba(10,10,10,.08); }
+.md-pillar--light .md-faq .md-section-title { color:#0a0a0a; }
+.md-pillar--light .md-faq .md-section-title span { color:#f92869; }
+.md-pillar--light .md-faq__item { border-bottom:1px solid rgba(10,10,10,.10); }
+.md-pillar--light .md-faq__q { color:#0a0a0a; }
+.md-pillar--light .md-faq__q-text { color:#0a0a0a; }
+.md-pillar--light .md-faq__a { color:#2a2a2a; }
+
+/* Final CTA — keep dark for visual hierarchy (last surface before footer) */
+.md-pillar--light .md-final-cta { background:#0a0a0a; color:#fff; padding:80px 60px; }
+.md-pillar--light .md-final-cta h2 { color:#fff; }
+.md-pillar--light .md-final-cta p { color:rgba(255,255,255,.75); }
