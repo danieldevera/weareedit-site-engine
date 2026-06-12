@@ -279,6 +279,124 @@ class EDIT_GBP_Publisher {
     }
 
     /* ─────────────────────────────────────────────────────────────────────
+       API helpers
+       ────────────────────────────────────────────────────────────────── */
+
+    /**
+     * Authenticated GET against the GBP REST APIs. Returns decoded JSON array
+     * on success, WP_Error on failure.
+     */
+    public static function api_get( string $url ) {
+        $token = self::access_token();
+        if ( ! $token ) return new WP_Error( 'edit_gbp_no_token', 'Not connected to GBP.' );
+        $res = wp_remote_get( $url, [
+            'timeout' => 15,
+            'headers' => [
+                'Authorization' => 'Bearer ' . $token,
+                'Accept'        => 'application/json',
+            ],
+        ] );
+        if ( is_wp_error( $res ) ) return $res;
+        $code = (int) wp_remote_retrieve_response_code( $res );
+        $body = json_decode( wp_remote_retrieve_body( $res ), true );
+        if ( $code >= 400 ) {
+            $msg = is_array( $body ) && isset( $body['error']['message'] ) ? $body['error']['message'] : 'HTTP ' . $code;
+            return new WP_Error( 'edit_gbp_api_' . $code, $msg, $body );
+        }
+        return is_array( $body ) ? $body : [];
+    }
+
+    /**
+     * Fetch the list of GBP accounts (location groups) the connected user
+     * has access to.
+     */
+    public static function fetch_accounts() {
+        return self::api_get( self::API_ACCOUNTS_BASE . '/accounts' );
+    }
+
+    /**
+     * Fetch locations for a given account_id. Returns array of location
+     * objects (each has 'name' like "locations/12345", 'title', address,
+     * etc.). The fields we want must be in readMask query param.
+     */
+    public static function fetch_locations_for_account( string $account_id ) {
+        $url = self::API_BUSINESS_INFO . '/' . $account_id . '/locations'
+             . '?readMask=name,title,storefrontAddress,phoneNumbers,categories,websiteUri,openInfo,metadata';
+        return self::api_get( $url );
+    }
+
+    /**
+     * High-level: get a flat list of all locations across all accounts the
+     * user can access. Cached for 1 hour to avoid hammering the API on
+     * every admin page load. Pass $force=true to bypass cache.
+     *
+     * Returns array of normalised entries:
+     *   [ ['account_id'=>'accounts/X', 'location_id'=>'locations/Y',
+     *      'title'=>..., 'address'=>..., 'phone'=>..., 'category'=>...,
+     *      'status'=>..., 'website'=>...], ... ]
+     */
+    public static function get_all_locations( bool $force = false ): array {
+        if ( ! $force ) {
+            $cached = get_option( self::OPT_LOCATIONS_CACHE );
+            if ( is_array( $cached ) && isset( $cached['expires_at'] ) && $cached['expires_at'] > time() ) {
+                return is_array( $cached['data'] ?? null ) ? $cached['data'] : [];
+            }
+        }
+
+        $out = [];
+        $accounts_res = self::fetch_accounts();
+        if ( is_wp_error( $accounts_res ) ) return [];
+        $accounts = $accounts_res['accounts'] ?? [];
+
+        foreach ( $accounts as $acct ) {
+            $acct_id   = (string) ( $acct['name'] ?? '' );      // "accounts/12345"
+            $acct_name = (string) ( $acct['accountName'] ?? '' );
+            if ( ! $acct_id ) continue;
+            $locs_res = self::fetch_locations_for_account( $acct_id );
+            if ( is_wp_error( $locs_res ) ) continue;
+            $locations = $locs_res['locations'] ?? [];
+            foreach ( $locations as $loc ) {
+                $address_lines = [];
+                if ( ! empty( $loc['storefrontAddress']['addressLines'] ) ) {
+                    $address_lines = $loc['storefrontAddress']['addressLines'];
+                }
+                $address_suffix = trim( implode( ', ', array_filter( [
+                    $loc['storefrontAddress']['postalCode']      ?? '',
+                    $loc['storefrontAddress']['locality']        ?? '',
+                    $loc['storefrontAddress']['regionCode']      ?? '',
+                ] ) ), ', ' );
+                $address = trim( implode( ', ', array_filter( [
+                    implode( ', ', $address_lines ),
+                    $address_suffix,
+                ] ) ), ', ' );
+
+                $out[] = [
+                    'account_id'   => $acct_id,
+                    'account_name' => $acct_name,
+                    'location_id'  => (string) ( $loc['name'] ?? '' ),       // "locations/Y"
+                    'title'        => (string) ( $loc['title'] ?? '' ),
+                    'address'      => $address,
+                    'locality'     => (string) ( $loc['storefrontAddress']['locality'] ?? '' ),
+                    'region'       => (string) ( $loc['storefrontAddress']['regionCode'] ?? '' ),
+                    'phone'        => (string) ( $loc['phoneNumbers']['primaryPhone'] ?? '' ),
+                    'website'      => (string) ( $loc['websiteUri'] ?? '' ),
+                    'category'     => (string) ( $loc['categories']['primaryCategory']['displayName'] ?? '' ),
+                    'status'       => (string) ( $loc['openInfo']['status'] ?? '' ),
+                    'maps_uri'     => (string) ( $loc['metadata']['mapsUri'] ?? '' ),
+                    'place_id'     => (string) ( $loc['metadata']['placeId'] ?? '' ),
+                ];
+            }
+        }
+
+        update_option( self::OPT_LOCATIONS_CACHE, [
+            'data'       => $out,
+            'expires_at' => time() + 3600, // 1h cache
+        ], false );
+
+        return $out;
+    }
+
+    /* ─────────────────────────────────────────────────────────────────────
        Admin UI
        ────────────────────────────────────────────────────────────────── */
 
@@ -392,10 +510,60 @@ class EDIT_GBP_Publisher {
             </div>
 
             <?php if ( $connected ): ?>
+            <div style="background:#fff;border:1px solid #e0e0e0;padding:24px 28px;margin-bottom:24px;">
+                <h2 style="margin:0 0 16px;font-size:18px;">3. Localizações</h2>
+                <?php
+                $force = isset( $_GET['refresh_locations'] );
+                $locations = self::get_all_locations( $force );
+                ?>
+                <?php if ( empty( $locations ) ): ?>
+                    <p style="color:#b45309;margin:0;">⚠️ Nenhuma localização encontrada. Verifica se a conta Google tem acesso às fichas (business.google.com).</p>
+                <?php else: ?>
+                    <table class="widefat striped" style="margin:0 0 14px;">
+                        <thead>
+                            <tr>
+                                <th style="width:32%;">Localização</th>
+                                <th style="width:30%;">Morada</th>
+                                <th style="width:14%;">Categoria</th>
+                                <th style="width:10%;">Estado</th>
+                                <th style="width:14%;">Place ID</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ( $locations as $loc ): ?>
+                                <tr>
+                                    <td>
+                                        <strong><?php echo esc_html( $loc['title'] ); ?></strong><br>
+                                        <small style="color:#888;font-family:monospace;"><?php echo esc_html( $loc['location_id'] ); ?></small>
+                                        <?php if ( $loc['maps_uri'] ): ?>
+                                            · <a href="<?php echo esc_url( $loc['maps_uri'] ); ?>" target="_blank" style="font-size:12px;">Maps ↗</a>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <?php echo esc_html( $loc['address'] ); ?>
+                                        <?php if ( $loc['phone'] ): ?><br><small style="color:#666;"><?php echo esc_html( $loc['phone'] ); ?></small><?php endif; ?>
+                                    </td>
+                                    <td><?php echo esc_html( $loc['category'] ); ?></td>
+                                    <td>
+                                        <?php
+                                        $status = $loc['status'] ?: 'UNKNOWN';
+                                        $color  = $status === 'OPEN' ? '#1f6e1f' : ( $status === 'CLOSED_TEMPORARILY' ? '#b45309' : '#888' );
+                                        ?>
+                                        <span style="color:<?php echo esc_attr( $color ); ?>;font-weight:600;font-size:12px;"><?php echo esc_html( $status ); ?></span>
+                                    </td>
+                                    <td><small style="font-family:monospace;font-size:11px;color:#666;"><?php echo esc_html( $loc['place_id'] ); ?></small></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                    <a href="<?php echo esc_url( admin_url( 'admin.php?page=edit-gbp-publisher&refresh_locations=1' ) ); ?>" class="button button-secondary">Recarregar do GBP</a>
+                    <span style="margin-left:12px;font-size:12px;color:#888;">Cache de 1 hora · <?php echo count( $locations ); ?> localizações</span>
+                <?php endif; ?>
+            </div>
+
             <div style="background:#fff;border:1px solid #e0e0e0;padding:24px 28px;">
-                <h2 style="margin:0 0 16px;font-size:18px;">3. Próximos passos</h2>
+                <h2 style="margin:0 0 16px;font-size:18px;">4. Próximos passos</h2>
                 <ul style="margin:0;padding-left:20px;color:#444;line-height:1.7;">
-                    <li>Listagem de localizações + IDs (Stage 2) — em breve</li>
                     <li>Publicação de Produtos a partir do CPT formacao (Stage 4) — em breve</li>
                     <li>Posts requerem allowlist Google (Track B) — submetida em <em>data a indicar</em></li>
                 </ul>
