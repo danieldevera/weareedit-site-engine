@@ -92,11 +92,14 @@ class EDIT_Pillar_Courses {
 
         $bg_url = esc_url( $bg_url );
         $html = preg_replace( '/\s+rocket-lazyload/', '', $html );
+        // Replace ALL data-bg occurrences: scraped theme markup duplicates
+        // data-bg on the same element. limit=1 left the second copy intact,
+        // and the theme's lazy-load JS picks up the LAST data-bg → wrong
+        // colour for non-Bootcamps groups (workshop/cursos override missed).
         $html = preg_replace(
             '/data-bg="[^"]+"/',
             'data-bg="' . $bg_url . '"',
-            $html,
-            1
+            $html
         );
         $html = preg_replace(
             '/style=""/',

@@ -123,8 +123,8 @@ body:has(.md-pillar) #edit-newsletter-strip { margin:0 !important; }
 .md-pillar .md-hero .hero-reviews .g-l { color:#34A853 !important; }
 .md-pillar .md-hero .hero-reviews .g-e { color:#EA4335 !important; }
 
-/* Hero top padding shrink — pull content up to match HP positioning */
-.md-pillar .md-hero--video { padding-top:48px !important; min-height:auto !important; }
+/* Hero top padding — clear the fixed nav (≈90px) + breathing room */
+.md-pillar .md-hero--video { padding-top:120px !important; min-height:auto !important; }
 
 /* Buttons */
 .md-btn { display:inline-flex; align-items:center; padding:14px 28px; font-size:15px; font-weight:600; text-decoration:none; border-radius:4px; transition:transform .2s ease, background .2s ease, color .2s ease; }
