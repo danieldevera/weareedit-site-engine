@@ -390,27 +390,24 @@ body.page-template-page-marketing-digital .post-edit-link { display:none !import
 .md-pillar--light .md-hero__veil {
     background:linear-gradient(180deg, rgba(247,245,240,0) 0%, rgba(247,245,240,.62) 55%, rgba(247,245,240,.92) 100%);
 }
-.md-pillar--light .md-hero__video { opacity:.35; }
+.md-pillar--light .md-hero__video {
+    /* The waves video has a WHITE DGERT lockup baked in. On the cream canvas
+       the lockup needs to read as BLACK to match the team's request.
+       filter:invert(1) flips: white DGERT -> black, dark waves -> light.
+       Opacity tames the inverted waves so they sit as a quiet texture. */
+    filter:invert(1) brightness(0.92) !important;
+    opacity:.55 !important;
+}
 /* Hero text → dark */
 .md-pillar--light .md-hero__title--xl { color:#0a0a0a !important; }
 .md-pillar--light .md-hero__lede--yellow { color:#0a0a0a !important; }
-/* Hero DGERT pill → HUGE + pure BLACK on light theme.
-   Daniel: 'Huge DGERT logo in Hero + Convert to black.' (v1.5.438) */
-.md-pillar--light .md-hero .dgert-hero-pill { color:#0a0a0a !important; align-items:center; gap:24px !important; margin-bottom:48px !important; }
-.md-pillar--light .md-hero .dgert-hero-pill img {
-    height:160px !important;
-    width:auto !important;
-    filter:brightness(0) !important;
-}
-.md-pillar--light .md-hero .dgert-hero-pill-text {
-    color:#0a0a0a !important;
-    font-size:18px !important;
-    font-weight:600 !important;
-}
-.md-pillar--light .md-hero .dgert-hero-pill-arrow {
-    color:#0a0a0a !important;
-    font-size:18px !important;
-}
+/* Hero DGERT pill on light theme — small black mark, distinct from the
+   bigger video-embedded DGERT lockup that's now also black via the
+   filter:invert on .md-hero__video. */
+.md-pillar--light .md-hero .dgert-hero-pill { color:#0a0a0a !important; }
+.md-pillar--light .md-hero .dgert-hero-pill img { filter:brightness(0) !important; }
+.md-pillar--light .md-hero .dgert-hero-pill-text,
+.md-pillar--light .md-hero .dgert-hero-pill-arrow { color:#0a0a0a !important; }
 /* Hero reviews badge → dark legible */
 .md-pillar--light .md-hero .hero-reviews { color:#444 !important; }
 .md-pillar--light .md-hero .hero-reviews .hr-rating { color:#0a0a0a !important; }
