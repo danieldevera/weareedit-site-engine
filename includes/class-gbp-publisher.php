@@ -344,16 +344,27 @@ class EDIT_GBP_Publisher {
         }
 
         $out = [];
+        $errors = [];
         $accounts_res = self::fetch_accounts();
-        if ( is_wp_error( $accounts_res ) ) return [];
+        if ( is_wp_error( $accounts_res ) ) {
+            $errors[] = 'fetch_accounts: ' . $accounts_res->get_error_message();
+            update_option( 'edit_gbp_last_error', implode( ' | ', $errors ), false );
+            return [];
+        }
         $accounts = $accounts_res['accounts'] ?? [];
+        if ( empty( $accounts ) ) {
+            update_option( 'edit_gbp_last_error', 'fetch_accounts returned 0 accounts. Raw body: ' . wp_json_encode( $accounts_res ), false );
+        }
 
         foreach ( $accounts as $acct ) {
             $acct_id   = (string) ( $acct['name'] ?? '' );      // "accounts/12345"
             $acct_name = (string) ( $acct['accountName'] ?? '' );
             if ( ! $acct_id ) continue;
             $locs_res = self::fetch_locations_for_account( $acct_id );
-            if ( is_wp_error( $locs_res ) ) continue;
+            if ( is_wp_error( $locs_res ) ) {
+                $errors[] = 'fetch_locations(' . $acct_id . '): ' . $locs_res->get_error_message();
+                continue;
+            }
             $locations = $locs_res['locations'] ?? [];
             foreach ( $locations as $loc ) {
                 $address_lines = [];
@@ -392,6 +403,12 @@ class EDIT_GBP_Publisher {
             'data'       => $out,
             'expires_at' => time() + 3600, // 1h cache
         ], false );
+
+        if ( ! empty( $errors ) ) {
+            update_option( 'edit_gbp_last_error', implode( ' | ', $errors ), false );
+        } elseif ( ! empty( $out ) ) {
+            delete_option( 'edit_gbp_last_error' );
+        }
 
         return $out;
     }
@@ -517,7 +534,19 @@ class EDIT_GBP_Publisher {
                 $locations = self::get_all_locations( $force );
                 ?>
                 <?php if ( empty( $locations ) ): ?>
-                    <p style="color:#b45309;margin:0;">⚠️ Nenhuma localização encontrada. Verifica se a conta Google tem acesso às fichas (business.google.com).</p>
+                    <p style="color:#b45309;margin:0 0 12px;">⚠️ Nenhuma localização encontrada.</p>
+                    <?php $err = get_option( 'edit_gbp_last_error', '' ); if ( $err ): ?>
+                        <details style="background:#fef3c7;padding:14px 18px;border-radius:4px;font-size:12px;font-family:monospace;color:#7c2d12;">
+                            <summary style="cursor:pointer;font-weight:600;">Detalhes do erro</summary>
+                            <pre style="margin:10px 0 0;white-space:pre-wrap;word-break:break-word;"><?php echo esc_html( (string) $err ); ?></pre>
+                        </details>
+                    <?php endif; ?>
+                    <p style="margin:14px 0 0;font-size:13px;color:#666;">Possíveis causas:</p>
+                    <ul style="margin:6px 0 0 20px;font-size:13px;color:#666;line-height:1.6;">
+                        <li>Scope <code>business.manage</code> não foi concedido durante o OAuth (re-aprova via Desligar + Ligar)</li>
+                        <li>A conta Google ligada não é gestora das fichas (verifica em business.google.com)</li>
+                        <li>API My Business Account Management não está activa</li>
+                    </ul>
                 <?php else: ?>
                     <table class="widefat striped" style="margin:0 0 14px;">
                         <thead>
