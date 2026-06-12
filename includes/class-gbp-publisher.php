@@ -123,7 +123,13 @@ class EDIT_GBP_Publisher {
     public static function get_oauth_url(): string {
         $state = wp_create_nonce( 'edit_gbp_oauth' );
         update_option( 'edit_gbp_oauth_state', $state, false );
-        return add_query_arg( [
+        // NOTE: NOT using add_query_arg() here. WP's add_query_arg has a quirk
+        // where array values containing '&' don't get fully encoded, so the
+        // redirect_uri arrives at Google with everything after the first '&'
+        // chopped off (= redirect_uri_mismatch). http_build_query with
+        // PHP_QUERY_RFC3986 strict-encodes every value including the '&' in
+        // our redirect_uri's query string, so Google sees the full URL.
+        $params = http_build_query( [
             'client_id'              => self::client_id(),
             'redirect_uri'           => self::redirect_uri(),
             'response_type'          => 'code',
@@ -132,7 +138,8 @@ class EDIT_GBP_Publisher {
             'prompt'                 => 'consent',
             'include_granted_scopes' => 'true',
             'state'                  => $state,
-        ], self::OAUTH_AUTH_URL );
+        ], '', '&', PHP_QUERY_RFC3986 );
+        return self::OAUTH_AUTH_URL . '?' . $params;
     }
 
     /**
