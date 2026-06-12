@@ -22,7 +22,7 @@ class EDIT_Programacao_Page {
 
     const TUTORS = [ 'daniel-devera', 'naiara-back', 'miguel-rao-vieira', 'mao-barros' ];
     /** Keywords matched against tutors' ACF profile_knowsabout (comma-separated areas). */
-    const TUTOR_AREAS = [ 'Programação', 'Front-End', 'Back-End', 'Full-Stack', 'Engineering', 'Development', 'DevOps', 'Webflow', 'Web Dev', 'JavaScript', 'React', 'Python', 'Data Engineering', 'Inteligência Artificial', 'Artificial Intelligence', 'AI Engineering', 'Prompt Engineering' ];
+    const TUTOR_AREAS = [ 'Programação', 'Front-End', 'Frontend', 'Back-End', 'Backend', 'Full-Stack', 'Engineering', 'Engineer', 'Developer', 'Development', 'DevOps', 'Webflow', 'Web Dev', 'JavaScript', 'React', 'Python', 'Data Engineering', 'Inteligência Artificial', 'Artificial Intelligence', 'AI Engineering', 'Prompt Engineering' ];
 
     const CATALOG = [
         'Cursos' => [

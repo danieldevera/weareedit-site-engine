@@ -24,7 +24,7 @@ class EDIT_UX_UI_Design_Page {
 
     const TUTORS = [ 'mao-barros', 'miguel-rao-vieira', 'daniel-devera', 'naiara-back' ];
     /** Keywords matched against tutors' ACF profile_knowsabout (comma-separated areas). */
-    const TUTOR_AREAS = [ 'UX Design', 'UI Design', 'UX/UI', 'UX', 'UI', 'Product Design', 'Design Thinking', 'UX Research', 'Research', 'Figma', 'Design Ops', 'Inteligência Artificial', 'Artificial Intelligence', 'Generative AI', 'IA Generativa' ];
+    const TUTOR_AREAS = [ 'UX Design', 'UI Design', 'UX/UI', 'UX', 'UI', 'Product Designer', 'Product Design', 'Design Thinking', 'UX Research', 'User Experience', 'Researcher', 'Research', 'Figma', 'Design Ops', 'Designer de Serviço', 'Service Designer', 'Inteligência Artificial', 'Artificial Intelligence', 'Generative AI', 'IA Generativa', 'IA Aplicada' ];
 
     const CATALOG = [
         'Bootcamps' => [

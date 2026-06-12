@@ -29,7 +29,7 @@ class EDIT_Marketing_Digital_Page {
     /** Featured tutors for this pillar (equipa slugs). Resolved by EDIT_Pillar_Tutors. */
     const TUTORS = [ 'catarina-sp-neves', 'daniel-devera', 'naiara-back', 'mao-barros' ];
     /** Keywords matched against tutors' ACF profile_knowsabout (comma-separated areas). */
-    const TUTOR_AREAS = [ 'Marketing Digital', 'Paid Media', 'Performance', 'Estratégia Digital', 'Social Media', 'SEO', 'CRM', 'Creative Direction', 'Conteúdo', 'Inteligência Artificial', 'Artificial Intelligence', 'Generative AI', 'IA Generativa' ];
+    const TUTOR_AREAS = [ 'Marketing Digital', 'Digital Marketing', 'Marketing', 'Marketeer', 'Paid Media', 'Performance', 'Growth', 'Brand', 'Estratégia Digital', 'Estrategista', 'Social Media', 'SEO', 'CRM', 'Creative Direction', 'Conteúdo', 'Content', 'Media Manager', 'Media Expert', 'Inteligência Artificial', 'Artificial Intelligence', 'Generative AI', 'IA Generativa', 'IA Aplicada', 'AI Driven' ];
 
     /**
      * Course catalog — grouped by intensity. Source-of-truth slugs on the

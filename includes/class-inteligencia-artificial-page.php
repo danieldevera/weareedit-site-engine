@@ -22,7 +22,7 @@ class EDIT_Inteligencia_Artificial_Page {
 
     const TUTORS = [ 'naiara-back', 'daniel-devera', 'miguel-rao-vieira', 'catarina-sp-neves' ];
     /** Keywords matched against tutors' ACF profile_knowsabout (comma-separated areas). */
-    const TUTOR_AREAS = [ 'Inteligência Artificial', 'Artificial Intelligence', 'Generative AI', 'IA Generativa', 'IA Aplicada', 'Machine Learning', 'LLM', 'Prompt Engineering', 'AI Engineering', 'Gen AI', 'Agentes Inteligentes', 'Data Science' ];
+    const TUTOR_AREAS = [ 'Inteligência Artificial', 'Artificial Intelligence', 'Generative AI', 'IA Generativa', 'IA Aplicada', 'Machine Learning', 'LLM', 'Prompt Engineering', 'AI Engineering', 'AI manager', 'AI Driven', 'AI Marketing', 'Gen AI', 'Agentes Inteligentes', 'Data Science', 'Advanced Analytics' ];
 
     const CATALOG = [
         'Bootcamps' => [

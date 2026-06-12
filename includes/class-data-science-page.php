@@ -21,7 +21,7 @@ class EDIT_Data_Science_Page {
 
     const TUTORS = [ 'carla-geraldes', 'naiara-back', 'daniel-devera', 'mao-barros' ];
     /** Keywords matched against tutors' ACF profile_knowsabout (comma-separated areas). */
-    const TUTOR_AREAS = [ 'Data Science', 'Data &', 'Data Engineering', 'Analytics', 'Machine Learning', 'Business Intelligence', 'BI', 'Python', 'SQL', 'Inteligência Artificial', 'Artificial Intelligence', 'Generative AI', 'IA Generativa' ];
+    const TUTOR_AREAS = [ 'Data Science', 'Data &', 'Data Engineering', 'Data Analyst', 'Data Engineer', 'Data Analytics', 'Analytics', 'Analyst', 'Machine Learning', 'Business Intelligence', 'Power BI', 'Python', 'SQL', 'PMO', 'Inteligência Artificial', 'Artificial Intelligence', 'Generative AI', 'IA Generativa', 'IA Aplicada', 'AI manager' ];
 
     const CATALOG = [
         'Bootcamps' => [
