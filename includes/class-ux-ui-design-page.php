@@ -217,20 +217,28 @@ class EDIT_UX_UI_Design_Page {
         ob_start();
         ?>
         <section class="md-pillar">
-            <div class="md-hero">
+            <div class="md-hero md-hero--video">
+                <video class="md-hero__video" autoplay muted loop playsinline aria-hidden="true">
+                    <source src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/03/waves-sequence-compressed.mp4' ) ); ?>" type="video/mp4">
+                </video>
+                <div class="md-hero__veil" aria-hidden="true"></div>
                 <div class="md-hero__inner">
-                    <p class="md-hero__eyebrow">FORMAÇÃO ESPECIALIZADA</p>
-                    <h1 class="md-hero__title">UX/UI Design<br><span>na EDIT.</span></h1>
-                    <p class="md-hero__lede">12 formações DGERT certificadas em UX/UI Design, Figma, UX Research e Design Thinking. Bootcamps, cursos e workshops com tutores que são UX leads em activo em Lisboa, Porto e remote.</p>
-                    <div class="md-hero__bar">
-                        <span class="md-pill">DGERT nº 18391</span>
-                        <span class="md-pill">★ 4.1 / 67 reviews Google</span>
-                        <span class="md-pill">600+ alumni colocados</span>
-                        <span class="md-pill">Lisboa · Porto · Remote</span>
-                    </div>
+                    <a class="dgert-hero-pill" href="https://www.dgert.gov.pt/entidades-formadoras-certificadas" target="_blank" rel="noopener noreferrer" aria-label="DGERT — Entidade Formadora Certificada">
+                        <img width="1024" height="483" src="<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/dgert-entidade-formadora-branco.png' ); ?>" alt="DGERT" loading="eager">
+                        <span class="dgert-hero-pill-text">Entidade Formadora Certificada</span>
+                        <span class="dgert-hero-pill-arrow" aria-hidden="true">↗</span>
+                    </a>
+                    <h1 class="md-hero__title md-hero__title--xl">UX/UI Design<span class="h1-dot h1-dot-pink">.</span><br>Inteligência Artificial<span class="h1-dot h1-dot-teal">.</span></h1>
+                    <p class="md-hero__lede md-hero__lede--yellow">12 formações DGERT-certificadas em Lisboa, Porto e online. Bootcamps, cursos e workshops em UX/UI Design, Figma e Research — leccionados por UX leads em activo nas marcas que mais recrutam talento digital em Portugal. Programas SIFIDE-elegíveis.</p>
                     <div class="md-hero__cta">
-                        <a class="md-btn md-btn--primary" href="#catalogo">Ver os 12 cursos</a>
-                        <button type="button" class="md-btn md-btn--ghost swipe-cta" data-contact="true"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Falar com um consultor</span></button>
+                        <a class="btn btn-yellow swipe-cta" href="#catalogo"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Ver os 12 cursos</span></a>
+                        <a class="hero-reviews" href="https://weareedit.io/avaliacoes-google/" rel="noopener">
+                            <span class="hr-star">★</span>
+                            <span class="hr-rating">4.1</span>
+                            <span class="hr-sep">/</span>
+                            <span class="hr-count">67 reviews no</span>
+                            <span class="g-wordmark"><span class="g-G">G</span><span class="g-o1">o</span><span class="g-o2">o</span><span class="g-g">g</span><span class="g-l">l</span><span class="g-e">e</span></span>
+                        </a>
                     </div>
                 </div>
             </div>
