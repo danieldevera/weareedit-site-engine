@@ -67,20 +67,36 @@ class EDIT_Pillar_Tutors {
             'no_found_rows'  => true,
         ] );
 
+        // Legacy equipa posts store cargo/company under a handful of different
+        // ACF field names. Probe each. (Matches the candidate list in
+        // EDIT_Team_Listing::resolve_job/resolve_company.)
+        $cargo_fields    = [ 'hero_cargo', 'cargo', 'job', 'job_title', 'position', 'role', 'titulo_cargo' ];
+        $empresa_fields  = [ 'hero_empresa', 'empresa', 'company', 'employer' ];
+
         $matched = [];
         foreach ( $posts as $p ) {
             if ( count( $matched ) >= $limit ) break;
 
-            // Aggregate searchable surface: knowsAbout + cargo + empresa.
             $haystack_parts = [];
             $knows = function_exists( 'get_field' ) ? get_field( 'profile_knowsabout', $p->ID ) : get_post_meta( $p->ID, 'profile_knowsabout', true );
             if ( is_string( $knows ) && $knows !== '' ) $haystack_parts[] = $knows;
-            $cargo = function_exists( 'get_field' ) ? get_field( 'hero_cargo', $p->ID ) : get_post_meta( $p->ID, 'hero_cargo', true );
-            if ( is_string( $cargo ) && $cargo !== '' ) $haystack_parts[] = $cargo;
-            $empresa = function_exists( 'get_field' ) ? get_field( 'hero_empresa', $p->ID ) : get_post_meta( $p->ID, 'hero_empresa', true );
-            if ( is_string( $empresa ) && $empresa !== '' ) $haystack_parts[] = $empresa;
 
-            if ( empty( $haystack_parts ) ) continue;
+            foreach ( $cargo_fields as $f ) {
+                $v = function_exists( 'get_field' ) ? get_field( $f, $p->ID ) : get_post_meta( $p->ID, $f, true );
+                if ( is_string( $v ) && $v !== '' ) { $haystack_parts[] = $v; break; }
+            }
+            foreach ( $empresa_fields as $f ) {
+                $v = function_exists( 'get_field' ) ? get_field( $f, $p->ID ) : get_post_meta( $p->ID, $f, true );
+                if ( is_string( $v ) && $v !== '' ) { $haystack_parts[] = $v; break; }
+            }
+
+            // Fallback: post title (e.g. "Daniel Devera") — coarse but ensures
+            // a tutor with no ACF fields still gets considered against
+            // name-bearing keywords. Rare path.
+            if ( empty( $haystack_parts ) ) {
+                $haystack_parts[] = $p->post_title;
+            }
+
             $haystack = implode( ' | ', $haystack_parts );
 
             foreach ( $keywords as $kw ) {
@@ -212,10 +228,18 @@ class EDIT_Pillar_Tutors {
 
         // Nationality flag — defer to edit-profiles plugin's resolver which
         // handles legacy ACF field aliases + ISO-code lookup + the UK
-        // underscore quirk (`uk_.png`).
+        // underscore quirk (`uk_.png`). Falls back to PT default if the
+        // resolver isn't loaded (defensive: edit-profiles plugin may not
+        // be active on every environment).
         $flag = '';
         if ( class_exists( 'EDIT_Team_Listing' ) && method_exists( 'EDIT_Team_Listing', 'resolve_country_flag' ) ) {
             $flag = (string) EDIT_Team_Listing::resolve_country_flag( $pid );
+        }
+        if ( $flag === '' ) {
+            // Default PT flag (same URL the edit-profiles resolver returns by
+            // default). Hardcoded so the flag always renders even if the
+            // sister plugin is missing.
+            $flag = 'https://weareedit.io/wp-content/uploads/2015/06/pt.png';
         }
 
         return [
