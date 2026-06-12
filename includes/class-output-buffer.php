@@ -125,6 +125,14 @@ class EDIT_Output_Buffer {
             // Hide site-wide on every course page across all screen sizes.
             // Daniel 2026-06-12: program obsolete, no replacement planned.
             . '.special-labels-container{display:none !important;}'
+            // Course "Ferramentas" tool-stack icons (Claude Code, ChatGPT, etc.)
+            // ship as square PNGs with no size attrs and no CSS bounds, so they
+            // render at intrinsic resolution and stretch the .adaptImage card.
+            // Anchor each img inside its aspect-ratio box at centred, contained.
+            . '.row.ferramentas .logos-grid .adaptImage{position:relative;}'
+            . '.row.ferramentas .logos-grid .adaptImage__inner > a{position:absolute !important;inset:0 !important;}'
+            . '.row.ferramentas .logos-grid .img-icon{display:flex;align-items:center;justify-content:center;width:100%;height:100%;padding:18px;box-sizing:border-box;}'
+            . '.row.ferramentas .logos-grid .img-icon img{max-width:100% !important;max-height:100% !important;width:auto !important;height:auto !important;object-fit:contain !important;}'
             // Homepage hero — restore Figma proportions:
             //  - H1 white, bold, much larger than the theme's default 50px
             //  - "WE ARE EDIT" sub-heading hidden (Figma doesn't include it)
