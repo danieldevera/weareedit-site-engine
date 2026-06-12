@@ -121,14 +121,10 @@ class EDIT_Output_Buffer {
             . 'img[src*="dgert-entidade-formadora-negro"]{max-width:100%;height:auto;}'
             . 'a.dgert-cert-link{display:inline-block;line-height:0;text-decoration:none;border:none;transition:opacity 0.15s;}'
             . 'a.dgert-cert-link:hover{opacity:0.78;}'
-            // Promo badge (Group-1265-2.png) — theme ships it at native
-            // 1097x1156 with no CSS bounds, so it stretches across the hero.
-            // Cap to 140px on desktop (matches the mobile_only variant) and
-            // position absolutely so it sits in the hero corner.
-            . '.special-labels-container.desktop_only{position:absolute !important;top:24px !important;right:24px !important;z-index:5 !important;}'
-            . '.special-labels-container .promo-img-container{display:block;line-height:0;}'
-            . '.special-labels-container img[alt="promo"]{max-width:140px !important;width:140px !important;height:auto !important;display:block;}'
-            . '@media (max-width:768px){.special-labels-container.desktop_only{display:none !important;}.special-labels-container.mobile_only img[alt="promo"]{width:100px !important;}}'
+            // IEFP "100% Reembolso" badge (Group-1265-2.png) — being sunset.
+            // Hide site-wide on every course page across all screen sizes.
+            // Daniel 2026-06-12: program obsolete, no replacement planned.
+            . '.special-labels-container{display:none !important;}'
             // Homepage hero — restore Figma proportions:
             //  - H1 white, bold, much larger than the theme's default 50px
             //  - "WE ARE EDIT" sub-heading hidden (Figma doesn't include it)
