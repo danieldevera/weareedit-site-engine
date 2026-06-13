@@ -1310,16 +1310,18 @@ body.empresas-page .hero .ctas {
   justify-content: flex-start !important;
 }
 body.empresas-page .hero h1 {
-  /* Match the homepage + pillar hero H1 spec — bigger, tighter, same
-     typographic family. Homepage uses clamp(64px,9.5vw,152px) at weight
-     500; pillars use clamp(56px,9.5vw,100px) at weight 700. Empresas
-     adopts the pillar variant (weight 700 reads better with the marker-
-     highlight word treatment used on "digitais"). */
+  /* Exact pillar hero H1 spec (per assets/marketing-digital.css
+     .md-hero__title) — no max-width constraint so the text wraps based
+     on container width like the pillar does. Font family chain inherits
+     the broad empresas-page rule (SctoGroteskA → Inter → Helvetica).
+     Note: SctoGroteskA only has 300 + 400 weights bundled in the plugin;
+     the theme also only ships 400 — both pillar and Empresas synth-bold
+     at 700 from Regular, so rendering matches. */
   font-size: clamp(56px, 9.5vw, 100px) !important;
   line-height: 1 !important;
   letter-spacing: -0.0313em !important;
   font-weight: 700 !important;
-  max-width: 22ch !important;
+  max-width: none !important;
   color: #fff !important;
 }
 body.empresas-page .hero .eyebrow {
