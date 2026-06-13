@@ -2241,12 +2241,12 @@ button {
   align-items: center;
 }
 .pw-time {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.30em;
   text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 8px;
+  color: var(--grey-3);
+  margin: 0 0 12px 0;
 }
 .pw-title {
   font-size: 19px;
