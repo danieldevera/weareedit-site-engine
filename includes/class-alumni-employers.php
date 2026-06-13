@@ -141,7 +141,7 @@ class EDIT_Alumni_Employers {
             </div>
             <ul class="ae-list">
                 <?php foreach ( $list as $emp ) :
-                    $logo_url     = 'https://logo.clearbit.com/' . $emp['domain'];
+                    $logo_url     = self::logo_url( $emp );
                     $name         = $emp['name'];
                     $linkedin_url = self::linkedin_alumni_url( $name );
                     $aria_label   = sprintf( 'Ver alumni EDIT. com experiência em %s no LinkedIn (abre em nova janela)', $name );
@@ -171,6 +171,43 @@ class EDIT_Alumni_Employers {
         </section>
         <?php
         return (string) ob_get_clean();
+    }
+
+    /**
+     * Resolve the Logo.dev (or fallback) URL for an employer.
+     *
+     * Logo.dev free tier returns a clean PNG of the company logo. URL
+     * pattern: https://img.logo.dev/{domain}?token=pk_xxx&size=80&format=png&retina=true
+     *
+     * Token resolution order:
+     *   1. Constant EDIT_LOGO_DEV_TOKEN (define in wp-config.php)
+     *   2. WP option edit_logo_dev_token
+     *   3. Empty → fall back to (deprecated) Clearbit URL — image will fail
+     *      to load and the text-card fallback renders via the onerror hook.
+     */
+    private static function logo_url( array $emp ): string {
+        $token = self::logo_dev_token();
+        if ( $token !== '' ) {
+            $params = http_build_query( [
+                'token'  => $token,
+                'size'   => 80,
+                'format' => 'png',
+                'retina' => 'true',
+            ] );
+            return 'https://img.logo.dev/' . rawurlencode( $emp['domain'] ) . '?' . $params;
+        }
+        // Legacy fallback — Clearbit is deprecated and will 404, but the
+        // onerror handler on the img element gracefully falls back to the
+        // text label so the wall always renders something.
+        return 'https://logo.clearbit.com/' . $emp['domain'];
+    }
+
+    private static function logo_dev_token(): string {
+        if ( defined( 'EDIT_LOGO_DEV_TOKEN' ) && EDIT_LOGO_DEV_TOKEN ) {
+            return (string) EDIT_LOGO_DEV_TOKEN;
+        }
+        $opt = (string) get_option( 'edit_logo_dev_token', '' );
+        return trim( $opt );
     }
 
     /**
