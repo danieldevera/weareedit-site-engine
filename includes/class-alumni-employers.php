@@ -120,9 +120,18 @@ class EDIT_Alumni_Employers {
         ob_start();
         self::maybe_emit_assets();
         ?>
+        <?php $alumni_root_url = 'https://www.linkedin.com/school/edit-education/people/'; ?>
         <section class="ae-section ae-section--<?php echo esc_attr( $variant ); ?>" aria-label="<?php echo esc_attr( $heading ); ?>">
             <div class="ae-heading">
-                <p class="ae-eyebrow"><?php echo esc_html( $heading ); ?></p>
+                <p class="ae-eyebrow">
+                    <a class="ae-eyebrow-link"
+                       href="<?php echo esc_url( $alumni_root_url ); ?>"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       title="Ver todos os alumni EDIT. no LinkedIn (abre em nova janela)">
+                        <?php echo esc_html( $heading ); ?>
+                    </a>
+                </p>
                 <?php if ( $badge ) : ?>
                     <p class="ae-badge">
                         <svg class="ae-badge-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 1 1 8.25 6.5 1.75 1.75 0 0 1 6.5 8.25zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0 0 13 14.19a.66.66 0 0 0 0 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 0 1 2.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
@@ -189,6 +198,9 @@ class EDIT_Alumni_Employers {
         .ae-section{margin:0;padding:0;color:#0a0a0a;font-family:inherit;}
         .ae-heading{display:flex;flex-direction:column;gap:6px;align-items:center;margin:0 0 28px;text-align:center;}
         .ae-eyebrow{font-size:13px;font-weight:500;letter-spacing:0.30em;text-transform:uppercase;color:#0a0a0a;margin:0;}
+        .ae-eyebrow-link{color:inherit;text-decoration:none;transition:color 180ms;}
+        .ae-eyebrow-link:hover,.ae-eyebrow-link:focus-visible{color:#0a66c2;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:4px;}
+        .ae-eyebrow-link:focus-visible{outline:2px solid #0a66c2;outline-offset:3px;border-radius:2px;}
         .ae-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:500;letter-spacing:0.08em;color:#666;margin:0;font-style:italic;}
         .ae-badge-icon{width:12px;height:12px;color:#0a66c2;}
         .ae-list{list-style:none;padding:0;margin:0;}
