@@ -3098,10 +3098,19 @@ button {
            visible gaps. Arc radius 100 gives a gentle dome above/below. -->
       <path d="M 0 200 L 170 200 A 100 100 0 0 0 330 200 L 470 200 A 100 100 0 0 1 630 200 L 770 200 A 100 100 0 0 0 930 200 L 1070 200 A 100 100 0 0 1 1230 200 L 1400 200"
             stroke="url(#pw-wave-gradient)" stroke-width="50" fill="none"/>
-      <!-- 4 white spheres on top of the band -->
+      <!-- 4 accent halos (r=95) behind each sphere — a colored full-circle
+           background that bleeds 15px outside the white sphere's edge for
+           a stronger per-step colour identity. Each halo takes its step's
+           own accent colour (pink/yellow/coral/teal). -->
       <?php
       $cxs = [ 250, 550, 850, 1150 ];
-      foreach ( $cxs as $cx ) : ?>
+      foreach ( $cxs as $i => $cx ) :
+          $halo_color = $step_colors[ $i % 4 ];
+      ?>
+        <circle cx="<?php echo $cx; ?>" cy="200" r="95" fill="<?php echo esc_attr( $halo_color ); ?>"/>
+      <?php endforeach; ?>
+      <!-- 4 white spheres on top of the halos + band -->
+      <?php foreach ( $cxs as $cx ) : ?>
         <circle cx="<?php echo $cx; ?>" cy="200" r="80" fill="url(#pw-sphere)" filter="url(#pw-shadow)"/>
       <?php endforeach; ?>
       <!-- Step numbers in circles -->
