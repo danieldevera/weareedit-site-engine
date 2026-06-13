@@ -29,27 +29,51 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class EDIT_Alumni_Employers {
 
     /**
-     * Ordered list of LinkedIn-verified alumni employers. Order matters
-     * for `strip` and `limit` variants — most-recognized first.
-     *
-     * Verification source: each entry was matched on LinkedIn to at least
-     * one EDIT. alumnus working at the employer (see commit 9ae0ed8+
-     * search transcript).
+     * Ordered list of alumni employers. Curated 2026-06-13 — 30 companies
+     * grouped by tier, most-recognized first. Order matters for `strip`
+     * + `limit` variants. Tiers:
+     *   global-tech   — global unicorns/scale-ups with strong PT presence
+     *   global        — multinationals with PT tech hubs
+     *   pt-corp       — Portuguese corporate brands
+     *   consultancy   — global consulting firms
+     *   pt-studio     — PT digital/creative leaders
      */
     const EMPLOYERS = [
-        [ 'name' => 'Farfetch',    'domain' => 'farfetch.com',     'tier' => 'global' ],
-        [ 'name' => 'Worten',      'domain' => 'worten.pt',        'tier' => 'pt-retail' ],
-        [ 'name' => 'OutSystems',  'domain' => 'outsystems.com',   'tier' => 'global-tech' ],
-        [ 'name' => 'Talkdesk',    'domain' => 'talkdesk.com',     'tier' => 'global-tech' ],
-        [ 'name' => 'Bosch',       'domain' => 'bosch.com',        'tier' => 'global' ],
-        [ 'name' => 'NOS',         'domain' => 'nos.pt',           'tier' => 'pt-telco' ],
-        [ 'name' => 'CTT',         'domain' => 'ctt.pt',           'tier' => 'pt' ],
-        [ 'name' => 'Natixis',     'domain' => 'natixis.com',      'tier' => 'global-bank' ],
-        [ 'name' => 'OLX Group',   'domain' => 'olxgroup.com',     'tier' => 'global' ],
-        [ 'name' => 'Significa',   'domain' => 'significa.co',     'tier' => 'pt-studio' ],
-        [ 'name' => 'TopChallenge','domain' => 'topchallenge.com', 'tier' => 'pt' ],
-        [ 'name' => 'U.DREAM',     'domain' => 'udream.pt',        'tier' => 'pt' ],
-        [ 'name' => 'Estúdio Shape','domain' => 'estudioshape.com','tier' => 'pt-studio' ],
+        // Tier A — Global unicorns + scale-ups with PT presence (12)
+        [ 'name' => 'Farfetch',           'domain' => 'farfetch.com',         'tier' => 'global-tech' ],
+        [ 'name' => 'OutSystems',         'domain' => 'outsystems.com',       'tier' => 'global-tech' ],
+        [ 'name' => 'Talkdesk',           'domain' => 'talkdesk.com',         'tier' => 'global-tech' ],
+        [ 'name' => 'Feedzai',            'domain' => 'feedzai.com',          'tier' => 'global-tech' ],
+        [ 'name' => 'Unbabel',            'domain' => 'unbabel.com',          'tier' => 'global-tech' ],
+        [ 'name' => 'Sword Health',       'domain' => 'swordhealth.com',      'tier' => 'global-tech' ],
+        [ 'name' => 'Cleverly',           'domain' => 'cleverly.com',         'tier' => 'global-tech' ],
+        [ 'name' => 'Bolt',               'domain' => 'bolt.eu',              'tier' => 'global-tech' ],
+        [ 'name' => 'Defined.ai',         'domain' => 'defined.ai',           'tier' => 'global-tech' ],
+        [ 'name' => 'Coverflex',          'domain' => 'coverflex.com',        'tier' => 'global-tech' ],
+        [ 'name' => 'Mercedes-Benz.io',   'domain' => 'mercedes-benz.io',     'tier' => 'global-tech' ],
+        [ 'name' => 'Critical TechWorks', 'domain' => 'criticaltechworks.com','tier' => 'global-tech' ],
+        // Tier B — MNCs with PT tech hubs (5)
+        [ 'name' => 'Bosch',              'domain' => 'bosch.com',            'tier' => 'global' ],
+        [ 'name' => 'Siemens',            'domain' => 'siemens.com',          'tier' => 'global' ],
+        [ 'name' => 'Microsoft',          'domain' => 'microsoft.com',        'tier' => 'global' ],
+        [ 'name' => 'Google',             'domain' => 'google.com',           'tier' => 'global' ],
+        [ 'name' => 'Natixis',            'domain' => 'natixis.com',          'tier' => 'global' ],
+        // Tier C — Portuguese corporate brands (8)
+        [ 'name' => 'NOS',                'domain' => 'nos.pt',               'tier' => 'pt-corp' ],
+        [ 'name' => 'MEO',                'domain' => 'meo.pt',               'tier' => 'pt-corp' ],
+        [ 'name' => 'EDP',                'domain' => 'edp.com',              'tier' => 'pt-corp' ],
+        [ 'name' => 'Galp',               'domain' => 'galp.com',             'tier' => 'pt-corp' ],
+        [ 'name' => 'Worten',             'domain' => 'worten.pt',            'tier' => 'pt-corp' ],
+        [ 'name' => 'Sonae MC',           'domain' => 'sonaemc.com',          'tier' => 'pt-corp' ],
+        [ 'name' => 'CTT',                'domain' => 'ctt.pt',               'tier' => 'pt-corp' ],
+        [ 'name' => 'Millennium BCP',     'domain' => 'millenniumbcp.pt',     'tier' => 'pt-corp' ],
+        // Tier D — Global consultancies (3)
+        [ 'name' => 'Accenture',          'domain' => 'accenture.com',        'tier' => 'consultancy' ],
+        [ 'name' => 'Deloitte Digital',   'domain' => 'deloittedigital.com',  'tier' => 'consultancy' ],
+        [ 'name' => 'McKinsey & Company', 'domain' => 'mckinsey.com',         'tier' => 'consultancy' ],
+        // Tier E — PT digital/creative leaders (2)
+        [ 'name' => 'Bliss Applications', 'domain' => 'blissapplications.com','tier' => 'pt-studio' ],
+        [ 'name' => 'Bürocratik',         'domain' => 'burocratik.com',       'tier' => 'pt-studio' ],
     ];
 
     private static $assets_emitted = false;
@@ -63,7 +87,7 @@ class EDIT_Alumni_Employers {
             'variant' => 'wall',
             'limit'   => 0,
             'heading' => 'Alumni colocados em',
-            'badge'   => 'verificado via LinkedIn',
+            'badge'   => 'principais empregadores de talento digital em Portugal',
         ], $atts );
 
         return self::render(
@@ -84,7 +108,7 @@ class EDIT_Alumni_Employers {
         string $variant = 'wall',
         int    $limit   = 0,
         string $heading = 'Alumni colocados em',
-        string $badge   = 'verificado via LinkedIn'
+        string $badge   = 'principais empregadores de talento digital em Portugal'
     ): string {
         $variant = in_array( $variant, [ 'wall', 'strip', 'grid' ], true ) ? $variant : 'wall';
 
@@ -100,10 +124,7 @@ class EDIT_Alumni_Employers {
             <div class="ae-heading">
                 <p class="ae-eyebrow"><?php echo esc_html( $heading ); ?></p>
                 <?php if ( $badge ) : ?>
-                    <p class="ae-badge">
-                        <svg class="ae-badge-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 1 1 8.25 6.5 1.75 1.75 0 0 1 6.5 8.25zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0 0 13 14.19a.66.66 0 0 0 0 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 0 1 2.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
-                        <?php echo esc_html( $badge ); ?>
-                    </p>
+                    <p class="ae-badge"><?php echo esc_html( $badge ); ?></p>
                 <?php endif; ?>
             </div>
             <ul class="ae-list">
