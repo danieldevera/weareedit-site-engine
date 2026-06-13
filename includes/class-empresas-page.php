@@ -1621,6 +1621,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <style>
 @font-face {
   font-family: 'SctoGroteskA';
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+  src: url('<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/fonts/SctoGroteskA-Thin.woff2' ); ?>') format('woff2');
+}
+@font-face {
+  font-family: 'SctoGroteskA';
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -1632,6 +1639,27 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   font-style: normal;
   font-display: swap;
   src: url('<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/fonts/SctoGroteskA-Regular.woff2' ); ?>') format('woff2');
+}
+@font-face {
+  font-family: 'SctoGroteskA';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/fonts/SctoGroteskA-Medium.woff2' ); ?>') format('woff2');
+}
+@font-face {
+  font-family: 'SctoGroteskA';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/fonts/SctoGroteskA-Bold.woff2' ); ?>') format('woff2');
+}
+@font-face {
+  font-family: 'SctoGroteskA';
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+  src: url('<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/fonts/SctoGroteskA-Black.woff2' ); ?>') format('woff2');
 }
 :root {
   --edit-yellow: #ffdd06;
