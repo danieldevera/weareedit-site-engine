@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>EDIT. · Empresas — Áreas Redesign · Variantes A & B (13 Jun 2026)</title>
+<style>
+  :root {
+    --ink:#0a0a0a; --grey-1:#fafaf7; --grey-2:#e5e2db; --grey-3:#888; --grey-4:#444;
+    --pink:#f92869; --teal:#60c5b3; --yellow:#ffdd06; --coral:#ec8172; --blue:#0090eb;
+    --line:#e5e5e5;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'SctoGroteskA','Helvetica Neue',Helvetica,Arial,sans-serif; background:#fff; color:var(--ink); line-height:1.55; -webkit-font-smoothing:antialiased; }
+
+  /* Doc shell */
+  .doc-wrap { max-width:1280px; margin:0 auto; padding:48px 28px 96px; }
+  .doc-meta { font-size:11px; letter-spacing:0.22em; color:var(--pink); font-weight:700; text-transform:uppercase; margin-bottom:14px; }
+  .doc-h1 { font-size:38px; font-weight:700; line-height:1.05; letter-spacing:-0.025em; margin:0 0 12px; }
+  .doc-deck { font-size:16px; color:#555; max-width:680px; margin:0 0 8px; }
+  .doc-stamp { font-size:13px; color:#888; margin-bottom:44px; }
+  .doc-divider { font-size:11px; letter-spacing:0.22em; color:var(--ink); font-weight:700; text-transform:uppercase; margin:64px 0 18px; padding:14px 18px; background:var(--ink); color:#fff; display:inline-block; border-radius:4px; }
+
+  /* === Shared Áreas section chrome === */
+  .areas {
+    padding:96px 0 64px;
+    background:var(--grey-1);
+    border-radius:12px;
+    border:1px solid var(--line);
+    margin-bottom:0;
+  }
+  .areas-inner { max-width:1100px; margin:0 auto; padding:0 36px; }
+  .areas-eyebrow { font-size:11px; font-weight:700; letter-spacing:0.30em; text-transform:uppercase; color:var(--ink); margin:0 0 18px; }
+  .areas-title { font-size:clamp(30px,3.4vw,42px); font-weight:700; letter-spacing:-0.02em; line-height:1.1; margin:0 0 56px; max-width:24ch; }
+
+  /* New clean tab nav (shared by A + B) */
+  .add-tabs2 {
+    display:flex; flex-wrap:wrap; gap:0; align-items:flex-end;
+    border-bottom:1px solid var(--grey-2);
+    margin:0 0 56px 0;
+  }
+  .add-tab2 {
+    appearance:none; background:transparent; border:0; cursor:pointer;
+    padding:18px 22px; margin-bottom:-1px;
+    border-bottom:2px solid transparent;
+    font-family:inherit; font-size:15px; font-weight:600; color:var(--grey-3);
+    letter-spacing:-0.005em;
+    transition:color 180ms, border-color 180ms;
+  }
+  .add-tab2:hover { color:var(--ink); }
+  .add-tab2.active { color:var(--ink); border-bottom-color:var(--accent, var(--pink)); }
+  .add-tab2[data-accent="pink"]  { --tab-accent:var(--pink); }
+  .add-tab2[data-accent="teal"]  { --tab-accent:var(--teal); }
+  .add-tab2[data-accent="blue"]  { --tab-accent:var(--blue); }
+  .add-tab2[data-accent="yellow"]{ --tab-accent:var(--yellow); }
+  .add-tab2[data-accent="coral"] { --tab-accent:var(--coral); }
+  .add-tab2.active { border-bottom-color:var(--tab-accent); }
+
+  /* Panel layout (shared) */
+  .add-panel2 { display:grid; grid-template-columns:380px 1fr; gap:64px; align-items:start; }
+  @media (max-width:760px) { .add-panel2 { grid-template-columns:1fr; gap:36px; } }
+
+  .add-content2 { padding-top:4px; }
+  .add-content2 h3 {
+    font-size:clamp(28px,2.8vw,38px);
+    font-weight:700; letter-spacing:-0.02em; color:var(--ink);
+    margin:0 0 14px; line-height:1.1;
+  }
+  .add-lede2 { font-size:17px; line-height:1.55; color:var(--grey-4); margin:0 0 36px; max-width:60ch; }
+
+  /* Sub-disciplines as indexed list */
+  .add-subs2 { margin:0 0 36px; }
+  .add-subs2-title { font-size:11px; font-weight:700; letter-spacing:0.22em; text-transform:uppercase; color:var(--grey-3); margin:0 0 18px; }
+  .add-subs2-list { list-style:none; padding:0; margin:0; display:grid; grid-template-columns:1fr 1fr; gap:14px 36px; }
+  @media (max-width:680px) { .add-subs2-list { grid-template-columns:1fr; } }
+  .add-subs2-list li {
+    display:flex; gap:16px; align-items:baseline;
+    padding:6px 0;
+    font-size:16px; font-weight:600; color:var(--ink);
+    border-bottom:1px solid transparent;
+    transition:border-color 200ms, color 200ms;
+  }
+  .add-subs2-list li:hover { color:var(--pink); }
+  .add-subs2-list li .n { font-size:11px; font-weight:700; letter-spacing:0.06em; color:var(--pink); font-variant-numeric:tabular-nums; min-width:24px; }
+
+  /* Tools — refined chips */
+  .add-tools2 { margin:0; }
+  .add-tools2-title { font-size:11px; font-weight:700; letter-spacing:0.22em; text-transform:uppercase; color:var(--grey-3); margin:0 0 14px; }
+  .add-tools2-list { list-style:none; padding:0; margin:0; display:flex; flex-wrap:wrap; gap:8px; }
+  .add-tools2-list li {
+    font-size:13px; font-weight:500; color:var(--ink);
+    padding:7px 14px; border:1px solid var(--grey-2); border-radius:99px;
+    background:#fff;
+    transition:border-color 180ms, color 180ms;
+  }
+  .add-tools2-list li:hover { border-color:var(--ink); }
+
+  /* === VARIANT A — Photography === */
+  .add-visual-a {
+    position:relative; border-radius:8px; overflow:hidden;
+    aspect-ratio:4/5; background:#1a1a1a;
+    /* Realistic photo placeholder — gradient + dark overlay */
+    background-image:
+      linear-gradient(180deg, rgba(10,10,10,0.05) 0%, rgba(10,10,10,0.75) 100%),
+      linear-gradient(135deg, #f92869 0%, #ec8172 35%, #ffdd06 70%, #60c5b3 100%);
+    background-size:cover; background-position:center;
+  }
+  .add-visual-a-overlay {
+    position:absolute; inset:0;
+    display:flex; flex-direction:column; justify-content:flex-end;
+    padding:28px;
+    color:#fff;
+  }
+  .add-visual-a-tag { font-size:11px; font-weight:700; letter-spacing:0.22em; text-transform:uppercase; color:#fff; opacity:0.85; margin:0 0 10px; }
+  .add-visual-a-name { font-size:28px; font-weight:700; letter-spacing:-0.015em; line-height:1.05; margin:0; }
+  .add-visual-a-stripe { height:4px; width:48px; background:#fff; margin:0 0 14px; }
+
+  /* === VARIANT B — Editorial pull-quote === */
+  .add-visual-b {
+    padding:36px 36px 40px;
+    background:#fff;
+    border:1px solid var(--grey-2);
+    border-radius:8px;
+    aspect-ratio:4/5;
+    display:flex; flex-direction:column; justify-content:space-between;
+    position:relative;
+  }
+  .add-visual-b-mark {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size:120px; line-height:1; color:var(--pink); font-weight:700;
+    margin:0 0 6px;
+  }
+  .add-visual-b-quote {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size:24px; line-height:1.25; font-style:italic; color:var(--ink); margin:0;
+    letter-spacing:-0.005em;
+  }
+  .add-visual-b-attr {
+    margin:24px 0 0;
+    font-size:11px; font-weight:700; letter-spacing:0.22em; text-transform:uppercase; color:var(--grey-3);
+  }
+  .add-visual-b-bottom {
+    margin-top:28px;
+    display:flex; align-items:center; gap:14px;
+  }
+  .add-visual-b-bottom .dot {
+    width:14px; height:14px; border-radius:50%;
+    background:var(--pink);
+  }
+  .add-visual-b-bottom .label {
+    font-size:11px; font-weight:700; letter-spacing:0.22em; text-transform:uppercase; color:var(--ink);
+  }
+
+  /* Note callouts under each variant */
+  .variant-note {
+    margin:18px 0 0; padding:16px 20px;
+    background:#fff; border:1px solid var(--grey-2); border-radius:6px;
+    font-size:13px; color:var(--grey-4); line-height:1.5;
+  }
+  .variant-note strong { color:var(--ink); }
+</style>
+</head>
+<body>
+
+<div class="doc-wrap">
+
+  <p class="doc-meta">EDIT. INTERNAL · MOCKUP COMPARISON</p>
+  <h1 class="doc-h1">Áreas section · 2 redesign variantes</h1>
+  <p class="doc-deck">Mesma data: 5 disciplinas, sub-disciplinas, ferramentas. Apresentação premium reformulada. Escolhe A ou B abaixo.</p>
+  <p class="doc-stamp">13 Junho 2026 · noindex/nofollow</p>
+
+  <!-- ============================================================ -->
+  <!-- VARIANT A — PHOTOGRAPHY                                       -->
+  <!-- ============================================================ -->
+
+  <div class="doc-divider">Variante A · Photography</div>
+
+  <div class="areas">
+    <div class="areas-inner">
+      <p class="areas-eyebrow">Áreas de Formação</p>
+      <h2 class="areas-title">5 disciplinas digitais. 30 sub-disciplinas. Programas modulares ou completos.</h2>
+
+      <nav class="add-tabs2" aria-label="Áreas">
+        <button class="add-tab2 active" data-accent="pink">Marketing Digital</button>
+        <button class="add-tab2" data-accent="teal">UX/UI Design</button>
+        <button class="add-tab2" data-accent="blue">Desenvolvimento Web</button>
+        <button class="add-tab2" data-accent="yellow">Data &amp; Business</button>
+        <button class="add-tab2" data-accent="coral">Inteligência Artificial</button>
+      </nav>
+
+      <div class="add-panel2">
+
+        <!-- Photographic visual — gradient placeholder for real photo -->
+        <div class="add-visual-a">
+          <div class="add-visual-a-overlay">
+            <span class="add-visual-a-tag">DISCIPLINA</span>
+            <span class="add-visual-a-stripe"></span>
+            <h3 class="add-visual-a-name">Marketing Digital</h3>
+          </div>
+        </div>
+
+        <div class="add-content2">
+          <h3>Marketing Digital</h3>
+          <p class="add-lede2">Performance, growth, paid media e conteúdo. Formamos equipas de marketing para gerir orçamentos de 6 dígitos com confiança e ROI mensurável.</p>
+
+          <div class="add-subs2">
+            <p class="add-subs2-title">Sub-disciplinas</p>
+            <ul class="add-subs2-list">
+              <li><span class="n">01</span><span>Performance Marketing</span></li>
+              <li><span class="n">02</span><span>SEO &amp; GEO</span></li>
+              <li><span class="n">03</span><span>Analytics &amp; Attribution</span></li>
+              <li><span class="n">04</span><span>Content Strategy + IA</span></li>
+              <li><span class="n">05</span><span>Email + Marketing Automation</span></li>
+              <li><span class="n">06</span><span>Brand &amp; Growth</span></li>
+            </ul>
+          </div>
+
+          <div class="add-tools2">
+            <p class="add-tools2-title">Ferramentas que dominamos</p>
+            <ul class="add-tools2-list">
+              <li>Meta Ads</li>
+              <li>Google Ads</li>
+              <li>TikTok Ads</li>
+              <li>GA4</li>
+              <li>Tag Manager</li>
+              <li>Looker Studio</li>
+              <li>HubSpot</li>
+              <li>Brevo</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="variant-note">
+    <strong>Variante A — Photography</strong><br>
+    Coluna esquerda usa fotografia real de alunos/aulas com overlay escuro + tag DISCIPLINA + nome em branco bold. <strong>Requer 5 fotografias (uma por disciplina)</strong> em formato 4:5 portrait. O placeholder em gradiente abaixo simula como ficará — substituir pela foto correta. Visual mais "humano", mais alinhado com fotografia editorial premium (estilo The Atlantic / Apple Education).
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- VARIANT B — EDITORIAL PULL-QUOTE                              -->
+  <!-- ============================================================ -->
+
+  <div class="doc-divider">Variante B · Editorial pull-quote</div>
+
+  <div class="areas">
+    <div class="areas-inner">
+      <p class="areas-eyebrow">Áreas de Formação</p>
+      <h2 class="areas-title">5 disciplinas digitais. 30 sub-disciplinas. Programas modulares ou completos.</h2>
+
+      <nav class="add-tabs2" aria-label="Áreas">
+        <button class="add-tab2 active" data-accent="pink">Marketing Digital</button>
+        <button class="add-tab2" data-accent="teal">UX/UI Design</button>
+        <button class="add-tab2" data-accent="blue">Desenvolvimento Web</button>
+        <button class="add-tab2" data-accent="yellow">Data &amp; Business</button>
+        <button class="add-tab2" data-accent="coral">Inteligência Artificial</button>
+      </nav>
+
+      <div class="add-panel2">
+
+        <!-- Editorial pull-quote visual -->
+        <div class="add-visual-b">
+          <div>
+            <span class="add-visual-b-mark">"</span>
+            <p class="add-visual-b-quote">Performance é cultura, não tática.</p>
+            <p class="add-visual-b-attr">— Princípio EDIT.</p>
+          </div>
+          <div class="add-visual-b-bottom">
+            <span class="dot"></span>
+            <span class="label">Marketing Digital</span>
+          </div>
+        </div>
+
+        <div class="add-content2">
+          <h3>Marketing Digital</h3>
+          <p class="add-lede2">Performance, growth, paid media e conteúdo. Formamos equipas de marketing para gerir orçamentos de 6 dígitos com confiança e ROI mensurável.</p>
+
+          <div class="add-subs2">
+            <p class="add-subs2-title">Sub-disciplinas</p>
+            <ul class="add-subs2-list">
+              <li><span class="n">01</span><span>Performance Marketing</span></li>
+              <li><span class="n">02</span><span>SEO &amp; GEO</span></li>
+              <li><span class="n">03</span><span>Analytics &amp; Attribution</span></li>
+              <li><span class="n">04</span><span>Content Strategy + IA</span></li>
+              <li><span class="n">05</span><span>Email + Marketing Automation</span></li>
+              <li><span class="n">06</span><span>Brand &amp; Growth</span></li>
+            </ul>
+          </div>
+
+          <div class="add-tools2">
+            <p class="add-tools2-title">Ferramentas que dominamos</p>
+            <ul class="add-tools2-list">
+              <li>Meta Ads</li>
+              <li>Google Ads</li>
+              <li>TikTok Ads</li>
+              <li>GA4</li>
+              <li>Tag Manager</li>
+              <li>Looker Studio</li>
+              <li>HubSpot</li>
+              <li>Brevo</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="variant-note">
+    <strong>Variante B — Editorial pull-quote</strong><br>
+    Coluna esquerda é uma citação curta em serif (Georgia), com aspas dramatizadas em brand-accent, atribuição "Princípio EDIT." em uppercase letterspaced, e identificador inferior com dot na accent color. <strong>Sem fotografias</strong> — pura tipografia + brand. Mais sóbria, mais "manifesto", refinada. Estilo The New York Times Magazine / Harvard Business Review.
+    <br><br>
+    <strong>Citações sugeridas por disciplina (editáveis):</strong>
+    <ul style="margin:8px 0 0 22px;font-size:12.5px;line-height:1.6;">
+      <li>Marketing Digital — "Performance é cultura, não tática."</li>
+      <li>UX/UI Design — "Design é a evidência da decisão."</li>
+      <li>Desenvolvimento Web — "Código é a forma final da intenção."</li>
+      <li>Data &amp; Business — "Dados sem decisão são folclore."</li>
+      <li>Inteligência Artificial — "A IA não substitui pessoas. Substitui processos."</li>
+    </ul>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- DECISION MATRIX                                                -->
+  <!-- ============================================================ -->
+
+  <div class="doc-divider">Comparação rápida</div>
+
+  <table style="width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 0;">
+    <thead>
+      <tr style="background:#fafafa;">
+        <th style="text-align:left;padding:14px 16px;border:1px solid var(--line);font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#666;">Critério</th>
+        <th style="text-align:left;padding:14px 16px;border:1px solid var(--line);font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#666;">A · Photography</th>
+        <th style="text-align:left;padding:14px 16px;border:1px solid var(--line);font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:#666;">B · Editorial</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding:14px 16px;border:1px solid var(--line);"><strong>Esforço</strong></td>
+        <td style="padding:14px 16px;border:1px solid var(--line);">Médio (precisa 5 fotos)</td>
+        <td style="padding:14px 16px;border:1px solid var(--line);">Baixo (zero assets externos)</td>
+      </tr>
+      <tr>
+        <td style="padding:14px 16px;border:1px solid var(--line);"><strong>Time-to-ship</strong></td>
+        <td style="padding:14px 16px;border:1px solid var(--line);">Bloqueado por sourcing de fotografia</td>
+        <td style="padding:14px 16px;border:1px solid var(--line);">~45 min</td>
+      </tr>
+      <tr>
+        <td style="padding:14px 16px;border:1px solid var(--line);"><strong>Feel</strong></td>
+        <td style="padding:14px 16px;border:1px solid var(--line);">Humano, editorial fotográfico (Atlantic / Apple Edu)</td>
+        <td style="padding:14px 16px;border:1px solid var(--line);">Sóbrio, manifesto, refinado (NYT Mag / HBR)</td>
+      </tr>
+      <tr>
+        <td style="padding:14px 16px;border:1px solid var(--line);"><strong>Manutenção</strong></td>
+        <td style="padding:14px 16px;border:1px solid var(--line);">Fotos precisam ser actualizadas anualmente</td>
+        <td style="padding:14px 16px;border:1px solid var(--line);">Apenas texto — zero manutenção visual</td>
+      </tr>
+      <tr>
+        <td style="padding:14px 16px;border:1px solid var(--line);"><strong>Risco</strong></td>
+        <td style="padding:14px 16px;border:1px solid var(--line);">Fotos genéricas leem como stock; precisa direcção</td>
+        <td style="padding:14px 16px;border:1px solid var(--line);">Citações precisam de tom afinado (5 frases curtas com personalidade)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="margin-top:48px;padding-top:24px;border-top:2px solid var(--ink);font-size:14px;color:#888;">
+    Responde A, B, ou A+B (híbrido) e implemento.<br>
+    Sugestão híbrida: ficar com B agora (ship hoje) e migrar para A quando as 5 fotografias estiverem produzidas.
+  </div>
+
+</div>
+</body>
+</html>
