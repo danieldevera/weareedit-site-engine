@@ -2252,28 +2252,11 @@ button {
 }
 .add-tool:hover { color: var(--ink); }
 
-/* Cross-link to pillar page — sits at the bottom of each panel's content
-   column. Editorial underline + accent arrow that translates on hover. */
-.add-cta {
-  display: inline-flex; align-items: center; gap: 12px;
-  margin-top: 36px;
-  padding: 0 0 4px 0;
-  font-size: 15px; font-weight: 700; letter-spacing: -0.005em;
-  color: var(--ink); text-decoration: none;
-  border-bottom: 2px solid var(--accent);
-  transition: gap 280ms cubic-bezier(0.4, 0, 0.2, 1),
-              color 280ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-.add-cta-arrow {
-  display: inline-block;
-  color: var(--accent);
-  transition: transform 320ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-.add-cta:hover,
-.add-cta:focus-visible { color: var(--accent); gap: 18px; }
-.add-cta:hover .add-cta-arrow,
-.add-cta:focus-visible .add-cta-arrow { transform: translateX(4px); }
-.add-cta:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 2px; }
+/* Cross-link to pillar page — uses the site-wide locked swipe-cta
+   standard (yellow btn with pink→teal→black 3-layer sweep + yellow text
+   flip). The .add-cta class only owns positioning/spacing here; visual
+   chrome comes from .btn.btn-yellow.swipe-cta which is theme-global. */
+.add-cta { margin-top: 36px; align-self: flex-start; }
 
 /* Staggered reveal on active panel */
 .add-panel.active .add-visual,
@@ -3401,9 +3384,11 @@ button {
                   <?php endforeach; ?>
                 </div>
               <?php endif; ?>
-              <a class="add-cta" href="<?php echo esc_url( $course_url ); ?>" itemprop="url">
-                <span>Explorar <?php echo esc_html( $area['title'] ); ?></span>
-                <span class="add-cta-arrow" aria-hidden="true">→</span>
+              <a class="btn btn-yellow swipe-cta add-cta" href="<?php echo esc_url( $course_url ); ?>" itemprop="url">
+                <span class="swipe-layer swipe-pink" aria-hidden="true"></span>
+                <span class="swipe-layer swipe-teal" aria-hidden="true"></span>
+                <span class="swipe-layer swipe-black" aria-hidden="true"></span>
+                <span class="swipe-label">Explorar <?php echo esc_html( $area['title'] ); ?> →</span>
               </a>
             </div>
           </div>
