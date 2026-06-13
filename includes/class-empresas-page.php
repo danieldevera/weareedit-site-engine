@@ -2282,6 +2282,14 @@ button {
   .pw-step,
   .pw-step--above,
   .pw-step--below {
+    /* Reset the desktop absolute positioning so steps flow as a stack
+       instead of overlapping on top of each other. */
+    position: static;
+    width: auto;
+    margin-left: 0;
+    top: auto;
+    bottom: auto;
+    left: auto;
     grid-row: auto;
     grid-column: auto;
     align-self: stretch;
@@ -3086,7 +3094,7 @@ button {
           $color = $step_colors[ $i % 4 ];
           $place = ( $i % 2 === 0 ) ? 'above' : 'below';
       ?>
-        <div class="pw-step pw-step--<?php echo esc_attr( $place ); ?>" style="--accent: <?php echo esc_attr( $color ); ?>;">
+        <div class="pw-step pw-step--<?php echo esc_attr( $place ); ?>" data-num="<?php echo esc_attr( $step['number'] ); ?>" style="--accent: <?php echo esc_attr( $color ); ?>;">
           <span class="pw-dots" aria-hidden="true"></span>
           <div class="pw-content">
             <?php if ( ! empty( $step['time'] ) ) : ?>
