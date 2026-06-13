@@ -1310,19 +1310,17 @@ body.empresas-page .hero .ctas {
   justify-content: flex-start !important;
 }
 body.empresas-page .hero h1 {
-  /* Exact pillar hero H1 spec (per assets/marketing-digital.css
-     .md-hero__title). Critical font-family override: the broad
-     empresas-page rule includes 'Inter' in the chain
-     (SctoGroteskA → Inter → Helvetica), which makes the browser walk
-     past SctoGroteskA for Bold and land on system Helvetica Neue Bold
-     instead of synth-bolding SctoGroteskA. The pillar chain has no
-     intermediate font — it synth-bolds SctoGroteskA cleanly. Strip
-     Inter on the H1 to match. */
+  /* Visual match to pillar hero H1. The pillar's CSS says font-weight:700
+     but it only loads SctoGroteskA Regular (400), so the browser
+     synth-bolds — the result reads visually as ~500. Empresas now has the
+     true Bold .woff2 bundled, so requesting 700 would render heavier than
+     the pillar. Set 500 (Medium .woff2) so Empresas matches the pillar's
+     observed weight instead of the misleading CSS number. */
   font-family: 'SctoGroteskA', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
   font-size: clamp(56px, 9.5vw, 100px) !important;
   line-height: 1 !important;
   letter-spacing: -0.0313em !important;
-  font-weight: 700 !important;
+  font-weight: 500 !important;
   max-width: none !important;
   color: #fff !important;
 }
