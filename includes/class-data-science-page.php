@@ -207,7 +207,7 @@ class EDIT_Data_Science_Page {
     public static function render_shortcode(): string {
         ob_start();
         ?>
-        <section class="md-pillar">
+        <section class="md-pillar md-pillar--light">
             <div class="md-hero md-hero--video">
                 <video class="md-hero__video" autoplay muted loop playsinline aria-hidden="true">
                     <source src="<?php echo esc_url( home_url( '/wp-content/uploads/2026/03/waves-sequence-compressed.mp4' ) ); ?>" type="video/mp4">
