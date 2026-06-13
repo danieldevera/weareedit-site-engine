@@ -87,6 +87,8 @@ class EDIT_Formacao_Corporativa_Page {
         [
             'title'  => 'Marketing Digital',
             'lede'   => 'Performance, growth, paid media e conteúdo. Formamos equipas de marketing para gerir orçamentos de 6 dígitos com confiança e ROI mensurável.',
+            'quote'      => 'Performance é cultura, não tática.',
+            'quote_attr' => 'Princípio EDIT.',
             'topics' => [ 'Meta Ads + Google Ads', 'GA4 + Tag Manager', 'Estratégia de conteúdo + IA', 'Email + Automation' ],
             'sub_verticals' => [
                 'Performance Marketing',
@@ -104,6 +106,8 @@ class EDIT_Formacao_Corporativa_Page {
         [
             'title'  => 'UX/UI Design',
             'lede'   => 'Investigação, design e validação. Capacitamos product teams para entregar interfaces que clientes adoram e métricas de produto provam.',
+            'quote'      => 'Design é a evidência da decisão.',
+            'quote_attr' => 'Princípio EDIT.',
             'topics' => [ 'Figma + sistemas de design', 'UX Research aplicada', 'Design thinking + workshops', 'Acessibilidade + WCAG' ],
             'sub_verticals' => [
                 'Design Systems',
@@ -121,6 +125,8 @@ class EDIT_Formacao_Corporativa_Page {
         [
             'title'  => 'Desenvolvimento Web',
             'lede'   => 'Front-end moderno, back-end pragmático, IA aplicada ao código. Preparamos developers para entregar produtos em produção, não tutoriais.',
+            'quote'      => 'Código é a forma final da intenção.',
+            'quote_attr' => 'Princípio EDIT.',
             'topics' => [ 'React + Next.js', 'Node.js + APIs', 'Webflow + low-code', 'AI-assisted development' ],
             'sub_verticals' => [
                 'Front-End (React, Next.js)',
@@ -138,6 +144,8 @@ class EDIT_Formacao_Corporativa_Page {
         [
             'title'  => 'Data & Business',
             'lede'   => 'Da pergunta de negócio ao dashboard accionável. Formamos analistas e líderes para tomar decisões com dados, não com opiniões.',
+            'quote'      => 'Dados sem decisão são folclore.',
+            'quote_attr' => 'Princípio EDIT.',
             'topics' => [ 'SQL + Python para análise', 'Power BI + Looker Studio', 'Machine Learning aplicado', 'Data storytelling' ],
             'sub_verticals' => [
                 'Analytics & SQL',
@@ -155,6 +163,8 @@ class EDIT_Formacao_Corporativa_Page {
         [
             'title'  => 'Inteligência Artificial',
             'lede'   => 'Estratégia + execução. Da prompt engineering ao deploy de agentes inteligentes — IA aplicada ao vosso processo de negócio.',
+            'quote'      => 'A IA não substitui pessoas. Substitui processos.',
+            'quote_attr' => 'Princípio EDIT.',
             'topics' => [ 'LLMs + RAG + agentes', 'IA aplicada a marketing', 'Ética + governance', 'AI-first product design' ],
             'sub_verticals' => [
                 'Prompt Engineering & LLMs',
