@@ -129,25 +129,49 @@ class EDIT_Alumni_Employers {
             </div>
             <ul class="ae-list">
                 <?php foreach ( $list as $emp ) :
-                    $logo_url = 'https://logo.clearbit.com/' . $emp['domain'];
-                    $name     = $emp['name'];
+                    $logo_url     = 'https://logo.clearbit.com/' . $emp['domain'];
+                    $name         = $emp['name'];
+                    $linkedin_url = self::linkedin_alumni_url( $name );
+                    $aria_label   = sprintf( 'Ver alumni EDIT. com experiência em %s no LinkedIn (abre em nova janela)', $name );
                 ?>
-                    <li class="ae-item" title="<?php echo esc_attr( $name ); ?>">
-                        <img
-                            class="ae-logo"
-                            src="<?php echo esc_url( $logo_url ); ?>"
-                            alt="<?php echo esc_attr( 'Logo ' . $name ); ?>"
-                            loading="lazy"
-                            decoding="async"
-                            onerror="this.parentNode.classList.add('ae-item--fallback');this.style.display='none';"
+                    <li class="ae-item">
+                        <a
+                            class="ae-item-link"
+                            href="<?php echo esc_url( $linkedin_url ); ?>"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title="Alumni EDIT. com experiência em <?php echo esc_attr( $name ); ?> · LinkedIn"
+                            aria-label="<?php echo esc_attr( $aria_label ); ?>"
                         >
-                        <span class="ae-fallback-name"><?php echo esc_html( $name ); ?></span>
+                            <img
+                                class="ae-logo"
+                                src="<?php echo esc_url( $logo_url ); ?>"
+                                alt="<?php echo esc_attr( 'Logo ' . $name ); ?>"
+                                loading="lazy"
+                                decoding="async"
+                                onerror="this.parentNode.classList.add('ae-item-link--fallback');this.style.display='none';"
+                            >
+                            <span class="ae-fallback-name"><?php echo esc_html( $name ); ?></span>
+                        </a>
                     </li>
                 <?php endforeach; ?>
             </ul>
         </section>
         <?php
         return (string) ob_get_clean();
+    }
+
+    /**
+     * Build a LinkedIn URL that opens the EDIT. school alumni page
+     * filtered by a keyword match against the employer name. Logged-in
+     * users see the People tab filtered to alumni who currently or
+     * previously worked at the named company.
+     *
+     * Pattern: https://www.linkedin.com/school/edit-education/people/?keywords={company}
+     */
+    public static function linkedin_alumni_url( string $company_name ): string {
+        $base = 'https://www.linkedin.com/school/edit-education/people/';
+        return $base . '?keywords=' . rawurlencode( $company_name );
     }
 
     /**
@@ -165,12 +189,18 @@ class EDIT_Alumni_Employers {
         .ae-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:500;letter-spacing:0.08em;color:#666;margin:0;font-style:italic;}
         .ae-badge-icon{width:12px;height:12px;color:#0a66c2;}
         .ae-list{list-style:none;padding:0;margin:0;}
-        .ae-item{position:relative;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid #e8e6df;border-radius:6px;transition:border-color 180ms,transform 180ms;}
-        .ae-item:hover{border-color:#bdb9aa;transform:translateY(-2px);}
+        .ae-item{position:relative;}
+        .ae-item-link{display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:#fff;border:1px solid #e8e6df;border-radius:6px;text-decoration:none;color:inherit;transition:border-color 180ms,transform 180ms,box-shadow 180ms;}
+        .ae-item-link:hover,
+        .ae-item-link:focus-visible{border-color:#0a66c2;transform:translateY(-2px);box-shadow:0 4px 14px rgba(10,102,194,0.10);}
+        .ae-item-link:focus-visible{outline:2px solid #0a66c2;outline-offset:2px;}
         .ae-logo{max-width:80%;max-height:60%;width:auto;height:auto;object-fit:contain;filter:grayscale(1) opacity(0.65);transition:filter 200ms;}
-        .ae-item:hover .ae-logo{filter:grayscale(0) opacity(1);}
+        .ae-item-link:hover .ae-logo,
+        .ae-item-link:focus-visible .ae-logo{filter:grayscale(0) opacity(1);}
         .ae-fallback-name{display:none;font-size:13px;font-weight:600;color:#0a0a0a;letter-spacing:-0.01em;text-align:center;padding:0 8px;}
-        .ae-item--fallback .ae-fallback-name{display:block;}
+        .ae-item-link--fallback .ae-fallback-name{display:block;}
+        .ae-item-link--fallback:hover .ae-fallback-name,
+        .ae-item-link--fallback:focus-visible .ae-fallback-name{color:#0a66c2;}
 
         /* WALL — full grid, large logos. Used on pillar pages, post-hero
            on Empresas, anywhere with horizontal room. */
