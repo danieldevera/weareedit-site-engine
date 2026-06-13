@@ -1311,12 +1311,14 @@ body.empresas-page .hero .ctas {
 }
 body.empresas-page .hero h1 {
   /* Exact pillar hero H1 spec (per assets/marketing-digital.css
-     .md-hero__title) — no max-width constraint so the text wraps based
-     on container width like the pillar does. Font family chain inherits
-     the broad empresas-page rule (SctoGroteskA → Inter → Helvetica).
-     Note: SctoGroteskA only has 300 + 400 weights bundled in the plugin;
-     the theme also only ships 400 — both pillar and Empresas synth-bold
-     at 700 from Regular, so rendering matches. */
+     .md-hero__title). Critical font-family override: the broad
+     empresas-page rule includes 'Inter' in the chain
+     (SctoGroteskA → Inter → Helvetica), which makes the browser walk
+     past SctoGroteskA for Bold and land on system Helvetica Neue Bold
+     instead of synth-bolding SctoGroteskA. The pillar chain has no
+     intermediate font — it synth-bolds SctoGroteskA cleanly. Strip
+     Inter on the H1 to match. */
+  font-family: 'SctoGroteskA', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
   font-size: clamp(56px, 9.5vw, 100px) !important;
   line-height: 1 !important;
   letter-spacing: -0.0313em !important;
