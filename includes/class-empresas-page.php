@@ -1310,15 +1310,14 @@ body.empresas-page .hero .ctas {
   justify-content: flex-start !important;
 }
 body.empresas-page .hero h1 {
-  /* Visual match to pillar hero H1. The pillar's CSS says font-weight:700
-     but it only loads SctoGroteskA Regular (400), so the browser
-     synth-bolds — the result reads visually as ~500. Empresas now has the
-     true Bold .woff2 bundled, so requesting 700 would render heavier than
-     the pillar. Set 500 (Medium .woff2) so Empresas matches the pillar's
-     observed weight instead of the misleading CSS number. */
+  /* Visual match to pillar hero H1. Weight 500 (true Medium .woff2) lands
+     on the same visual weight as the pillar's synth-bolded Regular.
+     line-height bumped to 1.15 — the pillar uses 1 but its short single-
+     word lines don't reveal the issue; Empresas's longer multi-line wrap
+     with q/p/g descenders on every line gets clipped at line-height:1. */
   font-family: 'SctoGroteskA', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
   font-size: clamp(56px, 9.5vw, 100px) !important;
-  line-height: 1 !important;
+  line-height: 1.15 !important;
   letter-spacing: -0.0313em !important;
   font-weight: 500 !important;
   max-width: none !important;
