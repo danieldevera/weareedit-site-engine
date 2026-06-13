@@ -2191,7 +2191,7 @@ button {
 .process-wave-v2 {
   position: relative;
   width: 100%;
-  margin-top: 72px;
+  margin-top: 128px;
 }
 .pw-svg {
   display: block;
@@ -2213,11 +2213,12 @@ button {
   flex-direction: column;
   align-items: center;
 }
-/* X positions match SVG circle cx values (200, 500, 800, 1100 in viewBox 1400). */
-.pw-step:nth-child(1) { left: 14.2857%; }
-.pw-step:nth-child(2) { left: 35.7143%; }
-.pw-step:nth-child(3) { left: 57.1429%; }
-.pw-step:nth-child(4) { left: 78.5714%; }
+/* X positions match SVG circle cx values (250, 550, 850, 1150 in viewBox 1400)
+   — symmetric: 250px left margin and 250px right margin (1400 - 1150 = 250). */
+.pw-step:nth-child(1) { left: 17.857%; }
+.pw-step:nth-child(2) { left: 39.286%; }
+.pw-step:nth-child(3) { left: 60.714%; }
+.pw-step:nth-child(4) { left: 82.143%; }
 /* Above: anchor block's bottom edge above the circle's top (30% from top). */
 .pw-step--above {
   bottom: 72%;
@@ -3091,11 +3092,15 @@ button {
            The multi-stop gradient blends the 4 brand colours horizontally,
            so seams between segments are smooth weaves instead of hard
            vertical cuts. -->
-      <path d="M 0 200 L 95 200 A 105 105 0 0 0 305 200 L 395 200 A 105 105 0 0 1 605 200 L 695 200 A 105 105 0 0 0 905 200 L 995 200 A 105 105 0 0 1 1205 200 L 1400 200"
-            stroke="url(#pw-wave-gradient)" stroke-width="50" stroke-linecap="round" fill="none"/>
+      <!-- Wave geometry: spheres at x=250/550/850/1150 (symmetric, 250px margin
+           on each side of viewBox 1400). Arc endpoints land AT the sphere edges
+           (sphere_cx ± 80) so horizontal sections touch the spheres without
+           visible gaps. Arc radius 100 gives a gentle dome above/below. -->
+      <path d="M 0 200 L 170 200 A 100 100 0 0 0 330 200 L 470 200 A 100 100 0 0 1 630 200 L 770 200 A 100 100 0 0 0 930 200 L 1070 200 A 100 100 0 0 1 1230 200 L 1400 200"
+            stroke="url(#pw-wave-gradient)" stroke-width="50" fill="none"/>
       <!-- 4 white spheres on top of the band -->
       <?php
-      $cxs = [ 200, 500, 800, 1100 ];
+      $cxs = [ 250, 550, 850, 1150 ];
       foreach ( $cxs as $cx ) : ?>
         <circle cx="<?php echo $cx; ?>" cy="200" r="80" fill="url(#pw-sphere)" filter="url(#pw-shadow)"/>
       <?php endforeach; ?>
