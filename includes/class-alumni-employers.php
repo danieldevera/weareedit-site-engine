@@ -80,6 +80,79 @@ class EDIT_Alumni_Employers {
 
     public static function init(): void {
         add_shortcode( 'edit_alumni_employers', [ __CLASS__, 'shortcode_render' ] );
+        add_action( 'admin_menu', [ __CLASS__, 'register_admin_page' ] );
+        add_action( 'admin_init', [ __CLASS__, 'handle_settings_save' ] );
+    }
+
+    /* ─────────────────────────────────────────────────────────────────────
+       Admin settings — token for Logo.dev (free tier supplies 100K-500K
+       req/mo; public token format pk_xxx). Stored in wp_options so it
+       stays out of the public GitHub repo.
+       ────────────────────────────────────────────────────────────────── */
+
+    public static function register_admin_page(): void {
+        add_management_page(
+            'Alumni Employers',
+            'Alumni Employers',
+            'manage_options',
+            'edit-alumni-employers',
+            [ __CLASS__, 'render_admin_page' ]
+        );
+    }
+
+    public static function handle_settings_save(): void {
+        if ( ! isset( $_POST['edit_ae_save'] ) ) return;
+        if ( ! current_user_can( 'manage_options' ) ) return;
+        if ( ! check_admin_referer( 'edit_ae_save_token' ) ) return;
+        $token = isset( $_POST['logo_dev_token'] ) ? trim( sanitize_text_field( wp_unslash( $_POST['logo_dev_token'] ) ) ) : '';
+        update_option( 'edit_logo_dev_token', $token, false );
+        wp_safe_redirect( admin_url( 'tools.php?page=edit-alumni-employers&saved=1' ) );
+        exit;
+    }
+
+    public static function render_admin_page(): void {
+        if ( ! current_user_can( 'manage_options' ) ) return;
+        $token = (string) get_option( 'edit_logo_dev_token', '' );
+        $masked = $token ? ( substr( $token, 0, 5 ) . str_repeat( '•', max( 0, strlen( $token ) - 9 ) ) . substr( $token, -4 ) ) : '';
+        ?>
+        <div class="wrap" style="max-width:760px;">
+            <h1 style="margin-bottom:8px;">EDIT. · Alumni Employers</h1>
+            <p style="color:#666;margin:0 0 28px;">Lista única de 30 empregadores verificados por LinkedIn usada no muro <code>EDIT_Alumni_Employers::render()</code> nas pilares, homepage, páginas de produto e Empresas. Os logos são servidos pelo Logo.dev — basta colar o token público (formato <code>pk_xxx</code>) e os logos aparecem em todas as superfícies.</p>
+
+            <?php if ( isset( $_GET['saved'] ) ) : ?>
+                <div class="notice notice-success"><p>✅ Token guardado. Limpa a cache do site para ver os logos.</p></div>
+            <?php endif; ?>
+
+            <div style="background:#fff;border:1px solid #e0e0e0;padding:24px 28px;margin-bottom:24px;">
+                <h2 style="margin:0 0 14px;font-size:18px;">Logo.dev — Public Token</h2>
+                <?php if ( $token ) : ?>
+                    <p style="margin:0 0 14px;color:#1f6e1f;">✅ Token guardado: <code style="background:#f0f0f0;padding:3px 8px;border-radius:3px;font-family:monospace;font-size:13px;"><?php echo esc_html( $masked ); ?></code></p>
+                <?php else : ?>
+                    <p style="margin:0 0 14px;color:#b45309;">⚠️ Sem token configurado — os cards do muro de alumni renderizam como texto.</p>
+                <?php endif; ?>
+                <form method="post">
+                    <?php wp_nonce_field( 'edit_ae_save_token' ); ?>
+                    <label style="display:flex;flex-direction:column;gap:4px;">
+                        <span style="font-size:13px;color:#444;font-weight:600;"><?php echo $token ? 'Substituir token' : 'Colar token Logo.dev'; ?></span>
+                        <input type="text" name="logo_dev_token" placeholder="pk_xxxxxxxxxxxxxxxxxxxxxxx" style="padding:10px 12px;border:1px solid #ccc;border-radius:3px;font-family:monospace;font-size:13px;">
+                    </label>
+                    <p style="margin:12px 0 0;font-size:12px;color:#666;">Onde encontrar: <a href="https://www.logo.dev/dashboard" target="_blank" rel="noopener">logo.dev/dashboard</a> → <em>API Keys</em> ou ler diretamente o token mostrado no exemplo de Quickstart.</p>
+                    <div style="margin-top:18px;">
+                        <button type="submit" name="edit_ae_save" value="1" class="button button-primary">Guardar token</button>
+                    </div>
+                </form>
+            </div>
+
+            <div style="background:#fff;border:1px solid #e0e0e0;padding:24px 28px;">
+                <h2 style="margin:0 0 14px;font-size:18px;">Plano gratuito Logo.dev</h2>
+                <ul style="margin:0 0 0 18px;color:#444;line-height:1.7;font-size:13.5px;">
+                    <li>500.000 requests/mês — mais do que suficiente para 30 logos × tráfego típico</li>
+                    <li>CDN sempre actualizada — não precisamos de auto-hospedar</li>
+                    <li><strong>Atribuição obrigatória</strong> para uso comercial → renderizamos pequeno crédito junto ao muro</li>
+                </ul>
+            </div>
+        </div>
+        <?php
     }
 
     public static function shortcode_render( $atts ): string {
@@ -168,6 +241,11 @@ class EDIT_Alumni_Employers {
                     </li>
                 <?php endforeach; ?>
             </ul>
+            <?php if ( self::logo_dev_token() !== '' ) : ?>
+                <p class="ae-attribution">
+                    Logos servidos via <a href="https://logo.dev" target="_blank" rel="noopener noreferrer">Logo.dev</a>
+                </p>
+            <?php endif; ?>
         </section>
         <?php
         return (string) ob_get_clean();
@@ -241,6 +319,9 @@ class EDIT_Alumni_Employers {
         .ae-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:500;letter-spacing:0.08em;color:#666;margin:0;font-style:italic;}
         .ae-badge-icon{width:12px;height:12px;color:#0a66c2;}
         .ae-list{list-style:none;padding:0;margin:0;}
+        .ae-attribution{margin:20px 0 0;font-size:11px;color:#999;text-align:center;letter-spacing:0.08em;}
+        .ae-attribution a{color:#999;text-decoration:underline;text-decoration-color:#ddd;text-decoration-thickness:1px;text-underline-offset:2px;}
+        .ae-attribution a:hover{color:#0a66c2;text-decoration-color:#0a66c2;}
         .ae-item{position:relative;}
         .ae-item-link{display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:#fff;border:1px solid #e8e6df;border-radius:6px;text-decoration:none;color:inherit;transition:border-color 180ms,transform 180ms,box-shadow 180ms;}
         .ae-item-link:hover,
