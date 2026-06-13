@@ -1310,9 +1310,14 @@ body.empresas-page .hero .ctas {
   justify-content: flex-start !important;
 }
 body.empresas-page .hero h1 {
-  font-size: clamp(40px, 6.4vw, 88px) !important;
-  line-height: 0.98 !important;
-  letter-spacing: -0.035em !important;
+  /* Match the homepage + pillar hero H1 spec — bigger, tighter, same
+     typographic family. Homepage uses clamp(64px,9.5vw,152px) at weight
+     500; pillars use clamp(56px,9.5vw,100px) at weight 700. Empresas
+     adopts the pillar variant (weight 700 reads better with the marker-
+     highlight word treatment used on "digitais"). */
+  font-size: clamp(56px, 9.5vw, 100px) !important;
+  line-height: 1 !important;
+  letter-spacing: -0.0313em !important;
   font-weight: 700 !important;
   max-width: 22ch !important;
   color: #fff !important;
