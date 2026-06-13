@@ -1770,7 +1770,7 @@ a { color: inherit; text-decoration: none; }
   font-size: 12px; font-weight: 700;
   letter-spacing: 0.22em; text-transform: uppercase;
   color: var(--edit-yellow);
-  margin: 0 0 24px 0;
+  margin: 0 0 40px 0;
 }
 .hero h1 {
   font-size: clamp(40px, 6.4vw, 88px);
@@ -1778,7 +1778,7 @@ a { color: inherit; text-decoration: none; }
   letter-spacing: -0.035em;
   font-weight: 700;
   color: #fff;
-  margin: 0 0 28px 0;
+  margin: 0 0 56px 0;
   max-width: 16ch;
 }
 .hero h1 .accent {
@@ -1793,7 +1793,7 @@ a { color: inherit; text-decoration: none; }
   line-height: 1.45;
   color: rgba(255,255,255,0.85);
   max-width: 60ch;
-  margin: 0 0 40px 0;
+  margin: 0 0 64px 0;
 }
 .hero .lede strong { color: #fff; }
 .hero .ctas {
