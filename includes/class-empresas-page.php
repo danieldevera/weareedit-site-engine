@@ -2189,7 +2189,10 @@ button {
 .process-wave-v2 {
   position: relative;
   width: 100%;
-  margin-top: 40px;
+  max-width: 1240px;
+  margin: 40px auto 0;
+  padding: 0 28px;
+  box-sizing: border-box;
 }
 .pw-svg {
   display: block;
@@ -3067,15 +3070,28 @@ button {
           <feComponentTransfer><feFuncA type="linear" slope="0.28"/></feComponentTransfer>
           <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
         </filter>
+        <!-- Multi-stop horizontal gradient: 4 brand colours with smooth
+             5% transition zones centred on each seam (x=395/695/995 in
+             a 1400-wide viewBox → 28.2% / 49.6% / 71.1%). Solid colour
+             dominates each segment; the seam is a short gradient blend. -->
+        <linearGradient id="pw-wave-gradient" x1="0" y1="0" x2="1400" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%"   stop-color="<?php echo esc_attr( $step_colors[0] ); ?>"/>
+          <stop offset="25%"  stop-color="<?php echo esc_attr( $step_colors[0] ); ?>"/>
+          <stop offset="31%"  stop-color="<?php echo esc_attr( $step_colors[1] ); ?>"/>
+          <stop offset="47%"  stop-color="<?php echo esc_attr( $step_colors[1] ); ?>"/>
+          <stop offset="52%"  stop-color="<?php echo esc_attr( $step_colors[2] ); ?>"/>
+          <stop offset="68%"  stop-color="<?php echo esc_attr( $step_colors[2] ); ?>"/>
+          <stop offset="74%"  stop-color="<?php echo esc_attr( $step_colors[3] ); ?>"/>
+          <stop offset="100%" stop-color="<?php echo esc_attr( $step_colors[3] ); ?>"/>
+        </linearGradient>
       </defs>
-      <!-- Colored sleeves: 4 segments, each wrapping its circle.
-           Arc radius 105 = circle radius 80 + half stroke 25, so the
-           sleeve's inner edge touches the circle's outer edge. Sweep
-           flag alternates: 0 (under) for circles 1+3, 1 (over) for 2+4. -->
-      <path d="M 0 200 L 95 200 A 105 105 0 0 0 305 200 L 395 200" stroke="<?php echo esc_attr( $step_colors[0] ); ?>" stroke-width="50" fill="none"/>
-      <path d="M 395 200 A 105 105 0 0 1 605 200 L 695 200" stroke="<?php echo esc_attr( $step_colors[1] ); ?>" stroke-width="50" fill="none"/>
-      <path d="M 695 200 A 105 105 0 0 0 905 200 L 995 200" stroke="<?php echo esc_attr( $step_colors[2] ); ?>" stroke-width="50" fill="none"/>
-      <path d="M 995 200 A 105 105 0 0 1 1205 200 L 1400 200" stroke="<?php echo esc_attr( $step_colors[3] ); ?>" stroke-width="50" fill="none"/>
+      <!-- Single unified wave: 4 arcs alternating UNDER/OVER, one continuous
+           path. stroke-linecap="round" gives soft caps at the start and end.
+           The multi-stop gradient blends the 4 brand colours horizontally,
+           so seams between segments are smooth weaves instead of hard
+           vertical cuts. -->
+      <path d="M 0 200 L 95 200 A 105 105 0 0 0 305 200 L 395 200 A 105 105 0 0 1 605 200 L 695 200 A 105 105 0 0 0 905 200 L 995 200 A 105 105 0 0 1 1205 200 L 1400 200"
+            stroke="url(#pw-wave-gradient)" stroke-width="50" stroke-linecap="round" fill="none"/>
       <!-- 4 white spheres on top of the band -->
       <?php
       $cxs = [ 200, 500, 800, 1100 ];
