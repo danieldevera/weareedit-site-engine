@@ -2186,67 +2186,12 @@ button {
 .process {
   padding: 90px 0 100px 0;
 }
+.process .wrap { text-align: center; }
+.process .section-title { max-width: 24ch; margin-left: auto; margin-right: auto; }
 .process-wave-v2 {
   position: relative;
   width: 100%;
-  margin-top: 40px;
-}
-/* Reveal animation — wave draws left→right, spheres pop in with stagger,
-   content fades up. JS adds .is-visible when the section scrolls into
-   view via IntersectionObserver. Reduced-motion users skip the animation. */
-.pw-path { stroke-dasharray: 1880; stroke-dashoffset: 1880; }
-.pw-sphere-circle,
-.pw-sphere-number {
-  transform: scale(0);
-  transform-origin: center;
-  transform-box: fill-box;
-  opacity: 0;
-}
-.pw-step .pw-content,
-.pw-step .pw-dots { opacity: 0; transform: translateY(12px); }
-.process-wave-v2.is-visible .pw-path {
-  animation: pw-draw 1400ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
-}
-.process-wave-v2.is-visible .pw-sphere-circle {
-  animation: pw-pop 520ms cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
-}
-.process-wave-v2.is-visible .pw-sphere-number {
-  animation: pw-fade 320ms ease-out forwards;
-}
-.process-wave-v2.is-visible .pw-step .pw-content {
-  animation: pw-rise 520ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
-}
-.process-wave-v2.is-visible .pw-step .pw-dots {
-  animation: pw-fade 320ms ease-out forwards;
-}
-/* Stagger by sphere/step index (1=earliest, 4=latest). Sphere reveals
-   start at 600ms (wave already drawn through the first ~40%). */
-.process-wave-v2.is-visible .pw-sphere-circle:nth-of-type(1),
-.process-wave-v2.is-visible .pw-sphere-number:nth-of-type(1) { animation-delay: 600ms; }
-.process-wave-v2.is-visible .pw-sphere-circle:nth-of-type(2),
-.process-wave-v2.is-visible .pw-sphere-number:nth-of-type(2) { animation-delay: 800ms; }
-.process-wave-v2.is-visible .pw-sphere-circle:nth-of-type(3),
-.process-wave-v2.is-visible .pw-sphere-number:nth-of-type(3) { animation-delay: 1000ms; }
-.process-wave-v2.is-visible .pw-sphere-circle:nth-of-type(4),
-.process-wave-v2.is-visible .pw-sphere-number:nth-of-type(4) { animation-delay: 1200ms; }
-.process-wave-v2.is-visible .pw-step:nth-child(1) .pw-content,
-.process-wave-v2.is-visible .pw-step:nth-child(1) .pw-dots { animation-delay: 700ms; }
-.process-wave-v2.is-visible .pw-step:nth-child(2) .pw-content,
-.process-wave-v2.is-visible .pw-step:nth-child(2) .pw-dots { animation-delay: 900ms; }
-.process-wave-v2.is-visible .pw-step:nth-child(3) .pw-content,
-.process-wave-v2.is-visible .pw-step:nth-child(3) .pw-dots { animation-delay: 1100ms; }
-.process-wave-v2.is-visible .pw-step:nth-child(4) .pw-content,
-.process-wave-v2.is-visible .pw-step:nth-child(4) .pw-dots { animation-delay: 1300ms; }
-@keyframes pw-draw  { to { stroke-dashoffset: 0; } }
-@keyframes pw-pop   { to { transform: scale(1); opacity: 1; } }
-@keyframes pw-fade  { to { opacity: 1; } }
-@keyframes pw-rise  { to { opacity: 1; transform: translateY(0); } }
-@media (prefers-reduced-motion: reduce) {
-  .pw-path { stroke-dashoffset: 0; }
-  .pw-sphere-circle,
-  .pw-sphere-number { transform: scale(1); opacity: 1; }
-  .pw-step .pw-content,
-  .pw-step .pw-dots { opacity: 1; transform: none; }
+  margin-top: 72px;
 }
 .pw-svg {
   display: block;
@@ -3103,7 +3048,9 @@ button {
    gradient. Text alternates above/below the wave. Full-bleed: sits
    outside .wrap. -->
 <?php if ( ! empty( $process ) ) :
-    $step_colors = [ '#f92869', '#ec8172', '#ffdd06', '#60c5b3' ];
+    // Colour order pink → yellow → coral → teal (Daniel 2026-06-13).
+    // Warm cluster first (pink + yellow + coral) then cool teal closer.
+    $step_colors = [ '#f92869', '#ffdd06', '#ec8172', '#60c5b3' ];
 ?>
 <section class="process" id="processo">
   <div class="wrap">
@@ -3144,19 +3091,19 @@ button {
            The multi-stop gradient blends the 4 brand colours horizontally,
            so seams between segments are smooth weaves instead of hard
            vertical cuts. -->
-      <path class="pw-path" d="M 0 200 L 95 200 A 105 105 0 0 0 305 200 L 395 200 A 105 105 0 0 1 605 200 L 695 200 A 105 105 0 0 0 905 200 L 995 200 A 105 105 0 0 1 1205 200 L 1400 200"
+      <path d="M 0 200 L 95 200 A 105 105 0 0 0 305 200 L 395 200 A 105 105 0 0 1 605 200 L 695 200 A 105 105 0 0 0 905 200 L 995 200 A 105 105 0 0 1 1205 200 L 1400 200"
             stroke="url(#pw-wave-gradient)" stroke-width="50" stroke-linecap="round" fill="none"/>
       <!-- 4 white spheres on top of the band -->
       <?php
       $cxs = [ 200, 500, 800, 1100 ];
       foreach ( $cxs as $cx ) : ?>
-        <circle class="pw-sphere-circle" cx="<?php echo $cx; ?>" cy="200" r="80" fill="url(#pw-sphere)" filter="url(#pw-shadow)"/>
+        <circle cx="<?php echo $cx; ?>" cy="200" r="80" fill="url(#pw-sphere)" filter="url(#pw-shadow)"/>
       <?php endforeach; ?>
       <!-- Step numbers in circles -->
       <?php foreach ( $process as $i => $step ) :
         $cx = $cxs[ $i ] ?? 0;
       ?>
-        <text class="pw-sphere-number" x="<?php echo $cx; ?>" y="215" text-anchor="middle" font-family="SctoGroteskA, sans-serif" font-size="44" font-weight="800" fill="#0a0a0a"><?php echo esc_html( $step['number'] ); ?></text>
+        <text x="<?php echo $cx; ?>" y="215" text-anchor="middle" font-family="SctoGroteskA, sans-serif" font-size="44" font-weight="800" fill="#0a0a0a"><?php echo esc_html( $step['number'] ); ?></text>
       <?php endforeach; ?>
     </svg>
     <div class="pw-grid">
@@ -3178,31 +3125,6 @@ button {
     </div>
   </div>
 </section>
-<script>
-(function(){
-  var el = document.querySelector('.process-wave-v2');
-  if (!el) return;
-  // Skip animation entirely if the browser prefers reduced motion — the
-  // reduced-motion CSS rule will keep the final state visible immediately.
-  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    el.classList.add('is-visible');
-    return;
-  }
-  if (!('IntersectionObserver' in window)) {
-    el.classList.add('is-visible');
-    return;
-  }
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(entry){
-      if (entry.isIntersecting) {
-        el.classList.add('is-visible');
-        io.disconnect();
-      }
-    });
-  }, { threshold: 0.25 });
-  io.observe(el);
-})();
-</script>
 <?php endif; ?>
 
 <!-- ─── FOUNDER QUOTE (replaced STATS in v1.5.372) ─────────────────── -->
