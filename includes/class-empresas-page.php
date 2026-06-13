@@ -2040,7 +2040,10 @@ button {
   background: var(--grey-1);
 }
 .areas-deep-dive .section-title {
-  max-width: 28ch;
+  /* 48ch fits the natural break: line 1 "5 disciplinas digitais. 30
+     sub-disciplinas." (~44ch) and line 2 "Programas modulares ou
+     completos." (~33ch). Was 28ch → wrapped to 3 lines. */
+  max-width: 48ch;
   color: var(--ink);
 }
 .areas-deep-dive .section-eyebrow { color: var(--ink); }
@@ -2071,12 +2074,14 @@ button {
   pointer-events: none;
 }
 
-/* Auto-cycle progress bar — full brand gradient */
+/* Auto-cycle progress bar — full brand gradient, sits at the bottom of
+   the section as a visual carousel ribbon. */
 .add-progress {
-  position: relative; height: 2px;
-  margin: 0 0 56px 0;
+  position: relative; height: 4px;
+  margin: 56px 0 0 0;
   background: rgba(0,0,0,0.05);
   overflow: hidden;
+  border-radius: 2px;
 }
 .add-progress-fill {
   position: absolute; top: 0; left: 0;
@@ -2096,6 +2101,7 @@ button {
 .add-panels {
   position: relative;
   min-height: 520px;
+  margin-top: 56px;
 }
 .add-panel {
   position: absolute; inset: 0;
@@ -2245,6 +2251,29 @@ button {
   letter-spacing: 0;
 }
 .add-tool:hover { color: var(--ink); }
+
+/* Cross-link to pillar page — sits at the bottom of each panel's content
+   column. Editorial underline + accent arrow that translates on hover. */
+.add-cta {
+  display: inline-flex; align-items: center; gap: 12px;
+  margin-top: 36px;
+  padding: 0 0 4px 0;
+  font-size: 15px; font-weight: 700; letter-spacing: -0.005em;
+  color: var(--ink); text-decoration: none;
+  border-bottom: 2px solid var(--accent);
+  transition: gap 280ms cubic-bezier(0.4, 0, 0.2, 1),
+              color 280ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.add-cta-arrow {
+  display: inline-block;
+  color: var(--accent);
+  transition: transform 320ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.add-cta:hover,
+.add-cta:focus-visible { color: var(--accent); gap: 18px; }
+.add-cta:hover .add-cta-arrow,
+.add-cta:focus-visible .add-cta-arrow { transform: translateX(4px); }
+.add-cta:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 2px; }
 
 /* Staggered reveal on active panel */
 .add-panel.active .add-visual,
@@ -3312,10 +3341,6 @@ button {
       <?php endforeach; ?>
       <span class="add-tabs-indicator" aria-hidden="true"></span>
     </div>
-    <!-- Cycle progress bar -->
-    <div class="add-progress" aria-hidden="true">
-      <span class="add-progress-fill cycling"></span>
-    </div>
     <!-- Panels (all rendered, CSS layers them and fades non-active out) -->
     <div class="add-panels" itemprop="hasOfferCatalog" itemscope itemtype="https://schema.org/OfferCatalog">
       <meta itemprop="name" content="Disciplinas digitais">
@@ -3376,11 +3401,19 @@ button {
                   <?php endforeach; ?>
                 </div>
               <?php endif; ?>
-              <meta itemprop="url" content="<?php echo esc_url( $course_url ); ?>">
+              <a class="add-cta" href="<?php echo esc_url( $course_url ); ?>" itemprop="url">
+                <span>Explorar <?php echo esc_html( $area['title'] ); ?></span>
+                <span class="add-cta-arrow" aria-hidden="true">→</span>
+              </a>
             </div>
           </div>
         </div>
       <?php endforeach; ?>
+    </div>
+    <!-- Cycle progress bar — sits at the bottom of the section as a
+         visual ribbon that shows time-to-next. -->
+    <div class="add-progress" aria-hidden="true">
+      <span class="add-progress-fill cycling"></span>
     </div>
   </div>
 </section>
