@@ -326,6 +326,84 @@ class EDIT_GBP_Publisher {
     }
 
     /**
+     * Fetch a single location including its serviceItems + categories
+     * (with serviceTypes). This is the read-side primitive for Stage 4A —
+     * Services Sync. `$location_id` is the form "locations/12345".
+     *
+     * The readMask must include `serviceItems` to get the current services
+     * list, and `categories` (with its nested `serviceTypes`) to discover
+     * which Google-defined services the location's category allows. EDIT.'s
+     * primary category is "Vocational School" (gcid:vocational_school)
+     * which allows free-form service items — courses become free-form
+     * ServiceItem entries with displayName + description per language.
+     *
+     * Returns the raw location JSON array on success, WP_Error on failure.
+     */
+    public static function fetch_location_full( string $location_id ) {
+        $location_id = ltrim( $location_id, '/' );
+        if ( $location_id === '' ) {
+            return new WP_Error( 'edit_gbp_no_location', 'Empty location_id.' );
+        }
+        $url = self::API_BUSINESS_INFO . '/' . $location_id
+             . '?readMask=name,title,serviceItems,categories';
+        return self::api_get( $url );
+    }
+
+    /**
+     * Convenience: return just the serviceItems array for a location, or
+     * empty array if none / on error. Errors are logged to
+     * edit_gbp_last_error so admin UI can surface them.
+     */
+    public static function fetch_services_for_location( string $location_id ): array {
+        $res = self::fetch_location_full( $location_id );
+        if ( is_wp_error( $res ) ) {
+            update_option( 'edit_gbp_last_error',
+                'fetch_services_for_location(' . $location_id . '): ' . $res->get_error_message(),
+                false
+            );
+            return [];
+        }
+        $items = $res['serviceItems'] ?? [];
+        return is_array( $items ) ? $items : [];
+    }
+
+    /**
+     * Normalise a ServiceItem entry into a flat array for UI/diff use.
+     * Handles both freeFormServiceItem and structuredServiceItem variants
+     * (a single ServiceItem has exactly one of them).
+     */
+    public static function normalise_service_item( array $item ): array {
+        $out = [
+            'kind'          => 'unknown',
+            'category'      => '',
+            'display_name'  => '',
+            'description'   => '',
+            'language_code' => '',
+            'price_units'   => '',
+            'price_currency'=> '',
+            'service_type_id' => '',
+        ];
+        if ( isset( $item['freeFormServiceItem'] ) ) {
+            $ff = $item['freeFormServiceItem'];
+            $out['kind']          = 'free_form';
+            $out['category']      = (string) ( $ff['category'] ?? '' );
+            $out['display_name']  = (string) ( $ff['label']['displayName'] ?? '' );
+            $out['description']   = (string) ( $ff['label']['description'] ?? '' );
+            $out['language_code'] = (string) ( $ff['label']['languageCode'] ?? '' );
+        } elseif ( isset( $item['structuredServiceItem'] ) ) {
+            $ss = $item['structuredServiceItem'];
+            $out['kind']            = 'structured';
+            $out['service_type_id'] = (string) ( $ss['serviceTypeId'] ?? '' );
+            $out['description']     = (string) ( $ss['description'] ?? '' );
+        }
+        if ( isset( $item['price'] ) && is_array( $item['price'] ) ) {
+            $out['price_units']    = (string) ( $item['price']['units'] ?? '' );
+            $out['price_currency'] = (string) ( $item['price']['currencyCode'] ?? '' );
+        }
+        return $out;
+    }
+
+    /**
      * High-level: get a flat list of all locations across all accounts the
      * user can access. Cached for 1 hour to avoid hammering the API on
      * every admin page load. Pass $force=true to bypass cache.
@@ -467,6 +545,127 @@ class EDIT_GBP_Publisher {
             </div>
         </form>
         <?php
+    }
+
+    /**
+     * Render the Stage 4A Services Audit panel. For each detected location
+     * (Lisboa, Porto, São Paulo), fetches the current ServiceItems +
+     * categories and presents them in a per-location card. Read-only —
+     * no writes happen here, this is the baseline view we'll diff against
+     * in Phase 4B.
+     */
+    private static function render_services_audit(): void {
+        $locations = self::get_all_locations( false );
+        if ( empty( $locations ) ) {
+            echo '<p style="color:#888;margin:0;font-size:13px;">Sem localizações disponíveis. Recarrega o painel 3 acima.</p>';
+            return;
+        }
+
+        // Filter to the canonical EDIT. campuses by locality. Anything else
+        // (test listings, archived locations) is hidden.
+        $target_localities = [ 'Lisboa', 'Porto', 'São Paulo', 'Sao Paulo' ];
+        $targets = array_values( array_filter( $locations, function( $l ) use ( $target_localities ) {
+            return in_array( $l['locality'] ?? '', $target_localities, true );
+        } ) );
+
+        if ( empty( $targets ) ) {
+            echo '<p style="color:#888;margin:0;font-size:13px;">Nenhuma das localizações conhecidas (Lisboa, Porto, São Paulo) foi encontrada na lista do painel 3.</p>';
+            return;
+        }
+
+        $force_audit = isset( $_GET['refresh_services'] );
+
+        foreach ( $targets as $loc ) {
+            $location_id = $loc['location_id'];
+            $cache_key   = 'edit_gbp_services_cache_' . md5( $location_id );
+            $full        = $force_audit ? false : get_transient( $cache_key );
+            $errored     = false;
+
+            if ( ! is_array( $full ) ) {
+                $res = self::fetch_location_full( $location_id );
+                if ( is_wp_error( $res ) ) {
+                    $errored = $res->get_error_message();
+                    $full    = [];
+                } else {
+                    $full = $res;
+                    set_transient( $cache_key, $full, 3600 ); // 1h
+                }
+            }
+
+            $service_items = is_array( $full['serviceItems'] ?? null ) ? $full['serviceItems'] : [];
+            $categories    = is_array( $full['categories']   ?? null ) ? $full['categories']   : [];
+
+            $primary_cat   = (string) ( $categories['primaryCategory']['displayName'] ?? '' );
+            $primary_gcid  = (string) ( $categories['primaryCategory']['name']        ?? '' );
+            $extra_cats    = $categories['additionalCategories'] ?? [];
+
+            echo '<div style="background:#fafafa;border:1px solid #e5e5e5;border-radius:4px;padding:18px 22px;margin-bottom:18px;">';
+            echo '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin:0 0 14px;">';
+            echo '<div>';
+            echo '<h3 style="margin:0 0 4px;font-size:16px;">' . esc_html( $loc['title'] ) . ' · <span style="color:#888;font-weight:400;">' . esc_html( $loc['locality'] ) . '</span></h3>';
+            echo '<small style="color:#888;font-family:monospace;">' . esc_html( $location_id ) . '</small>';
+            echo '</div>';
+            echo '<span style="background:#fff;border:1px solid #ddd;border-radius:99px;padding:4px 12px;font-size:12px;font-weight:600;color:' . ( count( $service_items ) ? '#1f6e1f' : '#b45309' ) . ';">' . count( $service_items ) . ' serviço' . ( count( $service_items ) === 1 ? '' : 's' ) . '</span>';
+            echo '</div>';
+
+            if ( $errored ) {
+                echo '<p style="background:#fef2f2;color:#7c2d12;padding:10px 14px;border-radius:4px;font-size:13px;font-family:monospace;margin:0;">' . esc_html( $errored ) . '</p>';
+                echo '</div>';
+                continue;
+            }
+
+            // Categories block — these define the gcid: codes we can use for
+            // free-form services in Phase 4B's mapper.
+            echo '<details style="margin:0 0 14px;">';
+            echo '<summary style="cursor:pointer;font-size:13px;color:#444;font-weight:600;">Categorias da localização (' . ( 1 + count( $extra_cats ) ) . ')</summary>';
+            echo '<div style="margin:10px 0 0;padding:10px 14px;background:#fff;border-left:3px solid #60c5b3;font-size:13px;">';
+            echo '<div style="margin-bottom:6px;"><strong>Primária:</strong> ' . esc_html( $primary_cat ) . ' <code style="background:#f0f0f0;padding:2px 6px;border-radius:3px;font-size:11px;">' . esc_html( $primary_gcid ) . '</code></div>';
+            if ( ! empty( $extra_cats ) ) {
+                echo '<div><strong>Adicionais:</strong><ul style="margin:6px 0 0 18px;padding:0;line-height:1.7;">';
+                foreach ( $extra_cats as $cat ) {
+                    $cat_name = (string) ( $cat['displayName'] ?? '' );
+                    $cat_gcid = (string) ( $cat['name']        ?? '' );
+                    echo '<li>' . esc_html( $cat_name ) . ' <code style="background:#f0f0f0;padding:2px 6px;border-radius:3px;font-size:11px;">' . esc_html( $cat_gcid ) . '</code></li>';
+                }
+                echo '</ul></div>';
+            }
+            echo '</div>';
+            echo '</details>';
+
+            // Service items block.
+            if ( empty( $service_items ) ) {
+                echo '<p style="margin:0;padding:12px 14px;background:#fffbeb;border-left:3px solid #f59e0b;font-size:13px;color:#78350f;">Sem serviços publicados nesta localização. Phase 4B vai propor a lista a partir do CPT <code>formacao</code>.</p>';
+            } else {
+                echo '<table class="widefat striped" style="margin:0;">';
+                echo '<thead><tr><th style="width:28%;">Nome</th><th style="width:36%;">Descrição</th><th style="width:10%;">Tipo</th><th style="width:14%;">Categoria</th><th style="width:12%;">Idioma · Preço</th></tr></thead><tbody>';
+                foreach ( $service_items as $item ) {
+                    $n = self::normalise_service_item( $item );
+                    echo '<tr>';
+                    echo '<td><strong>' . esc_html( $n['display_name'] ?: '—' ) . '</strong>';
+                    if ( $n['kind'] === 'structured' && $n['service_type_id'] ) {
+                        echo '<br><small style="color:#888;font-family:monospace;font-size:11px;">' . esc_html( $n['service_type_id'] ) . '</small>';
+                    }
+                    echo '</td>';
+                    echo '<td style="font-size:13px;color:#444;line-height:1.5;">' . esc_html( wp_trim_words( $n['description'], 24, '…' ) ) . '</td>';
+                    echo '<td><span style="font-size:11px;background:' . ( $n['kind'] === 'structured' ? '#dbeafe' : '#fef3c7' ) . ';padding:2px 8px;border-radius:99px;color:#1f2937;">' . esc_html( $n['kind'] ) . '</span></td>';
+                    echo '<td><code style="font-size:11px;background:#f0f0f0;padding:2px 6px;border-radius:3px;">' . esc_html( $n['category'] ?: '—' ) . '</code></td>';
+                    echo '<td style="font-size:12px;color:#666;">' . esc_html( $n['language_code'] ?: '—' );
+                    if ( $n['price_units'] ) {
+                        echo '<br>' . esc_html( $n['price_units'] . ' ' . $n['price_currency'] );
+                    }
+                    echo '</td>';
+                    echo '</tr>';
+                }
+                echo '</tbody></table>';
+            }
+
+            echo '</div>'; // /location card
+        }
+
+        echo '<div style="margin-top:8px;">';
+        echo '<a href="' . esc_url( admin_url( 'admin.php?page=edit-gbp-publisher&refresh_services=1' ) ) . '" class="button button-secondary">Recarregar serviços do GBP</a>';
+        echo '<span style="margin-left:12px;font-size:12px;color:#888;">Cache de 1 hora por localização</span>';
+        echo '</div>';
     }
 
     public static function render_admin_page(): void {
@@ -612,11 +811,22 @@ class EDIT_GBP_Publisher {
                 <?php endif; ?>
             </div>
 
+            <div style="background:#fff;border:1px solid #e0e0e0;padding:24px 28px;margin-bottom:24px;">
+                <h2 style="margin:0 0 8px;font-size:18px;">4. Stage 4A · Auditoria de Serviços</h2>
+                <p style="margin:0 0 16px;color:#666;font-size:13px;">
+                    Lista o que cada localização Lisboa + Porto + SP tem actualmente publicado como Serviços no Google.
+                    Esta é a base de comparação antes de fazer sincronização do CPT <code>formacao</code> (Phase 4B + 4C).
+                </p>
+                <?php self::render_services_audit(); ?>
+            </div>
+
             <div style="background:#fff;border:1px solid #e0e0e0;padding:24px 28px;">
-                <h2 style="margin:0 0 16px;font-size:18px;">4. Próximos passos</h2>
+                <h2 style="margin:0 0 16px;font-size:18px;">5. Próximos passos</h2>
                 <ul style="margin:0;padding-left:20px;color:#444;line-height:1.7;">
-                    <li>Publicação de Produtos a partir do CPT formacao (Stage 4) — em breve</li>
-                    <li>Posts requerem allowlist Google (Track B) — submetida em <em>data a indicar</em></li>
+                    <li><strong>Phase 4B</strong> · Dry-run preview do diff (cursos activos do CPT <code>formacao</code> vs. serviços actuais)</li>
+                    <li><strong>Phase 4C</strong> · Botão "Sincronizar agora" por localização (escrita real via PATCH)</li>
+                    <li><strong>Phase 4D</strong> · Cron diário automático (apenas após 4C correr estável 7 dias)</li>
+                    <li>Posts requerem allowlist Google (Track B / Stage 3) — submetida em <em>data a indicar</em></li>
                 </ul>
             </div>
             <?php endif; ?>
