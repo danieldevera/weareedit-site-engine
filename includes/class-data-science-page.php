@@ -72,6 +72,38 @@ class EDIT_Data_Science_Page {
         ],
     ];
 
+    /**
+     * Long-form editorial intro between hero and catalog. Same structure
+     * as Marketing Digital's INTRO (v1.5.147 pattern). Conservative
+     * variant: only LinkedIn-verified alumni employers (Farfetch + Worten)
+     * are named individually. Other recruiter categories described by
+     * sector. Salary bands referenced as Portuguese 2026 market norms.
+     */
+    const INTRO = [
+        'eyebrow'  => 'PORQUÊ DATA SCIENCE?',
+        'title'    => 'A formação que transforma dados em <span>decisões e produtos reais</span>',
+        'lead'     => 'O Data Science deixou de ser uma função técnica isolada — tornou-se a camada que decide preços, recomendações, deteção de fraude, otimização de operações e a próxima geração de produtos com IA. Bancos, telcos, retalho e scale-ups portuguesas estão a recrutar profissionais que sabem extrair valor de dados a um ritmo sem precedentes. A EDIT. forma essa geração com programas DGERT-certificados em Lisboa, Porto e online — leccionados por data scientists e engineers em activo.',
+        'blocks'   => [
+            [
+                'title' => 'O que cobre hoje Data Science',
+                'body'  => 'Em 2026, Data Science abrange quatro camadas inseparáveis: <strong>análise descritiva</strong> (SQL, Excel, Power BI, Tableau, Looker Studio), <strong>análise preditiva e Machine Learning</strong> (Python, Pandas, Scikit-learn, PyTorch), <strong>Data Engineering</strong> (pipelines, ETL/ELT, Airflow, dbt, Snowflake, BigQuery), e <strong>aplicação de IA generativa</strong> (RAG, agents, LLM tooling). Os perfis mais procurados dominam pelo menos duas — analista que sabe modelar, engineer que sabe interpretar, data scientist que sabe operacionalizar.',
+            ],
+            [
+                'title' => 'Para quem é esta formação',
+                'body'  => 'Os nossos programas foram desenhados para três perfis. <strong>Profissionais técnicos em transição</strong> (engenheiros, finanças, gestão) que querem fazer da análise de dados o centro da carreira. <strong>Analistas e BI specialists em activo</strong> que precisam de subir para Machine Learning ou Data Engineering. <strong>Líderes de negócio</strong> (PMs, founders, marketing leads) que querem literacia de dados suficiente para decidir produtos e estratégia sem dependerem em absoluto das equipas técnicas.',
+            ],
+            [
+                'title' => 'Onde vão trabalhar os alumni',
+                'body'  => 'Os alunos saem para roles em data analyst, data scientist, ML engineer, data engineer e BI. Os principais sectores recrutadores em Portugal: <strong>banca</strong> (perfis de risco, fraude, customer analytics), <strong>telcos</strong> (segmentação, churn, BI), <strong>retalho e e-commerce</strong> (recomendação, demand forecasting), <strong>scale-ups tech</strong> (data engineering, ML em produto) e <strong>consultoras</strong> (data strategy, transformação digital). Alumni da EDIT. estão colocados em empresas como <strong>Farfetch</strong> e <strong>Worten</strong>, entre outras. Faixas salariais 2026 (referência mercado PT): <strong>€22-30K</strong> para junior data analyst; <strong>€35-50K</strong> para data scientist com 2-4 anos; <strong>€55-80K+</strong> para senior data scientist ou data engineer em scale-up.',
+            ],
+            [
+                'title' => 'Porquê a EDIT.',
+                'body'  => '<ul><li><strong>DGERT-certificada (nº 18391)</strong> — todas as formações elegíveis para SIFIDE (crédito fiscal até 35% sobre o investimento em formação).</li><li><strong>Tutores em activo</strong> — data scientists, ML engineers e data leads que trabalham na área, não académicos.</li><li><strong>Projetos reais sobre dados reais</strong> — usamos datasets autênticos com briefs de negócio, não exemplos sintéticos.</li><li><strong>4.1 ★ / 67 reviews no Google</strong> — feedback verificável dos alumni de Lisboa e Porto.</li><li><strong>Disruptive Jobs</strong> — agência de recrutamento própria da EDIT., dedicada a ligar alunos a marcas. Mais do que formação: um pipeline de carreira.</li></ul>',
+            ],
+        ],
+        'cta_lead' => 'Abaixo estão os programas activos em Data Science e Data Engineering — Bootcamps intensivos para entrada na área, Cursos completos para especialização profunda em Lisboa, Porto ou Remote, e Workshops curtos para upskilling específico. Todos elegíveis para SIFIDE.',
+    ];
+
     public static function init() {
         add_shortcode( self::SHORTCODE,    [ __CLASS__, 'render_shortcode' ] );
         add_action( 'admin_init',          [ __CLASS__, 'ensure_page_exists' ] );
@@ -233,6 +265,30 @@ class EDIT_Data_Science_Page {
                     </div>
                 </div>
             </div>
+
+            <section class="md-intro">
+                <div class="md-intro__inner">
+                    <div class="md-intro__header">
+                        <div class="md-intro__header-left">
+                            <p class="md-intro__eyebrow"><?php echo esc_html( self::INTRO['eyebrow'] ); ?></p>
+                            <h2 class="md-intro__title"><?php echo wp_kses_post( self::INTRO['title'] ); ?></h2>
+                        </div>
+                        <p class="md-intro__lead"><?php echo wp_kses_post( self::INTRO['lead'] ); ?></p>
+                    </div>
+                    <div class="md-intro__blocks">
+                        <?php foreach ( self::INTRO['blocks'] as $b ) : ?>
+                            <div class="md-intro__block">
+                                <h3 class="md-intro__block-title"><?php echo esc_html( $b['title'] ); ?></h3>
+                                <div class="md-intro__block-body"><?php echo wp_kses_post( $b['body'] ); ?></div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <div class="md-intro__alumni-wall">
+                        <?php echo EDIT_Alumni_Employers::render( 'wall' ); ?>
+                    </div>
+                    <p class="md-intro__cta-lead"><?php echo wp_kses_post( self::INTRO['cta_lead'] ); ?></p>
+                </div>
+            </section>
 
             <div id="catalogo" class="md-catalog">
                 <div class="md-catalog__heading">

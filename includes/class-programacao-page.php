@@ -70,6 +70,36 @@ class EDIT_Programacao_Page {
         ],
     ];
 
+    /**
+     * Long-form editorial intro between hero and catalog. Conservative
+     * variant — alumni employers shown via the modular logo wall
+     * (EDIT_Alumni_Employers component) instead of inline name-drop.
+     */
+    const INTRO = [
+        'eyebrow'  => 'PORQUÊ PROGRAMAÇÃO?',
+        'title'    => 'A formação que prepara developers para <span>produto real, não exercícios académicos</span>',
+        'lead'     => 'Programar é hoje a competência que mais separa quem decide produtos de quem os executa, e a que tem o ROI de carreira mais alto em qualquer indústria. As scale-ups portuguesas e os hubs internacionais em Lisboa e Porto recrutam developers que pensam em produto, não só código — e que entregam features, não tickets fechados. A EDIT. forma esses developers com programas DGERT-certificados em Lisboa, Porto e online — leccionados por engineers em activo.',
+        'blocks'   => [
+            [
+                'title' => 'O que cobre hoje programação profissional',
+                'body'  => 'Em 2026, ser developer é dominar cinco camadas integradas: <strong>frontend moderno</strong> (TypeScript, React/Next.js, design systems, performance), <strong>backend e APIs</strong> (Node.js, Python/Django, PHP/Laravel, autenticação, REST/GraphQL), <strong>bases de dados</strong> (PostgreSQL, MongoDB, Redis, modelação relacional), <strong>cloud e DevOps</strong> (AWS, GCP, Docker, CI/CD, observabilidade), e <strong>IA aplicada ao código</strong> (Cursor, GitHub Copilot, Claude Code, agentes de programação). Os perfis full-stack que dominam toda a cadeia são os mais procurados — porque entregam features end-to-end.',
+            ],
+            [
+                'title' => 'Para quem é esta formação',
+                'body'  => 'Os nossos programas foram desenhados para três perfis. <strong>Profissionais em mudança de carreira</strong> (publicidade, gestão, finanças, ciências exactas) que querem entrar em engenharia de software com método. <strong>Developers self-taught ou bootcamp grads</strong> que querem subir nível com fundamentos sólidos e práticas profissionais. <strong>Product managers, designers e líderes técnicos</strong> que querem literacia de programação suficiente para colaborar com engenharia, validar entregas e tomar decisões de stack.',
+            ],
+            [
+                'title' => 'Onde vão trabalhar os alumni',
+                'body'  => 'Os alunos saem para roles em frontend developer, backend developer, full-stack engineer, mobile developer e DevOps. Os principais sectores recrutadores em Portugal: <strong>scale-ups tech</strong> (product engineering), <strong>banca digital</strong> (mobile apps, internet banking, API teams), <strong>consultoras tech</strong> (delivery em large clients), <strong>telcos</strong> (produto digital) e <strong>ecossistema de scale-ups internacionais com hubs em Lisboa e Porto</strong>. Faixas salariais 2026 (referência mercado PT): <strong>€25-35K</strong> para junior developer; <strong>€40-55K</strong> para mid developer com 2-4 anos; <strong>€55-80K+</strong> para senior em scale-up; <strong>€75-110K+</strong> para tech lead ou engineering manager.',
+            ],
+            [
+                'title' => 'Porquê a EDIT.',
+                'body'  => '<ul><li><strong>DGERT-certificada (nº 18391)</strong> — todas as formações elegíveis para SIFIDE (crédito fiscal até 35% sobre o investimento em formação).</li><li><strong>Tutores em activo</strong> — engineers, tech leads e CTOs que trabalham em produto real, não académicos.</li><li><strong>Projetos sobre stack moderno</strong> — usamos a stack que as empresas usam hoje, não tecnologia legacy.</li><li><strong>4.1 ★ / 67 reviews no Google</strong> — feedback verificável dos alumni de Lisboa e Porto.</li><li><strong>Disruptive Jobs</strong> — agência de recrutamento própria da EDIT., dedicada a ligar alunos a marcas. Mais do que formação: um pipeline de carreira.</li></ul>',
+            ],
+        ],
+        'cta_lead' => 'Abaixo estão os programas activos em Programação — Bootcamps intensivos para entrada na área, Cursos completos para especialização profunda em Lisboa, Porto ou Remote, e Workshops curtos para upskilling específico. Todos elegíveis para SIFIDE.',
+    ];
+
     public static function init() {
         add_shortcode( self::SHORTCODE,    [ __CLASS__, 'render_shortcode' ] );
         add_action( 'admin_init',          [ __CLASS__, 'ensure_page_exists' ] );
@@ -235,6 +265,30 @@ class EDIT_Programacao_Page {
                     </div>
                 </div>
             </div>
+
+            <section class="md-intro">
+                <div class="md-intro__inner">
+                    <div class="md-intro__header">
+                        <div class="md-intro__header-left">
+                            <p class="md-intro__eyebrow"><?php echo esc_html( self::INTRO['eyebrow'] ); ?></p>
+                            <h2 class="md-intro__title"><?php echo wp_kses_post( self::INTRO['title'] ); ?></h2>
+                        </div>
+                        <p class="md-intro__lead"><?php echo wp_kses_post( self::INTRO['lead'] ); ?></p>
+                    </div>
+                    <div class="md-intro__blocks">
+                        <?php foreach ( self::INTRO['blocks'] as $b ) : ?>
+                            <div class="md-intro__block">
+                                <h3 class="md-intro__block-title"><?php echo esc_html( $b['title'] ); ?></h3>
+                                <div class="md-intro__block-body"><?php echo wp_kses_post( $b['body'] ); ?></div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <div class="md-intro__alumni-wall">
+                        <?php echo EDIT_Alumni_Employers::render( 'wall' ); ?>
+                    </div>
+                    <p class="md-intro__cta-lead"><?php echo wp_kses_post( self::INTRO['cta_lead'] ); ?></p>
+                </div>
+            </section>
 
             <div id="catalogo" class="md-catalog">
                 <div class="md-catalog__heading">

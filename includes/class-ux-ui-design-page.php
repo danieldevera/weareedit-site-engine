@@ -74,6 +74,36 @@ class EDIT_UX_UI_Design_Page {
         ],
     ];
 
+    /**
+     * Long-form editorial intro between hero and catalog. Conservative
+     * variant: alumni employers shown via the modular logo wall
+     * (EDIT_Alumni_Employers component) rather than inline name-drop.
+     */
+    const INTRO = [
+        'eyebrow'  => 'PORQUÊ UX/UI DESIGN?',
+        'title'    => 'A formação que liga design a <span>produto e negócio</span>',
+        'lead'     => 'O design de produto digital evoluiu de "fazer ecrãs bonitos" para arquitetar a experiência ponta-a-ponta — research, fluxos, interaction, visual, design systems e métricas de adoção. As scale-ups portuguesas e marcas internacionais com hubs em Lisboa e Porto recrutam designers que combinam sensibilidade visual com pensamento de produto e literacia técnica. A EDIT. forma esses perfis com programas DGERT-certificados em Lisboa, Porto e online — leccionados por product designers em activo.',
+        'blocks'   => [
+            [
+                'title' => 'O que cobre hoje UX/UI Design',
+                'body'  => 'Em 2026, UX/UI Design integra cinco competências essenciais: <strong>user research</strong> (entrevistas, testes de usabilidade, surveys, análise comportamental), <strong>information architecture e interaction design</strong> (fluxos, navegação, microinterações, prototipagem em Figma), <strong>visual design e design systems</strong> (tipografia, cor, componentes reutilizáveis, tokens), <strong>UX writing e content design</strong> (microcopy, voice & tone), e <strong>colaboração com produto e engenharia</strong> (handoff, métricas, A/B testing). Os designers mais valorizados dominam toda a cadeia — não apenas Figma.',
+            ],
+            [
+                'title' => 'Para quem é esta formação',
+                'body'  => 'Os nossos programas foram desenhados para três perfis. <strong>Designers visuais em transição</strong> (gráficos, ilustradores, web designers) que querem mover-se para produto digital. <strong>Profissionais não-designers em transição de carreira</strong> (engenheiros, marketers, gestores, investigadores) que querem fazer da experiência do utilizador o centro do trabalho. <strong>Product managers e founders</strong> que precisam de literacia de design suficiente para decidir prioridades de UX, brief de designers e validar entregas.',
+            ],
+            [
+                'title' => 'Onde vão trabalhar os alumni',
+                'body'  => 'Os alunos saem para roles em product designer, UX designer, UI designer, design lead e UX researcher. Os principais sectores recrutadores em Portugal: <strong>scale-ups tech</strong> (product teams), <strong>banca digital</strong> (mobile apps, internet banking), <strong>telcos</strong> (digital product), <strong>retalho e e-commerce</strong> (UX de conversão) e <strong>estúdios de design e agências</strong> (interaction + visual). Faixas salariais 2026 (referência mercado PT): <strong>€22-30K</strong> para junior UX/UI; <strong>€35-48K</strong> para product designer com 2-4 anos; <strong>€55-75K+</strong> para senior em scale-up; <strong>€65-90K</strong> para design lead.',
+            ],
+            [
+                'title' => 'Porquê a EDIT.',
+                'body'  => '<ul><li><strong>DGERT-certificada (nº 18391)</strong> — todas as formações elegíveis para SIFIDE (crédito fiscal até 35% sobre o investimento em formação).</li><li><strong>Tutores em activo</strong> — product designers, design leads e UX researchers que trabalham na área, não académicos.</li><li><strong>Briefs reais sobre produtos reais</strong> — projetos com requisitos de negócio autênticos, não exercícios fictícios.</li><li><strong>4.1 ★ / 67 reviews no Google</strong> — feedback verificável dos alumni de Lisboa e Porto.</li><li><strong>Disruptive Jobs</strong> — agência de recrutamento própria da EDIT., dedicada a ligar alunos a marcas. Mais do que formação: um pipeline de carreira.</li></ul>',
+            ],
+        ],
+        'cta_lead' => 'Abaixo estão os programas activos em UX/UI Design — Bootcamps intensivos para entrada na área, Cursos completos para especialização profunda em Lisboa, Porto ou Remote, e Workshops curtos para upskilling específico. Todos elegíveis para SIFIDE.',
+    ];
+
     public static function init() {
         add_shortcode( self::SHORTCODE,    [ __CLASS__, 'render_shortcode' ] );
         add_action( 'admin_init',          [ __CLASS__, 'ensure_page_exists' ] );
@@ -244,6 +274,30 @@ class EDIT_UX_UI_Design_Page {
                     </div>
                 </div>
             </div>
+
+            <section class="md-intro">
+                <div class="md-intro__inner">
+                    <div class="md-intro__header">
+                        <div class="md-intro__header-left">
+                            <p class="md-intro__eyebrow"><?php echo esc_html( self::INTRO['eyebrow'] ); ?></p>
+                            <h2 class="md-intro__title"><?php echo wp_kses_post( self::INTRO['title'] ); ?></h2>
+                        </div>
+                        <p class="md-intro__lead"><?php echo wp_kses_post( self::INTRO['lead'] ); ?></p>
+                    </div>
+                    <div class="md-intro__blocks">
+                        <?php foreach ( self::INTRO['blocks'] as $b ) : ?>
+                            <div class="md-intro__block">
+                                <h3 class="md-intro__block-title"><?php echo esc_html( $b['title'] ); ?></h3>
+                                <div class="md-intro__block-body"><?php echo wp_kses_post( $b['body'] ); ?></div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <div class="md-intro__alumni-wall">
+                        <?php echo EDIT_Alumni_Employers::render( 'wall' ); ?>
+                    </div>
+                    <p class="md-intro__cta-lead"><?php echo wp_kses_post( self::INTRO['cta_lead'] ); ?></p>
+                </div>
+            </section>
 
             <div id="catalogo" class="md-catalog">
                 <div class="md-catalog__heading">

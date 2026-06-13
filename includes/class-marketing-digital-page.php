@@ -316,6 +316,9 @@ class EDIT_Marketing_Digital_Page {
                             </div>
                         <?php endforeach; ?>
                     </div>
+                    <div class="md-intro__alumni-wall">
+                        <?php echo EDIT_Alumni_Employers::render( 'wall' ); ?>
+                    </div>
                     <p class="md-intro__cta-lead"><?php echo wp_kses_post( self::INTRO['cta_lead'] ); ?></p>
                 </div>
             </section>

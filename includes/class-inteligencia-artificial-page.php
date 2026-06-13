@@ -71,6 +71,36 @@ class EDIT_Inteligencia_Artificial_Page {
         ],
     ];
 
+    /**
+     * Long-form editorial intro between hero and catalog. Conservative
+     * variant — alumni employers shown via the modular logo wall
+     * (EDIT_Alumni_Employers component) instead of inline name-drop.
+     */
+    const INTRO = [
+        'eyebrow'  => 'PORQUÊ INTELIGÊNCIA ARTIFICIAL?',
+        'title'    => 'A formação que torna a IA <span>uma vantagem prática, não uma promessa</span>',
+        'lead'     => 'A Inteligência Artificial é a tecnologia mais transformadora desde a internet — e ao mesmo tempo a mais difícil de adotar bem. Saber usar ChatGPT, Claude ou Gemini para uma tarefa pontual é trivial; integrar IA generativa em fluxos de trabalho, criar agentes que executam tarefas reais, e construir produtos que aprendem com utilizadores são competências que mudam carreiras. A EDIT. forma essa geração com programas DGERT-certificados em Lisboa, Porto e online — leccionados por profissionais que constroem com IA todos os dias.',
+        'blocks'   => [
+            [
+                'title' => 'O que cobre hoje IA aplicada',
+                'body'  => 'Em 2026, Inteligência Artificial profissional cobre cinco frentes: <strong>prompt engineering avançado</strong> (chain-of-thought, few-shot, structured outputs), <strong>agentes inteligentes</strong> (multi-step workflows, tool use, function calling), <strong>RAG e knowledge bases</strong> (vector stores, embeddings, retrieval pipelines), <strong>integração de IA em produto</strong> (APIs OpenAI/Anthropic/Google, fine-tuning, custos), e <strong>IA generativa para conteúdo e operações</strong> (Midjourney, Stable Diffusion, geração de vídeo, automação com n8n e Make). Os profissionais que se destacam dominam o fluxo completo — não só conversam com modelos.',
+            ],
+            [
+                'title' => 'Para quem é esta formação',
+                'body'  => 'Os nossos programas foram desenhados para três perfis. <strong>Profissionais não-técnicos em transformação</strong> (marketers, gestores, criativos, jornalistas, consultores) que querem incorporar IA no fluxo diário e na carreira. <strong>Engenheiros e designers em activo</strong> que precisam de construir produtos com LLMs, RAG, agentes ou automação avançada. <strong>Founders e líderes</strong> que querem literacia técnica suficiente para decidir stack de IA, contratar perfis certos e medir ROI real de iniciativas com IA.',
+            ],
+            [
+                'title' => 'Onde vão trabalhar os alumni',
+                'body'  => 'Os alunos saem com competências aplicáveis em qualquer função — porque IA é hoje uma layer horizontal, não um cargo específico. Os principais sectores recrutadores em Portugal: <strong>agências de comunicação e marketing</strong> (automação criativa, content production), <strong>scale-ups tech</strong> (LLM apps, RAG em produto), <strong>media e publishing</strong> (content workflows assistidos por IA), <strong>consultoras</strong> (transformação digital com IA) e o <strong>ecossistema de freelancers e founders</strong> a construir produtos AI-native. Faixas salariais 2026 (referência mercado PT): <strong>€30-45K</strong> para AI specialist sem experiência prévia; <strong>€45-65K</strong> para AI consultor com 2-4 anos; <strong>€65-100K+</strong> para AI lead ou senior AI engineer em scale-up.',
+            ],
+            [
+                'title' => 'Porquê a EDIT.',
+                'body'  => '<ul><li><strong>DGERT-certificada (nº 18391)</strong> — todas as formações elegíveis para SIFIDE (crédito fiscal até 35% sobre o investimento em formação).</li><li><strong>Tutores que constroem com IA todos os dias</strong> — práticos a aplicar LLMs, agentes e RAG em produto real, não académicos.</li><li><strong>Currículo actualizado em ciclos curtos</strong> — IA evolui em meses, não anos. Reflectimos o estado da arte 2026.</li><li><strong>4.1 ★ / 67 reviews no Google</strong> — feedback verificável dos alumni de Lisboa e Porto.</li><li><strong>Disruptive Jobs</strong> — agência de recrutamento própria da EDIT., dedicada a ligar alunos a marcas. Mais do que formação: um pipeline de carreira.</li></ul>',
+            ],
+        ],
+        'cta_lead' => 'Abaixo estão os programas activos em Inteligência Artificial — Bootcamps intensivos para profissionais não-técnicos, Cursos completos para construção de produtos com IA, e Workshops curtos para domínio de ferramentas específicas. Todos elegíveis para SIFIDE.',
+    ];
+
     public static function init() {
         add_shortcode( self::SHORTCODE,    [ __CLASS__, 'render_shortcode' ] );
         add_action( 'admin_init',          [ __CLASS__, 'ensure_page_exists' ] );
@@ -236,6 +266,30 @@ class EDIT_Inteligencia_Artificial_Page {
                     </div>
                 </div>
             </div>
+
+            <section class="md-intro">
+                <div class="md-intro__inner">
+                    <div class="md-intro__header">
+                        <div class="md-intro__header-left">
+                            <p class="md-intro__eyebrow"><?php echo esc_html( self::INTRO['eyebrow'] ); ?></p>
+                            <h2 class="md-intro__title"><?php echo wp_kses_post( self::INTRO['title'] ); ?></h2>
+                        </div>
+                        <p class="md-intro__lead"><?php echo wp_kses_post( self::INTRO['lead'] ); ?></p>
+                    </div>
+                    <div class="md-intro__blocks">
+                        <?php foreach ( self::INTRO['blocks'] as $b ) : ?>
+                            <div class="md-intro__block">
+                                <h3 class="md-intro__block-title"><?php echo esc_html( $b['title'] ); ?></h3>
+                                <div class="md-intro__block-body"><?php echo wp_kses_post( $b['body'] ); ?></div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <div class="md-intro__alumni-wall">
+                        <?php echo EDIT_Alumni_Employers::render( 'wall' ); ?>
+                    </div>
+                    <p class="md-intro__cta-lead"><?php echo wp_kses_post( self::INTRO['cta_lead'] ); ?></p>
+                </div>
+            </section>
 
             <div id="catalogo" class="md-catalog">
                 <div class="md-catalog__heading">

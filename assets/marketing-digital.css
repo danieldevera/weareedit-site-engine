@@ -161,8 +161,10 @@ body:has(.md-pillar) #edit-newsletter-strip { margin:0 !important; }
 .md-intro__block-body ul li { padding-left:24px; position:relative; }
 .md-intro__block-body ul li::before { content:'✓'; color:#ffdd06; position:absolute; left:0; top:0; font-weight:700; }
 .md-intro__cta-lead { font-size:17px; line-height:1.65; color:rgba(255,255,255,.7); margin:56px 0 0; padding-top:32px; border-top:1px solid rgba(255,255,255,.08); font-style:italic; }
+.md-intro__alumni-wall { margin:64px 0 24px; }
 
 @media (max-width:768px) {
+    .md-intro__alumni-wall { margin:40px 0 16px; }
     .md-intro { padding:64px 24px 16px; }
     .md-intro__header { grid-template-columns:1fr; gap:32px; margin-bottom:56px; }
     .md-intro__title { font-size:clamp(32px,8vw,42px); }
