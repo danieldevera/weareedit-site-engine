@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.519 — 2026-06-14 (Empresas Process step 01 timeframe: 1–2 semanas → 48 horas)
+- `EDIT_Formacao_Corporativa_Page::PROCESS` step 01 "Diagnóstico" `time` changed `1–2 semanas` → `48 horas` (Daniel). Surfaces on the empresas Process section. NOTE: the on-page FAQ ("Quanto tempo demora…") still says "1-2 semanas de diagnóstico" — left as-is pending Daniel's call on whether to align.
+
 ## v1.5.518 — 2026-06-14 (Empresas duplicate-canonical fix — launch-critical SEO)
 - **Bug:** `empresas.weareedit.io` shipped TWO `<link rel="canonical">` tags — ours (correct, → empresas) plus a stray one from Rank Math / WP-core rel_canonical pointing at `https://weareedit.io/` (the front-page context). Google reads the homepage canonical and treats empresas as a duplicate → it would never index on its own. Live-verified via curl (2 canonicals) and `site:` search (empresas not indexed).
 - **Fix:** wrapped `render_page()` output in `ob_start([__CLASS__,'dedupe_canonical'])`. New `dedupe_canonical()` strips EVERY canonical tag (both ` />` and `>` styles, any attribute order) from the final HTML and re-inserts exactly one self-referencing empresas canonical at the top of `<head>`. Bulletproof regardless of whether the `rank_math/frontend/canonical` filter fires. Pillars were already clean (single self-canonical) — untouched.

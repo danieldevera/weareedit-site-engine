@@ -334,7 +334,7 @@ class EDIT_Formacao_Corporativa_Page {
         [
             'number' => '01',
             'title'  => 'Diagnóstico',
-            'time'   => '1–2 semanas',
+            'time'   => '48 horas',
             'body'   => 'Sessão de descoberta de 60 minutos com stakeholders + análise dos perfis dos formandos. Definimos resultados esperados, ferramentas em uso, e métricas de impacto.',
         ],
         [
