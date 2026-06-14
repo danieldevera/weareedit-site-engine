@@ -207,7 +207,7 @@ class EDIT_Empresas_Links {
         ?>
 <style id="ee-homepage-empresas-css">
 body.home .row-in_company{display:none !important;}
-body.home .eehe{position:relative;margin-top:64px;padding:80px 0 48px;border-top:1px solid rgba(255,255,255,.12);}
+body.home .eehe{position:relative;margin-top:64px;padding:80px 0 96px;border-top:1px solid rgba(255,255,255,.12);}
 body.home .eehe__grid{display:grid;grid-template-columns:1.05fr 1fr;gap:72px;align-items:center;}
 body.home .eehe__media{position:relative;}
 body.home .eehe__frame{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:5/4;box-shadow:0 40px 80px -30px rgba(0,0,0,.8);border:1px solid rgba(255,255,255,.08);}
