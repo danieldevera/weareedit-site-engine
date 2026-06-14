@@ -1515,31 +1515,11 @@ body.empresas-page .hero .ctas .cta-notation {
   white-space: nowrap !important;
 }
 
-/* ── FAQ LIGHT THEME (v1.5.498) ───────────────────────────────────────
-   The plugin uses the generic class `.faq`, which collides with the
-   theme's own `.faq` component (dark, used on course pages). The theme
-   rule was winning, rendering our FAQ on a dark background with near-
-   invisible dark text. Re-assert the light treatment scoped under
-   body.empresas-page so we beat the theme on specificity + importance. */
-body.empresas-page .faq {
-  background: var(--grey-1) !important;
-}
-body.empresas-page .faq .section-title,
-body.empresas-page .faq .section-eyebrow,
-body.empresas-page .faq summary,
-body.empresas-page .faq summary::after,
-body.empresas-page .faq .answer strong {
-  color: var(--ink) !important;
-}
-body.empresas-page .faq .answer {
-  color: var(--grey-4) !important;
-}
-body.empresas-page .faq .faq-item {
-  border-bottom: 1px solid var(--grey-2) !important;
-}
-body.empresas-page .faq summary:hover {
-  color: var(--edit-pink) !important;
-}
+/* ── FAQ (v1.5.523) ───────────────────────────────────────────────────
+   Superseded the v1.5.498 `.faq` light-theme overrides. The FAQ now uses
+   class `.emp-faq` + the pillar `md-faq` markup (see md-faq CSS below), so
+   it no longer collides with the theme's dark `.faq` component — no
+   !important neutralizers needed. */
 
 /* ── NEWSLETTER STRIP — flush against the dark sections (v1.5.498) ─────
    #edit-newsletter-strip ships with `margin: 64px 0 88px` (newsletter-
@@ -2709,154 +2689,231 @@ button {
   opacity: 0.7;
 }
 
-/* ── FINANCING ───────────────────────────────────────────────────── */
+/* ── FINANCING (v1.5.523) — LIGHT PREMIUM ─────────────────────────────
+   Dark → cream paper editorial. Reads "established & legitimate" (the
+   trust emotion that closes corporate leads). Surfaces the "até 100%"
+   stat + sharper CTA. Approved mockup: financiamento-section-light-premium. */
 .financing {
-  padding: 100px 0;
-  background: var(--ink);
-  color: #fff;
+  padding: 104px 0 92px;
+  background: #f7f6f2;
+  color: var(--ink);
+  position: relative;
+  overflow: hidden;
 }
-.financing .section-eyebrow { color: rgba(255,255,255,0.6); }
+.financing::before {
+  content: "";
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 0% 0%, rgba(255,221,6,.08), transparent 42%),
+    radial-gradient(80% 70% at 100% 100%, rgba(96,197,179,.05), transparent 50%);
+}
+.financing .wrap { position: relative; }
+.financing .section-eyebrow { color: var(--grey-4); }
 .financing .section-title {
-  color: #fff;
-  max-width: 24ch;
+  color: var(--ink);
+  max-width: 16ch;
 }
 .financing .section-title .accent {
-  background: var(--edit-yellow);
+  position: relative;
+  background: none;
   color: var(--ink);
-  padding: 0 0.1em;
-  border-radius: 4px;
+  padding: 0;
+  white-space: nowrap;
+}
+.financing .section-title .accent::after {
+  content: "";
+  position: absolute; left: -0.06em; right: -0.06em; bottom: 0.08em;
+  height: 0.34em; background: var(--edit-yellow); z-index: -1; border-radius: 2px;
 }
 .financing-lede {
-  font-size: 17px;
-  color: rgba(255,255,255,0.78);
-  max-width: 60ch;
-  margin: -32px 0 56px 0;
-  line-height: 1.55;
+  font-size: 19px;
+  color: #3a3a3e;
+  max-width: 58ch;
+  margin: -28px 0 0 0;
+  line-height: 1.6;
 }
+/* "até 100%" hero stat */
+.fin-stat { display: flex; align-items: flex-end; gap: 22px; margin: 40px 0 4px; }
+.fin-stat__num {
+  font-size: clamp(54px, 7vw, 86px); line-height: 0.92; font-weight: 800;
+  letter-spacing: -0.04em; color: var(--ink);
+}
+.fin-stat__num .u { font-size: 0.42em; font-weight: 700; vertical-align: 0.5em; color: var(--grey-4); margin-right: 0.12em; }
+.fin-stat__num::after { content: ""; display: block; height: 4px; background: var(--edit-yellow); margin-top: 14px; border-radius: 3px; }
+.fin-stat__cap { font-size: 16px; line-height: 1.45; color: #3a3a3e; max-width: 24ch; padding-bottom: 18px; font-weight: 500; }
 .financing-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  margin-bottom: 48px;
+  gap: 22px;
+  margin: 54px 0 0 0;
 }
 .fin-card {
-  padding: 28px 26px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 6px;
-  transition: all 0.2s ease;
+  padding: 30px 28px 28px;
+  background: #fff;
+  border: 1px solid #e7e5df;
+  border-radius: 16px;
+  box-shadow: 0 1px 0 rgba(11,11,12,.02), 0 18px 40px -32px rgba(11,11,12,.30);
+  transition: transform 0.25s cubic-bezier(.2,.7,.3,1), box-shadow 0.25s;
+  display: flex; flex-direction: column;
 }
 .fin-card:hover {
-  background: rgba(255,255,255,0.08);
-  border-color: var(--edit-yellow);
+  transform: translateY(-4px);
+  background: #fff;
+  border-color: #e7e5df;
+  box-shadow: 0 1px 0 rgba(11,11,12,.02), 0 30px 60px -34px rgba(11,11,12,.45);
 }
 .fin-card .tag {
+  align-self: flex-start;
   display: inline-block;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   background: var(--edit-yellow);
   color: var(--ink);
-  padding: 3px 10px;
-  border-radius: 3px;
-  margin-bottom: 16px;
+  padding: 6px 11px;
+  border-radius: 6px;
+  margin-bottom: 20px;
 }
+.fin-card .tag.tag--year { background: var(--ink); color: #fff; }
+.fin-card .tag.tag--soon { background: transparent; color: var(--grey-4); border: 1px solid #e7e5df; }
 .fin-card h3 {
-  font-size: 21px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
   margin: 0 0 12px 0;
-  line-height: 1.2;
-  color: #fff;
+  line-height: 1.12;
+  color: var(--ink);
 }
 .fin-card p {
   font-size: 14.5px;
-  color: rgba(255,255,255,0.72);
-  line-height: 1.55;
-  margin: 0;
+  color: var(--grey-4);
+  line-height: 1.6;
+  margin: 0 0 20px 0;
+  flex: 1;
 }
+.fin-card p b { color: var(--ink); font-weight: 700; }
+.fin-card__lnk { font-size: 13.5px; font-weight: 700; color: var(--ink); text-decoration: none; display: inline-flex; align-items: center; gap: 7px; }
+.fin-card__lnk .ar { transition: transform 0.2s ease; }
+.fin-card:hover .fin-card__lnk .ar { transform: translateX(4px); }
 .financing-trust {
-  border-top: 1px solid rgba(255,255,255,0.12);
-  padding-top: 28px;
+  border-top: 1px solid #e7e5df;
+  margin-top: 46px;
+  padding-top: 30px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: 30px;
   flex-wrap: wrap;
 }
 .financing-trust .badge {
-  font-size: 13px;
-  color: rgba(255,255,255,0.7);
-  letter-spacing: 0.02em;
+  font-size: 13.5px;
+  color: var(--grey-4);
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+  max-width: 62ch;
 }
 .financing-trust .badge strong {
-  color: #fff;
+  color: var(--ink);
   font-weight: 700;
 }
 .financing-trust .cta-link {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--edit-yellow);
-  border-bottom: 1px solid var(--edit-yellow);
-  padding-bottom: 2px;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--ink);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 16px 28px;
+  border-radius: 8px;
+  border-bottom: none;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 .financing-trust .cta-link:hover {
+  background: #000;
   color: #fff;
-  border-color: #fff;
+  border-color: transparent;
+  transform: translateY(-2px);
 }
+.financing-trust .cta-link .ar { color: var(--edit-yellow); }
 
 @media (max-width: 880px) {
   .financing-grid { grid-template-columns: 1fr; }
+  .fin-stat { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .financing-trust { flex-direction: column; align-items: flex-start; }
 }
 
-/* ── FAQ ─────────────────────────────────────────────────────────── */
-.faq {
-  padding: 90px 0;
-  background: var(--grey-1);
+/* ── FAQ (v1.5.523) — matches the pillar md-faq design (light + pink).
+   Numbered items, → arrow rotating to ↓ on open, pink active state.
+   Rules copied + flattened from assets/marketing-digital.css
+   (.md-faq + .md-pillar--light overrides) because that asset is NOT
+   enqueued on the empresas subdomain render. ─────────────────────────── */
+.emp-faq { padding: 0; background: #fff; }
+.md-faq {
+  padding: 88px 0;
+  background: #fff;
+  border-top: 1px solid rgba(10,10,10,.08);
+  border-bottom: 1px solid rgba(10,10,10,.08);
 }
-.faq-list {
-  max-width: 820px;
-  margin: 40px auto 0 auto;
+.md-faq .md-section-title {
+  max-width: 1180px;
+  margin: 0 auto 48px;
+  padding: 0 48px;
+  font-size: clamp(36px, 5vw, 56px);
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #0a0a0a;
 }
-.faq-item {
-  border-bottom: 1px solid var(--grey-2);
-}
-.faq-item summary {
-  display: flex;
-  justify-content: space-between;
+.md-faq .md-section-title span { color: var(--edit-pink); }
+.md-faq__list { display: flex; flex-direction: column; counter-reset: faq-counter; max-width: 1180px; margin: 0 auto; }
+.md-faq__item { border-top: 1px solid rgba(10,10,10,.10); transition: background-color .2s ease; counter-increment: faq-counter; }
+.md-faq__item:last-child { border-bottom: 1px solid rgba(10,10,10,.10); }
+.md-faq__item:hover { background: rgba(249,40,105,.04); }
+.md-faq__item[open] { background: rgba(249,40,105,.04); }
+.md-faq__q {
+  display: grid;
+  grid-template-columns: 80px 1fr 40px;
   align-items: center;
   gap: 24px;
-  padding: 22px 0;
-  font-size: 17px;
-  font-weight: 600;
-  letter-spacing: -0.005em;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 28px 48px;
   cursor: pointer;
   list-style: none;
-  color: var(--ink);
-  transition: color 0.15s ease;
+  position: relative;
 }
-.faq-item summary::-webkit-details-marker { display: none; }
-.faq-item summary::after {
-  content: '+';
-  font-size: 28px;
-  font-weight: 300;
-  color: var(--ink);
-  width: 24px;
-  text-align: center;
-  flex-shrink: 0;
-  transition: transform 0.2s ease;
+.md-faq__q::-webkit-details-marker { display: none; }
+.md-faq__q::before {
+  content: counter(faq-counter, decimal-leading-zero);
+  font-size: 14px; font-weight: 500; color: rgba(10,10,10,.4);
+  letter-spacing: .05em; transition: color .2s ease;
 }
-.faq-item[open] summary::after { content: '−'; }
-.faq-item summary:hover { color: var(--edit-pink); }
-.faq-item .answer {
-  font-size: 15px;
-  color: var(--grey-4);
-  padding: 0 40px 22px 0;
-  line-height: 1.6;
-  max-width: 70ch;
+.md-faq__q-text { font-size: 22px; font-weight: 600; line-height: 1.3; color: #0a0a0a; transition: color .2s ease; }
+.md-faq__q::after { content: '→'; font-size: 20px; color: rgba(10,10,10,.55); transition: transform .25s ease, color .2s ease; justify-self: end; }
+.md-faq__item:hover .md-faq__q-text,
+.md-faq__item[open] .md-faq__q-text { color: var(--edit-pink); }
+.md-faq__item:hover .md-faq__q::before,
+.md-faq__item[open] .md-faq__q::before { color: rgba(249,40,105,.7); }
+.md-faq__item:hover .md-faq__q::after,
+.md-faq__item[open] .md-faq__q::after { color: var(--edit-pink); transform: translateX(6px); }
+.md-faq__item[open] .md-faq__q::after { transform: rotate(90deg); }
+.md-faq__a {
+  max-width: 1180px; margin: 0 auto;
+  padding: 0 48px 32px; padding-left: calc(48px + 104px);
+  font-size: 15px; line-height: 1.65; color: #2a2a2a;
 }
-.faq-item .answer strong { color: var(--ink); }
+.md-faq__a a { color: var(--edit-pink); }
+.md-faq__a strong { color: #0a0a0a; }
+@media (max-width: 760px) {
+  .md-faq .md-section-title { padding: 0 24px; }
+  .md-faq__q { grid-template-columns: 48px 1fr 32px; gap: 12px; padding: 20px 24px; }
+  .md-faq__q-text { font-size: 17px; }
+  .md-faq__a { padding: 0 24px 24px; padding-left: calc(24px + 60px); font-size: 14px; }
+}
 
 /* ── LEAD SECTION (form) ─────────────────────────────────────────── */
 .lead-section {
@@ -3722,42 +3779,48 @@ button {
   <div class="wrap">
     <p class="section-eyebrow">Financiamento</p>
     <h2 class="section-title">Não é o motivo. É o <span class="accent">desbloqueio</span>.</h2>
-    <p class="financing-lede">As empresas portuguesas têm acesso a mecanismos de apoio à formação que poucas conhecem. Os nossos programas são elegíveis para os principais — e ajudamos no processo de candidatura.</p>
+    <p class="financing-lede">As empresas portuguesas têm acesso a mecanismos de apoio à formação que poucas conhecem. Os nossos programas são elegíveis para os principais — e tratamos da candidatura convosco.</p>
+    <div class="fin-stat">
+      <div class="fin-stat__num"><span class="u">até</span>100%</div>
+      <div class="fin-stat__cap">do investimento em formação pode ser reembolsável.</div>
+    </div>
     <div class="financing-grid">
       <div class="fin-card">
         <span class="tag">Até 30 Junho 2026</span>
         <h3>Cheque-Formação + Digital</h3>
-        <p>Apoio direto a PME para formação dos trabalhadores e capacitação digital. Janela actual termina a 30 de Junho de 2026 — vale a pena verificar elegibilidade agora.</p>
+        <p>Apoio direto a PME para formação e capacitação digital dos trabalhadores. A janela atual termina a <b>30 de Junho de 2026</b> — vale a pena verificar elegibilidade agora.</p>
+        <a class="fin-card__lnk" href="#contacto">Verificar elegibilidade <span class="ar" aria-hidden="true">→</span></a>
       </div>
       <div class="fin-card">
-        <span class="tag">Anual</span>
+        <span class="tag tag--year">Anual</span>
         <h3>SIFIDE</h3>
-        <p>Sistema de Incentivos Fiscais à I&amp;D Empresarial. Permite deduzir parte do investimento em formação tecnológica ao IRC. Aplicável a programas com componente de inovação.</p>
+        <p>Sistema de Incentivos Fiscais à I&amp;D Empresarial. Permite <b>deduzir parte do investimento</b> em formação tecnológica ao IRC. Aplicável a programas com componente de inovação.</p>
+        <a class="fin-card__lnk" href="#contacto">Saber mais <span class="ar" aria-hidden="true">→</span></a>
       </div>
       <div class="fin-card">
-        <span class="tag">A explorar</span>
+        <span class="tag tag--soon">A explorar</span>
         <h3>Outros apoios</h3>
-        <p>POCH, PT 2030, fundos sectoriais. A elegibilidade depende do setor, dimensão da empresa e tipo de programa. Falamos consigo para mapear o melhor enquadramento.</p>
+        <p>POCH, PT 2030, fundos sectoriais. A elegibilidade depende do setor, dimensão da empresa e tipo de programa. <b>Mapeamos convosco</b> o melhor enquadramento.</p>
+        <a class="fin-card__lnk" href="#contacto">Falar connosco <span class="ar" aria-hidden="true">→</span></a>
       </div>
     </div>
     <div class="financing-trust">
-      <div class="badge"><strong>EDIT.</strong> é Entidade Formadora Certificada pela <strong>DGERT nº 18391</strong>. Todas as formações são elegíveis para mecanismos de apoio à formação corporativa.</div>
-      <a href="#contacto" class="cta-link">Falar com a equipa →</a>
+      <div class="badge"><strong>EDIT. é Entidade Formadora Certificada pela DGERT (nº 18391).</strong> Todas as formações são elegíveis para mecanismos de apoio à formação corporativa.</div>
+      <a href="#contacto" class="cta-link">Verificar a vossa elegibilidade <span class="ar" aria-hidden="true">→</span></a>
     </div>
   </div>
 </section>
 
 <!-- ─── FAQ ────────────────────────────────────────────────────── -->
 <?php if ( ! empty( $faq ) ) : ?>
-<section class="faq" id="faq">
-  <div class="wrap">
-    <p class="section-eyebrow">Perguntas Frequentes</p>
-    <h2 class="section-title">Respostas às perguntas que os departamentos de compras fazem.</h2>
-    <div class="faq-list">
+<section class="emp-faq" id="faq">
+  <div class="md-faq">
+    <h2 class="md-section-title">Respostas às perguntas que os departamentos de compras <span>fazem</span>.</h2>
+    <div class="md-faq__list">
       <?php foreach ( $faq as $item ) : ?>
-        <details class="faq-item">
-          <summary><?php echo esc_html( $item['q'] ); ?></summary>
-          <div class="answer"><?php echo wp_kses_post( $item['a'] ); ?></div>
+        <details class="md-faq__item">
+          <summary class="md-faq__q"><span class="md-faq__q-text"><?php echo esc_html( $item['q'] ); ?></span></summary>
+          <div class="md-faq__a"><?php echo wp_kses_post( $item['a'] ); ?></div>
         </details>
       <?php endforeach; ?>
     </div>

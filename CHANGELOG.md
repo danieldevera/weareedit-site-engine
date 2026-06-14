@@ -1,4 +1,8 @@
 # Changelog
+## v1.5.523 — 2026-06-14 (Empresas Financiamento light-premium + FAQ matches pillar md-faq)
+- **Financiamento section → light premium** (Daniel: "dark color does not help; most important section to convince the lead"). Dark `.financing` → cream paper (#f7f6f2) editorial: white cards w/ hover-lift, surfaced **"até 100%"** stat (own FAQ claim), yellow-underline accent on "desbloqueio", refined lede ("tratamos da candidatura convosco"), per-card micro-CTAs, sharper primary CTA "Verificar a vossa elegibilidade". Approved mockup `financiamento-section-light-premium.html`.
+- **Empresas FAQ → matches pillar `md-faq` design** (Daniel: "match the faqs design from the pillar pages"). Plain `.faq` + `+/−` accordion → `md-faq` markup: numbered items (counter), → arrow rotating 90° on open, pink active state, light variant. CSS copied + flattened from `assets/marketing-digital.css` (`.md-faq` + `.md-pillar--light` overrides) into the empresas scoped block since that asset isn't enqueued on the subdomain. Renamed section class `.faq` → `.emp-faq` to kill the theme `.faq` dark-component collision; retired the v1.5.498 `!important` neutralizers. Headline kept with pink accent on "fazem".
+
 ## v1.5.522 — 2026-06-14 (Empresas Process step 04 time + FAQ timeline aligned)
 - `PROCESS` step 04 "Avaliação de Impacto" `time` `3 + 6 meses` → `3–6 meses` (en-dash to match step 03 badge style) (Daniel).
 - FAQ "Quanto tempo demora…" aligned to the new Process timeline: `48 horas` diagnóstico, `1 semana` desenho, `1-2 semanas` entrega, avaliação `3-6 meses` (was the stale 1-2 sem / 4-12 sem / 1 sem). No more contradiction between Process badges and FAQ.
