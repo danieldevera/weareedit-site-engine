@@ -1116,9 +1116,12 @@ HTML;
         // leave exactly one of each. If Rank Math is absent, keep ours (the
         // filters were no-ops, so there's nothing to duplicate against).
         if ( class_exists( 'RankMath' ) ) {
+            // Rank Math emits these as singles via override_rank_math() — strip
+            // our copies. NOTE: we deliberately do NOT strip our canonical:
+            // Rank Math drops the canonical entirely once its filter runs, so we
+            // keep ours as the single explicit self-referencing canonical.
             $head = preg_replace( '/<title\b[^>]*>.*?<\/title>/is',                '', $head );
             $head = preg_replace( '/<meta\s+name=["\']description["\'][^>]*>/i',    '', $head );
-            $head = preg_replace( '/<link\s+rel=["\']canonical["\'][^>]*>/i',       '', $head );
             $head = preg_replace( '/<meta\s+property=["\']og:[^"\']*["\'][^>]*>/i', '', $head );
             $head = preg_replace( '/<meta\s+name=["\']twitter:[^"\']*["\'][^>]*>/i','', $head );
             $head = preg_replace( '/<meta\s+name=["\']robots["\'][^>]*>/i',         '', $head );
@@ -1609,6 +1612,10 @@ CSS;
         add_filter( 'rank_math/frontend/description', static function() use ( $meta ) { return $meta['description']; } );
         add_filter( 'rank_math/frontend/canonical',   static function() use ( $meta ) { return $meta['canonical']; } );
         add_filter( 'rank_math/opengraph/url',        static function() use ( $meta ) { return $meta['canonical']; } );
+        // RM's OG title/image default to the homepage values — point them at the
+        // empresas offer + hero so social shares render the right card.
+        add_filter( 'rank_math/opengraph/facebook/og_title', static function() use ( $meta ) { return $meta['title']; } );
+        add_filter( 'rank_math/opengraph/facebook/og_image', static function() { return WEAREDIT_SITE_ENGINE_URL . 'assets/img/empresas-hero.jpg'; } );
         add_filter( 'rank_math/frontend/robots',      static function( $robots ) use ( $is_preview ) {
             return $is_preview
                 ? [ 'index' => 'noindex', 'follow' => 'nofollow' ]
