@@ -32,7 +32,9 @@ class EDIT_Empresas_Links {
     public static function init(): void {
         add_filter( 'weareedit_site_engine_output_buffer', [ __CLASS__, 'inject' ], 12 );
         add_action( 'wp_head', [ __CLASS__, 'emit_styles' ], 7 );
-        add_action( 'wp_head', [ __CLASS__, 'emit_homepage_styles' ], 8 );
+        // Homepage Empresas section redesign reverted 2026-06-14 at Daniel's
+        // request — emit_homepage_styles / inject_homepage_empresas are no
+        // longer wired, so the theme's original row-in_company block renders.
         // Site-wide (incl. the empresas subdomain) — runs regardless of the
         // empresas-live gate, so it always tidies the address bar.
         add_action( 'wp_footer', [ __CLASS__, 'emit_url_cleanup' ], 99 );
@@ -84,9 +86,6 @@ class EDIT_Empresas_Links {
 
         $html = self::swap_in_company( $html );
         $html = self::inject_footer_link( $html );
-        if ( is_front_page() ) {
-            $html = self::inject_homepage_empresas( $html );
-        }
         if ( self::is_pillar_page() ) {
             $html = self::inject_pillar_cta( $html );
         }
