@@ -193,7 +193,10 @@ class EDIT_Pillar_Cross_Links {
         $post = get_queried_object();
         if ( ! $post instanceof WP_Post ) return $html;
         if ( $post->post_name !== self::BANNER_TEST_SLUG ) return $html;
-        if ( strpos( $html, 'epb-banner' ) !== false ) return $html;
+        // Idempotency must use a MARKUP-only marker — the banner CSS (emitted in
+        // wp_head before this filter) already contains the class name epb-banner,
+        // so guarding on that would always skip the injection.
+        if ( strpos( $html, 'Esta formação faz parte de' ) !== false ) return $html;
 
         $hits = [];
         foreach ( self::PILLARS as $p ) {
