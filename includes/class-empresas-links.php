@@ -32,9 +32,7 @@ class EDIT_Empresas_Links {
     public static function init(): void {
         add_filter( 'weareedit_site_engine_output_buffer', [ __CLASS__, 'inject' ], 12 );
         add_action( 'wp_head', [ __CLASS__, 'emit_styles' ], 7 );
-        // Homepage Empresas section redesign reverted 2026-06-14 at Daniel's
-        // request — emit_homepage_styles / inject_homepage_empresas are no
-        // longer wired, so the theme's original row-in_company block renders.
+        add_action( 'wp_head', [ __CLASS__, 'emit_homepage_styles' ], 8 );
         // Site-wide (incl. the empresas subdomain) — runs regardless of the
         // empresas-live gate, so it always tidies the address bar.
         add_action( 'wp_footer', [ __CLASS__, 'emit_url_cleanup' ], 99 );
@@ -86,6 +84,9 @@ class EDIT_Empresas_Links {
 
         $html = self::swap_in_company( $html );
         $html = self::inject_footer_link( $html );
+        if ( is_front_page() ) {
+            $html = self::inject_homepage_empresas( $html );
+        }
         if ( self::is_pillar_page() ) {
             $html = self::inject_pillar_cta( $html );
         }
@@ -179,7 +180,7 @@ class EDIT_Empresas_Links {
         $section .= '<div class="eehe__media">';
         $section .= '<div class="eehe__stat"><b>+30</b><span class="eehe__stat-txt"><span class="eehe__stat-lab">Empresas</span><span class="eehe__stat-cap">formaram as suas equipas com a EDIT. Empresas</span></span></div>';
         $section .= '<div class="eehe__frame"><img src="' . $hero . '" alt="Formação para empresas — EDIT.">';
-        $section .= '<div class="eehe__badges"><span class="eehe__badge"><img class="eehe__dgert" src="' . $dgert . '" alt="Entidade Formadora Certificada DGERT"><span class="eehe__cert"><b>Certificação nº 18391</b>Formação certificada e elegível para financiamento</span></span></div>';
+        $section .= '<div class="eehe__badges"><span class="eehe__badge"><img class="eehe__dgert" data-no-lazy="1" src="' . $dgert . '" alt="Entidade Formadora Certificada DGERT"><span class="eehe__cert"><b>Certificação nº 18391</b>Formação certificada e elegível para financiamento</span></span></div>';
         $section .= '</div></div>';
         $section .= '<div class="eehe__content">';
         $section .= '<p class="eehe__kicker">EDIT. para Empresas</p>';
@@ -195,11 +196,7 @@ class EDIT_Empresas_Links {
         $section .= '<a class="eehe__cta" href="' . esc_url( $emp ) . '"><span class="eehe__layer eehe__l-pink"></span><span class="eehe__layer eehe__l-teal"></span><span class="eehe__layer eehe__l-black"></span>Conhecer a EDIT. para Empresas <span class="eehe__arr" aria-hidden="true">→</span></a>';
         $section .= '<a class="eehe__link" href="' . esc_url( $emp . '#contacto' ) . '">Falar com a equipa</a>';
         $section .= '</div></div>';
-        $section .= '<div class="eehe__trust"><div class="eehe__trust-row"><span class="eehe__trust-label">Confiam na EDIT.</span><div class="eehe__trust-logos">';
-        $section .= $logo( 'pfizer-header.png', 'Pfizer' ) . $logo( 'galp-header.png', 'Galp' ) . $logo( 'worten-header.png', 'Worten' );
-        $section .= $logo( 'tap-air-portugal-1.png', 'TAP Air Portugal' ) . $logo( 'nestle-logo-1.png', 'Nestlé' ) . $logo( 'sonae-mc-1.png', 'Sonae MC' );
-        $section .= '</div></div>';
-        $section .= '<p class="eehe__trust-stats"><b>Entidade Formadora Certificada DGERT</b> · nº 18391 &nbsp;·&nbsp; <b>+11.000</b> alumni formados &nbsp;·&nbsp; <b>+30</b> empresas formadas &nbsp;·&nbsp; <b>80+</b> tutores em activo</p>';
+        // Trust row removed 2026-06-14 at Daniel's request — close grid + eehe.
         $section .= '</div></div>';
 
         return str_replace( $anchor, $anchor . $section, $html );
@@ -210,7 +207,7 @@ class EDIT_Empresas_Links {
         ?>
 <style id="ee-homepage-empresas-css">
 body.home .row-in_company{display:none !important;}
-body.home .eehe{position:relative;padding:64px 0 32px;}
+body.home .eehe{position:relative;margin-top:64px;padding:80px 0 48px;border-top:1px solid rgba(255,255,255,.12);}
 body.home .eehe__grid{display:grid;grid-template-columns:1.05fr 1fr;gap:72px;align-items:center;}
 body.home .eehe__media{position:relative;}
 body.home .eehe__frame{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:5/4;box-shadow:0 40px 80px -30px rgba(0,0,0,.8);border:1px solid rgba(255,255,255,.08);}
@@ -223,7 +220,7 @@ body.home .eehe__stat-lab{display:block;font-size:12px;font-weight:800;letter-sp
 body.home .eehe__stat-cap{display:block;margin-top:5px;font-size:12.5px;line-height:1.4;color:rgba(255,255,255,.62);}
 body.home .eehe__badges{position:absolute;left:20px;bottom:20px;z-index:2;}
 body.home .eehe__badge{display:inline-flex;align-items:center;gap:13px;background:rgba(12,12,12,.62);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:11px 16px;color:#fff;}
-body.home .eehe__dgert{height:30px;width:auto;display:block;}
+body.home .eehe__dgert{height:32px !important;max-height:32px !important;width:auto !important;display:block;}
 body.home .eehe__cert{font-size:11px;font-weight:600;letter-spacing:.02em;color:rgba(255,255,255,.62);border-left:1px solid rgba(255,255,255,.2);padding-left:13px;line-height:1.35;}
 body.home .eehe__cert b{display:block;color:#fff;font-size:12px;}
 body.home .eehe__kicker{display:inline-flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.6);font-weight:700;margin:0 0 24px;}
