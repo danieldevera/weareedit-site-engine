@@ -89,6 +89,8 @@ class EDIT_Empresas_Page {
         '/formacao-corporativa',
         '/formacao-in-company/',
         '/formacao-in-company',
+        '/in-company/',
+        '/in-company',
         '/formacao-digital-para-empresas/',
         '/formacao-digital-para-empresas',
     ];
