@@ -1842,6 +1842,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 *, *::before, *::after { box-sizing: border-box; }
 
+/* Footer social icons fix — the theme's social-icons.css declares the 'icomoon'
+   @font-face with a RELATIVE src, so it resolves against weareedit.io and the
+   font is fetched cross-origin (no ACAO header) → blocked → the .icon-*:before
+   codepoints fall back to literal letters (f/i/v/y/l). Re-declare the same
+   @font-face with ROOT-RELATIVE srcs so it loads same-origin on the subdomain.
+   This block prints at PHP_INT_MAX (after the theme CSS) so it wins the cascade. */
+@font-face {
+  font-family: 'icomoon';
+  src: url('/wp-content/themes/weareedit/css/fonts/social_icons.ttf?trn7ic') format('truetype'),
+       url('/wp-content/themes/weareedit/css/fonts/social_icons.woff?trn7ic') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
 html { -webkit-text-size-adjust: 100%; }
 
 body {
@@ -3049,9 +3064,22 @@ button {
   letter-spacing: 0;
 }
 .lead-form .checkbox-group input[type="checkbox"] {
-  width: 15px; height: 15px;
+  /* The theme's style.css hides ALL native checkboxes site-wide
+     (input[type=checkbox]{display:none;position:absolute}) and bootstrap adds
+     clip/pointer-events:none — it draws custom boxes on a sibling <span> we
+     don't use. Force the native checkbox back, scoped to this form only. */
+  display: inline-block !important;
+  position: static !important;
+  -webkit-appearance: checkbox !important;
+  -moz-appearance: checkbox !important;
+  appearance: auto !important;
+  opacity: 1 !important;
+  clip: auto !important;
+  pointer-events: auto !important;
+  width: 16px !important; height: 16px !important;
+  margin: 0 !important;
   accent-color: var(--ink);
-  flex-shrink: 0;
+  flex: 0 0 auto;
 }
 
 .form-meta {
