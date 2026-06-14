@@ -1002,10 +1002,35 @@ HTML;
         // instead of the homepage defaults (kills the duplicate-canonical bug).
         self::override_rank_math();
 
+        // v1.5.518: belt-and-braces. Rank Math (and/or WP core rel_canonical)
+        // still emit a stray homepage canonical (rel=canonical → weareedit.io/)
+        // for the front-page context that the rank_math/frontend/canonical filter
+        // doesn't reliably override — leaving TWO canonicals, one wrongly pointing
+        // at the homepage and telling Google empresas is a duplicate. Buffer the
+        // whole render and collapse to exactly one self-referencing canonical.
+        ob_start( [ __CLASS__, 'dedupe_canonical' ] );
         get_header();
         self::emit_body();
         get_footer();
+        ob_end_flush();
         exit;
+    }
+
+    /**
+     * Output-buffer callback: guarantee exactly ONE <link rel="canonical"> on the
+     * empresas surface, pointing at empresas (never the homepage). Strips every
+     * canonical the stack emits (both ` />` and `>` styles, in any attribute order)
+     * and re-inserts a single self-referencing one at the top of <head>.
+     */
+    public static function dedupe_canonical( string $html ): string {
+        if ( stripos( $html, 'rel=' ) === false ) return $html;
+        $canonical = self::seo_meta()['canonical'];
+        // Remove every existing canonical link tag.
+        $html = preg_replace( '#<link\b[^>]*\brel=(["\'])canonical\1[^>]*>\s*#i', '', $html );
+        // Re-insert exactly one correct canonical immediately after <head ...>.
+        $tag  = '<link rel="canonical" href="' . esc_url( $canonical ) . '" />';
+        $html = preg_replace( '/(<head\b[^>]*>)/i', "$1\n" . $tag, $html, 1 );
+        return $html;
     }
 
     /**
