@@ -91,6 +91,17 @@ class EDIT_Pillar_Cross_Links {
 .epb-foot{display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid rgba(10,10,10,.12);}
 .epb-cnt{font-size:12.5px;font-weight:600;color:rgba(10,10,10,.5);}
 .epb-cta{font-size:13px;font-weight:800;display:inline-flex;gap:8px;align-items:center;color:#0a0a0a;}
+/* Mini Empresas banner — replaces the old in-company banner (hidden below) */
+section.banner.split-black-grey{display:none !important;}
+.ceb-mini{position:relative;overflow:hidden;max-width:1180px;margin:8px auto 56px;display:flex;align-items:center;gap:28px;justify-content:space-between;flex-wrap:wrap;background:radial-gradient(140% 200% at 6% 50%,#191919,#0c0c0c 60%,#0a0a0a);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:20px 26px;}
+.ceb-mini__left{display:flex;align-items:center;gap:22px;min-width:0;}
+.ceb-mini__dgert{height:36px !important;max-height:36px !important;width:auto !important;display:block;flex:none;opacity:.95;}
+.ceb-mini__sep{width:1px;height:38px;background:rgba(255,255,255,.16);flex:none;}
+.ceb-mini__eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#ffdd06;font-weight:700;margin:0 0 4px;}
+.ceb-mini__head{font-size:19px;line-height:1.2;font-weight:700;letter-spacing:-.015em;color:#fff;margin:0;}
+.ceb-mini__head em{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;color:#ffdd06;}
+.ceb-mini__cta{flex:none;}
+@media (max-width:680px){.ceb-mini{gap:16px;}.ceb-mini__cta{width:100%;justify-content:center;}}
 </style>
         <?php
     }
@@ -102,6 +113,7 @@ class EDIT_Pillar_Cross_Links {
         if ( is_singular( 'formacao' ) ) {
             $html = self::inject_faz_parte( $html );
             $html = self::inject_pillar_banner( $html );
+            $html = self::inject_empresas_mini_banner( $html );
         }
         return $html;
     }
@@ -241,6 +253,37 @@ class EDIT_Pillar_Cross_Links {
         if ( $pos === false ) return $html;
 
         return substr_replace( $html, $banner . $anchor, $pos, strlen( $anchor ) );
+    }
+
+    /**
+     * Mini "EDIT. para Empresas" banner — resumed version of the homepage
+     * section — REPLACES the old theme in-company banner. ISOLATED to
+     * BANNER_TEST_SLUG; the old banner is hidden via CSS (emit_styles).
+     */
+    private static function inject_empresas_mini_banner( string $html ): string {
+        $post = get_queried_object();
+        if ( ! $post instanceof WP_Post ) return $html;
+        if ( $post->post_name !== self::BANNER_TEST_SLUG ) return $html;
+        // Markup-only idempotency marker (NOT a class name — it's in the CSS).
+        if ( strpos( $html, 'Faça esta formação com a' ) !== false ) return $html;
+
+        $dgert = WEAREDIT_SITE_ENGINE_URL . 'assets/dgert-entidade-formadora-branco.png';
+        $emp   = 'https://empresas.weareedit.io/';
+        $mini  = '<section class="ceb-mini"><div class="ceb-mini__left">'
+            . '<img class="ceb-mini__dgert" data-no-lazy="1" src="' . esc_url( $dgert ) . '" alt="Entidade Formadora Certificada DGERT">'
+            . '<span class="ceb-mini__sep"></span>'
+            . '<div class="ceb-mini__txt"><p class="ceb-mini__eyebrow">EDIT. para Empresas</p><p class="ceb-mini__head">Faça esta formação com a <em>sua equipa</em>.</p></div>'
+            . '</div>'
+            . '<a class="btn btn-yellow swipe-cta ceb-mini__cta" href="' . esc_url( $emp ) . '"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Conhecer a EDIT. para Empresas →</span></a>'
+            . '</section>';
+
+        // Inject where the old in-company banner sits (right after the programa
+        // section). The old banner itself is hidden by CSS.
+        $anchor = '<!--end section programa-->';
+        $pos    = strpos( $html, $anchor );
+        if ( $pos === false ) return $html;
+
+        return substr_replace( $html, $anchor . $mini, $pos, strlen( $anchor ) );
     }
 
     /**
