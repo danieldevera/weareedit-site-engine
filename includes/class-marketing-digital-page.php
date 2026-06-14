@@ -221,11 +221,26 @@ class EDIT_Marketing_Digital_Page {
             foreach ( $slugs as $slug ) {
                 $post = get_page_by_path( $slug, OBJECT, 'formacao' );
                 if ( ! $post ) continue;
+                $c_desc = wp_strip_all_tags( $post->post_excerpt );
+                if ( $c_desc === '' ) {
+                    $c_desc = 'Programa de formação certificado DGERT da EDIT. — ' . wp_strip_all_tags( get_the_title( $post ) ) . '.';
+                }
                 $items[] = [
                     '@type'    => 'ListItem',
                     'position' => $position++,
-                    'url'      => get_permalink( $post ),
-                    'name'     => wp_strip_all_tags( get_the_title( $post ) ),
+                    'item'     => [
+                        '@type'       => 'Course',
+                        '@id'         => get_permalink( $post ) . '#course',
+                        'url'         => get_permalink( $post ),
+                        'name'        => wp_strip_all_tags( get_the_title( $post ) ),
+                        'description' => $c_desc,
+                        'provider'    => [
+                            '@type' => 'EducationalOrganization',
+                            '@id'   => home_url( '/' ) . '#organization',
+                            'name'  => 'EDIT. — Disruptive Digital Education',
+                            'url'   => home_url( '/' ),
+                        ],
+                    ],
                 ];
             }
         }
