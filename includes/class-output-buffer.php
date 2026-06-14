@@ -797,6 +797,20 @@ HTML;
             $html
         );
 
+        // 10. Course promo video — the shared Vimeo embed (927121971) was
+        // removed/made-private on Vimeo, so it rendered "vídeo não disponível"
+        // on every course page that uses it (curso-uxui-porto, curso-marketing-
+        // digital-online, curso-uxui-online, …). Daniel 2026-06-14: REPLACE (not
+        // fix) with the new YouTube video https://youtu.be/Q8qqSbHz8uM. Swaps the
+        // URL in BOTH the WP-Rocket data-lazy-src and the <noscript> fallback
+        // src; the surrounding iframe attributes are YouTube-compatible. Targets
+        // the specific id, so courses with other videos are untouched.
+        $html = str_replace(
+            'player.vimeo.com/video/927121971',
+            'www.youtube.com/embed/Q8qqSbHz8uM',
+            $html
+        );
+
         return $html;
     }
 

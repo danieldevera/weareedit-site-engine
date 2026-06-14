@@ -2859,7 +2859,7 @@ button {
   border-bottom: 1px solid rgba(10,10,10,.08);
 }
 .md-faq .md-section-title {
-  max-width: 1180px;
+  max-width: none;
   margin: 0 auto 48px;
   padding: 0 48px;
   font-size: clamp(36px, 5vw, 56px);
@@ -2869,7 +2869,7 @@ button {
   color: #0a0a0a;
 }
 .md-faq .md-section-title span { color: var(--edit-pink); }
-.md-faq__list { display: flex; flex-direction: column; counter-reset: faq-counter; max-width: 1180px; margin: 0 auto; }
+.md-faq__list { display: flex; flex-direction: column; counter-reset: faq-counter; max-width: none; margin: 0 auto; }
 .md-faq__item { border-top: 1px solid rgba(10,10,10,.10); transition: background-color .2s ease; counter-increment: faq-counter; }
 .md-faq__item:last-child { border-bottom: 1px solid rgba(10,10,10,.10); }
 .md-faq__item:hover { background: rgba(249,40,105,.04); }
@@ -2879,7 +2879,7 @@ button {
   grid-template-columns: 80px 1fr 40px;
   align-items: center;
   gap: 24px;
-  max-width: 1180px;
+  max-width: none;
   margin: 0 auto;
   padding: 28px 48px;
   cursor: pointer;
@@ -2902,7 +2902,7 @@ button {
 .md-faq__item[open] .md-faq__q::after { color: var(--edit-pink); transform: translateX(6px); }
 .md-faq__item[open] .md-faq__q::after { transform: rotate(90deg); }
 .md-faq__a {
-  max-width: 1180px; margin: 0 auto;
+  max-width: none; margin: 0 auto;
   padding: 0 48px 32px; padding-left: calc(48px + 104px);
   font-size: 15px; line-height: 1.65; color: #2a2a2a;
 }
