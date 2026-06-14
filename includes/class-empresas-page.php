@@ -2177,7 +2177,7 @@ button {
 /* Intro prose block (SEO/GEO summary) — sits between the logo wall and the
    financing banner. Light, editorial, constrained measure. */
 .empresas-intro {
-  padding: 72px 0 16px 0;
+  padding: 72px 0 96px 0;
 }
 .empresas-intro .section-title {
   max-width: 30ch;
@@ -2489,7 +2489,7 @@ button {
    SVG holds the wave bands + white spheres + numbers (scales with viewport).
    HTML grid overlay holds text blocks alternating above/below the wave. */
 .process {
-  padding: 90px 0 100px 0;
+  padding: 90px 0 140px 0;
 }
 .process .wrap { text-align: center; }
 .process .section-title { max-width: 24ch; margin-left: auto; margin-right: auto; }
@@ -2863,9 +2863,9 @@ button {
   border-bottom: 1px solid rgba(10,10,10,.08);
 }
 .md-faq .md-section-title {
-  max-width: none;
+  max-width: 1280px;
   margin: 0 auto 48px;
-  padding: 0 48px;
+  padding: 0 60px;
   font-size: clamp(36px, 5vw, 56px);
   line-height: 1.1;
   font-weight: 700;
@@ -2883,9 +2883,9 @@ button {
   grid-template-columns: 80px 1fr 40px;
   align-items: center;
   gap: 24px;
-  max-width: none;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 28px 48px;
+  padding: 28px 60px;
   cursor: pointer;
   list-style: none;
   position: relative;
@@ -2906,8 +2906,8 @@ button {
 .md-faq__item[open] .md-faq__q::after { color: var(--edit-pink); transform: translateX(6px); }
 .md-faq__item[open] .md-faq__q::after { transform: rotate(90deg); }
 .md-faq__a {
-  max-width: none; margin: 0 auto;
-  padding: 0 48px 32px; padding-left: calc(48px + 104px);
+  max-width: 1280px; margin: 0 auto;
+  padding: 0 60px 32px; padding-left: calc(60px + 104px);
   font-size: 15px; line-height: 1.65; color: #2a2a2a;
 }
 .md-faq__a a { color: var(--edit-pink); }

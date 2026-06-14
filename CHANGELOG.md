@@ -1,4 +1,8 @@
 # Changelog
+## v1.5.526 — 2026-06-14 (Empresas FAQ → pillar centered column + section spacing)
+- **FAQ matched to pillar** (Daniel: "match Empresas to Pillar"). Reverted the v1.5.524 full-width — set `.md-faq` section-title/q/a back to `max-width:1280px` + `60px` gutters (pillar exact), `.md-faq__list`/`.md-faq__item` stay full-width so dividers/hover span edge-to-edge with content centered. Now identical layout to the pillar FAQ.
+- **Section spacing** (Daniel): `.empresas-intro` bottom padding 16px → 96px (lede was crammed against the yellow financing banner); `.process` bottom 100px → 140px (cards were tight against the grey founder-quote section).
+
 ## v1.5.525 — 2026-06-14 (Fix Financiamento trust-badge — theme .badge collision)
 - The Financiamento trust line rendered with a grey rounded pill behind part of the DGERT text + forced onto one line crashing into the CTA. Cause: generic class `.badge` collided with the theme's `.badge` component (grey bg + nowrap); our rule didn't override `background`. Fix: renamed `.badge` → `.fin-trust-badge` (markup + CSS) and added explicit `background:none;padding:0;border-radius:0;white-space:normal`. Same class-collision pattern as the v1.5.523 `.faq`→`.emp-faq` rename.
 
