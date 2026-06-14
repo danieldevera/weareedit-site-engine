@@ -40,7 +40,11 @@ class EDIT_Alumni_Employers {
      */
     const EMPLOYERS = [
         // Tier A — Global unicorns + scale-ups with PT presence (12)
-        [ 'name' => 'Farfetch',           'domain' => 'farfetch.com',         'tier' => 'global-tech' ],
+        // Logo.dev returns a blank/transparent image for farfetch.com; the
+        // official Farfetch "FF" mark is served correctly via aboutfarfetch.com.
+        // `logo_domain` overrides the Logo.dev lookup without changing the
+        // company-website link (which still uses `domain`).
+        [ 'name' => 'Farfetch',           'domain' => 'farfetch.com',         'logo_domain' => 'aboutfarfetch.com', 'tier' => 'global-tech' ],
         [ 'name' => 'OutSystems',         'domain' => 'outsystems.com',       'tier' => 'global-tech' ],
         [ 'name' => 'Talkdesk',           'domain' => 'talkdesk.com',         'tier' => 'global-tech' ],
         [ 'name' => 'Feedzai',            'domain' => 'feedzai.com',          'tier' => 'global-tech' ],
@@ -206,40 +210,48 @@ class EDIT_Alumni_Employers {
                     </a>
                 </p>
                 <?php if ( $badge ) : ?>
-                    <p class="ae-badge">
+                    <?php // Badge links to the EDIT. alumni list (school People tab) on LinkedIn. ?>
+                    <a class="ae-badge"
+                       href="<?php echo esc_url( $alumni_root_url ); ?>"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       title="Ver os alumni EDIT. verificados no LinkedIn (abre em nova janela)">
                         <span class="ae-badge-icons" aria-hidden="true">
                             <svg class="ae-badge-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
                             <svg class="ae-badge-linkedin" viewBox="0 0 24 24" fill="#0a66c2"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 1 1 8.25 6.5 1.75 1.75 0 0 1 6.5 8.25zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0 0 13 14.19a.66.66 0 0 0 0 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 0 1 2.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
                         </span>
-                        <?php echo esc_html( $badge ); ?>
-                    </p>
+                        <span class="ae-badge-label"><?php echo esc_html( $badge ); ?></span>
+                        <span class="ae-badge-ext" aria-hidden="true">↗</span>
+                    </a>
                 <?php endif; ?>
             </div>
             <ul class="ae-list">
                 <?php foreach ( $list as $emp ) :
-                    $logo_url     = self::logo_url( $emp );
-                    $name         = $emp['name'];
-                    $linkedin_url = self::linkedin_alumni_url( $name );
-                    $aria_label   = sprintf( 'Ver alumni EDIT. com experiência em %s no LinkedIn (abre em nova janela)', $name );
+                    $logo_url    = self::logo_url( $emp );
+                    $name        = $emp['name'];
+                    $company_url = self::company_url( $emp );
+                    $aria_label  = sprintf( 'Visitar o website de %s (abre em nova janela)', $name );
                 ?>
                     <li class="ae-item">
                         <a
                             class="ae-item-link"
-                            href="<?php echo esc_url( $linkedin_url ); ?>"
+                            href="<?php echo esc_url( $company_url ); ?>"
                             target="_blank"
                             rel="noopener noreferrer"
-                            title="Alumni EDIT. com experiência em <?php echo esc_attr( $name ); ?> · LinkedIn"
+                            title="<?php echo esc_attr( $name ); ?> — website oficial"
                             aria-label="<?php echo esc_attr( $aria_label ); ?>"
                         >
-                            <img
-                                class="ae-logo"
-                                src="<?php echo esc_url( $logo_url ); ?>"
-                                alt="<?php echo esc_attr( 'Logo ' . $name ); ?>"
-                                loading="lazy"
-                                decoding="async"
-                                onerror="this.parentNode.classList.add('ae-item-link--fallback');this.style.display='none';"
-                            >
-                            <span class="ae-fallback-name"><?php echo esc_html( $name ); ?></span>
+                            <span class="ae-logo-wrap">
+                                <img
+                                    class="ae-logo"
+                                    src="<?php echo esc_url( $logo_url ); ?>"
+                                    alt="<?php echo esc_attr( 'Logo ' . $name ); ?>"
+                                    loading="lazy"
+                                    decoding="async"
+                                    onerror="this.closest('.ae-item-link').classList.add('ae-item-link--fallback');this.style.display='none';"
+                                >
+                            </span>
+                            <span class="ae-name"><?php echo esc_html( $name ); ?></span>
                         </a>
                     </li>
                 <?php endforeach; ?>
@@ -267,6 +279,9 @@ class EDIT_Alumni_Employers {
      *      to load and the text-card fallback renders via the onerror hook.
      */
     private static function logo_url( array $emp ): string {
+        // `logo_domain` (optional) overrides which domain Logo.dev looks up,
+        // for companies whose primary domain returns a blank/transparent image.
+        $logo_domain = $emp['logo_domain'] ?? $emp['domain'];
         $token = self::logo_dev_token();
         if ( $token !== '' ) {
             $params = http_build_query( [
@@ -275,12 +290,20 @@ class EDIT_Alumni_Employers {
                 'format' => 'png',
                 'retina' => 'true',
             ] );
-            return 'https://img.logo.dev/' . rawurlencode( $emp['domain'] ) . '?' . $params;
+            return 'https://img.logo.dev/' . rawurlencode( $logo_domain ) . '?' . $params;
         }
         // Legacy fallback — Clearbit is deprecated and will 404, but the
         // onerror handler on the img element gracefully falls back to the
         // text label so the wall always renders something.
-        return 'https://logo.clearbit.com/' . $emp['domain'];
+        return 'https://logo.clearbit.com/' . $logo_domain;
+    }
+
+    /**
+     * Institutional website URL for an employer (the public link target for
+     * each logo card). Uses the company's primary `domain`.
+     */
+    private static function company_url( array $emp ): string {
+        return 'https://' . ltrim( $emp['domain'], '/' );
     }
 
     private static function logo_dev_token(): string {
@@ -319,31 +342,40 @@ class EDIT_Alumni_Employers {
         .ae-eyebrow-link{color:inherit;text-decoration:none;transition:color 180ms;}
         .ae-eyebrow-link:hover,.ae-eyebrow-link:focus-visible{color:#0a66c2;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:4px;}
         .ae-eyebrow-link:focus-visible{outline:2px solid #0a66c2;outline-offset:3px;border-radius:2px;}
-        .ae-badge{display:inline-flex;align-items:center;gap:11px;font-size:20px;font-weight:800;letter-spacing:0.01em;color:#2c3344;margin:12px 0 0;}
+        .ae-badge{display:inline-flex;align-items:center;gap:11px;font-size:20px;font-weight:800;letter-spacing:0.01em;color:#2c3344;margin:12px 0 0;text-decoration:none;transition:color 180ms;}
+        .ae-badge:hover,.ae-badge:focus-visible{color:#0a66c2;}
+        .ae-badge:focus-visible{outline:2px solid #0a66c2;outline-offset:3px;border-radius:3px;}
         .ae-badge-icons{display:inline-flex;align-items:center;gap:8px;}
         .ae-badge-shield{width:27px;height:27px;color:#5b6573;}
         .ae-badge-linkedin{width:27px;height:27px;}
+        .ae-badge-ext{font-size:14px;font-weight:600;color:#9aa1ad;margin-left:-3px;transition:transform 180ms;}
+        .ae-badge:hover .ae-badge-ext{color:#0a66c2;transform:translate(2px,-2px);}
         .ae-list{list-style:none;padding:0;margin:0;}
         .ae-attribution{margin:20px 0 0;font-size:11px;color:#999;text-align:center;letter-spacing:0.08em;}
         .ae-attribution a{color:#999;text-decoration:underline;text-decoration-color:#ddd;text-decoration-thickness:1px;text-underline-offset:2px;}
         .ae-attribution a:hover{color:#0a66c2;text-decoration-color:#0a66c2;}
         .ae-item{position:relative;}
-        .ae-item-link{display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:#fff;border:1px solid #e8e6df;border-radius:6px;text-decoration:none;color:inherit;transition:border-color 180ms,transform 180ms,box-shadow 180ms;}
+        .ae-item-link{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;width:100%;height:100%;padding:16px 10px 14px;box-sizing:border-box;background:#fff;border:1px solid #e8e6df;border-radius:6px;text-decoration:none;color:inherit;transition:border-color 180ms,transform 180ms,box-shadow 180ms;}
         .ae-item-link:hover,
         .ae-item-link:focus-visible{border-color:#0a66c2;transform:translateY(-2px);box-shadow:0 4px 14px rgba(10,102,194,0.10);}
         .ae-item-link:focus-visible{outline:2px solid #0a66c2;outline-offset:2px;}
-        .ae-logo{max-width:80%;max-height:60%;width:auto;height:auto;object-fit:contain;filter:grayscale(1) opacity(0.65);transition:filter 200ms;}
-        .ae-item-link:hover .ae-logo,
-        .ae-item-link:focus-visible .ae-logo{filter:grayscale(0) opacity(1);}
-        .ae-fallback-name{display:none;font-size:13px;font-weight:600;color:#0a0a0a;letter-spacing:-0.01em;text-align:center;padding:0 8px;}
-        .ae-item-link--fallback .ae-fallback-name{display:block;}
-        .ae-item-link--fallback:hover .ae-fallback-name,
-        .ae-item-link--fallback:focus-visible .ae-fallback-name{color:#0a66c2;}
+        /* Logo zone — fixed height so all name captions baseline-align
+           regardless of logo aspect ratio. Logos render in full COLOUR. */
+        .ae-logo-wrap{display:flex;align-items:center;justify-content:center;width:100%;height:46px;}
+        .ae-logo{max-width:82%;max-height:46px;width:auto;height:auto;object-fit:contain;}
+        /* Company name — always-visible text caption under the logo. */
+        .ae-name{font-size:12px;font-weight:600;letter-spacing:-0.01em;color:#3a3f4a;text-align:center;line-height:1.2;transition:color 180ms;}
+        .ae-item-link:hover .ae-name,
+        .ae-item-link:focus-visible .ae-name{color:#0a66c2;}
+        /* If Logo.dev returns a broken image, hide the empty logo zone so the
+           name caption carries the card on its own. */
+        .ae-item-link--fallback .ae-logo-wrap{display:none;}
+        .ae-item-link--fallback .ae-name{font-size:14px;color:#0a0a0a;}
 
         /* WALL — full grid, large logos. Used on pillar pages, post-hero
            on Empresas, anywhere with horizontal room. */
         .ae-section--wall .ae-list{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;}
-        .ae-section--wall .ae-item{aspect-ratio:5/3;}
+        .ae-section--wall .ae-item{aspect-ratio:5/3.4;}
         @media (max-width:1100px){.ae-section--wall .ae-list{grid-template-columns:repeat(4,1fr);}}
         @media (max-width:680px) {.ae-section--wall .ae-list{grid-template-columns:repeat(3,1fr);gap:10px;}}
         @media (max-width:420px) {.ae-section--wall .ae-list{grid-template-columns:repeat(2,1fr);}}
@@ -351,12 +383,12 @@ class EDIT_Alumni_Employers {
         /* STRIP — single horizontal row. Used in course pages sidebar /
            Empresas inline / blog post conversion blocks. */
         .ae-section--strip .ae-list{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;}
-        .ae-section--strip .ae-item{flex:0 0 auto;width:104px;height:60px;padding:8px;}
+        .ae-section--strip .ae-item{flex:0 0 auto;width:118px;height:84px;}
 
         /* GRID — compact 3-4 cols, medium. Used for tighter sidebars or
            small homepage cards. */
         .ae-section--grid .ae-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;}
-        .ae-section--grid .ae-item{aspect-ratio:5/3;}
+        .ae-section--grid .ae-item{aspect-ratio:5/3.4;}
         @media (max-width:640px){.ae-section--grid .ae-list{grid-template-columns:repeat(3,1fr);}}
         </style>
         <?php
