@@ -160,7 +160,7 @@ class EDIT_Alumni_Employers {
             'variant' => 'wall',
             'limit'   => 0,
             'heading' => 'Alumni colocados em',
-            'badge'   => 'verificado via LinkedIn',
+            'badge'   => 'LinkedIn Verified',
         ], $atts );
 
         return self::render(
@@ -181,7 +181,7 @@ class EDIT_Alumni_Employers {
         string $variant = 'wall',
         int    $limit   = 0,
         string $heading = 'Alumni colocados em',
-        string $badge   = 'verificado via LinkedIn'
+        string $badge   = 'LinkedIn Verified'
     ): string {
         $variant = in_array( $variant, [ 'wall', 'strip', 'grid' ], true ) ? $variant : 'wall';
 
@@ -207,7 +207,10 @@ class EDIT_Alumni_Employers {
                 </p>
                 <?php if ( $badge ) : ?>
                     <p class="ae-badge">
-                        <svg class="ae-badge-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 1 1 8.25 6.5 1.75 1.75 0 0 1 6.5 8.25zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0 0 13 14.19a.66.66 0 0 0 0 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 0 1 2.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
+                        <span class="ae-badge-icons" aria-hidden="true">
+                            <svg class="ae-badge-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                            <svg class="ae-badge-linkedin" viewBox="0 0 24 24" fill="#0a66c2"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 1 1 8.25 6.5 1.75 1.75 0 0 1 6.5 8.25zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0 0 13 14.19a.66.66 0 0 0 0 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 0 1 2.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>
+                        </span>
                         <?php echo esc_html( $badge ); ?>
                     </p>
                 <?php endif; ?>
@@ -316,8 +319,10 @@ class EDIT_Alumni_Employers {
         .ae-eyebrow-link{color:inherit;text-decoration:none;transition:color 180ms;}
         .ae-eyebrow-link:hover,.ae-eyebrow-link:focus-visible{color:#0a66c2;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:4px;}
         .ae-eyebrow-link:focus-visible{outline:2px solid #0a66c2;outline-offset:3px;border-radius:2px;}
-        .ae-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:500;letter-spacing:0.08em;color:#666;margin:0;font-style:italic;}
-        .ae-badge-icon{width:12px;height:12px;color:#0a66c2;}
+        .ae-badge{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:0.06em;color:#2c3344;margin:0;}
+        .ae-badge-icons{display:inline-flex;align-items:center;gap:5px;}
+        .ae-badge-shield{width:15px;height:15px;color:#5b6573;}
+        .ae-badge-linkedin{width:15px;height:15px;}
         .ae-list{list-style:none;padding:0;margin:0;}
         .ae-attribution{margin:20px 0 0;font-size:11px;color:#999;text-align:center;letter-spacing:0.08em;}
         .ae-attribution a{color:#999;text-decoration:underline;text-decoration-color:#ddd;text-decoration-thickness:1px;text-underline-offset:2px;}
