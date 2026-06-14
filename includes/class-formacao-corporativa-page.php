@@ -341,7 +341,7 @@ class EDIT_Formacao_Corporativa_Page {
             'number' => '02',
             'title'  => 'Desenho do Programa',
             'time'   => '1 semana',
-            'body'   => 'O lead instructor desenha um syllabus customizado ao vosso setor e às ferramentas existentes. Validamos convosco antes do kick-off — sem surpresas.',
+            'body'   => 'A nossa equipa pedagógica em conjunto com o lead instructor desenha um syllabus customizado ao vosso setor e às ferramentas existentes. Validamos convosco antes do kick-off — sem surpresas.',
         ],
         [
             'number' => '03',

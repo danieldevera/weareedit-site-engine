@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.520 — 2026-06-14 (Empresas Process step 02 body — add equipa pedagógica)
+- `PROCESS` step 02 "Desenho do Programa" body now opens "A nossa equipa pedagógica em conjunto com o lead instructor desenha um syllabus…" (Daniel). Fixed typo `e conjunto` → `em conjunto`.
+
 ## v1.5.519 — 2026-06-14 (Empresas Process step 01 timeframe: 1–2 semanas → 48 horas)
 - `EDIT_Formacao_Corporativa_Page::PROCESS` step 01 "Diagnóstico" `time` changed `1–2 semanas` → `48 horas` (Daniel). Surfaces on the empresas Process section. NOTE: the on-page FAQ ("Quanto tempo demora…") still says "1-2 semanas de diagnóstico" — left as-is pending Daniel's call on whether to align.
 
