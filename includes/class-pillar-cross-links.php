@@ -102,6 +102,9 @@ section.banner.split-black-grey{display:none !important;}
 .ceb-mini__head em{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;color:#ffdd06;}
 .ceb-mini__cta{flex:none;}
 @media (max-width:680px){.ceb-mini{gap:16px;}.ceb-mini__cta{width:100%;justify-content:center;}}
+/* Recolour the blue course-title highlight in the description to brand pink */
+.sobre-curso font[color="#0090eb"],
+.sobre-curso font[color="#0090eb"] b{color:#f92869 !important;}
 </style>
         <?php
     }
