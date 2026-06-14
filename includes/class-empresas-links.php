@@ -32,6 +32,38 @@ class EDIT_Empresas_Links {
     public static function init(): void {
         add_filter( 'weareedit_site_engine_output_buffer', [ __CLASS__, 'inject' ], 12 );
         add_action( 'wp_head', [ __CLASS__, 'emit_styles' ], 7 );
+        // Site-wide (incl. the empresas subdomain) — runs regardless of the
+        // empresas-live gate, so it always tidies the address bar.
+        add_action( 'wp_footer', [ __CLASS__, 'emit_url_cleanup' ], 99 );
+    }
+
+    /**
+     * Strip GA4 cross-domain linker params (_gl, _ga, _ga_*, _gcl_au, …) from
+     * the address bar AFTER the page loads. GA reads the linker on init (head),
+     * so by footer time the session is already stitched — we only clean the
+     * visible URL. Zero tracking impact; purely cosmetic. Real attribution
+     * params (gclid/fbclid/utm_*) are deliberately left untouched.
+     */
+    public static function emit_url_cleanup(): void {
+        if ( is_admin() || is_feed() ) return;
+        ?>
+<script id="ee-url-cleanup">
+(function(){
+  try{
+    if(!window.history||!history.replaceState||!window.URL)return;
+    var u=new URL(window.location.href), p=u.searchParams, changed=false;
+    var kill=['_gl','_ga','_gcl_au','_gac','_gcl_aw','_gcl_dc'];
+    Array.from(p.keys()).forEach(function(k){
+      if(kill.indexOf(k)>-1||k.indexOf('_ga_')===0){p.delete(k);changed=true;}
+    });
+    if(changed){
+      var qs=p.toString();
+      history.replaceState(null,'',u.pathname+(qs?'?'+qs:'')+u.hash);
+    }
+  }catch(e){}
+})();
+</script>
+        <?php
     }
 
     /** Only act once empresas is publicly live, and never on the subdomain itself. */
