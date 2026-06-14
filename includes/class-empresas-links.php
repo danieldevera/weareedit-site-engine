@@ -161,7 +161,10 @@ class EDIT_Empresas_Links {
     private static function inject_homepage_empresas( string $html ): string {
         $anchor = '<!--In Company-->';
         if ( strpos( $html, $anchor ) === false ) return $html;
-        if ( strpos( $html, 'eehe__grid' ) !== false ) return $html; // idempotent
+        // Idempotency must use a MARKUP-only marker: the eehe CSS (emitted in
+        // wp_head before this filter) already contains class names like
+        // eehe__grid, so guarding on those would always skip the injection.
+        if ( strpos( $html, 'Forme a sua equipa nas competências' ) !== false ) return $html;
 
         $base    = WEAREDIT_SITE_ENGINE_URL;
         $hero    = esc_url( $base . 'assets/img/empresas-hero.jpg' );
