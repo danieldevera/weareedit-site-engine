@@ -2793,8 +2793,10 @@ button {
   flex: 1;
 }
 .fin-card p b { color: var(--ink); font-weight: 700; }
-.fin-card__lnk { font-size: 13.5px; font-weight: 700; color: var(--ink); text-decoration: none; display: inline-flex; align-items: center; gap: 7px; }
+.fin-card__lnk { font-size: 13.5px; font-weight: 700; color: var(--ink); text-decoration: none; display: inline-flex; align-items: center; gap: 7px; transition: color 0.2s ease; }
 .fin-card__lnk .ar { transition: transform 0.2s ease; }
+.fin-card__lnk:hover { color: var(--edit-pink); }
+.fin-card__lnk:hover .ar { transform: translateX(4px); }
 .fin-card:hover .fin-card__lnk .ar { transform: translateX(4px); }
 .financing-trust {
   border-top: 1px solid #e7e5df;
@@ -2821,11 +2823,13 @@ button {
   color: var(--ink);
   font-weight: 700;
 }
+/* Primary CTA uses the site-standard swipe-cta hover (pink→teal→black sweep
+   + yellow text flip). Base look = solid ink pill; the global .swipe-cta CSS
+   (inject_global_overrides) supplies overflow/isolation + the layer animation. */
 .financing-trust .cta-link {
   flex: none;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
   background: var(--ink);
   color: #fff;
   font-size: 15px;
@@ -2834,14 +2838,8 @@ button {
   padding: 16px 28px;
   border-radius: 8px;
   border-bottom: none;
-  transition: background 0.2s ease, transform 0.2s ease;
 }
-.financing-trust .cta-link:hover {
-  background: #000;
-  color: #fff;
-  border-color: transparent;
-  transform: translateY(-2px);
-}
+.financing-trust .cta-link .swipe-label { gap: 10px; }
 .financing-trust .cta-link .ar { color: var(--edit-yellow); }
 
 @media (max-width: 880px) {
@@ -3810,7 +3808,7 @@ button {
     </div>
     <div class="financing-trust">
       <div class="fin-trust-badge"><strong>EDIT. é Entidade Formadora Certificada pela DGERT (nº 18391).</strong> Todas as formações são elegíveis para mecanismos de apoio à formação corporativa.</div>
-      <a href="#contacto" class="cta-link">Verificar a vossa elegibilidade <span class="ar" aria-hidden="true">→</span></a>
+      <a href="#contacto" class="cta-link swipe-cta"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Verificar a vossa elegibilidade <span class="ar" aria-hidden="true">→</span></span></a>
     </div>
   </div>
 </section>

@@ -1,4 +1,8 @@
 # Changelog
+## v1.5.527 — 2026-06-14 (Financiamento — standard button + link mouse-overs)
+- **Primary CTA** "Verificar a vossa elegibilidade" now uses the site-standard **swipe-cta** hover (pink→teal→black sweep + yellow text flip). Added swipe-cta markup (3 layers + swipe-label) + class; removed the custom translateY hover. Base = solid ink pill; global `.swipe-cta` CSS supplies the animation.
+- **Card micro-CTAs** (`.fin-card__lnk`: Verificar elegibilidade / Saber mais / Falar connosco) got a standard link mouse-over: text+arrow → brand pink + arrow slides right on hover.
+
 ## v1.5.526 — 2026-06-14 (Empresas FAQ → pillar centered column + section spacing)
 - **FAQ matched to pillar** (Daniel: "match Empresas to Pillar"). Reverted the v1.5.524 full-width — set `.md-faq` section-title/q/a back to `max-width:1280px` + `60px` gutters (pillar exact), `.md-faq__list`/`.md-faq__item` stay full-width so dividers/hover span edge-to-edge with content centered. Now identical layout to the pillar FAQ.
 - **Section spacing** (Daniel): `.empresas-intro` bottom padding 16px → 96px (lede was crammed against the yellow financing banner); `.process` bottom 100px → 140px (cards were tight against the grey founder-quote section).
