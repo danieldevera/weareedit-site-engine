@@ -16,6 +16,20 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class EDIT_Pillar_Tutors {
 
+    public static function init(): void {
+        // Drop all pillar-tutor caches whenever an equipa profile is created,
+        // edited, deleted, or transitions status. Equipa edits are rare so
+        // bluntly clearing all keyword-keyed transients is fine — far better
+        // than letting a stale tutor list outlive a profile edit.
+        add_action( 'save_post_equipa', [ __CLASS__, 'invalidate_caches' ] );
+        add_action( 'deleted_post',     [ __CLASS__, 'invalidate_caches' ] );
+        add_action( 'transition_post_status', function( $new, $old, $post ) {
+            if ( $post && $post->post_type === 'equipa' ) {
+                self::invalidate_caches();
+            }
+        }, 10, 3 );
+    }
+
     /**
      * Render tutors filtered by area-tag keywords (ACF `profile_knowsabout`
      * comma-separated values). Returns the 15 most-recently-published equipa
@@ -55,6 +69,18 @@ class EDIT_Pillar_Tutors {
      */
     public static function get_tutor_slugs_by_area( array $keywords, int $limit = 20 ): array {
         if ( empty( $keywords ) ) return [];
+
+        // Result-level transient cache. The full uncached path runs up to
+        // 12 ACF probes × 200 equipa posts = 2400 get_field() calls and
+        // dominates pillar TTFB (4s+ uncached, per audit 2026-06-14).
+        // Cache the resolved slug list per keyword-set. Invalidated by the
+        // save_post_equipa hook below, so edits propagate within a request.
+        $cache_key = 'edit_pillar_tutors_' . md5( serialize( [ $keywords, $limit ] ) );
+        $cached = get_transient( $cache_key );
+        if ( is_array( $cached ) ) {
+            return $cached;
+        }
+
         // Pull a generous pool, then filter — equipa CPT has ~95 posts as of 2026-06-12.
         // Order by post_modified (last edit) so freshly-touched profiles surface
         // first — covers both newly-created and recently-updated tutors.
@@ -107,7 +133,25 @@ class EDIT_Pillar_Tutors {
                 }
             }
         }
-        return array_keys( $matched );
+        $slugs = array_keys( $matched );
+        // 14 days TTL with explicit save_post invalidation. Equipa edits are
+        // rare; this lets the result survive across many pillar visits.
+        set_transient( $cache_key, $slugs, 14 * DAY_IN_SECONDS );
+        return $slugs;
+    }
+
+    /**
+     * Invalidate all pillar-tutor result caches. Hooked on save_post_equipa
+     * so any tutor profile edit propagates to all pillar pages immediately.
+     * Also covers post deletion and status transitions.
+     */
+    public static function invalidate_caches(): void {
+        global $wpdb;
+        $wpdb->query(
+            "DELETE FROM {$wpdb->options}
+             WHERE option_name LIKE '_transient_edit_pillar_tutors_%'
+                OR option_name LIKE '_transient_timeout_edit_pillar_tutors_%'"
+        );
     }
 
     /**
