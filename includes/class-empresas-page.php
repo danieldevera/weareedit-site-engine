@@ -46,15 +46,33 @@ class EDIT_Empresas_Page {
     /**
      * Master visibility switch.
      *
-     *   'live'    — public renders the sub-brand page
-     *   'preview' — only logged-in admins see it (404 for everyone else)
-     *   'off'     — class is fully inert
+     *   'live'      — public renders the sub-brand page
+     *   'preview'   — only logged-in admins see it (404 for everyone else)
+     *   'scheduled' — preview until GO_LIVE_AT, then auto-flips to live
+     *   'off'       — class is fully inert
      *
-     * Sprint 1 ships as 'preview' so Daniel + team can review at the
-     * subdomain without exposing an in-progress page to crawlers.
-     * Flip to 'live' for soft launch.
+     * 2026-06-14: set to 'scheduled' for the Monday LinkedIn launch. The
+     * page auto-goes-live at GO_LIVE_AT without a manual off-hours deploy
+     * (avoids the risk that a weekend plugin update exposes it early, and
+     * removes the human-timing dependency). Resolve via effective_status()
+     * everywhere — never read STATUS directly for visibility decisions.
+     * If anything in the date logic fails, it stays safely in preview.
      */
-    const STATUS = 'preview';
+    const STATUS = 'scheduled';
+
+    /**
+     * Auto-go-live moment for STATUS = 'scheduled'. Lisbon local time.
+     * Monday 16 Jun 2026, 08:00 — before the 09:30 LinkedIn launch post,
+     * inside the off-business-hours window. After this instant the page
+     * renders publicly + legacy 301s activate.
+     *
+     * NOTE: WP Rocket may serve a cached 404/old-page for a short window
+     * after the flip. Daniel: flush the cache Monday ~08:00 to make the
+     * go-live + 301s take effect immediately (cache flush only — NOT a
+     * plugin deactivate/reactivate, so it's safe per the business-hours
+     * rule).
+     */
+    const GO_LIVE_AT = '2026-06-16 08:00:00';
 
     /**
      * Exact match: HTTP_HOST must equal this string. The www.empresas.*
@@ -111,8 +129,29 @@ class EDIT_Empresas_Page {
      */
     const PREVIEW_TOKEN = 'edit-2026';
 
+    /**
+     * Resolve the effective visibility status. For 'scheduled', returns
+     * 'live' once the wall-clock has passed GO_LIVE_AT (Lisbon tz), else
+     * 'preview'. All other values pass through unchanged. Every visibility
+     * decision MUST go through this, never the raw STATUS const.
+     */
+    public static function effective_status(): string {
+        if ( self::STATUS !== 'scheduled' ) {
+            return self::STATUS;
+        }
+        // Date-gated. Compare in the site timezone; fail safe to 'preview'
+        // if the target can't be parsed for any reason.
+        try {
+            $now    = current_datetime();                                  // DateTimeImmutable, site tz (WP 5.3+)
+            $target = new DateTimeImmutable( self::GO_LIVE_AT, wp_timezone() );
+            return ( $now >= $target ) ? 'live' : 'preview';
+        } catch ( \Exception $e ) {
+            return 'preview';
+        }
+    }
+
     public static function init(): void {
-        if ( self::STATUS === 'off' ) return;
+        if ( self::effective_status() === 'off' ) return;
 
         // Subdomain renderer — fires only when the request host matches.
         if ( self::is_subdomain_request() ) {
@@ -141,7 +180,7 @@ class EDIT_Empresas_Page {
     }
 
     private static function redirects_active(): bool {
-        return self::STATUS === 'live';
+        return self::effective_status() === 'live';
     }
 
     /**
@@ -161,8 +200,9 @@ class EDIT_Empresas_Page {
      * page doesn't get crawled before we open it.
      */
     private static function should_render_publicly(): bool {
-        if ( self::STATUS === 'live' ) return true;
-        if ( self::STATUS === 'preview' ) {
+        $status = self::effective_status();
+        if ( $status === 'live' ) return true;
+        if ( $status === 'preview' ) {
             if ( current_user_can( 'manage_options' ) ) return true;
             // Share-link bypass: ?preview=<TOKEN> grants visibility without
             // needing admin login (cookies don't cross subdomain boundary).
@@ -1553,7 +1593,7 @@ CSS;
 <meta name="twitter:title" content="<?php echo esc_attr( $title ); ?>">
 <meta name="twitter:description" content="<?php echo esc_attr( $description ); ?>">
 
-<?php if ( self::STATUS === 'preview' ) : ?>
+<?php if ( self::effective_status() === 'preview' ) : ?>
 <meta name="robots" content="noindex, nofollow">
 <?php endif; ?>
 
@@ -1561,7 +1601,7 @@ CSS;
 <link rel="icon" href="https://weareedit.io/wp-content/uploads/2021/05/cropped-favicon-edit-32x32.png">
 
 <?php // GTM (production only — preview mode keeps analytics quiet) ?>
-<?php if ( self::STATUS === 'live' ) : ?>
+<?php if ( self::effective_status() === 'live' ) : ?>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -3071,15 +3111,15 @@ button {
 </head>
 <body>
 
-<?php if ( self::STATUS === 'live' ) : ?>
+<?php if ( self::effective_status() === 'live' ) : ?>
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TSP85L" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 <?php endif; ?>
 
-<?php if ( self::STATUS === 'preview' ) : ?>
+<?php if ( self::effective_status() === 'preview' ) : ?>
 <div class="preview-banner">
-  PREVIEW · empresas.weareedit.io · visível só para admins · flip <code>EDIT_Empresas_Page::STATUS</code> para <code>'live'</code> para abrir ao público
+  PREVIEW · empresas.weareedit.io · auto-go-live agendado para <?php echo esc_html( self::GO_LIVE_AT ); ?> (Lisboa) · visível só para admins até lá
 </div>
 <?php endif; ?>
 
