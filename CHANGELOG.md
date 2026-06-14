@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.521 — 2026-06-14 (Empresas Process step 03 — time 4–12→1–2 semanas + body)
+- `PROCESS` step 03 "Entrega": `time` `4–12 semanas` → `1–2 semanas`; body opener `Sessões in-house` → `Sessões nas vossas instalações` (fixed `na vossas` → `nas vossas`) (Daniel). FAQ "Quanto tempo demora…" now diverges further (still says 1-2 sem diagnóstico + 4-12 sem entrega) — pending Daniel's call to align.
+
 ## v1.5.520 — 2026-06-14 (Empresas Process step 02 body — add equipa pedagógica)
 - `PROCESS` step 02 "Desenho do Programa" body now opens "A nossa equipa pedagógica em conjunto com o lead instructor desenha um syllabus…" (Daniel). Fixed typo `e conjunto` → `em conjunto`.
 

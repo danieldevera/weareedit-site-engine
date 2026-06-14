@@ -346,8 +346,8 @@ class EDIT_Formacao_Corporativa_Page {
         [
             'number' => '03',
             'title'  => 'Entrega',
-            'time'   => '4–12 semanas',
-            'body'   => 'Sessões in-house, no nosso campus, ou remoto em tempo real. Projeto final aplicado ao vosso contexto real. Materiais e gravações permanecem com a vossa equipa.',
+            'time'   => '1–2 semanas',
+            'body'   => 'Sessões nas vossas instalações, no nosso campus, ou remoto em tempo real. Projeto final aplicado ao vosso contexto real. Materiais e gravações permanecem com a vossa equipa.',
         ],
         [
             'number' => '04',
