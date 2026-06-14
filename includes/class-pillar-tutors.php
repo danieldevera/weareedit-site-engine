@@ -147,6 +147,9 @@ class EDIT_Pillar_Tutors {
      */
     public static function invalidate_caches(): void {
         global $wpdb;
+        // Pattern matches both the slug-list cache (`edit_pillar_tutors_`)
+        // and the render-output cache (`edit_pillar_tutors_html_`) — the
+        // `%` covers both suffixes.
         $wpdb->query(
             "DELETE FROM {$wpdb->options}
              WHERE option_name LIKE '_transient_edit_pillar_tutors_%'
@@ -160,6 +163,16 @@ class EDIT_Pillar_Tutors {
      */
     public static function render( array $slugs, string $section_title = 'Aprende com profissionais em activo' ): string {
         if ( empty( $slugs ) ) return '';
+
+        // Render-level transient cache. Without this, every pillar visit
+        // pays ~5 ACF probes × 20 tutors = ~100 ACF calls + 20
+        // get_page_by_path() lookups + 20 attachment URL resolutions.
+        // Invalidated by the same save_post_equipa hook as the slugs cache.
+        $render_key = 'edit_pillar_tutors_html_' . md5( serialize( [ $slugs, $section_title ] ) );
+        $cached_html = get_transient( $render_key );
+        if ( is_string( $cached_html ) && $cached_html !== '' ) {
+            return $cached_html;
+        }
 
         $tutors = [];
         foreach ( $slugs as $slug ) {
@@ -217,7 +230,11 @@ class EDIT_Pillar_Tutors {
             </div>
         </section>
         <?php
-        return ob_get_clean();
+        $html = (string) ob_get_clean();
+        // Cache for 14 days — invalidation via save_post_equipa fires for
+        // any tutor profile edit (init() registers the hook).
+        set_transient( $render_key, $html, 14 * DAY_IN_SECONDS );
+        return $html;
     }
 
     /**
