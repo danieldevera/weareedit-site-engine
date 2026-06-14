@@ -1467,6 +1467,41 @@ body.empresas-page .hero .ctas .cta-notation {
   pointer-events: none !important;
   white-space: nowrap !important;
 }
+
+/* ── FAQ LIGHT THEME (v1.5.498) ───────────────────────────────────────
+   The plugin uses the generic class `.faq`, which collides with the
+   theme's own `.faq` component (dark, used on course pages). The theme
+   rule was winning, rendering our FAQ on a dark background with near-
+   invisible dark text. Re-assert the light treatment scoped under
+   body.empresas-page so we beat the theme on specificity + importance. */
+body.empresas-page .faq {
+  background: var(--grey-1) !important;
+}
+body.empresas-page .faq .section-title,
+body.empresas-page .faq .section-eyebrow,
+body.empresas-page .faq summary,
+body.empresas-page .faq summary::after,
+body.empresas-page .faq .answer strong {
+  color: var(--ink) !important;
+}
+body.empresas-page .faq .answer {
+  color: var(--grey-4) !important;
+}
+body.empresas-page .faq .faq-item {
+  border-bottom: 1px solid var(--grey-2) !important;
+}
+body.empresas-page .faq summary:hover {
+  color: var(--edit-pink) !important;
+}
+
+/* ── NEWSLETTER STRIP — flush against the dark sections (v1.5.498) ─────
+   #edit-newsletter-strip ships with `margin: 64px 0 88px` (newsletter-
+   signup.css). On empresas the strip sits between two dark sections, so
+   that margin renders as white bars above/below the yellow strip. Zero
+   the outer margin here (the strip keeps its own internal padding). */
+body.empresas-page #edit-newsletter-strip {
+  margin: 0 !important;
+}
 CSS;
 
         echo "<style id=\"empresas-page-css\">\n" . $css . "\n" . $overrides . "\n</style>";
@@ -2037,6 +2072,10 @@ button {
   line-height: 1.1;
   letter-spacing: -0.02em;
   font-weight: 700;
+  /* Default to ink so light-bg sections (value-props, process, FAQ) don't
+     inherit the theme's white h2 colour and vanish on white. Dark sections
+     (.financing, .lead-section) override this to #fff with more specificity. */
+  color: var(--ink);
   margin: 0 0 56px 0;
   max-width: 22ch;
 }
