@@ -93,7 +93,7 @@ class EDIT_Pillar_Cross_Links {
 .epb-cta{font-size:13px;font-weight:800;display:inline-flex;gap:8px;align-items:center;color:#0a0a0a;}
 /* Mini Empresas banner — replaces the old in-company banner (hidden below) */
 section.banner.split-black-grey{display:none !important;}
-.ceb-mini{position:relative;overflow:hidden;max-width:1180px;margin:8px auto 56px;display:flex;align-items:center;gap:28px;justify-content:space-between;flex-wrap:wrap;background:radial-gradient(140% 200% at 6% 50%,#191919,#0c0c0c 60%,#0a0a0a);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:20px 26px;}
+.ceb-mini{position:relative;overflow:hidden;max-width:1180px;margin:56px auto 56px;display:flex;align-items:center;gap:28px;justify-content:space-between;flex-wrap:wrap;background:radial-gradient(140% 200% at 6% 50%,#191919,#0c0c0c 60%,#0a0a0a);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:20px 26px;}
 .ceb-mini__left{display:flex;align-items:center;gap:22px;min-width:0;}
 .ceb-mini__dgert{height:36px !important;max-height:36px !important;width:auto !important;display:block;flex:none;opacity:.95;}
 .ceb-mini__sep{width:1px;height:38px;background:rgba(255,255,255,.16);flex:none;}
