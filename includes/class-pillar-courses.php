@@ -20,7 +20,13 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class EDIT_Pillar_Courses {
 
     const CACHE_KEY = 'edit_pillar_card_map_v4';
-    const CACHE_TTL = HOUR_IN_SECONDS;
+    /* Cache the scraped /formacao/ card map for 14 days. The previous 1h
+       TTL meant every hour a fresh visit paid the full wp_remote_get cost
+       (8s timeout × the home_url scrape) — that was the source of the 17s
+       worst-case TTFB Daniel reported. Long TTL is safe because:
+       (a) save_post_formacao hook below invalidates on course edits
+       (b) the scraped HTML is theme card markup which rarely changes */
+    const CACHE_TTL = 14 * DAY_IN_SECONDS;
 
     public static function init(): void {
         add_action( 'save_post_formacao',     [ __CLASS__, 'invalidate_cache' ] );
