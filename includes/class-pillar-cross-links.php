@@ -230,9 +230,14 @@ class EDIT_Pillar_Cross_Links {
             . '<h2 class="epb-head">Explore as <em>áreas</em> a que este programa pertence.</h2>'
             . '<div class="epb-grid">' . $cards . '</div></div></section>';
 
-        // Place at the bottom of the course content, just before the footer strip.
-        $anchor = '<div class="footer-newsletter">';
+        // Place beneath the tutor/team block — i.e. right before the alumni
+        // section ("Estudar na EDIT."). Fall back to the footer strip.
+        $anchor = '<!--alumni-->';
         $pos    = strpos( $html, $anchor );
+        if ( $pos === false ) {
+            $anchor = '<div class="footer-newsletter">';
+            $pos    = strpos( $html, $anchor );
+        }
         if ( $pos === false ) return $html;
 
         return substr_replace( $html, $banner . $anchor, $pos, strlen( $anchor ) );
