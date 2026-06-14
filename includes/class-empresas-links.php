@@ -193,7 +193,7 @@ class EDIT_Empresas_Links {
         $section .= '<div class="eehe__feat"><span class="eehe__ic"></span><div><b>Tutores em activo</b><span>Profissionais do mercado</span></div></div>';
         $section .= '</div>';
         $section .= '<div class="eehe__actions">';
-        $section .= '<a class="eehe__cta" href="' . esc_url( $emp ) . '"><span class="eehe__layer eehe__l-pink"></span><span class="eehe__layer eehe__l-teal"></span><span class="eehe__layer eehe__l-black"></span>Conhecer a EDIT. para Empresas <span class="eehe__arr" aria-hidden="true">→</span></a>';
+        $section .= '<a class="btn btn-yellow swipe-cta" href="' . esc_url( $emp ) . '"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Conhecer a EDIT. para Empresas →</span></a>';
         $section .= '<a class="eehe__link" href="' . esc_url( $emp . '#contacto' ) . '">Falar com a equipa</a>';
         $section .= '</div></div>';
         // Trust row removed 2026-06-14 at Daniel's request — close grid + eehe.
@@ -237,15 +237,8 @@ body.home .eehe__feat:nth-child(4) .eehe__ic{background:#ec8172;}
 body.home .eehe__feat b{display:block;font-size:15px;font-weight:600;color:#fff;margin-bottom:2px;}
 body.home .eehe__feat span{font-size:13px;color:rgba(255,255,255,.5);}
 body.home .eehe__actions{display:flex;align-items:center;gap:24px;flex-wrap:wrap;}
-body.home .eehe__cta{position:relative;z-index:0;display:inline-flex;align-items:center;gap:10px;overflow:hidden;background:#ffdd06;color:#0a0a0a;font-weight:700;font-size:15px;text-decoration:none;padding:16px 30px;border-radius:4px;transition:color .3s ease;}
-body.home .eehe__layer{position:absolute;inset:0;z-index:-1;transform:translateX(-101%);transition:transform .35s ease;}
-body.home .eehe__l-pink{background:#f92869;}
-body.home .eehe__l-teal{background:#60c5b3;transition-delay:.05s;}
-body.home .eehe__l-black{background:#0a0a0a;transition-delay:.1s;}
-body.home .eehe__cta:hover{color:#ffdd06;}
-body.home .eehe__cta:hover .eehe__layer{transform:translateX(0);}
-body.home .eehe__cta .eehe__arr{transition:transform .2s ease;}
-body.home .eehe__cta:hover .eehe__arr{transform:translateX(5px);}
+/* Primary CTA uses the theme-global .btn.btn-yellow.swipe-cta markup so it has
+   the EXACT default sweep animation (no custom replica). */
 body.home .eehe__link{display:inline-flex;align-items:center;color:#fff;font-size:14.5px;font-weight:600;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.28);padding-bottom:3px;transition:border-color .2s ease;}
 body.home .eehe__link:hover{border-color:#ffdd06;}
 body.home .eehe__trust{margin-top:44px;padding-top:26px;border-top:1px solid rgba(255,255,255,.1);}
