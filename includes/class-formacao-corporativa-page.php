@@ -352,7 +352,7 @@ class EDIT_Formacao_Corporativa_Page {
         [
             'number' => '04',
             'title'  => 'Avaliação de Impacto',
-            'time'   => '3 + 6 meses',
+            'time'   => '3–6 meses',
             'body'   => 'Pré/pós-teste, NPS por sessão, seguimento a 3 e 6 meses para medir adoção das competências no dia-a-dia. Relatório final com métricas para o vosso L&D dashboard.',
         ],
     ];
@@ -387,7 +387,7 @@ class EDIT_Formacao_Corporativa_Page {
      */
     const FAQ = [
         [ 'q' => 'Quanto custa uma formação in-company?', 'a' => 'O investimento depende do número de formandos, da duração, e do nível de customização. Bootcamps de 40h para 10-15 formandos começam habitualmente em € 8.000. Pedimos sempre um briefing gratuito para enviar uma proposta detalhada — incluindo opções SIFIDE / Cheque Formação que podem reembolsar até 100% do valor.', 'placeholder' => true ],
-        [ 'q' => 'Quanto tempo demora a desenhar e entregar um programa?', 'a' => 'Tipicamente: <strong>1-2 semanas</strong> de diagnóstico + desenho do programa, <strong>4-12 semanas</strong> de entrega (dependendo da carga horária), <strong>1 semana</strong> de avaliação de impacto. Para necessidades urgentes, conseguimos arrancar em 5 dias úteis com programas standard.', 'placeholder' => true ],
+        [ 'q' => 'Quanto tempo demora a desenhar e entregar um programa?', 'a' => 'Tipicamente: <strong>48 horas</strong> de diagnóstico, <strong>1 semana</strong> de desenho do programa, <strong>1-2 semanas</strong> de entrega (dependendo da carga horária), e avaliação de impacto a <strong>3-6 meses</strong>. Para necessidades urgentes, conseguimos arrancar em 5 dias úteis com programas standard.', 'placeholder' => true ],
         [ 'q' => 'Posso usar SIFIDE, Cheque Formação ou POPH?', 'a' => 'Sim, todas as formações da EDIT. são elegíveis. A EDIT. é entidade formadora certificada pela DGERT (nº 18391). Apoiamos no processo de candidatura. <strong>Cheque Formação + Digital</strong> é particularmente vantajoso até <strong>30 de Junho 2026</strong>.', ],
         [ 'q' => 'As formações podem ser nas nossas instalações?', 'a' => 'Sim. Entregamos in-house em qualquer ponto de Portugal continental. Também temos campus em Lisboa (Av. Aquilino Ribeiro Machado) e Porto (Rua Alferes Malheiro) caso prefiram. Para equipas distribuídas, o formato remoto em tempo real funciona excepcionalmente bem.', ],
         [ 'q' => 'Qual o tamanho mínimo e máximo de grupo?', 'a' => 'O mínimo recomendado é <strong>6 formandos</strong> para garantir dinâmica de grupo. O máximo depende do formato: até <strong>15 em sala</strong>, até <strong>25 em remoto</strong>. Para programas de larga escala (50+), dividimos em coortes paralelas com sincronização semanal.', 'placeholder' => true ],

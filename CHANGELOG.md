@@ -1,4 +1,8 @@
 # Changelog
+## v1.5.522 — 2026-06-14 (Empresas Process step 04 time + FAQ timeline aligned)
+- `PROCESS` step 04 "Avaliação de Impacto" `time` `3 + 6 meses` → `3–6 meses` (en-dash to match step 03 badge style) (Daniel).
+- FAQ "Quanto tempo demora…" aligned to the new Process timeline: `48 horas` diagnóstico, `1 semana` desenho, `1-2 semanas` entrega, avaliação `3-6 meses` (was the stale 1-2 sem / 4-12 sem / 1 sem). No more contradiction between Process badges and FAQ.
+
 ## v1.5.521 — 2026-06-14 (Empresas Process step 03 — time 4–12→1–2 semanas + body)
 - `PROCESS` step 03 "Entrega": `time` `4–12 semanas` → `1–2 semanas`; body opener `Sessões in-house` → `Sessões nas vossas instalações` (fixed `na vossas` → `nas vossas`) (Daniel). FAQ "Quanto tempo demora…" now diverges further (still says 1-2 sem diagnóstico + 4-12 sem entrega) — pending Daniel's call to align.
 
