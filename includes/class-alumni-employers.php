@@ -319,10 +319,10 @@ class EDIT_Alumni_Employers {
         .ae-eyebrow-link{color:inherit;text-decoration:none;transition:color 180ms;}
         .ae-eyebrow-link:hover,.ae-eyebrow-link:focus-visible{color:#0a66c2;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:4px;}
         .ae-eyebrow-link:focus-visible{outline:2px solid #0a66c2;outline-offset:3px;border-radius:2px;}
-        .ae-badge{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:0.06em;color:#2c3344;margin:0;}
-        .ae-badge-icons{display:inline-flex;align-items:center;gap:5px;}
-        .ae-badge-shield{width:15px;height:15px;color:#5b6573;}
-        .ae-badge-linkedin{width:15px;height:15px;}
+        .ae-badge{display:inline-flex;align-items:center;gap:11px;font-size:20px;font-weight:800;letter-spacing:0.01em;color:#2c3344;margin:12px 0 0;}
+        .ae-badge-icons{display:inline-flex;align-items:center;gap:8px;}
+        .ae-badge-shield{width:27px;height:27px;color:#5b6573;}
+        .ae-badge-linkedin{width:27px;height:27px;}
         .ae-list{list-style:none;padding:0;margin:0;}
         .ae-attribution{margin:20px 0 0;font-size:11px;color:#999;text-align:center;letter-spacing:0.08em;}
         .ae-attribution a{color:#999;text-decoration:underline;text-decoration-color:#ddd;text-decoration-thickness:1px;text-underline-offset:2px;}
