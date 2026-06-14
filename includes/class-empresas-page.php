@@ -2806,14 +2806,18 @@ button {
   gap: 30px;
   flex-wrap: wrap;
 }
-.financing-trust .badge {
+.financing-trust .fin-trust-badge {
+  background: none;
+  padding: 0;
+  border-radius: 0;
   font-size: 13.5px;
   color: var(--grey-4);
   letter-spacing: 0.01em;
   line-height: 1.5;
   max-width: 62ch;
+  white-space: normal;
 }
-.financing-trust .badge strong {
+.financing-trust .fin-trust-badge strong {
   color: var(--ink);
   font-weight: 700;
 }
@@ -3805,7 +3809,7 @@ button {
       </div>
     </div>
     <div class="financing-trust">
-      <div class="badge"><strong>EDIT. é Entidade Formadora Certificada pela DGERT (nº 18391).</strong> Todas as formações são elegíveis para mecanismos de apoio à formação corporativa.</div>
+      <div class="fin-trust-badge"><strong>EDIT. é Entidade Formadora Certificada pela DGERT (nº 18391).</strong> Todas as formações são elegíveis para mecanismos de apoio à formação corporativa.</div>
       <a href="#contacto" class="cta-link">Verificar a vossa elegibilidade <span class="ar" aria-hidden="true">→</span></a>
     </div>
   </div>

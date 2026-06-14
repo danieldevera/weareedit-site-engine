@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.525 — 2026-06-14 (Fix Financiamento trust-badge — theme .badge collision)
+- The Financiamento trust line rendered with a grey rounded pill behind part of the DGERT text + forced onto one line crashing into the CTA. Cause: generic class `.badge` collided with the theme's `.badge` component (grey bg + nowrap); our rule didn't override `background`. Fix: renamed `.badge` → `.fin-trust-badge` (markup + CSS) and added explicit `background:none;padding:0;border-radius:0;white-space:normal`. Same class-collision pattern as the v1.5.523 `.faq`→`.emp-faq` rename.
+
 ## v1.5.524 — 2026-06-14 (Course video swap → YouTube + empresas FAQ full-width)
 - **Course promo video replaced** (Daniel: "replace, do not fix; previous was Vimeo"). Shared Vimeo `927121971` (removed/private → "vídeo não disponível" on curso-uxui-porto, curso-marketing-digital-online, curso-uxui-online…) swapped to YouTube `Q8qqSbHz8uM` via output-buffer `str_replace` (`player.vimeo.com/video/927121971` → `www.youtube.com/embed/Q8qqSbHz8uM`), covering both the WP-Rocket `data-lazy-src` and `<noscript>` fallback. Targets the specific id, so other course videos untouched.
 - **Empresas FAQ → full-page width** (Daniel). Removed the 1180px max-width cap on `.md-faq` section-title/list/q/a so the FAQ spans the full viewport (48px edge gutter retained).
