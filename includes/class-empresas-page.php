@@ -3085,6 +3085,9 @@ button {
 .form-meta {
   margin-top: 22px;
 }
+/* Submit button uses the site-standard swipe-cta hover (pink→teal→black sweep
+   + yellow text flip). Base = solid ink pill, full width; the global .swipe-cta
+   CSS supplies overflow/isolation + the layer animation + label flip. */
 .btn-submit {
   background: var(--ink);
   color: #fff;
@@ -3095,11 +3098,10 @@ button {
   font-weight: 600;
   cursor: pointer;
   width: 100%;
-  transition: background 0.18s ease;
   font-family: inherit;
   letter-spacing: 0.01em;
 }
-.btn-submit:hover:not(:disabled) { background: var(--edit-pink); }
+.btn-submit .swipe-label { justify-content: center; width: 100%; }
 .btn-submit:disabled { opacity: 0.6; cursor: wait; }
 
 .privacy-note {
@@ -3949,7 +3951,12 @@ button {
           </div>
 
           <div class="form-meta">
-            <button type="submit" class="btn-submit">Pedir Proposta</button>
+            <button type="submit" class="btn-submit swipe-cta">
+              <span class="swipe-layer swipe-pink" aria-hidden="true"></span>
+              <span class="swipe-layer swipe-teal" aria-hidden="true"></span>
+              <span class="swipe-layer swipe-black" aria-hidden="true"></span>
+              <span class="swipe-label">Pedir Proposta</span>
+            </button>
             <p class="privacy-note">Os dados são usados apenas para responder ao seu pedido. Sem newsletters automáticas.</p>
           </div>
 
@@ -3967,6 +3974,7 @@ button {
 
   var errorBox  = form.querySelector('.form-error');
   var submitBtn = form.querySelector('.btn-submit');
+  var submitLabel = submitBtn.querySelector('.swipe-label') || submitBtn;
   var endpoint  = '<?php echo esc_url( rest_url( self::REST_NAMESPACE . self::REST_ROUTE ) ); ?>';
   var bookingUrl = '<?php echo esc_url( self::BOOKING_URL ); ?>';
 
@@ -3997,7 +4005,7 @@ button {
     });
 
     submitBtn.disabled = true;
-    submitBtn.textContent = 'A enviar…';
+    submitLabel.textContent = 'A enviar…';
 
     fetch(endpoint, {
       method: 'POST',
@@ -4063,13 +4071,13 @@ button {
       } else {
         showError(result.body.message || 'Erro ao enviar. Tente novamente.');
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Pedir Proposta';
+        submitLabel.textContent = 'Pedir Proposta';
       }
     })
     .catch(function() {
       showError('Erro de ligação. Tente novamente em alguns segundos.');
       submitBtn.disabled = false;
-      submitBtn.textContent = 'Pedir Proposta';
+      submitLabel.textContent = 'Pedir Proposta';
     });
   });
 })();

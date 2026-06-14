@@ -1,4 +1,8 @@
 # Changelog
+## v1.5.530 — 2026-06-14 (Empresas form — submit button → standard swipe-cta)
+- **"Pedir Proposta" submit button now uses the site-standard swipe-cta** (Daniel: "use standard button in form"). Replaced the plain `background→pink` hover with the swipe markup (3 `swipe-layer` spans pink/teal/black + `swipe-label`) on the `<button type=submit>`; base stays the full-width ink pill, the global `.swipe-cta` CSS supplies the sweep + yellow text flip (same treatment as the áreas + Financiamento CTAs already on the page). Added `.btn-submit .swipe-label{justify-content:center;width:100%}` to keep the label centered full-width.
+- **Form JS retargeted to the label span.** The submit handler set `submitBtn.textContent` for the "A enviar…" / "Pedir Proposta" states, which would have wiped the swipe spans. Now caches `submitLabel = submitBtn.querySelector('.swipe-label')` and updates that instead, so the swipe markup survives the loading/error state changes.
+
 ## v1.5.529 — 2026-06-14 (Alumni Employers wall — colour logos + website links + name captions + badge link)
 - **Logos now render in full colour** (Daniel: "use color versions"). Removed the `filter:grayscale(1) opacity(0.65)` treatment + the grayscale hover transition from `.ae-logo`. Logos served by Logo.dev display in their native brand colours on all surfaces (pillar pages, Empresas, etc.).
 - **Each logo card links to the company's institutional website** (Daniel: "add the companys institutional websites as links"). Card `href` changed from the per-company LinkedIn alumni search to `https://{domain}` via new `company_url()`. Opens in a new tab. The site-wide alumni/LinkedIn function now lives on the badge (below).
