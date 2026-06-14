@@ -51,14 +51,14 @@ class EDIT_Empresas_Page {
      *   'scheduled' — preview until GO_LIVE_AT, then auto-flips to live
      *   'off'       — class is fully inert
      *
-     * 2026-06-14: set to 'scheduled' for the Monday LinkedIn launch. The
-     * page auto-goes-live at GO_LIVE_AT without a manual off-hours deploy
-     * (avoids the risk that a weekend plugin update exposes it early, and
-     * removes the human-timing dependency). Resolve via effective_status()
-     * everywhere — never read STATUS directly for visibility decisions.
-     * If anything in the date logic fails, it stays safely in preview.
+     * 2026-06-14 (later, Sun): flipped 'scheduled' → 'live'. Daniel chose to
+     * go live tonight (off-hours) rather than wait for the Monday 08:00 auto-
+     * flip, so we can link empresas from weareedit.io + submit to GSC now.
+     * Going live activates: public render, robots index,follow, the legacy
+     * 301 redirects, and GTM. Resolve via effective_status() everywhere —
+     * never read STATUS directly for visibility decisions.
      */
-    const STATUS = 'scheduled';
+    const STATUS = 'live';
 
     /**
      * Auto-go-live moment for STATUS = 'scheduled'. Lisbon local time.
