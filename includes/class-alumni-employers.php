@@ -185,11 +185,16 @@ class EDIT_Alumni_Employers {
         string $variant = 'wall',
         int    $limit   = 0,
         string $heading = 'Alumni colocados em',
-        string $badge   = 'LinkedIn Verified'
+        string $badge   = 'LinkedIn Verified',
+        ?array $employers = null,
+        ?string $eyebrow_url = null
     ): string {
         $variant = in_array( $variant, [ 'wall', 'strip', 'grid' ], true ) ? $variant : 'wall';
 
-        $list = self::EMPLOYERS;
+        // Custom list (e.g. in-company clients) overrides the default alumni
+        // EMPLOYERS roster — each item needs `name` + `domain` (+ optional
+        // `logo_domain`). Same card design, different data.
+        $list = is_array( $employers ) ? $employers : self::EMPLOYERS;
         if ( $limit > 0 ) {
             $list = array_slice( $list, 0, $limit );
         }
@@ -197,17 +202,26 @@ class EDIT_Alumni_Employers {
         ob_start();
         self::maybe_emit_assets();
         ?>
-        <?php $alumni_root_url = 'https://www.linkedin.com/school/edit-education/people/'; ?>
+        <?php
+        $alumni_root_url = 'https://www.linkedin.com/school/edit-education/people/';
+        // null = default to the alumni LinkedIn page (back-compat). Pass '' to
+        // render the eyebrow as plain text (client walls don't link to alumni).
+        $eyebrow_href = ( $eyebrow_url === null ) ? $alumni_root_url : $eyebrow_url;
+        ?>
         <section class="ae-section ae-section--<?php echo esc_attr( $variant ); ?>" aria-label="<?php echo esc_attr( $heading ); ?>">
             <div class="ae-heading">
                 <p class="ae-eyebrow">
+                    <?php if ( $eyebrow_href !== '' ) : ?>
                     <a class="ae-eyebrow-link"
-                       href="<?php echo esc_url( $alumni_root_url ); ?>"
+                       href="<?php echo esc_url( $eyebrow_href ); ?>"
                        target="_blank"
                        rel="noopener noreferrer"
                        title="Ver todos os alumni EDIT. no LinkedIn (abre em nova janela)">
                         <?php echo esc_html( $heading ); ?>
                     </a>
+                    <?php else : ?>
+                        <?php echo esc_html( $heading ); ?>
+                    <?php endif; ?>
                 </p>
                 <?php if ( $badge ) : ?>
                     <?php // Badge links to the EDIT. alumni list (school People tab) on LinkedIn. ?>

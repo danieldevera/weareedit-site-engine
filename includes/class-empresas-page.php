@@ -3427,23 +3427,52 @@ button {
   </div>
 </section>
 
-<!-- ─── LOGO WALL ──────────────────────────────────────────────── -->
-<?php if ( ! empty( $clients ) ) : ?>
+<!-- ─── LOGO WALL — in-company clients (won deals, Pipedrive-curated),
+     pillar-page wall design: colour logos via Logo.dev + name captions.
+     Replaces the old bundled-PNG greyscale grid (v1.5.531). ──────────── -->
+<?php
+// Curated 22 in-company clients (won corporate-training deals selected
+// 2026-06-14). name = caption + alt; domain = website link target; the
+// optional logo_domain overrides the Logo.dev lookup where the primary
+// domain returns a blank image (Farfetch).
+$wall_clients = [
+    [ 'name' => 'Worten',                      'domain' => 'worten.pt' ],
+    [ 'name' => 'Sonae MC',                    'domain' => 'sonaemc.com' ],
+    [ 'name' => 'Galp',                        'domain' => 'galp.com' ],
+    [ 'name' => 'EDP',                         'domain' => 'edp.com' ],
+    [ 'name' => 'Goldenergy',                  'domain' => 'goldenergy.pt' ],
+    [ 'name' => 'TAP',                         'domain' => 'flytap.com' ],
+    [ 'name' => 'Altice',                      'domain' => 'altice.pt' ],
+    [ 'name' => 'Nestlé',                      'domain' => 'nestle.pt' ],
+    [ 'name' => 'Adidas',                      'domain' => 'adidas.com' ],
+    [ 'name' => 'Yves Rocher',                 'domain' => 'yves-rocher.pt' ],
+    [ 'name' => 'Pfizer',                      'domain' => 'pfizer.pt' ],
+    [ 'name' => 'AGEAS',                       'domain' => 'ageas.pt' ],
+    [ 'name' => 'Cetelem',                     'domain' => 'cetelem.pt' ],
+    [ 'name' => 'Natixis',                     'domain' => 'natixis.com' ],
+    [ 'name' => 'BIAL',                        'domain' => 'bial.com' ],
+    [ 'name' => 'Leya',                        'domain' => 'leya.com' ],
+    [ 'name' => 'Cofina',                      'domain' => 'cofina.pt' ],
+    [ 'name' => 'Media Capital',               'domain' => 'mediacapital.pt' ],
+    [ 'name' => 'WPP Portugal',                'domain' => 'wpp.com' ],
+    [ 'name' => 'Farfetch',                    'domain' => 'farfetch.com', 'logo_domain' => 'aboutfarfetch.com' ],
+    [ 'name' => 'Neutroplast',                 'domain' => 'neutroplast.com' ],
+    [ 'name' => 'Infraestruturas de Portugal', 'domain' => 'infraestruturasdeportugal.pt' ],
+    [ 'name' => 'CM Porto',                    'domain' => 'cm-porto.pt' ],
+    [ 'name' => 'Grupo Dia',                   'domain' => 'dia.es' ],
+];
+?>
 <section class="logo-wall">
   <div class="wrap">
-    <p class="label">Empresas que confiam na EDIT.</p>
-    <div class="logo-grid">
-      <?php foreach ( array_slice( $clients, 0, 12 ) as $client ) : if ( empty( $client['logo'] ) ) continue; ?>
-        <div class="logo-cell">
-          <img src="<?php echo esc_url( $client['logo'] ); ?>"
-               alt="<?php echo esc_attr( $client['name'] ); ?>"
-               loading="lazy">
-        </div>
-      <?php endforeach; ?>
-    </div>
+    <?php
+    if ( class_exists( 'EDIT_Alumni_Employers' ) ) {
+        // variant=wall, no limit, client heading, NO badge, custom list, plain
+        // (non-linked) eyebrow.
+        echo EDIT_Alumni_Employers::render( 'wall', 0, 'Clientes Empresas', '', $wall_clients, '' );
+    }
+    ?>
   </div>
 </section>
-<?php endif; ?>
 
 <!-- ─── INTRO (SEO/GEO summary — keyword-rich prose high on the page so
      crawlers + LLMs get a clear, quotable definition of the offer) ─── -->
