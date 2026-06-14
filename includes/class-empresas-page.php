@@ -996,6 +996,10 @@ HTML;
         add_action( 'wp_head',   [ __CLASS__, 'emit_inline_css' ], PHP_INT_MAX );
         add_action( 'wp_footer', [ __CLASS__, 'emit_logo_swap_js' ], PHP_INT_MAX );
 
+        // Force Rank Math to emit OUR title/description/canonical/robots/OG
+        // instead of the homepage defaults (kills the duplicate-canonical bug).
+        self::override_rank_math();
+
         get_header();
         self::emit_body();
         get_footer();
@@ -1106,6 +1110,19 @@ HTML;
         // Avoid duplicating tags the theme already sets — charset, viewport, generator.
         $head = preg_replace( '/<meta\s+charset[^>]*>/i', '', $head );
         $head = preg_replace( '/<meta\s+name=["\']viewport["\'][^>]*>/i', '', $head );
+
+        // When Rank Math is active, override_rank_math() makes it emit our
+        // title/description/canonical/robots/OG — so strip our copies here to
+        // leave exactly one of each. If Rank Math is absent, keep ours (the
+        // filters were no-ops, so there's nothing to duplicate against).
+        if ( class_exists( 'RankMath' ) ) {
+            $head = preg_replace( '/<title\b[^>]*>.*?<\/title>/is',                '', $head );
+            $head = preg_replace( '/<meta\s+name=["\']description["\'][^>]*>/i',    '', $head );
+            $head = preg_replace( '/<link\s+rel=["\']canonical["\'][^>]*>/i',       '', $head );
+            $head = preg_replace( '/<meta\s+property=["\']og:[^"\']*["\'][^>]*>/i', '', $head );
+            $head = preg_replace( '/<meta\s+name=["\']twitter:[^"\']*["\'][^>]*>/i','', $head );
+            $head = preg_replace( '/<meta\s+name=["\']robots["\'][^>]*>/i',         '', $head );
+        }
         echo $head;
     }
 
@@ -1558,6 +1575,47 @@ CSS;
         ];
     }
 
+    /**
+     * Single source of truth for the page's SEO meta. Shared by emit_html()
+     * (which prints the tags) and override_rank_math() (which forces Rank Math
+     * to emit these exact values instead of the homepage defaults).
+     */
+    private static function seo_meta(): array {
+        return [
+            'title'       => 'Formação para Empresas — EDIT.',
+            'description' => 'Formação para empresas à medida em IA, Data, UX, Design e Marketing Digital. Upskilling e reskilling corporativo, certificado DGERT e elegível para Cheque-Formação e Fundos de Compensação.',
+            'canonical'   => 'https://' . self::SUBDOMAIN . '/',
+        ];
+    }
+
+    /**
+     * The empresas subdomain resolves to the WP home-page object, so Rank Math
+     * emits the HOMEPAGE title/description/canonical/robots/OG on top of ours —
+     * most damagingly a canonical of https://weareedit.io/, which makes Google
+     * treat this page as a duplicate of the homepage (it would not rank/index).
+     * We can't stop Rank Math constructing, but its per-tag frontend filters run
+     * at wp_head render time, so registering them here (before get_header())
+     * makes Rank Math the single, correct source. emit_head_meta() then strips
+     * our now-duplicate copies whenever Rank Math is active.
+     */
+    private static function override_rank_math(): void {
+        if ( ! class_exists( 'RankMath' ) ) return;
+
+        $meta       = self::seo_meta();
+        $is_preview = ( self::effective_status() === 'preview' );
+
+        add_filter( 'rank_math/frontend/title',       static function() use ( $meta ) { return $meta['title']; } );
+        add_filter( 'pre_get_document_title',         static function() use ( $meta ) { return $meta['title']; }, PHP_INT_MAX );
+        add_filter( 'rank_math/frontend/description', static function() use ( $meta ) { return $meta['description']; } );
+        add_filter( 'rank_math/frontend/canonical',   static function() use ( $meta ) { return $meta['canonical']; } );
+        add_filter( 'rank_math/opengraph/url',        static function() use ( $meta ) { return $meta['canonical']; } );
+        add_filter( 'rank_math/frontend/robots',      static function( $robots ) use ( $is_preview ) {
+            return $is_preview
+                ? [ 'index' => 'noindex', 'follow' => 'nofollow' ]
+                : [ 'index' => 'index',   'follow' => 'follow'   ];
+        } );
+    }
+
     private static function value_props(): array {
         if ( class_exists( 'EDIT_Formacao_Corporativa_Page' ) ) {
             return EDIT_Formacao_Corporativa_Page::VALUE_PROPS;
@@ -1598,9 +1656,10 @@ CSS;
      * ────────────────────────────────────────────────────────────────── */
 
     private static function emit_html(): void {
-        $title       = 'Formação para Empresas — EDIT.';
-        $description = 'A escola digital portuguesa para upskilling e reskilling corporativo. Programas à medida em IA, Data, UX, Design, Marketing Digital e Programação. Elegíveis para Fundos de Compensação e Cheque-Formação.';
-        $canonical   = 'https://' . self::SUBDOMAIN . '/';
+        $meta        = self::seo_meta();
+        $title       = $meta['title'];
+        $description = $meta['description'];
+        $canonical   = $meta['canonical'];
 
         $clients     = self::clients();
         $value_props = self::value_props();
@@ -1689,6 +1748,28 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     ],
 ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT ); ?>
 </script>
+
+<?php // JSON-LD — FAQPage. Drives FAQ rich results in Google + makes the Q&A ?>
+<?php // directly citable by LLMs (GEO). Built from the same faq() source. ?>
+<?php if ( ! empty( $faq ) ) : ?>
+<script type="application/ld+json">
+<?php echo wp_json_encode( [
+    '@context'   => 'https://schema.org',
+    '@type'      => 'FAQPage',
+    'url'        => $canonical,
+    'mainEntity' => array_values( array_map( function( $item ) {
+        return [
+            '@type'          => 'Question',
+            'name'           => wp_strip_all_tags( $item['q'] ),
+            'acceptedAnswer' => [
+                '@type' => 'Answer',
+                'text'  => wp_strip_all_tags( $item['a'] ),
+            ],
+        ];
+    }, $faq ) ),
+], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT ); ?>
+</script>
+<?php endif; ?>
 
 <style>
 @font-face {
@@ -2079,6 +2160,23 @@ button {
   margin: 0 0 56px 0;
   max-width: 22ch;
 }
+/* Intro prose block (SEO/GEO summary) — sits between the logo wall and the
+   financing banner. Light, editorial, constrained measure. */
+.empresas-intro {
+  padding: 72px 0 16px 0;
+}
+.empresas-intro .section-title {
+  max-width: 30ch;
+  margin-bottom: 28px;
+}
+.empresas-intro-lede {
+  font-size: 19px;
+  line-height: 1.6;
+  color: var(--grey-4);
+  max-width: 70ch;
+  margin: 0;
+}
+.empresas-intro-lede strong { color: var(--ink); }
 .vp-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -3182,7 +3280,7 @@ button {
 <!-- ─── HERO ───────────────────────────────────────────────────── -->
 <section class="hero">
   <div class="wrap">
-    <a class="dgert-hero-pill" href="https://www.dgert.gov.pt/entidades-formadoras-certificadas" target="_blank" rel="noopener noreferrer" aria-label="DGERT — Entidade Formadora Certificada"><img width="1024" height="483" src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/dgert-entidade-formadora-branco.png" alt="DGERT" loading="eager" data-skip-wrap="1"><span class="dgert-hero-pill-text">Entidade Formadora Certificada</span><span class="dgert-hero-pill-arrow" aria-hidden="true">&#x2197;</span></a>
+    <a class="dgert-hero-pill" href="https://www.dgert.gov.pt/entidades-formadoras-certificadas" target="_blank" rel="noopener noreferrer" aria-label="DGERT — Entidade Formadora Certificada"><img width="1024" height="483" src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/dgert-entidade-formadora-branco.png" alt="Entidade formadora certificada DGERT para formação para empresas" loading="eager" data-skip-wrap="1"><span class="dgert-hero-pill-text">Entidade Formadora Certificada</span><span class="dgert-hero-pill-arrow" aria-hidden="true">&#x2197;</span></a>
     <p class="eyebrow">Formação para Empresas</p>
     <h1>Forme a sua equipa nas competências <span class="accent">digitais</span> que o futuro exige.</h1>
     <p class="lede">Programas à medida em <strong>IA, Data, UX, Design, Marketing Digital e Programação</strong>. Entregues presencialmente em Lisboa e Porto, nas vossas instalações, ou em formato remoto. Elegíveis para Cheque‑Formação e Fundos de Compensação.</p>
@@ -3223,6 +3321,15 @@ button {
   </div>
 </section>
 <?php endif; ?>
+
+<!-- ─── INTRO (SEO/GEO summary — keyword-rich prose high on the page so
+     crawlers + LLMs get a clear, quotable definition of the offer) ─── -->
+<section class="empresas-intro">
+  <div class="wrap">
+    <h2 class="section-title">Formação para empresas, à medida do vosso setor.</h2>
+    <p class="empresas-intro-lede">A EDIT. desenha <strong>formação para empresas</strong> que precisam de acelerar competências digitais — em Inteligência Artificial, Data, UX/UI, Design, Marketing Digital e Programação. Cada programa de formação para empresas é construído em torno das ferramentas e do contexto real da vossa equipa, e entregue presencialmente em Lisboa e Porto, nas vossas instalações, ou em formato remoto. Como entidade formadora certificada DGERT, toda a formação é elegível para Cheque-Formação, SIFIDE e Fundos de Compensação.</p>
+  </div>
+</section>
 
 <!-- ─── FINANCING BANNER (visual break between social proof and process,
      v1.5.380) — teaser only; full Financing section with cards stays
