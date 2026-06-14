@@ -32,6 +32,7 @@ class EDIT_Empresas_Links {
     public static function init(): void {
         add_filter( 'weareedit_site_engine_output_buffer', [ __CLASS__, 'inject' ], 12 );
         add_action( 'wp_head', [ __CLASS__, 'emit_styles' ], 7 );
+        add_action( 'wp_head', [ __CLASS__, 'emit_homepage_styles' ], 8 );
         // Site-wide (incl. the empresas subdomain) — runs regardless of the
         // empresas-live gate, so it always tidies the address bar.
         add_action( 'wp_footer', [ __CLASS__, 'emit_url_cleanup' ], 99 );
@@ -83,6 +84,9 @@ class EDIT_Empresas_Links {
 
         $html = self::swap_in_company( $html );
         $html = self::inject_footer_link( $html );
+        if ( is_front_page() ) {
+            $html = self::inject_homepage_empresas( $html );
+        }
         if ( self::is_pillar_page() ) {
             $html = self::inject_pillar_cta( $html );
         }
@@ -146,6 +150,123 @@ class EDIT_Empresas_Links {
         $band .= '</div></section>';
 
         return str_replace( $anchor, $band . $anchor, $html );
+    }
+
+    /**
+     * Homepage Empresas section (premium redesign, approved 2026-06-14). Hides
+     * the theme's `row-in_company` block (via emit_homepage_styles CSS) and
+     * injects this section right after the `<!--In Company-->` anchor inside the
+     * same container. All classes are `eehe__`-prefixed + scoped under body.home.
+     */
+    private static function inject_homepage_empresas( string $html ): string {
+        $anchor = '<!--In Company-->';
+        if ( strpos( $html, $anchor ) === false ) return $html;
+        if ( strpos( $html, 'eehe__grid' ) !== false ) return $html; // idempotent
+
+        $base    = WEAREDIT_SITE_ENGINE_URL;
+        $hero    = esc_url( $base . 'assets/img/empresas-hero.jpg' );
+        $dgert   = esc_url( $base . 'assets/dgert-entidade-formadora-branco.png' );
+        $clients = $base . 'assets/img/clients/';
+        $emp     = 'https://empresas.weareedit.io/';
+
+        $logo = function ( $file, $alt ) use ( $clients ) {
+            return '<img src="' . esc_url( $clients . $file ) . '" alt="' . esc_attr( $alt ) . '">';
+        };
+
+        $section  = '<div class="eehe"><div class="eehe__grid">';
+        $section .= '<div class="eehe__media">';
+        $section .= '<div class="eehe__stat"><b>+30</b><span class="eehe__stat-txt"><span class="eehe__stat-lab">Empresas</span><span class="eehe__stat-cap">formaram as suas equipas com a EDIT. Empresas</span></span></div>';
+        $section .= '<div class="eehe__frame"><img src="' . $hero . '" alt="Formação para empresas — EDIT.">';
+        $section .= '<div class="eehe__badges"><span class="eehe__badge"><img class="eehe__dgert" src="' . $dgert . '" alt="Entidade Formadora Certificada DGERT"><span class="eehe__cert"><b>Certificação nº 18391</b>Formação certificada e elegível para financiamento</span></span></div>';
+        $section .= '</div></div>';
+        $section .= '<div class="eehe__content">';
+        $section .= '<p class="eehe__kicker">EDIT. para Empresas</p>';
+        $section .= '<h2 class="eehe__title">Forme a sua equipa nas competências <em>digitais</em> que o futuro exige.</h2>';
+        $section .= '<p class="eehe__lede">Programas à medida em IA, Data, UX, Design, Marketing Digital e Programação — desenhados em torno do contexto real do vosso setor.</p>';
+        $section .= '<div class="eehe__feats">';
+        $section .= '<div class="eehe__feat"><span class="eehe__ic"></span><div><b>Programas à medida</b><span>Construídos para a vossa equipa</span></div></div>';
+        $section .= '<div class="eehe__feat"><span class="eehe__ic"></span><div><b>SIFIDE &amp; Fundos de Compensação</b><span>Elegível para financiamento</span></div></div>';
+        $section .= '<div class="eehe__feat"><span class="eehe__ic"></span><div><b>Lisboa · Porto · Remoto</b><span>Ou nas vossas instalações</span></div></div>';
+        $section .= '<div class="eehe__feat"><span class="eehe__ic"></span><div><b>Tutores em activo</b><span>Profissionais do mercado</span></div></div>';
+        $section .= '</div>';
+        $section .= '<div class="eehe__actions">';
+        $section .= '<a class="eehe__cta" href="' . esc_url( $emp ) . '"><span class="eehe__layer eehe__l-pink"></span><span class="eehe__layer eehe__l-teal"></span><span class="eehe__layer eehe__l-black"></span>Conhecer a EDIT. para Empresas <span class="eehe__arr" aria-hidden="true">→</span></a>';
+        $section .= '<a class="eehe__link" href="' . esc_url( $emp . '#contacto' ) . '">Falar com a equipa</a>';
+        $section .= '</div></div>';
+        $section .= '<div class="eehe__trust"><div class="eehe__trust-row"><span class="eehe__trust-label">Confiam na EDIT.</span><div class="eehe__trust-logos">';
+        $section .= $logo( 'pfizer-header.png', 'Pfizer' ) . $logo( 'galp-header.png', 'Galp' ) . $logo( 'worten-header.png', 'Worten' );
+        $section .= $logo( 'tap-air-portugal-1.png', 'TAP Air Portugal' ) . $logo( 'nestle-logo-1.png', 'Nestlé' ) . $logo( 'sonae-mc-1.png', 'Sonae MC' );
+        $section .= '</div></div>';
+        $section .= '<p class="eehe__trust-stats"><b>Entidade Formadora Certificada DGERT</b> · nº 18391 &nbsp;·&nbsp; <b>+11.000</b> alumni formados &nbsp;·&nbsp; <b>+30</b> empresas formadas &nbsp;·&nbsp; <b>80+</b> tutores em activo</p>';
+        $section .= '</div></div>';
+
+        return str_replace( $anchor, $anchor . $section, $html );
+    }
+
+    public static function emit_homepage_styles(): void {
+        if ( ! self::is_active() || ! is_front_page() ) return;
+        ?>
+<style id="ee-homepage-empresas-css">
+body.home .row-in_company{display:none !important;}
+body.home .eehe{position:relative;padding:64px 0 32px;}
+body.home .eehe__grid{display:grid;grid-template-columns:1.05fr 1fr;gap:72px;align-items:center;}
+body.home .eehe__media{position:relative;}
+body.home .eehe__frame{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:5/4;box-shadow:0 40px 80px -30px rgba(0,0,0,.8);border:1px solid rgba(255,255,255,.08);}
+body.home .eehe__frame img{width:100%;height:100%;object-fit:cover;display:block;}
+body.home .eehe__frame::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,7,7,0) 45%,rgba(7,7,7,.5));}
+body.home .eehe__stat{position:absolute;top:-26px;right:-16px;z-index:3;display:flex;align-items:center;gap:18px;background:rgba(12,12,12,.62);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.16);border-radius:14px;padding:18px 22px;max-width:330px;box-shadow:0 26px 54px -24px rgba(0,0,0,.8);}
+body.home .eehe__stat>b{font-size:50px;line-height:.9;letter-spacing:-.03em;font-weight:700;color:#ffdd06;}
+body.home .eehe__stat-txt{border-left:1px solid rgba(255,255,255,.18);padding-left:18px;}
+body.home .eehe__stat-lab{display:block;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#fff;}
+body.home .eehe__stat-cap{display:block;margin-top:5px;font-size:12.5px;line-height:1.4;color:rgba(255,255,255,.62);}
+body.home .eehe__badges{position:absolute;left:20px;bottom:20px;z-index:2;}
+body.home .eehe__badge{display:inline-flex;align-items:center;gap:13px;background:rgba(12,12,12,.62);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:11px 16px;color:#fff;}
+body.home .eehe__dgert{height:30px;width:auto;display:block;}
+body.home .eehe__cert{font-size:11px;font-weight:600;letter-spacing:.02em;color:rgba(255,255,255,.62);border-left:1px solid rgba(255,255,255,.2);padding-left:13px;line-height:1.35;}
+body.home .eehe__cert b{display:block;color:#fff;font-size:12px;}
+body.home .eehe__kicker{display:inline-flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:rgba(255,255,255,.6);font-weight:700;margin:0 0 24px;}
+body.home .eehe__kicker::before{content:"";width:34px;height:1px;background:#ffdd06;}
+body.home .eehe__title{font-size:clamp(32px,3.6vw,50px);line-height:1.05;letter-spacing:-.03em;font-weight:700;color:#fff;margin:0 0 20px;}
+body.home .eehe__title em{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;color:#ffdd06;letter-spacing:-.01em;}
+body.home .eehe__lede{font-size:18px;line-height:1.62;color:rgba(255,255,255,.68);max-width:46ch;margin:0 0 32px;font-weight:300;}
+body.home .eehe__feats{display:grid;grid-template-columns:1fr 1fr;gap:0 36px;margin:0 0 36px;border-top:1px solid rgba(255,255,255,.1);}
+body.home .eehe__feat{display:flex;gap:12px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.1);}
+body.home .eehe__feat .eehe__ic{flex:none;width:7px;height:7px;border-radius:50%;margin-top:8px;background:#ffdd06;}
+body.home .eehe__feat:nth-child(2) .eehe__ic{background:#f92869;}
+body.home .eehe__feat:nth-child(3) .eehe__ic{background:#60c5b3;}
+body.home .eehe__feat:nth-child(4) .eehe__ic{background:#ec8172;}
+body.home .eehe__feat b{display:block;font-size:15px;font-weight:600;color:#fff;margin-bottom:2px;}
+body.home .eehe__feat span{font-size:13px;color:rgba(255,255,255,.5);}
+body.home .eehe__actions{display:flex;align-items:center;gap:24px;flex-wrap:wrap;}
+body.home .eehe__cta{position:relative;z-index:0;display:inline-flex;align-items:center;gap:10px;overflow:hidden;background:#ffdd06;color:#0a0a0a;font-weight:700;font-size:15px;text-decoration:none;padding:16px 30px;border-radius:4px;transition:color .3s ease;}
+body.home .eehe__layer{position:absolute;inset:0;z-index:-1;transform:translateX(-101%);transition:transform .35s ease;}
+body.home .eehe__l-pink{background:#f92869;}
+body.home .eehe__l-teal{background:#60c5b3;transition-delay:.05s;}
+body.home .eehe__l-black{background:#0a0a0a;transition-delay:.1s;}
+body.home .eehe__cta:hover{color:#ffdd06;}
+body.home .eehe__cta:hover .eehe__layer{transform:translateX(0);}
+body.home .eehe__cta .eehe__arr{transition:transform .2s ease;}
+body.home .eehe__cta:hover .eehe__arr{transform:translateX(5px);}
+body.home .eehe__link{display:inline-flex;align-items:center;color:#fff;font-size:14.5px;font-weight:600;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.28);padding-bottom:3px;transition:border-color .2s ease;}
+body.home .eehe__link:hover{border-color:#ffdd06;}
+body.home .eehe__trust{margin-top:44px;padding-top:26px;border-top:1px solid rgba(255,255,255,.1);}
+body.home .eehe__trust-row{display:flex;align-items:center;gap:34px;flex-wrap:wrap;}
+body.home .eehe__trust-label{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4);}
+body.home .eehe__trust-logos{display:flex;align-items:center;gap:38px;flex-wrap:wrap;}
+body.home .eehe__trust-logos img{height:24px;width:auto;filter:brightness(0) invert(1);opacity:.48;transition:opacity .2s ease;}
+body.home .eehe__trust-logos img:hover{opacity:.85;}
+body.home .eehe__trust-stats{margin-top:14px;font-size:12.5px;color:rgba(255,255,255,.46);}
+body.home .eehe__trust-stats b{color:rgba(255,255,255,.72);font-weight:600;}
+@media (max-width:920px){
+  body.home .eehe{padding:40px 0 16px;}
+  body.home .eehe__grid{grid-template-columns:1fr;gap:40px;}
+  body.home .eehe__media{order:-1;margin-top:14px;}
+  body.home .eehe__feats{grid-template-columns:1fr;}
+  body.home .eehe__stat{top:-18px;right:8px;left:8px;max-width:none;}
+  body.home .eehe__stat>b{font-size:38px;}
+}
+</style>
+        <?php
     }
 
     public static function emit_styles(): void {
