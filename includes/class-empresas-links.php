@@ -167,7 +167,7 @@ class EDIT_Empresas_Links {
         if ( strpos( $html, 'Forme a sua equipa nas competências' ) !== false ) return $html;
 
         $base    = WEAREDIT_SITE_ENGINE_URL;
-        $hero    = esc_url( $base . 'assets/img/empresas-hero.jpg' );
+        $hero    = esc_url( $base . 'assets/img/empresas-hero.webp' );
         $dgert   = esc_url( $base . 'assets/dgert-entidade-formadora-branco.png' );
         $clients = $base . 'assets/img/clients/';
         $emp     = 'https://empresas.weareedit.io/';

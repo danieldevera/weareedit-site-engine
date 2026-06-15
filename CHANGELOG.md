@@ -1,4 +1,9 @@
 # Changelog
+## v1.5.544 — 2026-06-15 (Fix empresas WhatsApp FAB + WebP rollout to banners)
+- **WhatsApp floating button fixed on empresas** (Daniel: "URGENT: WhatsApp UI is broken" — fine on other pages). The theme `<a id="whatsapp-button">` (white-glyph svg) lost its styling under the empresas scoped CSS resets, rendering as an unstyled/broken icon. Restored the green circular FAB via `body.empresas-page #whatsapp-button{...}` (fixed bottom-right, 56px, #25D366, white 30px glyph).
+- **WebP rollout**: the mid-page "EDIT para Empresas" banner on all 6 pillar variants + the homepage empresas section (`class-empresas-links.php`) now use `empresas-hero.webp` (57KB) instead of the 263KB jpg. Empresas hero already on WebP (v1.5.543); OG image kept as jpg for social compatibility.
+
+# Changelog
 ## v1.5.543 — 2026-06-15 (Empresas perf — LCP hero: WebP + preload, Track B)
 - **Hero image → WebP** (was the LCP element + the PSI "image delivery 287 KiB" flag). Generated `empresas-hero.webp` (1600×900, q72) — **57 KB vs the 263 KB jpg (−78%)**. The hero `background` now uses `image-set(webp type('image/webp'), jpg type('image/jpeg'))` with the bare jpg `background` as the fallback layer for browsers without `image-set`.
 - **LCP hero preload** — the hero is a CSS `background-image`, invisible to the preload scanner, so it was discovered late (LCP ~6.0s). Added `<link rel="preload" as="image" type="image/webp" fetchpriority="high">` for the WebP at `wp_head` priority 1 (near the top of `<head>`), so the browser fetches it immediately.

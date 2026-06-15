@@ -336,7 +336,7 @@ class EDIT_Inteligencia_Artificial_Page {
 
             <!-- EDIT. para Empresas — cinematic banner driving traffic to empresas subdomain -->
             <section class="md-empresas-cta">
-                <div class="md-empresas-cta__bg" style="background-image:url('<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/empresas-hero.jpg' ); ?>');" aria-hidden="true"></div>
+                <div class="md-empresas-cta__bg" style="background-image:url('<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/empresas-hero.webp' ); ?>');" aria-hidden="true"></div>
                 <div class="md-empresas-cta__veil" aria-hidden="true"></div>
                 <div class="md-empresas-cta__inner">
                     <p class="md-empresas-cta__eyebrow">EDIT. PARA EMPRESAS</p>

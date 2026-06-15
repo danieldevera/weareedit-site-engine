@@ -1408,6 +1408,36 @@ body.empresas-page .headerDesktop[class*="menuOpen"] .empresas-lockup .lockup-im
 body.empresas-page .headerMobile[class*="menuOpen"] .empresas-lockup .lockup-img {
   filter: invert(1) !important;
 }
+/* WhatsApp floating button (v1.5.544). The theme markup <a id="whatsapp-button">
+   with a white-glyph svg loses its theme styling under the empresas scoped
+   resets — it rendered as an unstyled/broken icon (fine on other pages).
+   Restore the green circular FAB. */
+body.empresas-page #whatsapp-button {
+  position: fixed !important;
+  right: 20px !important;
+  bottom: 20px !important;
+  width: 56px !important;
+  height: 56px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: #25D366 !important;
+  border-radius: 50% !important;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.25) !important;
+  z-index: 99999 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  font-size: 0 !important;
+  line-height: 0 !important;
+}
+body.empresas-page #whatsapp-button img {
+  width: 30px !important;
+  height: 30px !important;
+  display: block !important;
+  max-width: none !important;
+  margin: 0 !important;
+  filter: none !important;
+}
 /* Wider gap between hamburger and search. */
 body.empresas-page header [aria-label*="search" i],
 body.empresas-page header [class*="search"]:not(input):not(form) {
