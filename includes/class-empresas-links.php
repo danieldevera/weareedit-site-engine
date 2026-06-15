@@ -145,7 +145,7 @@ class EDIT_Empresas_Links {
         $band .= '<div class="ee-empresas-band__inner">';
         $band .= '<p class="ee-empresas-band__eyebrow">Para a sua empresa</p>';
         $band .= '<h2 class="ee-empresas-band__title">Quer formar a sua equipa nesta área?</h2>';
-        $band .= '<p class="ee-empresas-band__body">Desenhamos programas à medida para empresas — presenciais em Lisboa e Porto, nas vossas instalações ou remotos. Certificados DGERT e elegíveis para Cheque-Formação e SIFIDE.</p>';
+        $band .= '<p class="ee-empresas-band__body">Desenhamos programas à medida para empresas — presenciais em Lisboa e Porto, nas vossas instalações ou remotos. Certificados DGERT e elegíveis para Fundos de Compensação.</p>';
         $band .= '<a class="ee-empresas-band__cta" href="' . self::EMPRESAS_URL . '">Conhecer a EDIT. para Empresas <span aria-hidden="true">→</span></a>';
         $band .= '</div></section>';
 
@@ -188,7 +188,7 @@ class EDIT_Empresas_Links {
         $section .= '<p class="eehe__lede">Programas à medida em IA, Data, UX, Design, Marketing Digital e Programação — desenhados em torno do contexto real do vosso setor.</p>';
         $section .= '<div class="eehe__feats">';
         $section .= '<div class="eehe__feat"><span class="eehe__ic"></span><div><b>Programas à medida</b><span>Construídos para a vossa equipa</span></div></div>';
-        $section .= '<div class="eehe__feat"><span class="eehe__ic"></span><div><b>SIFIDE &amp; Fundos de Compensação</b><span>Elegível para financiamento</span></div></div>';
+        $section .= '<div class="eehe__feat"><span class="eehe__ic"></span><div><b>Fundos de Compensação</b><span>Elegível para financiamento</span></div></div>';
         $section .= '<div class="eehe__feat"><span class="eehe__ic"></span><div><b>Lisboa · Porto · Remoto</b><span>Ou nas vossas instalações</span></div></div>';
         $section .= '<div class="eehe__feat"><span class="eehe__ic"></span><div><b>Tutores em activo</b><span>Profissionais do mercado</span></div></div>';
         $section .= '</div>';

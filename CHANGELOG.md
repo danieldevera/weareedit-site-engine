@@ -1,4 +1,14 @@
 # Changelog
+## v1.5.548 — 2026-06-15 (Empresas — scrub remaining wrong funding claims from shared constants + homepage)
+v1.5.547 deactivated the FINANCIAMENTO *section*, but the live empresas.weareedit.io page still rendered the false claims because it pulls **shared constants** (STATS / VALUE_PROPS / FAQ) from `EDIT_Formacao_Corporativa_Page`, plus the homepage/area-page sections in `class-empresas-links.php` had their own copy. Found via a live `curl` scan (SIFIDE ×7, Cheque-Formação ×9, POCH, "até 100%" still present). Scrubbed all of it to the team-confirmed "Fundo(s) de Compensação".
+- **Shared constants (`class-formacao-corporativa-page.php`, feed the live empresas page):**
+  - STATS: dropped the false `100% · SIFIDE + Cheque · Elegível para subsídios` stat → `4.1★ · 67 reviews Google` (defensible, matches site AggregateRating).
+  - VALUE_PROPS: `DGERT-certificada · SIFIDE elegível` + "reembolso via SIFIDE, Cheque Formação + Digital, e POPH" → `Entidade Formadora Certificada DGERT` + "pode ser enquadrada no Fundo de Compensação do Trabalho".
+  - FAQ: removed the SIFIDE/Cheque clause from the cost answer; **deleted** the entire "Posso usar SIFIDE, Cheque Formação ou POPH?" Q&A.
+- **Homepage + area-page (`class-empresas-links.php`):** `ee-empresas-band` body and the homepage `eehe__feat` ("SIFIDE & Fundos de Compensação") → "Fundos de Compensação".
+- **Draft `/formacao-digital-para-empresas/` own-render copy** (not live, STATUS=draft): scrubbed the 6 SIFIDE/Cheque mentions (auto-reply email, trust line, rank_math + schema descriptions, lead bullets) so a future republish can't re-expose them.
+- **Left as-is (flag for review):** the sitewide org schema in `class-structured-data.php:74` still says "elegível para Cheque-Formação e dedutível no IRS" — that's B2C/individual context (Cheque-Formação can apply to individuals), outside the team's empresas-specific correction. Confirm in the legal review doc.
+
 ## v1.5.547 — 2026-06-15 (Empresas FINANCIAMENTO section deactivated — wrong funding claims)
 Team flagged the entire financing messaging as factually wrong. Frozen (not rewritten) pending a legal review document. Corrections per team: **Cheque-Formação** não se aplica a empresas; **SIFIDE** é crédito fiscal de IRC (responsabilidade contabilística), não aplicável a formação profissional; **POCH** terminou em 2013. Único apoio atual válido = **Fundo de Compensação do Trabalho** (+ PESSOAS 2030, mas ainda não utilizável).
 - **Deactivated both financing blocks** behind `<?php if ( false ) : ?>` flags (instantly reversible): the teaser `financing-banner` (~L3646) and the full `financing` section with the 3 cards + "até 100% reembolsável" stat (~L3996).
