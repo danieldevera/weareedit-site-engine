@@ -3,7 +3,7 @@
  * Plugin Name: * weareedit.io Site Engine
  * Plugin URI:  https://github.com/danieldevera/weareedit-site-engine
  * Description: Custom site engine for weareedit.io — SEO (meta tags, OG, schema.org, sitemap, hreflang), GEO/LLM optimization (llms.txt, AI crawler rules, Wikidata-linked Person/Organization schema), brand customization (hero typography, dot accents, CTA hover animations), Google Reviews aggregation, output-buffer HTML rewrites, virtual pages, WP Rocket cache integration, and one-time data fixes.
- * Version:     1.5.540
+ * Version:     1.5.541
  * Author:      Daniel Devera
  * License:     GPL-2.0+
  * Text Domain: weareedit-site-engine
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.540' );
+define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.541' );
 
 // Reset PHP opcache after plugin updates so new class bytecode is loaded
 // immediately instead of on the next opcache TTL. Mitigates v1.5.391/392
@@ -84,6 +84,42 @@ add_action( 'upgrader_process_complete', function ( $upgrader, $hook_extra ) {
         }
     }
 }, 20, 2 );
+
+/**
+ * Early cache serve (v1.5.541). The empresas output cache (v1.5.539) was served
+ * from render_page() — late in the request, after WordPress had already loaded
+ * the theme, run the main WP_Query, and entered the template machinery (~2.8s of
+ * bootstrap on a cached HIT). Serve it here at `plugins_loaded` instead, before
+ * any of that runs, so a cached anonymous hit skips the theme + query + template
+ * phase entirely. (Plugins still load — going fully pre-WP would need a
+ * mu-plugin / advanced-cache drop-in; this is the in-plugin ceiling.)
+ *
+ * Tightly scoped: only the empresas home, GET, anonymous (auth isn't loaded yet,
+ * so we sniff the logged-in cookie), no preview/nocache. Anything else falls
+ * through to the normal render (which still populates + serves the transient).
+ */
+add_action( 'plugins_loaded', function () {
+    if ( php_sapi_name() === 'cli' ) return;
+    $host = strtolower( $_SERVER['HTTP_HOST'] ?? '' );
+    if ( strpos( $host, 'empresas.weareedit.io' ) === false ) return;
+    if ( ( $_SERVER['REQUEST_METHOD'] ?? 'GET' ) !== 'GET' ) return;
+    $path = (string) parse_url( $_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH );
+    if ( $path !== '/' && $path !== '' ) return;                 // home only (not /wp-json/, etc.)
+    if ( ! empty( $_GET['preview'] ) || ! empty( $_GET['nocache'] ) ) return;
+    foreach ( array_keys( $_COOKIE ) as $ck ) {                 // logged-in users get a fresh render
+        if ( strpos( $ck, 'wordpress_logged_in_' ) === 0 ) return;
+    }
+    $html = get_transient( 'edit_empresas_html_' . WEAREDIT_SITE_ENGINE_VERSION );
+    if ( is_string( $html ) && $html !== '' ) {
+        if ( ! headers_sent() ) {
+            header( 'Content-Type: text/html; charset=UTF-8' );
+            header( 'Cache-Control: public, max-age=600, s-maxage=600' );
+            header( 'X-EDIT-Empresas-Cache: HIT-EARLY' );
+        }
+        echo $html;
+        exit;
+    }
+}, 0 );
 
 /**
  * One-click updates via Plugin Update Checker (PUC) — polls GitHub releases.
