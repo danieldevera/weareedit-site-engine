@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.553 — 2026-06-15 (Empresas — deactivate Brevo booking embed, email-first)
+Per Daniel + the review doc (email-first, minimise meetings), deactivated the "Discovery 30 min" Brevo Meetings booking flow — kept in code for near-future use behind a single flag `BOOKING_ENABLED = false`. Gates 3 touchpoints: (1) the booking iframe + "Escolha o seu horário para a chamada de 30 min" block on the form-confirmation screen, (2) the "Se quiser adiantar…" intro line + (3) the "Reservar 30 min" button in the auto-reply email. When off, the confirmation shows only "Pedido recebido" and the email stays purely email-first. To restore: flip the flag — AND first fix the Brevo meeting description (still carries the Cheque-Formação / SIFIDE claim) in the Brevo Meetings UI (UI-only, not in our code/API).
+
 ## v1.5.552 — 2026-06-15 (Empresas process — pink title highlight on Diagnóstico)
 After removing the "48 horas" time tag from the Diagnóstico step (v1.5.549), it sat bare next to the timed steps. Added a `pw-step--notime` modifier (auto-applied to any step with an empty `time`) that gives the title an accent-coloured background pill — Diagnóstico's accent is pink (#f92869), so its title now shows on pink, matching the visual weight of the other steps' time tags.
 

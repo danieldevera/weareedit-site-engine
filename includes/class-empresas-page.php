@@ -109,6 +109,12 @@ class EDIT_Empresas_Page {
     // Brevo Reuniões booking link offered in the lead auto-reply email.
     // Slug "borderless" = Daniel's customized Discovery 30 min meeting type URL.
     const BOOKING_URL           = 'https://meet.brevo.com/daniel-devera/borderless';
+    // DEACTIVATED 2026-06-15 (review doc: email-first, minimise meetings) — keep
+    // for near-future use. Flip to true to restore the booking embed on the
+    // confirmation screen + the "Reservar 30 min" button in the auto-reply email.
+    // NOTE: when re-enabling, first fix the Brevo meeting description (still has
+    // the Cheque-Formação / SIFIDE claim) in the Brevo Meetings UI.
+    const BOOKING_ENABLED       = false;
 
     /**
      * Brevo Sales Hub integration — STUBBED until Daniel creates the
@@ -429,6 +435,15 @@ class EDIT_Empresas_Page {
         $empresa_safe = esc_html( $empresa_clean );
         $booking_url  = esc_url( self::BOOKING_URL );
 
+        // Booking offer (deactivated 2026-06-15, see BOOKING_ENABLED). When off,
+        // the auto-reply stays purely email-first with no meeting CTA.
+        $booking_intro = self::BOOKING_ENABLED
+            ? '<p style="margin:0;font-size:16px;line-height:1.6;color:#0a0a0a;">Se quiser adiantar, pode reservar já o horário que lhe convém:</p>'
+            : '';
+        $booking_btn = self::BOOKING_ENABLED
+            ? '<tr><td class="px-md" align="left" style="padding:24px 40px 8px 40px;"><a href="' . $booking_url . '" class="cta-btn" style="display:inline-block;background:#0a0a0a;color:#ffffff;font-family:\'Helvetica Neue\',Helvetica,Arial,sans-serif;font-size:15px;font-weight:600;letter-spacing:0.01em;text-decoration:none;padding:14px 28px;border-radius:32px;mso-padding-alt:0;box-shadow:inset 0 -2px 0 rgba(0,0,0,0.15);">Reservar 30 min &rarr;</a></td></tr>'
+            : '';
+
         $body = <<<HTML
 <!DOCTYPE html>
 <html lang="pt-PT">
@@ -469,16 +484,12 @@ class EDIT_Empresas_Page {
           <td class="px-md" style="padding:16px 40px 0 40px;">
             <p style="margin:0 0 16px 0;font-size:16px;line-height:1.6;color:#0a0a0a;">Sou o <strong>Daniel Devera</strong>, fundador da EDIT. Recebi o vosso pedido para <strong>{$empresa_safe}</strong> — obrigado pelo interesse.</p>
             <p style="margin:0 0 16px 0;font-size:16px;line-height:1.6;color:#0a0a0a;">Eu próprio respondo a todos os pedidos vindos pela <strong>empresas.weareedit.io</strong>. Em 24 horas úteis contacto-vos para percebermos o vosso contexto, equipa e objetivos. Depois desenhamos juntos um programa à medida do vosso setor.</p>
-            <p style="margin:0;font-size:16px;line-height:1.6;color:#0a0a0a;">Se quiser adiantar, pode reservar já o horário que lhe convém:</p>
+            {$booking_intro}
           </td>
         </tr>
 
-        <!-- CTA button -->
-        <tr>
-          <td class="px-md" align="left" style="padding:24px 40px 8px 40px;">
-            <a href="{$booking_url}" class="cta-btn" style="display:inline-block;background:#0a0a0a;color:#ffffff;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;font-weight:600;letter-spacing:0.01em;text-decoration:none;padding:14px 28px;border-radius:32px;mso-padding-alt:0;box-shadow:inset 0 -2px 0 rgba(0,0,0,0.15);">Reservar 30 min →</a>
-          </td>
-        </tr>
+        <!-- CTA button (booking, gated by BOOKING_ENABLED) -->
+        {$booking_btn}
 
         <!-- Subtle helper -->
         <tr>
@@ -4150,6 +4161,7 @@ $wall_clients = [
   var submitLabel = submitBtn.querySelector('.swipe-label') || submitBtn;
   var endpoint  = '<?php echo esc_url( rest_url( self::REST_NAMESPACE . self::REST_ROUTE ) ); ?>';
   var bookingUrl = '<?php echo esc_url( self::BOOKING_URL ); ?>';
+  var bookingEnabled = <?php echo self::BOOKING_ENABLED ? 'true' : 'false'; ?>;
 
   function showError(msg) {
     errorBox.textContent = msg;
@@ -4230,11 +4242,13 @@ $wall_clients = [
           +   '<h3>Pedido recebido.</h3>'
           +   '<p>' + (result.body.message || 'Voltamos em 24h úteis.') + '</p>'
           + '</div>'
-          + '<div class="booking-embed">'
-          +   '<p class="booking-eyebrow">Adiantar agora</p>'
-          +   '<h4>Escolha o seu horário para a chamada de 30 min</h4>'
-          +   '<iframe src="' + iframeSrc + '" title="Reservar reunião com Daniel Devera" loading="lazy"></iframe>'
-          + '</div>';
+          + (bookingEnabled
+              ? '<div class="booking-embed">'
+              +   '<p class="booking-eyebrow">Adiantar agora</p>'
+              +   '<h4>Escolha o seu horário para a chamada de 30 min</h4>'
+              +   '<iframe src="' + iframeSrc + '" title="Reservar reunião com Daniel Devera" loading="lazy"></iframe>'
+              + '</div>'
+              : '');
         if (typeof window.gtag === 'function') {
           window.gtag('event', 'lead_submit', { event_category: 'empresas', event_label: 'form' });
         }
