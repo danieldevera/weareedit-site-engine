@@ -3,7 +3,7 @@
  * Plugin Name: * weareedit.io Site Engine
  * Plugin URI:  https://github.com/danieldevera/weareedit-site-engine
  * Description: Custom site engine for weareedit.io — SEO (meta tags, OG, schema.org, sitemap, hreflang), GEO/LLM optimization (llms.txt, AI crawler rules, Wikidata-linked Person/Organization schema), brand customization (hero typography, dot accents, CTA hover animations), Google Reviews aggregation, output-buffer HTML rewrites, virtual pages, WP Rocket cache integration, and one-time data fixes.
- * Version:     1.5.541
+ * Version:     1.5.542
  * Author:      Daniel Devera
  * License:     GPL-2.0+
  * Text Domain: weareedit-site-engine
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.541' );
+define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.542' );
 
 // Reset PHP opcache after plugin updates so new class bytecode is loaded
 // immediately instead of on the next opcache TTL. Mitigates v1.5.391/392
@@ -78,6 +78,12 @@ add_action( 'upgrader_process_complete', function ( $upgrader, $hook_extra ) {
     if ( isset( $hook_extra['plugins'] ) && is_array( $hook_extra['plugins'] ) ) {
         foreach ( $hook_extra['plugins'] as $p ) {
             if ( strpos( $p, 'weareedit-site-engine' ) !== false ) {
+                // Bust the empresas output cache (the render changed) + refresh
+                // the mu-plugin to the shipped version, then warm everything.
+                delete_transient( 'edit_empresas_html' );
+                if ( function_exists( 'weareedit_install_empresas_mu' ) ) {
+                    weareedit_install_empresas_mu();
+                }
                 wp_schedule_single_event( time() + 30, 'weareedit_warm_caches_cron' );
                 return;
             }
@@ -109,7 +115,7 @@ add_action( 'plugins_loaded', function () {
     foreach ( array_keys( $_COOKIE ) as $ck ) {                 // logged-in users get a fresh render
         if ( strpos( $ck, 'wordpress_logged_in_' ) === 0 ) return;
     }
-    $html = get_transient( 'edit_empresas_html_' . WEAREDIT_SITE_ENGINE_VERSION );
+    $html = get_transient( 'edit_empresas_html' );
     if ( is_string( $html ) && $html !== '' ) {
         if ( ! headers_sent() ) {
             header( 'Content-Type: text/html; charset=UTF-8' );
@@ -120,6 +126,60 @@ add_action( 'plugins_loaded', function () {
         exit;
     }
 }, 0 );
+
+/**
+ * mu-plugin early-serve (v1.5.542). The in-plugin `plugins_loaded` serve above
+ * still pays the cost of loading every active plugin first. A must-use plugin
+ * loads BEFORE regular plugins, so serving the cached empresas home there skips
+ * plugin loading too — the last mile to WP-Rocket-class TTFB (~0.2s). We write
+ * that mu-plugin from here so it ships through the normal GitHub update flow
+ * (no manual file drop). If the mu-plugins dir isn't writable, nothing breaks —
+ * the `plugins_loaded` serve above remains the fallback.
+ */
+function weareedit_empresas_mu_contents() {
+    // Marker `EDIT-MU-v2` lets the installer detect an out-of-date copy and
+    // rewrite it. Bump the marker when this body changes.
+    return <<<'MUPHP'
+<?php
+/**
+ * Plugin Name: EDIT Empresas Early Cache (EDIT-MU-v2)
+ * Description: Serves the cached empresas.weareedit.io home before regular plugins load. Auto-managed by weareedit-site-engine — do not edit; changes are overwritten.
+ */
+if ( ! defined( 'ABSPATH' ) ) exit;
+if ( php_sapi_name() === 'cli' ) return;
+if ( ! function_exists( 'get_transient' ) ) return;
+$h = strtolower( $_SERVER['HTTP_HOST'] ?? '' );
+if ( strpos( $h, 'empresas.weareedit.io' ) === false ) return;
+if ( ( $_SERVER['REQUEST_METHOD'] ?? 'GET' ) !== 'GET' ) return;
+$p = (string) parse_url( $_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH );
+if ( $p !== '/' && $p !== '' ) return;
+if ( ! empty( $_GET['preview'] ) || ! empty( $_GET['nocache'] ) ) return;
+foreach ( array_keys( $_COOKIE ) as $ck ) { if ( strpos( $ck, 'wordpress_logged_in_' ) === 0 ) return; }
+$html = get_transient( 'edit_empresas_html' );
+if ( is_string( $html ) && $html !== '' ) {
+    if ( ! headers_sent() ) {
+        header( 'Content-Type: text/html; charset=UTF-8' );
+        header( 'Cache-Control: public, max-age=600, s-maxage=600' );
+        header( 'X-EDIT-Empresas-Cache: HIT-MU' );
+    }
+    echo $html;
+    exit;
+}
+MUPHP;
+}
+function weareedit_install_empresas_mu() {
+    $mu_dir = defined( 'WPMU_PLUGIN_DIR' ) ? WPMU_PLUGIN_DIR : ( WP_CONTENT_DIR . '/mu-plugins' );
+    $file   = $mu_dir . '/edit-empresas-early-cache.php';
+    if ( ! is_dir( $mu_dir ) ) { @wp_mkdir_p( $mu_dir ); }
+    if ( ! is_dir( $mu_dir ) ) return;                         // can't create — fallback path covers us
+    $current = file_exists( $file ) ? (string) @file_get_contents( $file ) : '';
+    if ( strpos( $current, 'EDIT-MU-v2' ) !== false ) return;  // already up to date
+    if ( file_exists( $file ) && ! is_writable( $file ) ) return;
+    if ( ! file_exists( $file ) && ! is_writable( $mu_dir ) ) return;
+    @file_put_contents( $file, weareedit_empresas_mu_contents() );
+}
+add_action( 'admin_init', 'weareedit_install_empresas_mu' );
+register_activation_hook( __FILE__, 'weareedit_install_empresas_mu' );
 
 /**
  * One-click updates via Plugin Update Checker (PUC) — polls GitHub releases.

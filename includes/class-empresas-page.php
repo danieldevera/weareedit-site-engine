@@ -998,7 +998,11 @@ HTML;
         // cache the whole render in a transient keyed by plugin version (so it
         // auto-invalidates on every update) and serve it without rebuilding.
         // Logged-in users, ?nocache=1, and preview mode always get a fresh build.
-        $cache_key = 'edit_empresas_html_' . WEAREDIT_SITE_ENGINE_VERSION;
+        // Fixed key (not version-keyed) so the mu-plugin early-serve — which
+        // runs before this plugin loads and can't read the version constant —
+        // can read the same transient. Busted explicitly on plugin update
+        // (delete_transient in the main file) + 12h TTL backstop.
+        $cache_key = 'edit_empresas_html';
         $can_cache = ! is_user_logged_in()
             && empty( $_GET['nocache'] )
             && empty( $_GET['preview'] )
