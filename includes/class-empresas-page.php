@@ -1408,20 +1408,25 @@ body.empresas-page .headerDesktop[class*="menuOpen"] .empresas-lockup .lockup-im
 body.empresas-page .headerMobile[class*="menuOpen"] .empresas-lockup .lockup-img {
   filter: invert(1) !important;
 }
-/* WhatsApp floating button (v1.5.544). The theme markup <a id="whatsapp-button">
-   with a white-glyph svg loses its theme styling under the empresas scoped
-   resets — it rendered as an unstyled/broken icon (fine on other pages).
-   Restore the green circular FAB. */
+/* WhatsApp floating button (v1.5.544/545). Two problems on empresas: (1) the
+   theme styling is stripped by the empresas scoped resets; (2) the theme markup
+   hardcodes the OLD plugin path .../plugins/edit-seo-fix/assets/whatsapp.svg
+   which 404s after the v1.5.55 folder rename to weareedit-site-engine — and the
+   empresas custom render bypasses the output-buffer that rewrites that path on
+   normal pages, so the icon <img> is broken (empty green circle). Fix: restore
+   the green FAB AND paint the glyph via background-image with the CORRECT path,
+   then hide the broken <img>. */
 body.empresas-page #whatsapp-button {
   position: fixed !important;
   right: 20px !important;
   bottom: 20px !important;
   width: 56px !important;
   height: 56px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
   background: #25D366 !important;
+  background-image: url('<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/whatsapp.svg' ); ?>') !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-size: 30px 30px !important;
   border-radius: 50% !important;
   box-shadow: 0 4px 14px rgba(0,0,0,0.25) !important;
   z-index: 99999 !important;
@@ -1430,14 +1435,7 @@ body.empresas-page #whatsapp-button {
   font-size: 0 !important;
   line-height: 0 !important;
 }
-body.empresas-page #whatsapp-button img {
-  width: 30px !important;
-  height: 30px !important;
-  display: block !important;
-  max-width: none !important;
-  margin: 0 !important;
-  filter: none !important;
-}
+body.empresas-page #whatsapp-button img { display: none !important; }
 /* Wider gap between hamburger and search. */
 body.empresas-page header [aria-label*="search" i],
 body.empresas-page header [class*="search"]:not(input):not(form) {

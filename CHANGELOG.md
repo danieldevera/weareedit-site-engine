@@ -1,4 +1,8 @@
 # Changelog
+## v1.5.545 — 2026-06-15 (Empresas WhatsApp icon — fix dead plugin-path 404)
+- **WhatsApp icon was a blank green circle** (glyph missing). Root cause: the theme markup hardcodes the OLD plugin path `…/plugins/edit-seo-fix/assets/whatsapp.svg` which 404s since the v1.5.55 folder rename to `weareedit-site-engine`. On normal pages the output-buffer rewrites that path; the empresas custom render bypasses it → broken `<img>`, hidden by the v1.5.544 `font-size:0`. Fix: paint the glyph via `#whatsapp-button { background-image: url(<correct path>) }` (30px, centered, on the green circle) and `#whatsapp-button img { display:none }`. Path-rename-proof (uses WEAREDIT_SITE_ENGINE_URL).
+
+# Changelog
 ## v1.5.544 — 2026-06-15 (Fix empresas WhatsApp FAB + WebP rollout to banners)
 - **WhatsApp floating button fixed on empresas** (Daniel: "URGENT: WhatsApp UI is broken" — fine on other pages). The theme `<a id="whatsapp-button">` (white-glyph svg) lost its styling under the empresas scoped CSS resets, rendering as an unstyled/broken icon. Restored the green circular FAB via `body.empresas-page #whatsapp-button{...}` (fixed bottom-right, 56px, #25D366, white 30px glyph).
 - **WebP rollout**: the mid-page "EDIT para Empresas" banner on all 6 pillar variants + the homepage empresas section (`class-empresas-links.php`) now use `empresas-hero.webp` (57KB) instead of the 263KB jpg. Empresas hero already on WebP (v1.5.543); OG image kept as jpg for social compatibility.
