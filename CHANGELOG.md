@@ -1,4 +1,9 @@
 # Changelog
+## v1.5.543 — 2026-06-15 (Empresas perf — LCP hero: WebP + preload, Track B)
+- **Hero image → WebP** (was the LCP element + the PSI "image delivery 287 KiB" flag). Generated `empresas-hero.webp` (1600×900, q72) — **57 KB vs the 263 KB jpg (−78%)**. The hero `background` now uses `image-set(webp type('image/webp'), jpg type('image/jpeg'))` with the bare jpg `background` as the fallback layer for browsers without `image-set`.
+- **LCP hero preload** — the hero is a CSS `background-image`, invisible to the preload scanner, so it was discovered late (LCP ~6.0s). Added `<link rel="preload" as="image" type="image/webp" fetchpriority="high">` for the WebP at `wp_head` priority 1 (near the top of `<head>`), so the browser fetches it immediately.
+- NOTE: the dominant Performance lever (render-blocking 2.87s from 33 JS + 13 CSS) is WP Rocket config (Delay JS + Remove Unused CSS) — Track A, enabled in the Rocket admin, not code.
+
 ## v1.5.542 — 2026-06-15 (Empresas perf — mu-plugin pre-plugin cache serve)
 - **Auto-installed mu-plugin** (`mu-plugins/edit-empresas-early-cache.php`) that serves the cached empresas home **before regular plugins load** — the last mile past the `plugins_loaded` serve (which still pays plugin-loading cost), toward WP-Rocket-class TTFB. The main plugin writes/updates the mu-plugin (marker `EDIT-MU-v2`) on `admin_init`, activation, and plugin update; if the mu-plugins dir isn't writable it silently no-ops and the `plugins_loaded` serve remains the fallback. Marks its responses `X-EDIT-Empresas-Cache: HIT-MU`.
 - **Cache key switched to a fixed `edit_empresas_html`** (was version-keyed) so the mu-plugin — which runs before this plugin's version constant is defined — can read the same transient. Busting is now explicit: `delete_transient('edit_empresas_html')` on plugin update (in the upgrader hook, alongside the mu-plugin refresh + warm), with the 12h TTL + `?nocache=1` as backstops.

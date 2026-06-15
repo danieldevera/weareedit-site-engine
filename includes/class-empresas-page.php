@@ -1164,6 +1164,13 @@ HTML;
      * keeps just the meta children.
      */
     public static function emit_head_meta(): void {
+        // LCP preload (v1.5.543). The hero background is a CSS `background-image`
+        // — invisible to the browser's preload scanner, so it's discovered only
+        // after CSS parses, pushing LCP to ~6s. Hint it explicitly + high
+        // priority so the browser fetches it immediately. Emitted at wp_head
+        // priority 1, so it lands near the top of <head>.
+        echo '<link rel="preload" as="image" href="' . esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/empresas-hero.webp' ) . '" type="image/webp" fetchpriority="high">' . "\n";
+
         $full = self::captured_emit_html();
         // Pull what's inside <head>...</head>, drop the <style> block since
         // emit_inline_css() emits that separately at a later wp_head priority.
@@ -1990,9 +1997,17 @@ a { color: inherit; text-decoration: none; }
   align-items: flex-end;
   color: #fff;
   padding: 140px 0 80px 0;
+  /* jpg fallback (browsers without image-set) */
   background:
     linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.55) 50%, rgba(0,0,0,0.92) 100%),
     url('<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/empresas-hero.jpg' ); ?>') center 30% / cover no-repeat #0a0a0a;
+  /* webp (57KB, 1600w) where supported — ~78% lighter than the 263KB jpg, cuts LCP */
+  background-image:
+    linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.55) 50%, rgba(0,0,0,0.92) 100%),
+    image-set(
+      url('<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/empresas-hero.webp' ); ?>') type('image/webp'),
+      url('<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/img/empresas-hero.jpg' ); ?>') type('image/jpeg')
+    );
 }
 .hero .eyebrow {
   font-size: 12px; font-weight: 700;
