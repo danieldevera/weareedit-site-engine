@@ -1271,6 +1271,14 @@ body.empresas-page .headerDesktop:not([class*="menuOpen"]) img:not([src*="logo-e
 body.empresas-page .headerMobile:not([class*="menuOpen"]) img:not([src*="logo-empresas"]):not([src*="logo-edit"]) {
   filter: brightness(0) !important;
 }
+/* Mobile logo fix: the JS lockup swap only replaces the first/desktop header,
+   so the mobile header keeps the theme's white logo-edit.svg — which the rule
+   above excludes via :not([src*="logo-edit"]), leaving it white-on-white on the
+   bar. Blacken the mobile logo specifically (closed state); the open-state rule
+   reverts it to white on the dark menu overlay. */
+body.empresas-page .headerMobile:not([class*="menuOpen"]) .headerMobile__logo img {
+  filter: brightness(0) !important;
+}
 body.empresas-page header:not([class*="menuOpen"]) [class*="menu-toggle"],
 body.empresas-page header:not([class*="menuOpen"]) [class*="nav-toggle"],
 body.empresas-page header:not([class*="menuOpen"]) [class*="hamburger"],
