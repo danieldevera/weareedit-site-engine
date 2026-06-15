@@ -66,6 +66,37 @@ class EDIT_Pillar_Courses {
     }
 
     /**
+     * Stable-partition a list of slugs so cards WITH a start date come first,
+     * undated cards after (relative order preserved within each bucket).
+     * Used by the pillar catalogs so upcoming cohorts surface at the top.
+     */
+    public static function sort_slugs_dated_first( array $slugs ): array {
+        $map = self::get_card_map();
+        $dated = [];
+        $undated = [];
+        foreach ( $slugs as $slug ) {
+            $html = $map[ $slug ] ?? '';
+            if ( $html !== '' && self::card_has_date( $html ) ) {
+                $dated[] = $slug;
+            } else {
+                $undated[] = $slug;
+            }
+        }
+        return array_merge( $dated, $undated );
+    }
+
+    /**
+     * A card "has a date" when the scraped theme markup carries a non-empty
+     * course-date (a Portuguese month + year, e.g. "21 de Setembro 2026").
+     */
+    private static function card_has_date( string $html ): bool {
+        return (bool) preg_match(
+            '/de\s+(janeiro|fevereiro|mar[\x{00e7}c]o|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)\s+20\d{2}/iu',
+            $html
+        );
+    }
+
+    /**
      * Pillar-page card rewrite — neutralise WP Rocket lazy-load and bake the
      * SVG background-image into the inline style so the card renders with its
      * correct typology background on first paint, independent of lazy-load JS.

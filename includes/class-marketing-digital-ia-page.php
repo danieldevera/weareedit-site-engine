@@ -323,7 +323,7 @@ class EDIT_Marketing_Digital_IA_Page {
                         <section class="filter-result">
                             <div class="container">
                                 <div class="row">
-                                    <?php foreach ( $slugs as $slug ) {
+                                    <?php foreach ( EDIT_Pillar_Courses::sort_slugs_dated_first( $slugs ) as $slug ) {
                                         echo EDIT_Pillar_Courses::render_card( $slug, $group );
                                     } ?>
                                 </div>

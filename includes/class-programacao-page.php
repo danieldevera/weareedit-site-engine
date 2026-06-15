@@ -307,7 +307,13 @@ class EDIT_Programacao_Page {
 
             <div id="catalogo" class="md-catalog">
                 <div class="md-catalog__heading">
-                    <h2 class="md-section-title">Catálogo de Formação <span>em Programação</span></h2>
+                    <div class="md-section-header">
+                        <div class="md-section-header__left">
+                            <p class="md-section-header__eyebrow">10 programas DGERT-certificados</p>
+                            <h2 class="md-section-header__title">Catálogo de Formação <span>em Programação</span></h2>
+                        </div>
+                        <p class="md-section-header__lead">Bootcamps intensivos para career-changers, cursos completos para especialização profunda, e workshops curtos para upskilling pontual. Programas SIFIDE-elegíveis, leccionados por programadores em activo nas empresas que recrutam talento técnico em Portugal.</p>
+                    </div>
                 </div>
                 <?php foreach ( self::CATALOG as $group => $slugs ) : ?>
                     <div class="md-group">
@@ -317,7 +323,7 @@ class EDIT_Programacao_Page {
                         <section class="filter-result">
                             <div class="container">
                                 <div class="row">
-                                    <?php foreach ( $slugs as $slug ) {
+                                    <?php foreach ( EDIT_Pillar_Courses::sort_slugs_dated_first( $slugs ) as $slug ) {
                                         echo EDIT_Pillar_Courses::render_card( $slug, $group );
                                     } ?>
                                 </div>

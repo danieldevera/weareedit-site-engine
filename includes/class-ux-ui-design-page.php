@@ -316,7 +316,13 @@ class EDIT_UX_UI_Design_Page {
 
             <div id="catalogo" class="md-catalog">
                 <div class="md-catalog__heading">
-                    <h2 class="md-section-title">Catálogo de Formação <span>em UX/UI Design</span></h2>
+                    <div class="md-section-header">
+                        <div class="md-section-header__left">
+                            <p class="md-section-header__eyebrow">12 programas DGERT-certificados</p>
+                            <h2 class="md-section-header__title">Catálogo de Formação <span>em UX/UI Design</span></h2>
+                        </div>
+                        <p class="md-section-header__lead">Bootcamps intensivos para career-changers, cursos completos para especialização profunda, e workshops curtos para upskilling pontual. Programas SIFIDE-elegíveis, leccionados por designers de produto em activo nas marcas que recrutam talento de design em Portugal.</p>
+                    </div>
                 </div>
                 <?php foreach ( self::CATALOG as $group => $slugs ) : ?>
                     <div class="md-group">
@@ -326,7 +332,7 @@ class EDIT_UX_UI_Design_Page {
                         <section class="filter-result">
                             <div class="container">
                                 <div class="row">
-                                    <?php foreach ( $slugs as $slug ) {
+                                    <?php foreach ( EDIT_Pillar_Courses::sort_slugs_dated_first( $slugs ) as $slug ) {
                                         echo EDIT_Pillar_Courses::render_card( $slug, $group );
                                     } ?>
                                 </div>
