@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.550 — 2026-06-15 (Empresas — hero primary CTA "Discovery Call" → "Pedir proposta")
+Per Daniel, aligning the hero with the review doc's email-preference / minimise-meetings theme. Primary CTA label "Discovery Call" → "Pedir proposta" (still → #contacto). Decision logged: sitewide org schema Cheque-Formação/IRS line (`class-structured-data.php:74`) stays as-is (B2C/individual context, valid).
+
 ## v1.5.549 — 2026-06-15 (Empresas — apply team legal review doc "Alterações na página")
 Implemented the full review document. Funding messaging now reflects reality: only the **Fundo de Compensação do Trabalho** is mentioned (singular, "do Trabalho"); all Cheque-Formação / SIFIDE / POCH / POPH / "até 100%" / "reembolso" claims gone.
 - **Hero lede:** "Elegíveis para Fundos de Compensação" → "Formação certificada pela DGERT, com emissão de certificados individuais." Hero CTA label → "Fundo de Compensação do Trabalho".

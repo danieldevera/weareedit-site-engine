@@ -3578,7 +3578,7 @@ button {
         <span class="swipe-layer swipe-pink"></span>
         <span class="swipe-layer swipe-teal"></span>
         <span class="swipe-layer swipe-black"></span>
-        <span class="swipe-label">Discovery Call</span>
+        <span class="swipe-label">Pedir proposta</span>
       </a>
     </div>
   </div>
