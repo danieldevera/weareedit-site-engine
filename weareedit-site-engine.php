@@ -3,7 +3,7 @@
  * Plugin Name: * weareedit.io Site Engine
  * Plugin URI:  https://github.com/danieldevera/weareedit-site-engine
  * Description: Custom site engine for weareedit.io — SEO (meta tags, OG, schema.org, sitemap, hreflang), GEO/LLM optimization (llms.txt, AI crawler rules, Wikidata-linked Person/Organization schema), brand customization (hero typography, dot accents, CTA hover animations), Google Reviews aggregation, output-buffer HTML rewrites, virtual pages, WP Rocket cache integration, and one-time data fixes.
- * Version:     1.5.538
+ * Version:     1.5.539
  * Author:      Daniel Devera
  * License:     GPL-2.0+
  * Text Domain: weareedit-site-engine
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.538' );
+define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.539' );
 
 // Reset PHP opcache after plugin updates so new class bytecode is loaded
 // immediately instead of on the next opcache TTL. Mitigates v1.5.391/392
@@ -38,6 +38,52 @@ register_activation_hook( __FILE__, function () {
 } );
 define( 'WEAREDIT_SITE_ENGINE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'WEAREDIT_SITE_ENGINE_URL', plugin_dir_url( __FILE__ ) );
+
+/**
+ * Cache pre-warm (v1.5.539). The empresas page now serves a version-keyed
+ * transient render, and the pillar pages cache a 14-day /formacao/ scrape +
+ * a WP Rocket page. Both go cold whenever a deploy busts them — so the first
+ * real visitor (or Googlebot) eats the multi-second cold render. This warms
+ * them with non-blocking self-requests: daily on cron, and right after our
+ * plugin updates (when the caches were just invalidated).
+ */
+function weareedit_warm_caches() {
+    $urls = [
+        'https://empresas.weareedit.io/',
+        home_url( '/marketing-digital/' ),
+        home_url( '/data-science/' ),
+        home_url( '/curso-uxui-design/' ),
+        home_url( '/curso-inteligencia-artificial/' ),
+        home_url( '/curso-programacao/' ),
+    ];
+    foreach ( $urls as $u ) {
+        wp_remote_get( $u, [
+            'blocking'  => false,   // fire-and-forget; the server still renders
+            'timeout'   => 0.01,
+            'sslverify' => false,
+            'headers'   => [ 'User-Agent' => 'edit-cache-warmer/1.0 (+weareedit.io)' ],
+        ] );
+    }
+}
+add_action( 'weareedit_warm_caches_cron', 'weareedit_warm_caches' );
+add_action( 'init', function () {
+    if ( ! wp_next_scheduled( 'weareedit_warm_caches_cron' ) ) {
+        // First run ~5 min out, then daily.
+        wp_schedule_event( time() + 300, 'daily', 'weareedit_warm_caches_cron' );
+    }
+} );
+// Warm again ~30s after our plugin updates (caches were just busted; the delay
+// lets the new bytecode + opcache reset settle first).
+add_action( 'upgrader_process_complete', function ( $upgrader, $hook_extra ) {
+    if ( isset( $hook_extra['plugins'] ) && is_array( $hook_extra['plugins'] ) ) {
+        foreach ( $hook_extra['plugins'] as $p ) {
+            if ( strpos( $p, 'weareedit-site-engine' ) !== false ) {
+                wp_schedule_single_event( time() + 30, 'weareedit_warm_caches_cron' );
+                return;
+            }
+        }
+    }
+}, 20, 2 );
 
 /**
  * One-click updates via Plugin Update Checker (PUC) — polls GitHub releases.

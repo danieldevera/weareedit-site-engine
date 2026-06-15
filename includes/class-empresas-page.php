@@ -988,8 +988,37 @@ HTML;
         }
 
         status_header( 200 );
-        nocache_headers();
+
+        // ── Output cache (v1.5.539) ──────────────────────────────────────
+        // The rendered HTML is byte-identical for every anonymous visitor —
+        // the lead form's REST endpoint is permission-open (no per-request
+        // nonce), and there is no other per-user content. Previously the page
+        // sent nocache_headers() and re-ran the full theme + body render on
+        // EVERY hit (~3.7s TTFB, never cached by browser/CDN/Rocket). We now
+        // cache the whole render in a transient keyed by plugin version (so it
+        // auto-invalidates on every update) and serve it without rebuilding.
+        // Logged-in users, ?nocache=1, and preview mode always get a fresh build.
+        $cache_key = 'edit_empresas_html_' . WEAREDIT_SITE_ENGINE_VERSION;
+        $can_cache = ! is_user_logged_in()
+            && empty( $_GET['nocache'] )
+            && empty( $_GET['preview'] )
+            && empty( $_POST );
+
+        if ( $can_cache ) {
+            $cached = get_transient( $cache_key );
+            if ( is_string( $cached ) && $cached !== '' ) {
+                header( 'Content-Type: text/html; charset=UTF-8' );
+                header( 'Cache-Control: public, max-age=600, s-maxage=600' );
+                header( 'X-EDIT-Empresas-Cache: HIT' );
+                echo $cached;
+                exit;
+            }
+            header( 'Cache-Control: public, max-age=600, s-maxage=600' );
+        } else {
+            nocache_headers();
+        }
         header( 'Content-Type: text/html; charset=UTF-8' );
+        header( 'X-EDIT-Empresas-Cache: MISS' );
 
         // v1.5.330: re-enable theme integration. Theme chrome wraps; empresas body
         // content renders inside with v1.5.329 visual fidelity via scoped CSS.
@@ -1002,17 +1031,20 @@ HTML;
         // instead of the homepage defaults (kills the duplicate-canonical bug).
         self::override_rank_math();
 
-        // v1.5.518: belt-and-braces. Rank Math (and/or WP core rel_canonical)
-        // still emit a stray homepage canonical (rel=canonical → weareedit.io/)
-        // for the front-page context that the rank_math/frontend/canonical filter
-        // doesn't reliably override — leaving TWO canonicals, one wrongly pointing
-        // at the homepage and telling Google empresas is a duplicate. Buffer the
-        // whole render and collapse to exactly one self-referencing canonical.
-        ob_start( [ __CLASS__, 'dedupe_canonical' ] );
+        // v1.5.518: belt-and-braces. Buffer the whole render and collapse to
+        // exactly one self-referencing canonical (Rank Math / WP rel_canonical
+        // otherwise leak a stray homepage canonical). dedupe_canonical() is run
+        // directly on the captured buffer so we can also stash it in the cache.
+        ob_start();
         get_header();
         self::emit_body();
         get_footer();
-        ob_end_flush();
+        $html = self::dedupe_canonical( (string) ob_get_clean() );
+
+        if ( $can_cache ) {
+            set_transient( $cache_key, $html, 12 * HOUR_IN_SECONDS );
+        }
+        echo $html;
         exit;
     }
 
