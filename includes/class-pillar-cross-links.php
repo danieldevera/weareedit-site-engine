@@ -41,11 +41,12 @@ class EDIT_Pillar_Cross_Links {
     ];
 
     /**
-     * ISOLATED LIVE TEST: the D color-block related-areas banner renders only on
-     * this one course single for now, so we can iterate live before rolling it
-     * out to all formacao singles. Change the slug to test elsewhere.
+     * The "Esta formação faz parte de" related-areas banner + the mini Empresas
+     * banner are now LIVE on every formacao single (rolled out v1.5.535 from the
+     * original single-slug live test on bootcamp-generative-ai-aplicado-ao-
+     * marketing-digital). The related-areas banner self-skips on courses that
+     * aren't listed in any pillar CATALOG (empty $hits).
      */
-    const BANNER_TEST_SLUG = 'bootcamp-generative-ai-aplicado-ao-marketing-digital';
 
     public static function init() {
         add_filter( 'weareedit_site_engine_output_buffer', [ __CLASS__, 'inject' ], 10 );
@@ -68,9 +69,9 @@ class EDIT_Pillar_Cross_Links {
 @media (max-width:768px){.edit-pillar-pillbar{padding:16px 20px;gap:8px;}.edit-pillar-pillbar a{padding:6px 12px;font-size:12px;}.edit-pillar-pillbar__label{display:none;}}
 </style>
         <?php
-        // D · color-block banner CSS — only on the isolated test course single.
-        $obj = get_queried_object();
-        if ( ! ( $obj instanceof WP_Post ) || $obj->post_name !== self::BANNER_TEST_SLUG ) return;
+        // D · color-block banner CSS + mini-empresas banner CSS — now on every
+        // formacao single (rolled out from the BANNER_TEST_SLUG isolation).
+        if ( ! is_singular( 'formacao' ) ) return;
         ?>
 <style id="edit-pillar-banner-css">
 .epb-banner{background:#e3e1db;padding:64px 24px;}
@@ -200,14 +201,13 @@ section.banner.split-black-grey{display:none !important;}
     }
 
     /**
-     * D · color-block related-areas banner. ISOLATED to BANNER_TEST_SLUG for now.
+     * D · color-block related-areas banner. Renders on every formacao single.
      * Reverse-looks-up which pillar(s) list this course, then renders one
      * color-block card per parent pillar (with brand colour + program count).
      */
     private static function inject_pillar_banner( string $html ): string {
         $post = get_queried_object();
         if ( ! $post instanceof WP_Post ) return $html;
-        if ( $post->post_name !== self::BANNER_TEST_SLUG ) return $html;
         // Idempotency must use a MARKUP-only marker — the banner CSS (emitted in
         // wp_head before this filter) already contains the class name epb-banner,
         // so guarding on that would always skip the injection.
@@ -260,13 +260,12 @@ section.banner.split-black-grey{display:none !important;}
 
     /**
      * Mini "EDIT. para Empresas" banner — resumed version of the homepage
-     * section — REPLACES the old theme in-company banner. ISOLATED to
-     * BANNER_TEST_SLUG; the old banner is hidden via CSS (emit_styles).
+     * section — REPLACES the old theme in-company banner (hidden via CSS in
+     * emit_styles). Renders on every formacao single.
      */
     private static function inject_empresas_mini_banner( string $html ): string {
         $post = get_queried_object();
         if ( ! $post instanceof WP_Post ) return $html;
-        if ( $post->post_name !== self::BANNER_TEST_SLUG ) return $html;
         // Markup-only idempotency marker (NOT a class name — it's in the CSS).
         if ( strpos( $html, 'Faça esta formação com a' ) !== false ) return $html;
 
