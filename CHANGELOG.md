@@ -1,4 +1,8 @@
 # Changelog
+## v1.5.538 — 2026-06-15 (Course-single alumni spacing + empresas "24h" bold)
+- **Alumni section content pushed down off the top edge** (Daniel: "move down the alumni content"). The theme's dark `section.alumni` had its eyebrow/title cramped against the band's top edge. Added `body.single-formacao section.alumni{padding-top:120px !important}` to the course-singles CSS block (`class-pillar-cross-links.php`) — scoped to course singles only, so the homepage alumni slider is untouched.
+- **Bolded "24 horas úteis"** in the empresas "Vamos conversar" contact section lead (Daniel: "to bold 24h"). `Em 24 horas úteis voltamos…` → `Em <strong>24 horas úteis</strong> voltamos…` on `class-empresas-page.php` line ~3907.
+
 ## v1.5.537 — 2026-06-15 (Related-areas banner — more breathing room + IA always present)
 - **More space around the "Esta formação faz parte de" banner** (Daniel: "add more space between the sections"). `.epb-banner` vertical padding 64px → 104px, so it no longer sits tight against the tutors block above or the Alumni section below. Shared component → applies on every product page.
 - **Inteligência Artificial is now a constant card** in the related-areas banner (Daniel: "AI should be constant"). It's the transversal layer of 2026, so `inject_pillar_banner()` appends the IA pillar to the card list whenever the banner renders and the reverse-lookup didn't already include it (deduped — never doubles on IA's own courses). A Data Science course now shows 01 Data Science + 02 Inteligência Artificial; IA always lands as the trailing card for a consistent position. Courses in no pillar still self-skip (the banner isn't forced just for IA).

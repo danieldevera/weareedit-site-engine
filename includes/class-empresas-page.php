@@ -3904,7 +3904,7 @@ $wall_clients = [
       <div class="lead-copy">
         <p class="section-eyebrow">Vamos conversar</p>
         <h2>Vamos formar a sua equipa.</h2>
-        <p class="lead-intro">Em 24 horas úteis voltamos com um plano e uma proposta. Sem compromisso.</p>
+        <p class="lead-intro">Em <strong>24 horas úteis</strong> voltamos com um plano e uma proposta. Sem compromisso.</p>
         <ul class="lead-bullets">
           <li>Diagnóstico inicial em chamada de 30 minutos</li>
           <li>Programa desenhado em torno do vosso setor e ferramentas</li>

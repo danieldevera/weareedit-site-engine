@@ -75,6 +75,9 @@ class EDIT_Pillar_Cross_Links {
         ?>
 <style id="edit-pillar-banner-css">
 .epb-banner{background:#e3e1db;padding:104px 24px;}
+/* Push the theme alumni section's content down off the top edge of the dark
+   band (Daniel: "move down the alumni content"). Scoped to course singles. */
+body.single-formacao section.alumni{padding-top:120px !important;}
 .epb-inner{max-width:1080px;margin:0 auto;padding:40px 40px;background:#f4f3ef;border:1px solid rgba(10,10,10,.12);}
 .epb-kicker{display:inline-flex;align-items:center;gap:12px;font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:rgba(10,10,10,.5);font-weight:700;margin:0 0 14px;}
 .epb-kicker::before{content:"";width:28px;height:2px;background:#0a0a0a;}
