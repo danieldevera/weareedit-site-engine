@@ -270,11 +270,6 @@ class EDIT_Alumni_Employers {
                     </li>
                 <?php endforeach; ?>
             </ul>
-            <?php if ( self::logo_dev_token() !== '' ) : ?>
-                <p class="ae-attribution">
-                    Logos servidos via <a href="https://logo.dev" target="_blank" rel="noopener noreferrer">Logo.dev</a>
-                </p>
-            <?php endif; ?>
         </section>
         <?php
         return (string) ob_get_clean();

@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.533 — 2026-06-15 (Alumni/client wall — remove Logo.dev attribution)
+- **Removed the "Logos servidos via Logo.dev" attribution line** (`.ae-attribution`) from `EDIT_Alumni_Employers::render()` (Daniel). Affects every surface the wall renders — the empresas in-company client wall + the pillar alumni walls. NOTE: Logo.dev's free tier requires attribution for commercial use; dropping it may need a paid Logo.dev plan to stay compliant. CSS rules left in place (unused, harmless).
+
 ## v1.5.532 — 2026-06-15 (Empresas — Financiamento heading/CTA copy + Process overlap fix)
 - **Financiamento heading forced to 2 lines** (Daniel). `Não é o motivo. É o desbloqueio.` was wrapping to 3 lines ("É o" / "desbloqueio." split). Added an explicit `<br>` after "motivo." and widened `.financing .section-title` max-width 16ch → 20ch so line 2 ("É o desbloqueio.") holds together.
 - **Primary CTA + card link copy → "Fale connosco"** (Daniel). Big swipe-cta button "Verificar a vossa elegibilidade" → "Fale connosco"; the card micro-link "Falar connosco →" aligned to "Fale connosco →" for consistency. (Locked header CTA "Fala connosco" left untouched.)
