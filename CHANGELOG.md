@@ -1,4 +1,8 @@
 # Changelog
+## v1.5.537 — 2026-06-15 (Related-areas banner — more breathing room + IA always present)
+- **More space around the "Esta formação faz parte de" banner** (Daniel: "add more space between the sections"). `.epb-banner` vertical padding 64px → 104px, so it no longer sits tight against the tutors block above or the Alumni section below. Shared component → applies on every product page.
+- **Inteligência Artificial is now a constant card** in the related-areas banner (Daniel: "AI should be constant"). It's the transversal layer of 2026, so `inject_pillar_banner()` appends the IA pillar to the card list whenever the banner renders and the reverse-lookup didn't already include it (deduped — never doubles on IA's own courses). A Data Science course now shows 01 Data Science + 02 Inteligência Artificial; IA always lands as the trailing card for a consistent position. Courses in no pillar still self-skip (the banner isn't forced just for IA).
+
 ## v1.5.536 — 2026-06-15 (Newsletter strip — remove top/bottom dead space site-wide)
 - **Zeroed the newsletter strip's vertical margins** (Daniel: "remove top and bottom dead spaces for the newsletter banner site-wide"). `#edit-newsletter-strip` margin `56px 0 80px` → `0` (base), `48px 0 72px` → `0` (≤767), `64px 0 88px` → `0` (≥768) in `assets/newsletter-signup.css`. The margins were revealing the dark page/footer background as black "dead space" bands around the pink strip on non-home pages; the strip now sits flush. Internal padding (40/48px) unchanged. NOTE: on the homepage the strip is now flush with the hero/course grid too (was intentional breathing room) — revisit if it reads tight.
 

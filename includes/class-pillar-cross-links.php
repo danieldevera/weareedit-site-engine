@@ -74,7 +74,7 @@ class EDIT_Pillar_Cross_Links {
         if ( ! is_singular( 'formacao' ) ) return;
         ?>
 <style id="edit-pillar-banner-css">
-.epb-banner{background:#e3e1db;padding:64px 24px;}
+.epb-banner{background:#e3e1db;padding:104px 24px;}
 .epb-inner{max-width:1080px;margin:0 auto;padding:40px 40px;background:#f4f3ef;border:1px solid rgba(10,10,10,.12);}
 .epb-kicker{display:inline-flex;align-items:center;gap:12px;font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:rgba(10,10,10,.5);font-weight:700;margin:0 0 14px;}
 .epb-kicker::before{content:"";width:28px;height:2px;background:#0a0a0a;}
@@ -222,6 +222,22 @@ section.banner.split-black-grey{display:none !important;}
             }
         }
         if ( empty( $hits ) ) return $html;
+
+        // Inteligência Artificial is the transversal layer of 2026 — always
+        // surface it as a related area, even on courses not in the IA catalog
+        // (Daniel: "AI should be constant"). Append it if the reverse-lookup
+        // above didn't already include it, so it never duplicates.
+        $ia_slug = 'curso-inteligencia-artificial';
+        $has_ia  = false;
+        foreach ( $hits as $h ) { if ( $h['p']['slug'] === $ia_slug ) { $has_ia = true; break; } }
+        if ( ! $has_ia ) {
+            foreach ( self::PILLARS as $p ) {
+                if ( $p['slug'] === $ia_slug && class_exists( $p['class'] ) ) {
+                    $hits[] = [ 'p' => $p, 'count' => count( self::flatten_catalog( $p['class'] ) ) ];
+                    break;
+                }
+            }
+        }
 
         $cards = '';
         $i = 0;
