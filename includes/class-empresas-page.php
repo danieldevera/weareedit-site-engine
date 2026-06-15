@@ -1726,7 +1726,7 @@ CSS;
     private static function seo_meta(): array {
         return [
             'title'       => 'Formação para Empresas — EDIT.',
-            'description' => 'Formação para empresas à medida em IA, Data, UX, Design e Marketing Digital. Upskilling e reskilling corporativo, certificado DGERT e elegível para Cheque-Formação e Fundos de Compensação.',
+            'description' => 'Formação para empresas à medida em IA, Data, UX, Design e Marketing Digital. Upskilling e reskilling corporativo, certificado DGERT e elegível para Fundos de Compensação.',
             'canonical'   => 'https://' . self::SUBDOMAIN . '/',
         ];
     }
@@ -3563,11 +3563,11 @@ button {
     <a class="dgert-hero-pill" href="https://www.dgert.gov.pt/entidades-formadoras-certificadas" target="_blank" rel="noopener noreferrer" aria-label="DGERT — Entidade Formadora Certificada"><img width="1024" height="483" src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/dgert-entidade-formadora-branco.png" alt="Entidade formadora certificada DGERT para formação para empresas" loading="eager" data-skip-wrap="1"><span class="dgert-hero-pill-text">Entidade Formadora Certificada</span><span class="dgert-hero-pill-arrow" aria-hidden="true">&#x2197;</span></a>
     <p class="eyebrow">Formação para Empresas</p>
     <h1>Forme a sua equipa nas competências <span class="accent">digitais</span> que o futuro exige.</h1>
-    <p class="lede">Programas à medida em <strong>IA, Data, UX, Design, Marketing Digital e Programação</strong>. Entregues presencialmente em Lisboa e Porto, nas vossas instalações, ou em formato remoto. Elegíveis para Cheque‑Formação e Fundos de Compensação.</p>
+    <p class="lede">Programas à medida em <strong>IA, Data, UX, Design, Marketing Digital e Programação</strong>. Entregues presencialmente em Lisboa e Porto, nas vossas instalações, ou em formato remoto. Elegíveis para Fundos de Compensação.</p>
     <div class="ctas">
       <span class="cta-wrap">
         <span class="cta-notation">Financiamento</span>
-        <a href="#financiamento" class="btn btn-yellow swipe-cta empresas-cta-secondary">
+        <a href="#contacto" class="btn btn-yellow swipe-cta empresas-cta-secondary">
           <span class="swipe-layer swipe-pink"></span>
           <span class="swipe-layer swipe-teal"></span>
           <span class="swipe-layer swipe-black"></span>
@@ -3636,13 +3636,18 @@ $wall_clients = [
 <section class="empresas-intro">
   <div class="wrap">
     <h2 class="section-title">Formação para empresas, à medida do vosso setor.</h2>
-    <p class="empresas-intro-lede">A EDIT. desenha <strong>formação para empresas</strong> que precisam de acelerar competências digitais — em Inteligência Artificial, Data, UX/UI, Design, Marketing Digital e Programação. Cada programa de formação para empresas é construído em torno das ferramentas e do contexto real da vossa equipa, e entregue presencialmente em Lisboa e Porto, nas vossas instalações, ou em formato remoto. Como entidade formadora certificada DGERT, toda a formação é elegível para Cheque-Formação, SIFIDE e Fundos de Compensação.</p>
+    <p class="empresas-intro-lede">A EDIT. desenha <strong>formação para empresas</strong> que precisam de acelerar competências digitais — em Inteligência Artificial, Data, UX/UI, Design, Marketing Digital e Programação. Cada programa de formação para empresas é construído em torno das ferramentas e do contexto real da vossa equipa, e entregue presencialmente em Lisboa e Porto, nas vossas instalações, ou em formato remoto. Como entidade formadora certificada DGERT, a formação pode ser enquadrada em Fundos de Compensação.</p>
   </div>
 </section>
 
 <!-- ─── FINANCING BANNER (visual break between social proof and process,
      v1.5.380) — teaser only; full Financing section with cards stays
-     further down the page. -->
+     further down the page.
+     DEACTIVATED 2026-06-15: team flagged the funding claims as factually
+     wrong (Cheque-Formação não se aplica a empresas; SIFIDE é crédito de
+     IRC, não formação; POCH terminou em 2013). Frozen pending legal review
+     document. Flip `if ( false )` → `if ( true )` to restore. -->
+<?php if ( false ) : ?>
 <section class="financing-banner">
   <div class="wrap">
     <p class="fb-eyebrow">Financiamento</p>
@@ -3651,6 +3656,7 @@ $wall_clients = [
     <a class="fb-link" href="#financiamento">Conhecer os apoios <span aria-hidden="true">→</span></a>
   </div>
 </section>
+<?php endif; /* financing-banner deactivated 2026-06-15 — pending legal review */ ?>
 
 <!-- ─── PROCESS — exact infographic replica (v1.5.378) ───────────────
    Reference: image #51. Thick colored sleeves alternately wrap circles
@@ -3993,6 +3999,12 @@ $wall_clients = [
 <?php endif; ?>
 
 <!-- ─── FINANCING ──────────────────────────────────────────────── -->
+<?php /* FINANCING SECTION DEACTIVATED 2026-06-15: team flagged funding claims
+   as factually wrong (Cheque-Formação não se aplica a empresas; SIFIDE é
+   crédito fiscal de IRC, não formação; POCH terminou em 2013). Único apoio
+   atual válido = Fundo de Compensação do Trabalho. Frozen pending legal
+   review document. Flip `if ( false )` → `if ( true )` to restore. */ ?>
+<?php if ( false ) : ?>
 <section class="financing" id="financiamento">
   <div class="wrap">
     <p class="section-eyebrow">Financiamento</p>
@@ -4028,6 +4040,7 @@ $wall_clients = [
     </div>
   </div>
 </section>
+<?php endif; /* financing section deactivated 2026-06-15 — pending legal review */ ?>
 
 <!-- ─── FAQ ────────────────────────────────────────────────────── -->
 <?php if ( ! empty( $faq ) ) : ?>
@@ -4057,7 +4070,7 @@ $wall_clients = [
         <ul class="lead-bullets">
           <li>Diagnóstico inicial em chamada de 30 minutos</li>
           <li>Programa desenhado em torno do vosso setor e ferramentas</li>
-          <li>Apoio na elegibilidade para Cheque-Formação, SIFIDE e outros</li>
+          <li>Apoio na elegibilidade para Fundos de Compensação</li>
           <li>DGERT certificada · Tutores profissionais em activo</li>
         </ul>
       </div>

@@ -1,4 +1,11 @@
 # Changelog
+## v1.5.547 — 2026-06-15 (Empresas FINANCIAMENTO section deactivated — wrong funding claims)
+Team flagged the entire financing messaging as factually wrong. Frozen (not rewritten) pending a legal review document. Corrections per team: **Cheque-Formação** não se aplica a empresas; **SIFIDE** é crédito fiscal de IRC (responsabilidade contabilística), não aplicável a formação profissional; **POCH** terminou em 2013. Único apoio atual válido = **Fundo de Compensação do Trabalho** (+ PESSOAS 2030, mas ainda não utilizável).
+- **Deactivated both financing blocks** behind `<?php if ( false ) : ?>` flags (instantly reversible): the teaser `financing-banner` (~L3646) and the full `financing` section with the 3 cards + "até 100% reembolsável" stat (~L3996).
+- **Repointed dangling CTA**: hero secondary CTA `Fundos de Compensação` `href="#financiamento"` → `#contacto` (anchor target no longer renders).
+- **Scrubbed inline false claims** (kept only the team-confirmed "Fundos de Compensação"): hero lede, intro lede, lead-form bullet, and the SEO meta description — all dropped Cheque-Formação / SIFIDE references.
+- **TODO**: restore + rewrite once the legal review document lands (flip the two `if ( false )` → `if ( true )` and replace card copy).
+
 ## v1.5.546 — 2026-06-15 (Empresas A11y + Best-Practices — Lighthouse audit fixes)
 Pulled the exact failing audits via a local Lighthouse run on the live subdomain (mobile): A11y **88**, the dominant Best-Practices fail = `errors-in-console` (CORS). Fixed everything that lives in our code; the rest (`.htaccess` CORS header, WP Rocket toggles) is parked for off-hours, and the LinkedIn Insight tag stays (kept by decision — it caps BP under 100 via `deprecations` / `third-party-cookies` / `inspector-issues`).
 - **Contrast (a11y)**: `--grey-3` `#888` → `#767676` (3.54:1 → 4.54:1 on white, passes WCAG AA). One variable clears **11 of the 17** flagged `color-contrast` nodes (`.section-eyebrow`, `.add-tab`, `.add-quote-attr`, `.add-section-title`, `.form-help`, `.privacy-note` — all share `--grey-3`). The remaining 6 are `.add-subs li .n` brand-accent step numbers (`var(--accent)`) — left as-is to preserve the brand colour; revisit as a separate design call.
