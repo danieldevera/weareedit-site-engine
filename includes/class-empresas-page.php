@@ -1043,7 +1043,7 @@ HTML;
         get_header();
         self::emit_body();
         get_footer();
-        $html = self::dedupe_canonical( (string) ob_get_clean() );
+        $html = self::a11y_chrome_fixes( self::dedupe_canonical( (string) ob_get_clean() ) );
 
         if ( $can_cache ) {
             set_transient( $cache_key, $html, 12 * HOUR_IN_SECONDS );
@@ -1066,6 +1066,58 @@ HTML;
         // Re-insert exactly one correct canonical immediately after <head ...>.
         $tag  = '<link rel="canonical" href="' . esc_url( $canonical ) . '" />';
         $html = preg_replace( '/(<head\b[^>]*>)/i', "$1\n" . $tag, $html, 1 );
+        return $html;
+    }
+
+    /**
+     * a11y post-process on the fully-rendered page. The theme header/footer chrome
+     * (reused on the subdomain) ships logo/brand images with no alt and logo links
+     * with no discernible name → Lighthouse image-alt + link-name failures. We add
+     * the missing attributes here rather than forking the theme. All rules ONLY add
+     * attributes (negative lookahead guards against double-adding); they never
+     * restructure markup, so a non-match is a safe no-op. Scoped to the visible
+     * chrome Lighthouse actually flags — hidden mega-menu icons are left untouched.
+     */
+    public static function a11y_chrome_fixes( string $html ): string {
+        // alt text on visible chrome images, keyed by filename fragment.
+        $img_alt = [
+            'logo-edit.svg'   => 'EDIT.',
+            'lupa.svg'        => 'Pesquisar',
+            'edit-work'       => 'EDIT. Work',
+            'disruptive-jobs' => 'Disruptive Jobs',
+            'Frame-352'       => 'The Transformation Space',
+            'logoIo'          => 'EDIT. io',
+        ];
+        foreach ( $img_alt as $needle => $alt ) {
+            $n = preg_quote( $needle, '#' );
+            $html = preg_replace(
+                '#<img\b(?![^>]*\balt=)([^>]*\bsrc="[^"]*' . $n . '[^"]*"[^>]*)>#i',
+                '<img alt="' . esc_attr( $alt ) . '"$1>',
+                $html
+            );
+        }
+
+        // Accessible names on logo links that contain only an image.
+        $html = preg_replace(
+            '#<a\b(?![^>]*\baria-label=)([^>]*\bclass="(?:headerMobile__logo|logo)"[^>]*)>#i',
+            '<a aria-label="EDIT."$1>',
+            $html
+        );
+
+        // Footer brand-grid links — name from destination domain.
+        $link_names = [
+            'edit\.work'               => 'EDIT. Work',
+            'disruptivejobs\.io'       => 'Disruptive Jobs',
+            'thetransformation\.space' => 'The Transformation Space',
+        ];
+        foreach ( $link_names as $dom => $label ) {
+            $html = preg_replace(
+                '#<a\b(?![^>]*\baria-label=)([^>]*\bhref="https?://(?:www\.)?' . $dom . '[^"]*"[^>]*)>#i',
+                '<a aria-label="' . esc_attr( $label ) . '"$1>',
+                $html
+            );
+        }
+
         return $html;
     }
 
@@ -1631,7 +1683,9 @@ CSS;
         $body = preg_replace( '/<noscript><iframe\s+src="https:\/\/www\.googletagmanager\.com\/ns\.html[^"]+"[^>]*><\/iframe><\/noscript>/s', '', $body );
         // Strip the preview banner (Daniel can see admin bar for env signal).
         $body = preg_replace( '/<div\s+class="preview-banner"[^>]*>.*?<\/div>/s', '', $body );
-        echo $body;
+        // a11y: the theme chrome has no <main> landmark (Lighthouse landmark-one-main).
+        // Wrap our content sections so the page exposes exactly one main region.
+        echo '<main id="conteudo">' . $body . '</main>';
     }
 
     /* ─────────────────────────────────────────────────────────────────────
@@ -1864,48 +1918,56 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </script>
 <?php endif; ?>
 
+<?php
+/* CORS fix: empresas.weareedit.io is a separate origin from the apex that
+ * plugins_url() resolves to. Absolute apex font URLs get CORS-blocked on the
+ * subdomain (fonts are always fetched in CORS mode), so SctoGroteskA silently
+ * fell back to system fonts. Root-relative paths resolve same-origin on
+ * whichever host is serving — same install, same files. */
+$font_base = wp_make_link_relative( WEAREDIT_SITE_ENGINE_URL ) . 'assets/fonts/';
+?>
 <style>
 @font-face {
   font-family: 'SctoGroteskA';
   font-weight: 100;
   font-style: normal;
   font-display: swap;
-  src: url('<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/fonts/SctoGroteskA-Thin.woff2' ); ?>') format('woff2');
+  src: url('<?php echo esc_url( $font_base . 'SctoGroteskA-Thin.woff2' ); ?>') format('woff2');
 }
 @font-face {
   font-family: 'SctoGroteskA';
   font-weight: 300;
   font-style: normal;
   font-display: swap;
-  src: url('<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/fonts/SctoGroteskA-Light.woff2' ); ?>') format('woff2');
+  src: url('<?php echo esc_url( $font_base . 'SctoGroteskA-Light.woff2' ); ?>') format('woff2');
 }
 @font-face {
   font-family: 'SctoGroteskA';
   font-weight: 400;
   font-style: normal;
   font-display: swap;
-  src: url('<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/fonts/SctoGroteskA-Regular.woff2' ); ?>') format('woff2');
+  src: url('<?php echo esc_url( $font_base . 'SctoGroteskA-Regular.woff2' ); ?>') format('woff2');
 }
 @font-face {
   font-family: 'SctoGroteskA';
   font-weight: 500;
   font-style: normal;
   font-display: swap;
-  src: url('<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/fonts/SctoGroteskA-Medium.woff2' ); ?>') format('woff2');
+  src: url('<?php echo esc_url( $font_base . 'SctoGroteskA-Medium.woff2' ); ?>') format('woff2');
 }
 @font-face {
   font-family: 'SctoGroteskA';
   font-weight: 700;
   font-style: normal;
   font-display: swap;
-  src: url('<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/fonts/SctoGroteskA-Bold.woff2' ); ?>') format('woff2');
+  src: url('<?php echo esc_url( $font_base . 'SctoGroteskA-Bold.woff2' ); ?>') format('woff2');
 }
 @font-face {
   font-family: 'SctoGroteskA';
   font-weight: 900;
   font-style: normal;
   font-display: swap;
-  src: url('<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/fonts/SctoGroteskA-Black.woff2' ); ?>') format('woff2');
+  src: url('<?php echo esc_url( $font_base . 'SctoGroteskA-Black.woff2' ); ?>') format('woff2');
 }
 :root {
   --edit-yellow: #ffdd06;
@@ -1915,7 +1977,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   --ink: #0a0a0a;
   --grey-1: #f4f4f4;
   --grey-2: #e5e5e5;
-  --grey-3: #888;
+  --grey-3: #767676; /* a11y: 4.54:1 on white (was #888 = 3.54:1, failed WCAG AA) */
   --grey-4: #444;
 }
 
