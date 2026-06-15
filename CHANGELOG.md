@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.536 — 2026-06-15 (Newsletter strip — remove top/bottom dead space site-wide)
+- **Zeroed the newsletter strip's vertical margins** (Daniel: "remove top and bottom dead spaces for the newsletter banner site-wide"). `#edit-newsletter-strip` margin `56px 0 80px` → `0` (base), `48px 0 72px` → `0` (≤767), `64px 0 88px` → `0` (≥768) in `assets/newsletter-signup.css`. The margins were revealing the dark page/footer background as black "dead space" bands around the pink strip on non-home pages; the strip now sits flush. Internal padding (40/48px) unchanged. NOTE: on the homepage the strip is now flush with the hero/course grid too (was intentional breathing room) — revisit if it reads tight.
+
 ## v1.5.535 — 2026-06-15 (Course singles — roll out Empresas + related-areas banners site-wide)
 - **Both course-single banners rolled out from the single-slug live test to every `formacao` single** (Daniel: "these 2 sections were implemented on [the test bootcamp] — make the same alterations to all product pages"). In `class-pillar-cross-links.php` the three `BANNER_TEST_SLUG` gates were removed:
   - **Mini "EDIT. para Empresas" banner** ("Faça esta formação com a *sua equipa*" + DGERT lockup + "Conhecer a EDIT. para Empresas →" swipe-cta) — now on all product pages; hides the old theme in-company banner (`section.banner.split-black-grey`).

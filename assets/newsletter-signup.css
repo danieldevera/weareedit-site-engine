@@ -10,11 +10,10 @@
        workshop = teal, etc.) — see EDIT_Newsletter_Signup::TYPOLOGY_COLORS */
     background: #ffdd06;
     padding: 40px 24px;
-    /* Generous vertical breathing room from the hero above and the course
-       cards below — section.hero ends tight to the H1/CTA, and
-       .courses-boxes-home opens straight into a grid. Without this,
-       the yellow strip feels glued to neighbouring sections. */
-    margin: 56px 0 80px;
+    /* Flush top/bottom — the vertical margins previously revealed the dark
+       page/footer background as "dead space" black bands around the strip on
+       non-home pages (Daniel: remove top/bottom dead space site-wide). */
+    margin: 0;
     overflow: hidden;
     font-family: 'SctoGroteskA', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     color: #0a0a0a;
@@ -49,7 +48,7 @@
 }
 
 @media (max-width: 767px) {
-    #edit-newsletter-strip { margin: 48px 0 72px; }
+    #edit-newsletter-strip { margin: 0; }
 }
 
 #edit-newsletter-strip__inner {
@@ -62,7 +61,7 @@
 }
 
 @media (min-width: 768px) {
-    #edit-newsletter-strip { padding: 48px 32px; margin: 64px 0 88px; }
+    #edit-newsletter-strip { padding: 48px 32px; margin: 0; }
     #edit-newsletter-strip__inner {
         grid-template-columns: 1.2fr 1fr;
         gap: 48px;
