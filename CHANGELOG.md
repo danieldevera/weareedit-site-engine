@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.552 — 2026-06-15 (Empresas process — pink title highlight on Diagnóstico)
+After removing the "48 horas" time tag from the Diagnóstico step (v1.5.549), it sat bare next to the timed steps. Added a `pw-step--notime` modifier (auto-applied to any step with an empty `time`) that gives the title an accent-coloured background pill — Diagnóstico's accent is pink (#f92869), so its title now shows on pink, matching the visual weight of the other steps' time tags.
+
 ## v1.5.551 — 2026-06-15 (Empresas — scrub funding terms from HTML/CSS comments in page source)
 Post-deploy `curl` of the live page (1.5.550) showed the visible copy was clean, but 4 mentions of the old terms (Cheque-Formação / SIFIDE / POCH / "até 100%") still sat inside **code comments** that get emitted into the HTML source. Harmless to humans, but this site is optimised for LLM/AI citation, so the source itself must be clean. Reworded the financing HTML comment + two inline-CSS comments to drop the term names. No functional/visual change.
 

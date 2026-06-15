@@ -2736,6 +2736,13 @@ button {
   line-height: 1.25;
   color: var(--ink);
 }
+/* Steps with no time pill (Diagnóstico) get an accent-coloured title
+   highlight so they match the visual weight of the timed steps. */
+.pw-step--notime .pw-title {
+  background: var(--accent);
+  color: #0a0a0a;
+  padding: 5px 11px;
+}
 .pw-body {
   font-size: 14.5px;
   color: var(--grey-4);
@@ -3733,8 +3740,11 @@ $wall_clients = [
       <?php foreach ( $process as $i => $step ) :
           $color = $step_colors[ $i % 4 ];
           $place = ( $i % 2 === 0 ) ? 'above' : 'below';
+          // Steps without a time pill (e.g. Diagnóstico) get an accent-coloured
+          // title highlight instead, so they keep the same visual weight.
+          $notime = empty( $step['time'] ) ? ' pw-step--notime' : '';
       ?>
-        <div class="pw-step pw-step--<?php echo esc_attr( $place ); ?>" data-num="<?php echo esc_attr( $step['number'] ); ?>" style="--accent: <?php echo esc_attr( $color ); ?>;">
+        <div class="pw-step pw-step--<?php echo esc_attr( $place ); ?><?php echo $notime; ?>" data-num="<?php echo esc_attr( $step['number'] ); ?>" style="--accent: <?php echo esc_attr( $color ); ?>;">
           <span class="pw-dots" aria-hidden="true"></span>
           <div class="pw-content">
             <?php if ( ! empty( $step['time'] ) ) : ?>
