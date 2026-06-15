@@ -2511,7 +2511,12 @@ button {
 .process-wave-v2 {
   position: relative;
   width: 100%;
-  margin-top: 128px;
+  /* The wave SVG is 1400×400 (3.5:1) so its height shrinks with viewport
+     width, but the "above" step blocks are fixed-height and overflow upward
+     into the section title. 128px left only ~3px clearance even at full
+     width — any narrowing overlapped. 200px gives slack across the whole
+     wave-active range (down to the 1000px stack breakpoint below). */
+  margin-top: 200px;
 }
 .pw-svg {
   display: block;
@@ -2589,10 +2594,13 @@ button {
   margin: 0;
   max-width: 28ch;
 }
-@media (max-width: 880px) {
+@media (max-width: 1000px) {
+  /* Raised 880→1000: below this the wave gets too compressed and the fixed-
+     height step blocks overlap the title, so switch to the clean vertical
+     stack earlier. */
   .process-wave-v2 { margin-top: 24px; }
   .pw-svg {
-    /* Mobile: hide the SVG wave entirely, show stacked text only */
+    /* Mobile/tablet: hide the SVG wave entirely, show stacked text only */
     display: none;
   }
   .pw-grid {
@@ -2726,7 +2734,7 @@ button {
 .financing .section-eyebrow { color: var(--grey-4); }
 .financing .section-title {
   color: var(--ink);
-  max-width: 16ch;
+  max-width: 20ch;
 }
 .financing .section-title .accent {
   position: relative;
@@ -3839,7 +3847,7 @@ $wall_clients = [
 <section class="financing" id="financiamento">
   <div class="wrap">
     <p class="section-eyebrow">Financiamento</p>
-    <h2 class="section-title">Não é o motivo. É o <span class="accent">desbloqueio</span>.</h2>
+    <h2 class="section-title">Não é o motivo.<br>É o <span class="accent">desbloqueio</span>.</h2>
     <p class="financing-lede">As empresas portuguesas têm acesso a mecanismos de apoio à formação que poucas conhecem. Os nossos programas são elegíveis para os principais — e tratamos da candidatura convosco.</p>
     <div class="fin-stat">
       <div class="fin-stat__num"><span class="u">até</span>100%</div>
@@ -3862,12 +3870,12 @@ $wall_clients = [
         <span class="tag tag--soon">A explorar</span>
         <h3>Outros apoios</h3>
         <p>POCH, PT 2030, fundos sectoriais. A elegibilidade depende do setor, dimensão da empresa e tipo de programa. <b>Mapeamos convosco</b> o melhor enquadramento.</p>
-        <a class="fin-card__lnk" href="#contacto">Falar connosco <span class="ar" aria-hidden="true">→</span></a>
+        <a class="fin-card__lnk" href="#contacto">Fale connosco <span class="ar" aria-hidden="true">→</span></a>
       </div>
     </div>
     <div class="financing-trust">
       <div class="fin-trust-badge"><strong>EDIT. é Entidade Formadora Certificada pela DGERT (nº 18391).</strong> Todas as formações são elegíveis para mecanismos de apoio à formação corporativa.</div>
-      <a href="#contacto" class="cta-link swipe-cta"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Verificar a vossa elegibilidade <span class="ar" aria-hidden="true">→</span></span></a>
+      <a href="#contacto" class="cta-link swipe-cta"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Fale connosco <span class="ar" aria-hidden="true">→</span></span></a>
     </div>
   </div>
 </section>
