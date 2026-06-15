@@ -2863,8 +2863,8 @@ button {
 
 /* ── FINANCING (v1.5.523) — LIGHT PREMIUM ─────────────────────────────
    Dark → cream paper editorial. Reads "established & legitimate" (the
-   trust emotion that closes corporate leads). Surfaces the "até 100%"
-   stat + sharper CTA. Approved mockup: financiamento-section-light-premium. */
+   trust emotion that closes corporate leads). Approved mockup:
+   financiamento-section-light-premium. */
 .financing {
   padding: 104px 0 92px;
   background: #f7f6f2;
@@ -2904,7 +2904,7 @@ button {
   margin: -28px 0 0 0;
   line-height: 1.6;
 }
-/* "até 100%" hero stat */
+/* (legacy) financing stat — markup removed v1.5.549, rules kept inert */
 .fin-stat { display: flex; align-items: flex-end; gap: 22px; margin: 40px 0 4px; }
 .fin-stat__num {
   font-size: clamp(54px, 7vw, 86px); line-height: 0.92; font-weight: 800;
@@ -3993,8 +3993,8 @@ $wall_clients = [
 <?php endif; ?>
 
 <!-- ─── FINANCING (rebuilt minimal v1.5.549 per legal review doc 2026-06-15) —
-     cards (Cheque-Formação / SIFIDE / POCH) + "até 100%" stat all removed;
-     section now mentions ONLY the Fundo de Compensação do Trabalho. -->
+     former cards + stat removed; section now mentions only the
+     Fundo de Compensação do Trabalho. -->
 <section class="financing" id="financiamento">
   <div class="wrap">
     <p class="section-eyebrow">Financiamento</p>

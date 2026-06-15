@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.551 — 2026-06-15 (Empresas — scrub funding terms from HTML/CSS comments in page source)
+Post-deploy `curl` of the live page (1.5.550) showed the visible copy was clean, but 4 mentions of the old terms (Cheque-Formação / SIFIDE / POCH / "até 100%") still sat inside **code comments** that get emitted into the HTML source. Harmless to humans, but this site is optimised for LLM/AI citation, so the source itself must be clean. Reworded the financing HTML comment + two inline-CSS comments to drop the term names. No functional/visual change.
+
 ## v1.5.550 — 2026-06-15 (Empresas — hero primary CTA "Discovery Call" → "Pedir proposta")
 Per Daniel, aligning the hero with the review doc's email-preference / minimise-meetings theme. Primary CTA label "Discovery Call" → "Pedir proposta" (still → #contacto). Decision logged: sitewide org schema Cheque-Formação/IRS line (`class-structured-data.php:74`) stays as-is (B2C/individual context, valid).
 
