@@ -1,4 +1,18 @@
 # Changelog
+## v1.5.549 — 2026-06-15 (Empresas — apply team legal review doc "Alterações na página")
+Implemented the full review document. Funding messaging now reflects reality: only the **Fundo de Compensação do Trabalho** is mentioned (singular, "do Trabalho"); all Cheque-Formação / SIFIDE / POCH / POPH / "até 100%" / "reembolso" claims gone.
+- **Hero lede:** "Elegíveis para Fundos de Compensação" → "Formação certificada pela DGERT, com emissão de certificados individuais." Hero CTA label → "Fundo de Compensação do Trabalho".
+- **Intro lede:** deleted the trailing "Como entidade formadora certificada DGERT, … Fundos de Compensação" sentence entirely.
+- **Financing banner:** removed the false-claims body sentence; kept eyebrow + title + "Conhecer os apoios" link (reactivated).
+- **Financing section (rebuilt minimal, reactivated):** dropped the "até 100%" stat + all 3 cards; now a single mention of the Fundo de Compensação do Trabalho + DGERT badge ("certificados individuais") + CTA.
+- **Process (shared const):** Diagnóstico step — removed the "48 horas" time tag + "de 60 minutos" from the body (empresas page hides empty time pill).
+- **FAQ (shared const):** cost answer no longer cites €8.000 / nº formandos / customização — now "depende essencialmente do número de horas de formação"; **deleted** "Quanto tempo demora…"; min/max group answer → "Não temos limites fixos…"; customization answer → "sobretudo por email", no 60-min session.
+- **Lead form bullets:** "chamada de 30 minutos" → "Diagnóstico inicial das vossas necessidades, por email"; removed the "Apoio na elegibilidade" bullet.
+- **Founder reply email:** dropped "agendar uma conversa de 30 minutos".
+- **Global:** every "Fundos de Compensação" → "Fundo de Compensação do Trabalho" across empresas page, homepage band + eehe feat (`class-empresas-links.php`), SEO meta, and the draft corporativa own-render copy.
+- **WhatsApp FAB icon:** painted the glyph from an inline `data:image/svg+xml;base64` (server-read of `assets/whatsapp.svg`) instead of an external URL — immune to path/cache/404 (the doc flagged a broken "?" icon, likely from the pre-fix version).
+- **Left for confirmation:** hero primary CTA still "Discovery Call" (doc didn't list it, but its email-preference theme may apply); sitewide org schema `class-structured-data.php:74` Cheque-Formação/IRS (B2C context).
+
 ## v1.5.548 — 2026-06-15 (Empresas — scrub remaining wrong funding claims from shared constants + homepage)
 v1.5.547 deactivated the FINANCIAMENTO *section*, but the live empresas.weareedit.io page still rendered the false claims because it pulls **shared constants** (STATS / VALUE_PROPS / FAQ) from `EDIT_Formacao_Corporativa_Page`, plus the homepage/area-page sections in `class-empresas-links.php` had their own copy. Found via a live `curl` scan (SIFIDE ×7, Cheque-Formação ×9, POCH, "até 100%" still present). Scrubbed all of it to the team-confirmed "Fundo(s) de Compensação".
 - **Shared constants (`class-formacao-corporativa-page.php`, feed the live empresas page):**

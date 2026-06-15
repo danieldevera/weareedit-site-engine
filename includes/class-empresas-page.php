@@ -468,7 +468,7 @@ class EDIT_Empresas_Page {
         <tr>
           <td class="px-md" style="padding:16px 40px 0 40px;">
             <p style="margin:0 0 16px 0;font-size:16px;line-height:1.6;color:#0a0a0a;">Sou o <strong>Daniel Devera</strong>, fundador da EDIT. Recebi o vosso pedido para <strong>{$empresa_safe}</strong> — obrigado pelo interesse.</p>
-            <p style="margin:0 0 16px 0;font-size:16px;line-height:1.6;color:#0a0a0a;">Eu próprio respondo a todos os pedidos vindos pela <strong>empresas.weareedit.io</strong>. Em 24 horas úteis contacto-vos para agendar uma conversa de 30 minutos onde percebemos o vosso contexto, equipa e objetivos. Depois desenhamos juntos um programa à medida do vosso setor.</p>
+            <p style="margin:0 0 16px 0;font-size:16px;line-height:1.6;color:#0a0a0a;">Eu próprio respondo a todos os pedidos vindos pela <strong>empresas.weareedit.io</strong>. Em 24 horas úteis contacto-vos para percebermos o vosso contexto, equipa e objetivos. Depois desenhamos juntos um programa à medida do vosso setor.</p>
             <p style="margin:0;font-size:16px;line-height:1.6;color:#0a0a0a;">Se quiser adiantar, pode reservar já o horário que lhe convém:</p>
           </td>
         </tr>
@@ -1475,7 +1475,7 @@ body.empresas-page #whatsapp-button {
   width: 56px !important;
   height: 56px !important;
   background: #25D366 !important;
-  background-image: url('<?php echo esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/whatsapp.svg' ); ?>') !important;
+  background-image: url('data:image/svg+xml;base64,<?php echo base64_encode( (string) @file_get_contents( WEAREDIT_SITE_ENGINE_PATH . 'assets/whatsapp.svg' ) ); ?>') !important;
   background-repeat: no-repeat !important;
   background-position: center center !important;
   background-size: 30px 30px !important;
@@ -1726,7 +1726,7 @@ CSS;
     private static function seo_meta(): array {
         return [
             'title'       => 'Formação para Empresas — EDIT.',
-            'description' => 'Formação para empresas à medida em IA, Data, UX, Design e Marketing Digital. Upskilling e reskilling corporativo, certificado DGERT e elegível para Fundos de Compensação.',
+            'description' => 'Formação para empresas à medida em IA, Data, UX, Design e Marketing Digital. Upskilling e reskilling corporativo, certificado DGERT e elegível para o Fundo de Compensação do Trabalho.',
             'canonical'   => 'https://' . self::SUBDOMAIN . '/',
         ];
     }
@@ -3563,7 +3563,7 @@ button {
     <a class="dgert-hero-pill" href="https://www.dgert.gov.pt/entidades-formadoras-certificadas" target="_blank" rel="noopener noreferrer" aria-label="DGERT — Entidade Formadora Certificada"><img width="1024" height="483" src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/dgert-entidade-formadora-branco.png" alt="Entidade formadora certificada DGERT para formação para empresas" loading="eager" data-skip-wrap="1"><span class="dgert-hero-pill-text">Entidade Formadora Certificada</span><span class="dgert-hero-pill-arrow" aria-hidden="true">&#x2197;</span></a>
     <p class="eyebrow">Formação para Empresas</p>
     <h1>Forme a sua equipa nas competências <span class="accent">digitais</span> que o futuro exige.</h1>
-    <p class="lede">Programas à medida em <strong>IA, Data, UX, Design, Marketing Digital e Programação</strong>. Entregues presencialmente em Lisboa e Porto, nas vossas instalações, ou em formato remoto. Elegíveis para Fundos de Compensação.</p>
+    <p class="lede">Programas à medida em <strong>IA, Data, UX, Design, Marketing Digital e Programação</strong>. Entregues presencialmente em Lisboa e Porto, nas vossas instalações, ou em formato remoto. Formação certificada pela DGERT, com emissão de certificados individuais.</p>
     <div class="ctas">
       <span class="cta-wrap">
         <span class="cta-notation">Financiamento</span>
@@ -3571,7 +3571,7 @@ button {
           <span class="swipe-layer swipe-pink"></span>
           <span class="swipe-layer swipe-teal"></span>
           <span class="swipe-layer swipe-black"></span>
-          <span class="swipe-label">Fundos de Compensação</span>
+          <span class="swipe-label">Fundo de Compensação do Trabalho</span>
         </a>
       </span>
       <a href="#contacto" class="btn btn-yellow swipe-cta empresas-cta-primary">
@@ -3636,27 +3636,21 @@ $wall_clients = [
 <section class="empresas-intro">
   <div class="wrap">
     <h2 class="section-title">Formação para empresas, à medida do vosso setor.</h2>
-    <p class="empresas-intro-lede">A EDIT. desenha <strong>formação para empresas</strong> que precisam de acelerar competências digitais — em Inteligência Artificial, Data, UX/UI, Design, Marketing Digital e Programação. Cada programa de formação para empresas é construído em torno das ferramentas e do contexto real da vossa equipa, e entregue presencialmente em Lisboa e Porto, nas vossas instalações, ou em formato remoto. Como entidade formadora certificada DGERT, a formação pode ser enquadrada em Fundos de Compensação.</p>
+    <p class="empresas-intro-lede">A EDIT. desenha <strong>formação para empresas</strong> que precisam de acelerar competências digitais — em Inteligência Artificial, Data, UX/UI, Design, Marketing Digital e Programação. Cada programa de formação para empresas é construído em torno das ferramentas e do contexto real da vossa equipa, e entregue presencialmente em Lisboa e Porto, nas vossas instalações, ou em formato remoto.</p>
   </div>
 </section>
 
 <!-- ─── FINANCING BANNER (visual break between social proof and process,
-     v1.5.380) — teaser only; full Financing section with cards stays
-     further down the page.
-     DEACTIVATED 2026-06-15: team flagged the funding claims as factually
-     wrong (Cheque-Formação não se aplica a empresas; SIFIDE é crédito de
-     IRC, não formação; POCH terminou em 2013). Frozen pending legal review
-     document. Flip `if ( false )` → `if ( true )` to restore. -->
-<?php if ( false ) : ?>
+     v1.5.380) — teaser to the Financing section below.
+     v1.5.549 (legal review doc 2026-06-15): false-claims body sentence
+     removed; eyebrow + title + link to the minimal Financing section kept. -->
 <section class="financing-banner">
   <div class="wrap">
     <p class="fb-eyebrow">Financiamento</p>
     <h2 class="fb-title">Não é o motivo. É o <span class="fb-accent">desbloqueio</span>.</h2>
-    <p class="fb-body">As empresas portuguesas têm acesso a mecanismos de apoio à formação que poucas conhecem. Os nossos programas são elegíveis para os principais — e ajudamos no processo de candidatura.</p>
     <a class="fb-link" href="#financiamento">Conhecer os apoios <span aria-hidden="true">→</span></a>
   </div>
 </section>
-<?php endif; /* financing-banner deactivated 2026-06-15 — pending legal review */ ?>
 
 <!-- ─── PROCESS — exact infographic replica (v1.5.378) ───────────────
    Reference: image #51. Thick colored sleeves alternately wrap circles
@@ -3998,49 +3992,20 @@ $wall_clients = [
 </script>
 <?php endif; ?>
 
-<!-- ─── FINANCING ──────────────────────────────────────────────── -->
-<?php /* FINANCING SECTION DEACTIVATED 2026-06-15: team flagged funding claims
-   as factually wrong (Cheque-Formação não se aplica a empresas; SIFIDE é
-   crédito fiscal de IRC, não formação; POCH terminou em 2013). Único apoio
-   atual válido = Fundo de Compensação do Trabalho. Frozen pending legal
-   review document. Flip `if ( false )` → `if ( true )` to restore. */ ?>
-<?php if ( false ) : ?>
+<!-- ─── FINANCING (rebuilt minimal v1.5.549 per legal review doc 2026-06-15) —
+     cards (Cheque-Formação / SIFIDE / POCH) + "até 100%" stat all removed;
+     section now mentions ONLY the Fundo de Compensação do Trabalho. -->
 <section class="financing" id="financiamento">
   <div class="wrap">
     <p class="section-eyebrow">Financiamento</p>
     <h2 class="section-title">Não é o motivo.<br>É o <span class="accent">desbloqueio</span>.</h2>
-    <p class="financing-lede">As empresas portuguesas têm acesso a mecanismos de apoio à formação que poucas conhecem. Os nossos programas são elegíveis para os principais — e tratamos da candidatura convosco.</p>
-    <div class="fin-stat">
-      <div class="fin-stat__num"><span class="u">até</span>100%</div>
-      <div class="fin-stat__cap">do investimento em formação pode ser reembolsável.</div>
-    </div>
-    <div class="financing-grid">
-      <div class="fin-card">
-        <span class="tag">Até 30 Junho 2026</span>
-        <h3>Cheque-Formação + Digital</h3>
-        <p>Apoio direto a PME para formação e capacitação digital dos trabalhadores. A janela atual termina a <b>30 de Junho de 2026</b> — vale a pena verificar elegibilidade agora.</p>
-        <a class="fin-card__lnk" href="#contacto">Verificar elegibilidade <span class="ar" aria-hidden="true">→</span></a>
-      </div>
-      <div class="fin-card">
-        <span class="tag tag--year">Anual</span>
-        <h3>SIFIDE</h3>
-        <p>Sistema de Incentivos Fiscais à I&amp;D Empresarial. Permite <b>deduzir parte do investimento</b> em formação tecnológica ao IRC. Aplicável a programas com componente de inovação.</p>
-        <a class="fin-card__lnk" href="#contacto">Saber mais <span class="ar" aria-hidden="true">→</span></a>
-      </div>
-      <div class="fin-card">
-        <span class="tag tag--soon">A explorar</span>
-        <h3>Outros apoios</h3>
-        <p>POCH, PT 2030, fundos sectoriais. A elegibilidade depende do setor, dimensão da empresa e tipo de programa. <b>Mapeamos convosco</b> o melhor enquadramento.</p>
-        <a class="fin-card__lnk" href="#contacto">Fale connosco <span class="ar" aria-hidden="true">→</span></a>
-      </div>
-    </div>
+    <p class="financing-lede">A formação profissional certificada pode ser enquadrada no <b>Fundo de Compensação do Trabalho</b>.</p>
     <div class="financing-trust">
-      <div class="fin-trust-badge"><strong>EDIT. é Entidade Formadora Certificada pela DGERT (nº 18391).</strong> Todas as formações são elegíveis para mecanismos de apoio à formação corporativa.</div>
+      <div class="fin-trust-badge"><strong>EDIT. é Entidade Formadora Certificada pela DGERT (nº 18391).</strong> Formação certificada com emissão de certificados individuais.</div>
       <a href="#contacto" class="cta-link swipe-cta"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Fale connosco <span class="ar" aria-hidden="true">→</span></span></a>
     </div>
   </div>
 </section>
-<?php endif; /* financing section deactivated 2026-06-15 — pending legal review */ ?>
 
 <!-- ─── FAQ ────────────────────────────────────────────────────── -->
 <?php if ( ! empty( $faq ) ) : ?>
@@ -4068,9 +4033,8 @@ $wall_clients = [
         <h2>Vamos formar a sua equipa.</h2>
         <p class="lead-intro">Em <strong>24 horas úteis</strong> voltamos com um plano e uma proposta. Sem compromisso.</p>
         <ul class="lead-bullets">
-          <li>Diagnóstico inicial em chamada de 30 minutos</li>
+          <li>Diagnóstico inicial das vossas necessidades, por email</li>
           <li>Programa desenhado em torno do vosso setor e ferramentas</li>
-          <li>Apoio na elegibilidade para Fundos de Compensação</li>
           <li>DGERT certificada · Tutores profissionais em activo</li>
         </ul>
       </div>

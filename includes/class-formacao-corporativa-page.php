@@ -334,8 +334,8 @@ class EDIT_Formacao_Corporativa_Page {
         [
             'number' => '01',
             'title'  => 'Diagnóstico',
-            'time'   => '48 horas',
-            'body'   => 'Sessão de descoberta de 60 minutos com stakeholders + análise dos perfis dos formandos. Definimos resultados esperados, ferramentas em uso, e métricas de impacto.',
+            'time'   => '',
+            'body'   => 'Sessão de descoberta com stakeholders + análise dos perfis dos formandos. Definimos resultados esperados, ferramentas em uso, e métricas de impacto.',
         ],
         [
             'number' => '02',
@@ -386,11 +386,10 @@ class EDIT_Formacao_Corporativa_Page {
      * based on common enterprise training procurement concerns.
      */
     const FAQ = [
-        [ 'q' => 'Quanto custa uma formação in-company?', 'a' => 'O investimento depende do número de formandos, da duração, e do nível de customização. Bootcamps de 40h para 10-15 formandos começam habitualmente em € 8.000. Pedimos sempre um briefing gratuito para enviar uma proposta detalhada.', 'placeholder' => true ],
-        [ 'q' => 'Quanto tempo demora a desenhar e entregar um programa?', 'a' => 'Tipicamente: <strong>48 horas</strong> de diagnóstico, <strong>1 semana</strong> de desenho do programa, <strong>1-2 semanas</strong> de entrega (dependendo da carga horária), e avaliação de impacto a <strong>3-6 meses</strong>. Para necessidades urgentes, conseguimos arrancar em 5 dias úteis com programas standard.', 'placeholder' => true ],
+        [ 'q' => 'Quanto custa uma formação in-company?', 'a' => 'O investimento depende essencialmente do número de horas de formação. Pedimos sempre um briefing gratuito para enviar uma proposta detalhada e adaptada ao vosso contexto.', ],
         [ 'q' => 'As formações podem ser nas nossas instalações?', 'a' => 'Sim. Entregamos in-house em qualquer ponto de Portugal continental. Também temos campus em Lisboa (Av. Aquilino Ribeiro Machado) e Porto (Rua Alferes Malheiro) caso prefiram. Para equipas distribuídas, o formato remoto em tempo real funciona excepcionalmente bem.', ],
-        [ 'q' => 'Qual o tamanho mínimo e máximo de grupo?', 'a' => 'O mínimo recomendado é <strong>6 formandos</strong> para garantir dinâmica de grupo. O máximo depende do formato: até <strong>15 em sala</strong>, até <strong>25 em remoto</strong>. Para programas de larga escala (50+), dividimos em coortes paralelas com sincronização semanal.', 'placeholder' => true ],
-        [ 'q' => 'Como customizam o programa ao nosso negócio?', 'a' => 'Começamos com uma sessão de descoberta de 60 minutos para entender (a) o problema de negócio que querem resolver, (b) os perfis dos formandos, (c) as ferramentas e fluxos de trabalho atuais. Depois o lead instructor desenha um programa-piloto que validamos convosco antes do kick-off.', ],
+        [ 'q' => 'Qual o tamanho mínimo e máximo de grupo?', 'a' => 'Não temos limites fixos. Adaptamo-nos sempre à dimensão da vossa equipa — de grupos pequenos a coortes de larga escala, organizadas em turmas paralelas quando necessário.', ],
+        [ 'q' => 'Como customizam o programa ao nosso negócio?', 'a' => 'Começamos por entender, sobretudo por email, (a) o problema de negócio que querem resolver, (b) os perfis dos formandos, e (c) as ferramentas e fluxos de trabalho atuais. Depois desenhamos um programa-piloto que validamos convosco antes do kick-off.', ],
         [ 'q' => 'Que indicadores de impacto medimos?', 'a' => 'Pré/pós-teste de competências, NPS por sessão, projeto final aplicado ao vosso contexto real, e seguimento a 3 e 6 meses para medir adoção das competências no dia-a-dia. O relatório final entrega métricas comparáveis para HR / L&D dashboards.', 'placeholder' => true ],
         [ 'q' => 'Os tutores assinam NDA?', 'a' => 'Sim. Todos os tutores e a equipa pedagógica da EDIT. assinam acordo de confidencialidade antes do kick-off, cobrindo dados, processos internos, e materiais proprietários partilhados durante o programa.', ],
         [ 'q' => 'Podemos contratar formação em inglês?', 'a' => 'Sim. Várias formações têm versão EN — Inteligência Artificial, Data Science, e UX/UI Design são as mais procuradas por equipas internacionais. Para empresas multi-país, entregamos sessões em paralelo PT/EN com syllabus unificado.', ],
@@ -537,13 +536,13 @@ class EDIT_Formacao_Corporativa_Page {
         $body = '<div style="font-family:Arial,sans-serif;font-size:15px;color:#1a1a1a;line-height:1.6;max-width:560px;">'
               . '<p>Olá ' . esc_html( $d['nome'] ) . ',</p>'
               . '<p>Recebemos o vosso pedido de proposta para <strong>' . esc_html( $d['empresa'] ) . '</strong>. O nosso lead de programas corporativos vai analisar o brief e voltar a contactar-vos em <strong>24 horas úteis</strong> com:</p>'
-              . '<ul><li>Confirmação das áreas + formato escolhidos</li><li>Proposta de duração + agenda preliminar</li><li>Estimativa de investimento + opções de financiamento (Fundos de Compensação)</li></ul>'
+              . '<ul><li>Confirmação das áreas + formato escolhidos</li><li>Proposta de duração + agenda preliminar</li><li>Estimativa de investimento + opções de financiamento (Fundo de Compensação do Trabalho)</li></ul>'
               . '<p>Para acelerar a resposta, podem partilhar antecipadamente:</p>'
               . '<ul><li>Material existente sobre as competências atuais da equipa (opcional)</li><li>Ferramentas em uso no dia-a-dia</li><li>Datas indisponíveis para sessões</li></ul>'
               . '<p>Caso seja urgente, podem ligar directamente para <strong>+351 211 451 200</strong> e referir este pedido.</p>'
               . '<p>Obrigado pela confiança,<br><strong>Equipa EDIT.</strong><br><a href="https://weareedit.io">weareedit.io</a></p>'
               . '<hr style="border:0;border-top:1px solid #eee;margin:24px 0;">'
-              . '<p style="font-size:12px;color:#888;">DGERT nº 18391 · 4.1 ★ / 67 reviews Google · Fundos de Compensação elegível</p>'
+              . '<p style="font-size:12px;color:#888;">DGERT nº 18391 · 4.1 ★ / 67 reviews Google · Fundo de Compensação do Trabalho elegível</p>'
               . '</div>';
         return (bool) wp_mail( $d['email'], $subject, $body, [
             'Content-Type: text/html; charset=UTF-8',
@@ -652,7 +651,7 @@ class EDIT_Formacao_Corporativa_Page {
 
     private static function set_rank_math_meta( int $page_id ): void {
         update_post_meta( $page_id, 'rank_math_title',         'Formação Digital para Empresas | EDIT. — Pfizer, Adidas, FNAC, Galp formam aqui' );
-        update_post_meta( $page_id, 'rank_math_description',   'Formação digital para empresas, DGERT-certificada. Marketing Digital, UX/UI, Data, IA, Desenvolvimento. Fundos de Compensação elegível. Programas customizados in-house ou remote em Portugal.' );
+        update_post_meta( $page_id, 'rank_math_description',   'Formação digital para empresas, DGERT-certificada. Marketing Digital, UX/UI, Data, IA, Desenvolvimento. Fundo de Compensação do Trabalho elegível. Programas customizados in-house ou remote em Portugal.' );
         update_post_meta( $page_id, 'rank_math_focus_keyword', 'formação digital para empresas' );
         update_post_meta( $page_id, 'rank_math_robots',        [ 'index', 'follow' ] );
     }
@@ -696,7 +695,7 @@ class EDIT_Formacao_Corporativa_Page {
             'provider'    => [ '@id' => home_url( '/' ) . '#organization' ],
             'areaServed'  => [ '@type' => 'Country', 'name' => 'Portugal' ],
             'name'        => 'Formação Corporativa EDIT.',
-            'description' => 'Formação personalizada para equipas em Marketing Digital, UX/UI Design, Desenvolvimento, Data & Business, e Inteligência Artificial. DGERT-certificada, Fundos de Compensação elegível.',
+            'description' => 'Formação personalizada para equipas em Marketing Digital, UX/UI Design, Desenvolvimento, Data & Business, e Inteligência Artificial. DGERT-certificada, Fundo de Compensação do Trabalho elegível.',
             'audience'    => [ '@type' => 'BusinessAudience', 'audienceType' => 'B2B Enterprise Training Buyer' ],
             'hasOfferCatalog' => [
                 '@type' => 'OfferCatalog',
@@ -759,7 +758,7 @@ class EDIT_Formacao_Corporativa_Page {
                         <span class="fc-trust__divider" aria-hidden="true"></span>
                         <span class="fc-trust"><span class="fc-trust__icon" aria-hidden="true">✓</span>DGERT nº 18391</span>
                         <span class="fc-trust__divider" aria-hidden="true"></span>
-                        <span class="fc-trust"><span class="fc-trust__icon" aria-hidden="true">€</span>Fundos de Compensação</span>
+                        <span class="fc-trust"><span class="fc-trust__icon" aria-hidden="true">€</span>Fundo de Compensação do Trabalho</span>
                         <span class="fc-trust__divider" aria-hidden="true"></span>
                         <span class="fc-trust"><span class="fc-trust__icon" aria-hidden="true">◷</span>Resposta em 24h úteis</span>
                     </div>
@@ -913,9 +912,9 @@ class EDIT_Formacao_Corporativa_Page {
                         <h2 class="fc-lead__title">Pronto para formar a <span>vossa equipa</span>?</h2>
                         <p class="fc-lead__lede">Submetam o brief e respondemos em <strong>24h úteis</strong> com uma proposta inicial ou pedido de chamada de descoberta. Sem compromisso.</p>
                         <ul class="fc-lead__bullets">
-                            <li><span class="fc-lead__check" aria-hidden="true">✓</span>Diagnóstico gratuito de 60 minutos</li>
+                            <li><span class="fc-lead__check" aria-hidden="true">✓</span>Diagnóstico gratuito das vossas necessidades</li>
                             <li><span class="fc-lead__check" aria-hidden="true">✓</span>Proposta customizada em 5 dias úteis</li>
-                            <li><span class="fc-lead__check" aria-hidden="true">✓</span>Fundos de Compensação elegível</li>
+                            <li><span class="fc-lead__check" aria-hidden="true">✓</span>Fundo de Compensação do Trabalho elegível</li>
                             <li><span class="fc-lead__check" aria-hidden="true">✓</span>DGERT-certificada · 6+ líderes nacionais</li>
                         </ul>
                     </div>
