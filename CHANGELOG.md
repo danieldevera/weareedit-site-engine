@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.565 — 2026-06-16 (Internal docs — publish AAI + DataOps traffic audits)
+Published two page-level traffic audits to the marketing repo (GA4 + GSC via Supermetrics, 90d). AAI Bootcamp: 1,000 sessions, 89%% engagement, 22 conversions — Paid Search converts 8.6x better than Organic (14 of 22 conversions). DataOps Bootcamp: 100 sessions, 94%% engagement, 0 conversions, ZERO Paid Search — demand+distribution problem, niche term (mirrors the SEO/Claude-Code failure pattern). Drop-in noindex HTML; no code changes.
+
 ## v1.5.564 — 2026-06-16 (Revalidate Education Foresight EN version + 301)
 Same revalidation applied to the ENGLISH Education Foresight doc: renamed education-foresight-strategy-2026-06-10.html to -2026-06-16.html, prepended the Revalidation 2026-06-16 layer (fresh GT data, rising-rank-not-volume correction, failed-course field test, re-ranked bets), and added the EN slug to the REDIRECTS map (301 old to new). Both PT + EN foresight docs now revalidated + redirected.
 

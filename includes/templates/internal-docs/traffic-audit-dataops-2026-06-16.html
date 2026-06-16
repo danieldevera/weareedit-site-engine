@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Traffic Audit — DataOps Bootcamp · 2026-06-16</title>
+<style>
+  :root{ --ink:#0a0a0a; --grey:#5b5b5b; --line:#e6e6e3; --bg:#fafafa;
+         --yellow:#ffdd06; --pink:#f92869; --teal:#60c5b3; --coral:#ec8172;
+         --good:#1b9e3e; --bad:#d62728; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;padding:40px 28px 80px;max-width:980px;margin:0 auto;font-size:14px}
+  h1{font-size:30px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px}
+  h1 .pink{color:var(--pink)}
+  .subtitle{color:var(--grey);font-size:13px;margin-bottom:26px}
+  .eyebrow{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--pink);margin-bottom:8px}
+  h2{font-size:20px;font-weight:800;margin:34px 0 10px;border-bottom:3px solid var(--yellow);padding-bottom:7px}
+  p{margin:0 0 12px}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+  @media(max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}}
+  .kpi{background:#fff;border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:6px;padding:14px 16px}
+  .kpi.green{border-left-color:var(--good)} .kpi.pink{border-left-color:var(--pink)} .kpi.bad{border-left-color:var(--bad)} .kpi.yellow{border-left-color:var(--yellow)}
+  .kpi .l{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--grey);font-weight:700;margin-bottom:4px}
+  .kpi .v{font-size:24px;font-weight:800;line-height:1.1}
+  .kpi .s{font-size:11px;color:var(--grey);margin-top:3px}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0 18px;background:#fff;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+  th{text-align:left;padding:9px 12px;background:var(--ink);color:var(--yellow);font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+  td{padding:9px 12px;border-bottom:1px solid var(--line)}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  .pill{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700}
+  .pill.g{background:rgba(27,158,62,.15);color:var(--good)} .pill.b{background:rgba(214,39,40,.15);color:var(--bad)} .pill.n{background:#eee;color:#555}
+  .callout{background:#fff;border:1px solid var(--line);border-left:4px solid var(--pink);border-radius:6px;padding:16px 20px;margin:16px 0}
+  .callout b{font-weight:800}
+  ol.recs{margin:8px 0 8px 20px} ol.recs li{margin:0 0 9px}
+  .caveat{background:#fff8e6;border-left:5px solid var(--yellow);padding:12px 16px;border-radius:4px;font-size:13px;color:#5a5000;margin:14px 0}
+  footer{color:var(--grey);font-size:12px;text-align:center;padding:16px;margin-top:30px;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+
+<p class="eyebrow">Traffic Audit · dados reais (GA4 + GSC via Supermetrics)</p>
+<h1>DataOps Bootcamp — <span class="pink">Traffic Audit</span></h1>
+<div class="subtitle">Página: <code>/formacao/bootcamp-dataops/</code> · Janela: 90 dias (18 Mar → 16 Jun 2026) · Fontes: GA4 (property 309106832) + Google Search Console (sc-domain:weareedit.io)</div>
+
+<h2>Números principais</h2>
+<div class="kpis">
+  <div class="kpi"><div class="l">Sessões (GA4)</div><div class="v">100</div><div class="s">~1/dia · 86 utilizadores · 207 views</div></div>
+  <div class="kpi green"><div class="l">Engagement rate</div><div class="v">94%</div><div class="s">bounce 6% · 1m53s/sessão</div></div>
+  <div class="kpi bad"><div class="l">Conversões</div><div class="v">0</div><div class="s">zero em 90 dias</div></div>
+  <div class="kpi yellow"><div class="l">GSC posição média</div><div class="v">7,3</div><div class="s">27 clicks · 272 impressões · CTR 9,9%</div></div>
+</div>
+
+<h2>Tráfego por canal</h2>
+<table>
+  <tr><th>Canal</th><th class="num">Sessões</th><th class="num">Conversões</th><th>Nota</th></tr>
+  <tr><td>Organic Search</td><td class="num">57 (57%)</td><td class="num">0</td><td><span class="pill n">Maioria do tráfego</span></td></tr>
+  <tr><td>Direct</td><td class="num">31</td><td class="num">0</td><td><span class="pill n">—</span></td></tr>
+  <tr><td>Unassigned</td><td class="num">5</td><td class="num">0</td><td><span class="pill n">—</span></td></tr>
+  <tr><td>Organic Social</td><td class="num">3</td><td class="num">0</td><td><span class="pill n">—</span></td></tr>
+  <tr><td>AI Assistant</td><td class="num">2</td><td class="num">0</td><td><span class="pill n">GEO a começar</span></td></tr>
+  <tr><td>Email / Referral</td><td class="num">2</td><td class="num">0</td><td><span class="pill n">—</span></td></tr>
+  <tr><td><strong>Paid Search</strong></td><td class="num">0</td><td class="num">0</td><td><span class="pill b">SEM aquisição paga</span></td></tr>
+</table>
+
+<div class="callout">
+  <b>O diagnóstico: problema de PROCURA + DISTRIBUIÇÃO, não de página.</b> Engagement de 94% e bounce de 6% (até melhores que o AAI) dizem que a página é boa. Mas: <b>10× menos tráfego que o AAI, ZERO Paid Search, e 0 conversões.</b> Ninguém a empurra (sem orçamento pago) e a procura orgânica é minúscula.
+</div>
+
+<h2>AAI vs DataOps — o contraste que importa</h2>
+<table>
+  <tr><th>Métrica (90d)</th><th class="num">AAI Bootcamp</th><th class="num">DataOps Bootcamp</th></tr>
+  <tr><td>Sessões</td><td class="num">1 000</td><td class="num">100</td></tr>
+  <tr><td>Paid Search (sessões)</td><td class="num">125</td><td class="num">0</td></tr>
+  <tr><td>Conversões</td><td class="num">22</td><td class="num">0</td></tr>
+  <tr><td>Engagement rate</td><td class="num">89%</td><td class="num">94%</td></tr>
+</table>
+<p>O AAI converte porque tem <strong>Paid Search</strong> (motor de 14 das 22 conversões) e um termo mainstream ("AI"). O DataOps não tem aquisição paga e assenta num termo de nicho.</p>
+
+<h2>Sinal de procura (GSC)</h2>
+<p>"dataops" é um termo de nicho em PT (26 impressões em 90 dias). As queries dizem que as pessoas procuram <strong>"ciência de dados" / "data"</strong>, não "dataops" — incluindo uma query em linguagem natural via IA: <em>"quais escolas digitais em lisboa oferecem bootcamps de ciência de dados com aulas práticas?"</em>. Alinha com a Education Foresight: a vertical de dados em PT é liderada por <strong>"python" / "power bi"</strong>, não por "dataops".</p>
+
+<h2>Recomendações</h2>
+<ol class="recs">
+  <li><strong>Decisão de portfólio primeiro:</strong> "DataOps" é nicho em PT (mesmo padrão do curso SEO/Claude Code que falhou — termo técnico sem procura local). Antes de investir, decidir se vale a pena manter o SKU com este nome.</li>
+  <li><strong>Re-nomear para a procura real</strong> — se mantido, ancorar em "Ciência de Dados" / "Data" / "Python" (termos que PT pesquisa), não "DataOps". A página converte bem em engagement; o problema é ser encontrada.</li>
+  <li><strong>Sem Paid Search = sem conversões</strong> — ao contrário do AAI, esta página não recebe tráfego pago. Só faz sentido investir em paid DEPOIS de validar a procura/nome.</li>
+  <li><strong>Não mexer no conteúdo</strong> — 94% engagement, 6% bounce. A página está bem; falta procura e distribuição.</li>
+</ol>
+
+<div class="caveat">
+  <strong>Ressalvas:</strong> "Conversões" = eventos de conversão GA4 configurados (confirmar evento exato). Volume baixo (100 sessões) torna as percentagens voláteis. GSC com ~3 dias de atraso; 24 dos 27 clicks no bucket anonimizado "(unknown)". Janela 90 dias.
+</div>
+
+<footer>
+  EDIT. · Documento interno de marketing · Traffic Audit gerado 2026-06-16 · dados GA4 + GSC via Supermetrics MCP · noindex/nofollow
+</footer>
+
+</body>
+</html>

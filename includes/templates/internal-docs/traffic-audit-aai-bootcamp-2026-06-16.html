@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Traffic Audit — AAI Bootcamp · 2026-06-16</title>
+<style>
+  :root{ --ink:#0a0a0a; --grey:#5b5b5b; --line:#e6e6e3; --bg:#fafafa;
+         --yellow:#ffdd06; --pink:#f92869; --teal:#60c5b3; --coral:#ec8172;
+         --good:#1b9e3e; --bad:#d62728; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;padding:40px 28px 80px;max-width:980px;margin:0 auto;font-size:14px}
+  h1{font-size:30px;font-weight:800;letter-spacing:-.02em;margin-bottom:4px}
+  h1 .pink{color:var(--pink)}
+  .subtitle{color:var(--grey);font-size:13px;margin-bottom:26px}
+  .eyebrow{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--pink);margin-bottom:8px}
+  h2{font-size:20px;font-weight:800;margin:34px 0 10px;border-bottom:3px solid var(--yellow);padding-bottom:7px}
+  h3{font-size:15px;font-weight:700;margin:18px 0 6px}
+  p{margin:0 0 12px}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+  @media(max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}}
+  .kpi{background:#fff;border:1px solid var(--line);border-left:4px solid var(--teal);border-radius:6px;padding:14px 16px}
+  .kpi.green{border-left-color:var(--good)} .kpi.pink{border-left-color:var(--pink)} .kpi.yellow{border-left-color:var(--yellow)}
+  .kpi .l{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--grey);font-weight:700;margin-bottom:4px}
+  .kpi .v{font-size:24px;font-weight:800;line-height:1.1}
+  .kpi .s{font-size:11px;color:var(--grey);margin-top:3px}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0 18px;background:#fff;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+  th{text-align:left;padding:9px 12px;background:var(--ink);color:var(--yellow);font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+  td{padding:9px 12px;border-bottom:1px solid var(--line)}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  tr.hot td{background:#fff6e6;font-weight:600}
+  .pill{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700}
+  .pill.g{background:rgba(27,158,62,.15);color:var(--good)} .pill.b{background:rgba(214,39,40,.15);color:var(--bad)} .pill.n{background:#eee;color:#555}
+  .callout{background:#fff;border:1px solid var(--line);border-left:4px solid var(--pink);border-radius:6px;padding:16px 20px;margin:16px 0}
+  .callout b{font-weight:800}
+  ol.recs{margin:8px 0 8px 20px} ol.recs li{margin:0 0 9px}
+  .caveat{background:#fff8e6;border-left:5px solid var(--yellow);padding:12px 16px;border-radius:4px;font-size:13px;color:#5a5000;margin:14px 0}
+  footer{color:var(--grey);font-size:12px;text-align:center;padding:16px;margin-top:30px;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+
+<p class="eyebrow">Traffic Audit · dados reais (GA4 + GSC via Supermetrics)</p>
+<h1>AAI Bootcamp — <span class="pink">Traffic Audit</span></h1>
+<div class="subtitle">Página: <code>/formacao/bootcamp-advanced-artificial-intelligence/</code> · Janela: 90 dias (18 Mar → 16 Jun 2026) · Fontes: GA4 (property 309106832) + Google Search Console (sc-domain:weareedit.io)</div>
+
+<h2>Números principais</h2>
+<div class="kpis">
+  <div class="kpi"><div class="l">Sessões (GA4)</div><div class="v">1 000</div><div class="s">~11/dia · 1 048 utilizadores · 2 263 views</div></div>
+  <div class="kpi green"><div class="l">Engagement rate</div><div class="v">89%</div><div class="s">bounce 11% · 2m17s/sessão</div></div>
+  <div class="kpi pink"><div class="l">Conversões</div><div class="v">22</div><div class="s">~2,2% das sessões</div></div>
+  <div class="kpi yellow"><div class="l">GSC posição média</div><div class="v">7,7</div><div class="s">98 clicks · 1 495 impressões · CTR 6,6%</div></div>
+</div>
+
+<h2>O achado central — o Paid Search é o motor de conversão</h2>
+<table>
+  <tr><th>Canal</th><th class="num">Sessões</th><th class="num">Conversões</th><th class="num">Taxa conv.</th><th>Leitura</th></tr>
+  <tr><td>Organic Search</td><td class="num">467 (47%)</td><td class="num">6</td><td class="num">1,3%</td><td><span class="pill n">Volume, baixa intenção</span></td></tr>
+  <tr><td>Direct</td><td class="num">210</td><td class="num">0</td><td class="num">0%</td><td><span class="pill b">0 conversões — investigar</span></td></tr>
+  <tr class="hot"><td>Paid Search</td><td class="num">125</td><td class="num">14</td><td class="num">11,2%</td><td><span class="pill g">🔥 Motor de conversão</span></td></tr>
+  <tr><td>Email</td><td class="num">99</td><td class="num">1</td><td class="num">1,0%</td><td><span class="pill n">Modesto</span></td></tr>
+  <tr><td>Referral</td><td class="num">43</td><td class="num">0</td><td class="num">0%</td><td><span class="pill n">—</span></td></tr>
+  <tr><td>Organic Social</td><td class="num">19</td><td class="num">0</td><td class="num">0%</td><td><span class="pill n">—</span></td></tr>
+  <tr><td>AI Assistant</td><td class="num">2</td><td class="num">0</td><td class="num">—</td><td><span class="pill n">GEO a começar a registar</span></td></tr>
+</table>
+<div class="callout">
+  <b>Paid Search converte ~8,6× melhor que Organic</b> (11,2% vs 1,3%) e gera <b>14 das 22 conversões totais</b> a partir de apenas 12,5% do tráfego. O Organic traz o <em>volume</em>; o Paid traz a <em>intenção</em>.
+</div>
+
+<h2>O que isto significa</h2>
+<p><strong>A página em si está saudável</strong> — 89% engagement, 2m17s, 11% bounce. <strong>Não é um problema de conteúdo.</strong> As alavancas são o <em>mix de tráfego</em> e a <em>conversão</em>, não a página.</p>
+<p><strong>Organic = muito volume, pouca intenção</strong> (467 sessões → 1,3%). Rankeia #1–2 para termos exatos/branded ("curso ia avançado" pos 1,7 · "advanced artificial intelligence" pos 2,6) mas com poucas impressões; os termos genéricos de alto volume rankeiam mal ("bootcamp" 63 impr @ pos 12 · "bootcamp 2026" @ pos 11). Posição média 7,7 = margem para subir.</p>
+<p><strong>Direct: 210 sessões, 0 conversões</strong> — estranho; provavelmente visitantes recorrentes / hesitantes no preço. Bolsa ideal para <strong>retargeting</strong>.</p>
+
+<h2>Recomendações (por prioridade)</h2>
+<ol class="recs">
+  <li><strong>Escalar Paid Search</strong> nesta página — está provado (11,2% CR). O orçamento aqui trabalha mais do que em qualquer outro canal; alimentá-lo.</li>
+  <li><strong>Retargeting de Direct + Organic não-convertidos</strong> (~677 sessões, ~7 conversões) — audiência morna, muito engagement mas não fecha. Camada de urgência EARLY15.</li>
+  <li><strong>Subir no SEO</strong> para os termos genéricos de alta impressão ("ai bootcamp", "bootcamp 2026", "advanced ai") — rankeias pos 11–12; reforçar on-page para chegar ao topo da página 1.</li>
+  <li><strong>Não mexer no conteúdo da página</strong> — as métricas de engagement dizem que está a funcionar.</li>
+</ol>
+
+<div class="caveat">
+  <strong>Ressalvas:</strong> "Conversões" = os eventos de conversão configurados no GA4 (provavelmente lead-form / intenção de inscrição — confirmar o evento exato). O detalhe de queries do GSC é limitado (91 dos 98 clicks estão no bucket anonimizado "(unknown)" em precisão Normal). Janela de 90 dias; GSC tem ~3 dias de atraso.
+</div>
+
+<footer>
+  EDIT. · Documento interno de marketing · Traffic Audit gerado 2026-06-16 · dados GA4 + GSC via Supermetrics MCP · noindex/nofollow
+</footer>
+
+</body>
+</html>
