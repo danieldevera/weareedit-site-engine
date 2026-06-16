@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.560 — 2026-06-16 (Course cards — badge priority rule: order + cap)
+Implemented Daniel's badge precedence rule. (1) Server-side reorder: every .special-labels-container's stacked tags are sorted to a fixed priority — early15 (Setembro Early-Bird promo) > AI UPGRADE > NOVO PROGRAMA (empty/other last). (2) Grid cards (.course) cap at the top 2 tags via CSS (3rd+ hidden) — tight corner; the product-page hero badge (the lone container NOT inside a .course card) keeps all 3. Empty badge boxes hidden everywhere. early15 text preserved verbatim + now sorts first, so the EARLY15 ?campanha= filter still matches and the cap never drops it.
+
 ## v1.5.559 — 2026-06-16 (Course cards — render stacked badge labels cleanly)
 After v1.5.558 un-hid the badge slot, cards carrying MULTIPLE tags (NOVO PROGRAMA + AI UPGRADE + "early15" — the Setembro Early-Bird promo code) rendered the 2nd/3rd badge as an empty bordered box: the theme styles a single badge, so stacked ones clipped their label to blank. Forced .special-labels-container to a clean vertical flex stack (height:auto, overflow:visible) and .course-promo-code to visible, uppercase, auto-sized labels — so every tag shows (early15 → "EARLY15"). CSS-only override in inject_global_overrides; no markup change.
 

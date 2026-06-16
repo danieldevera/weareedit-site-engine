@@ -137,6 +137,12 @@ class EDIT_Output_Buffer {
             // all labels visible + uppercase (so "early15" renders as "EARLY15").
             . '.special-labels-container{display:flex !important;flex-direction:column !important;gap:6px !important;align-items:flex-end !important;height:auto !important;max-height:none !important;overflow:visible !important;}'
             . '.special-labels-container .course-promo-code{display:inline-flex !important;align-items:center !important;width:auto !important;height:auto !important;max-width:none !important;color:#0a0a0a !important;font-weight:700 !important;font-size:11px !important;line-height:1.15 !important;letter-spacing:.03em !important;text-transform:uppercase !important;white-space:nowrap !important;overflow:visible !important;visibility:visible !important;}'
+            // Grid cards (.course) have a tight corner — cap at the top 2 tags
+            // (3rd+ hidden after the priority reorder, so early15 always wins).
+            // The product-page HERO badge is a lone container NOT inside .course,
+            // so it keeps all 3. Empty badge boxes hidden everywhere.
+            . '.course .special-labels-container .course-promo-code:nth-of-type(n+3){display:none !important;}'
+            . '.course-promo-code:empty{display:none !important;}'
             // Course "Ferramentas" tool-stack icons (Claude Code, ChatGPT, etc.)
             // ship as square PNGs with no size attrs and no CSS bounds, so they
             // render at intrinsic resolution and stretch the .adaptImage card.
@@ -822,6 +828,37 @@ HTML;
             'www.youtube.com/embed/Q8qqSbHz8uM',
             $html
         );
+
+        // Card badge priority rule (Daniel 2026-06-16): reorder the stacked
+        // tags inside every .special-labels-container to a fixed precedence —
+        //   1. early15  (Setembro Early-Bird promo · financial urgency)
+        //   2. AI UPGRADE
+        //   3. NOVO PROGRAMA
+        // Grid cards then cap to the top 2 via CSS (tight corner); the product-
+        // page hero badge (the lone non-card container) keeps all 3. The
+        // "early15" text is preserved verbatim so the EARLY15 ?campanha= filter
+        // still matches, and it now sorts first so the card cap never drops it.
+        $html = preg_replace_callback(
+            '#<div class="special-labels-container">((?:<div class="course-promo-code"[^>]*>.*?</div>)+)</div>#s',
+            static function ( $m ) {
+                preg_match_all( '#<div class="course-promo-code"[^>]*>(.*?)</div>#s', $m[1], $items, PREG_SET_ORDER );
+                $rank = static function ( $txt ) {
+                    $t = strtolower( trim( strip_tags( $txt ) ) );
+                    if ( $t === '' )                          return 9; // empty last
+                    if ( strpos( $t, 'early15' ) !== false )  return 0;
+                    if ( strpos( $t, 'ai upgrade' ) !== false ) return 1;
+                    if ( strpos( $t, 'novo programa' ) !== false ) return 2;
+                    return 3; // any other label keeps mid-priority
+                };
+                usort( $items, static function ( $a, $b ) use ( $rank ) {
+                    return $rank( $a[1] ) <=> $rank( $b[1] );
+                } );
+                $inner = '';
+                foreach ( $items as $it ) { $inner .= $it[0]; }
+                return '<div class="special-labels-container">' . $inner . '</div>';
+            },
+            $html
+        ) ?? $html;
 
         return $html;
     }
