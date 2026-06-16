@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.559 — 2026-06-16 (Course cards — render stacked badge labels cleanly)
+After v1.5.558 un-hid the badge slot, cards carrying MULTIPLE tags (NOVO PROGRAMA + AI UPGRADE + "early15" — the Setembro Early-Bird promo code) rendered the 2nd/3rd badge as an empty bordered box: the theme styles a single badge, so stacked ones clipped their label to blank. Forced .special-labels-container to a clean vertical flex stack (height:auto, overflow:visible) and .course-promo-code to visible, uppercase, auto-sized labels — so every tag shows (early15 → "EARLY15"). CSS-only override in inject_global_overrides; no markup change.
+
 ## v1.5.558 — 2026-06-16 (Course cards — restore badge labels, hide only the IEFP "100% Reembolso" badge)
 The blanket `.special-labels-container{display:none !important;}` (added 2026-06-12 to kill the obsolete IEFP "100% Reembolso" badge) was wrongly hiding the ENTIRE top-right badge slot on course cards — suppressing the real "NOVO PROGRAMA" (66 cards), "AI UPGRADE" (48) and "early15" labels too. Replaced with a surgical rule that hides ONLY the IEFP badge by its image (img[src*="Group-1265"]): :has() hides the whole badge container, plus a bare-img fallback for browsers without :has(). All other special-labels tags display again. No server-side/markup change; the EARLY15 campanha filter is untouched.
 

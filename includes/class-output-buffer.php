@@ -130,6 +130,13 @@ class EDIT_Output_Buffer {
             // fallback for any browser without :has().
             . '.special-labels-container:has(img[src*="Group-1265"]){display:none !important;}'
             . '.special-labels-container img[src*="Group-1265"]{display:none !important;}'
+            // Cards now carry MULTIPLE stacked tags (NOVO PROGRAMA + AI UPGRADE +
+            // "early15" = the Setembro Early-Bird promo code). The theme styles a
+            // SINGLE badge, so the 2nd/3rd ones clipped to empty bordered boxes
+            // (label not showing). Force the slot to a clean vertical stack with
+            // all labels visible + uppercase (so "early15" renders as "EARLY15").
+            . '.special-labels-container{display:flex !important;flex-direction:column !important;gap:6px !important;align-items:flex-end !important;height:auto !important;max-height:none !important;overflow:visible !important;}'
+            . '.special-labels-container .course-promo-code{display:inline-flex !important;align-items:center !important;width:auto !important;height:auto !important;max-width:none !important;color:#0a0a0a !important;font-weight:700 !important;font-size:11px !important;line-height:1.15 !important;letter-spacing:.03em !important;text-transform:uppercase !important;white-space:nowrap !important;overflow:visible !important;visibility:visible !important;}'
             // Course "Ferramentas" tool-stack icons (Claude Code, ChatGPT, etc.)
             // ship as square PNGs with no size attrs and no CSS bounds, so they
             // render at intrinsic resolution and stretch the .adaptImage card.
