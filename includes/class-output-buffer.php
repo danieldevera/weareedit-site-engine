@@ -121,10 +121,15 @@ class EDIT_Output_Buffer {
             . 'img[src*="dgert-entidade-formadora-negro"]{max-width:100%;height:auto;}'
             . 'a.dgert-cert-link{display:inline-block;line-height:0;text-decoration:none;border:none;transition:opacity 0.15s;}'
             . 'a.dgert-cert-link:hover{opacity:0.78;}'
-            // IEFP "100% Reembolso" badge (Group-1265-2.png) — being sunset.
-            // Hide site-wide on every course page across all screen sizes.
-            // Daniel 2026-06-12: program obsolete, no replacement planned.
-            . '.special-labels-container{display:none !important;}'
+            // Card top-right badge slot (.special-labels-container): show ALL
+            // labels (NOVO PROGRAMA, AI UPGRADE, early15, …). The old blanket
+            // `display:none` (added 2026-06-12) was wrongly hiding every label —
+            // removed 2026-06-16 per Daniel. Hide ONLY the obsolete IEFP "100%
+            // Reembolso" badge (image Group-1265-2.png), which is being sunset.
+            // :has() hides the whole badge container; the bare-img rule is a
+            // fallback for any browser without :has().
+            . '.special-labels-container:has(img[src*="Group-1265"]){display:none !important;}'
+            . '.special-labels-container img[src*="Group-1265"]{display:none !important;}'
             // Course "Ferramentas" tool-stack icons (Claude Code, ChatGPT, etc.)
             // ship as square PNGs with no size attrs and no CSS bounds, so they
             // render at intrinsic resolution and stretch the .adaptImage card.

@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.558 — 2026-06-16 (Course cards — restore badge labels, hide only the IEFP "100% Reembolso" badge)
+The blanket `.special-labels-container{display:none !important;}` (added 2026-06-12 to kill the obsolete IEFP "100% Reembolso" badge) was wrongly hiding the ENTIRE top-right badge slot on course cards — suppressing the real "NOVO PROGRAMA" (66 cards), "AI UPGRADE" (48) and "early15" labels too. Replaced with a surgical rule that hides ONLY the IEFP badge by its image (img[src*="Group-1265"]): :has() hides the whole badge container, plus a bare-img fallback for browsers without :has(). All other special-labels tags display again. No server-side/markup change; the EARLY15 campanha filter is untouched.
+
 ## v1.5.557 — 2026-06-16 (Augment — purple duotone tint on Convidados photos)
 Guest portraits now carry a purple duotone tint (CSS filter: grayscale+sepia+hue-rotate 218deg) to match the Augment signature purple and unify the placeholder portraits; softens slightly on hover. Template regenerated from locked mockup.
 
