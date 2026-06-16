@@ -160,7 +160,8 @@
   @media(max-width:520px){.guests-grid{grid-template-columns:1fr}}
   .gcard{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;transition:.15s;text-align:left;padding-bottom:18px;}
   .gcard:hover{border-color:#cfcfca;box-shadow:0 8px 22px rgba(0,0,0,.06);transform:translateY(-2px);}
-  .gcard img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:center;display:block;margin:0 0 14px;background:#f1edf6;}
+  .gcard img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:center;display:block;margin:0 0 14px;background:#f1edf6;filter:grayscale(1) sepia(1) hue-rotate(218deg) saturate(1.7) brightness(.96);transition:filter .2s;}
+  .gcard:hover img{filter:grayscale(1) sepia(1) hue-rotate(218deg) saturate(1.4) brightness(1.02);}
   .gtag{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--augment-purple);border-radius:5px;padding:3px 8px;margin:0 16px;}
   .gname{font-size:16px;font-weight:700;letter-spacing:-.01em;padding:0 16px;margin-top:12px;}
   .grole{font-size:13px;color:var(--grey);margin-top:3px;padding:0 16px;line-height:1.4;}

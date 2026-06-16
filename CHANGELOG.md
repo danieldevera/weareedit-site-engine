@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.557 — 2026-06-16 (Augment — purple duotone tint on Convidados photos)
+Guest portraits now carry a purple duotone tint (CSS filter: grayscale+sepia+hue-rotate 218deg) to match the Augment signature purple and unify the placeholder portraits; softens slightly on hover. Template regenerated from locked mockup.
+
 ## v1.5.556 — 2026-06-16 (Augment — add 3rd convidado Alexandre Messina)
 Added a third guest to the Convidados (1-hour guest talks) section: **Alexandre Messina** (AI Creator & Educator · Lovable), talk "Do zero ao produto: construir apps reais com IA, sem saber programar." Now 3 named guests + the "Mais a confirmar" card. Placeholder portrait (pravatar) — swap real headshot on confirmation. Template `includes/templates/augment-page.html` regenerated from the locked mockup (single source of truth in ~/Downloads/augment-mockup.html). STATUS still 'preview'.
 
