@@ -97,7 +97,7 @@ class EDIT_UX_UI_Design_Page {
                 'body'  => 'Os alunos saem para roles em product designer, UX designer, UI designer, design lead e UX researcher. Os principais sectores recrutadores em Portugal: <strong>scale-ups tech</strong> (product teams), <strong>banca digital</strong> (mobile apps, internet banking), <strong>telcos</strong> (digital product), <strong>retalho e e-commerce</strong> (UX de conversão) e <strong>estúdios de design e agências</strong> (interaction + visual). Faixas salariais 2026 (referência mercado PT): <strong>€22-30K</strong> para junior UX/UI; <strong>€35-48K</strong> para product designer com 2-4 anos; <strong>€55-75K+</strong> para senior em scale-up; <strong>€65-90K</strong> para design lead.',
             ],
         ],
-        'cta_lead' => 'Abaixo estão os programas activos em UX/UI Design — Bootcamps intensivos para entrada na área, Cursos completos para especialização profunda em Lisboa, Porto ou Remote, e Workshops curtos para upskilling específico. Todos elegíveis para SIFIDE.',
+        'cta_lead' => 'Abaixo estão os programas activos em UX/UI Design — Bootcamps intensivos para entrada na área, Cursos completos para especialização profunda em Lisboa, Porto ou Remote, e Workshops curtos para upskilling específico.',
     ];
 
     public static function init() {
@@ -272,7 +272,7 @@ class EDIT_UX_UI_Design_Page {
                         <span class="dgert-hero-pill-arrow" aria-hidden="true">↗</span>
                     </a>
                     <h1 class="md-hero__title md-hero__title--xl">UX/UI Design<span class="h1-dot h1-dot-pink">.</span><br>Inteligência Artificial<span class="h1-dot h1-dot-teal">.</span></h1>
-                    <p class="md-hero__lede md-hero__lede--yellow">12 formações DGERT-certificadas em Lisboa, Porto e online. Bootcamps, cursos e workshops em UX/UI Design, Figma e Research — leccionados por UX leads em activo nas marcas que mais recrutam talento digital em Portugal. Programas SIFIDE-elegíveis.</p>
+                    <p class="md-hero__lede md-hero__lede--yellow">12 formações DGERT-certificadas em Lisboa, Porto e online. Bootcamps, cursos e workshops em UX/UI Design, Figma e Research — leccionados por UX leads em activo nas marcas que mais recrutam talento digital em Portugal.</p>
                     <div class="md-hero__cta">
                         <a class="btn btn-yellow swipe-cta" href="#catalogo"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Ver os 12 cursos</span></a>
                         <a class="hero-reviews" href="https://weareedit.io/avaliacoes-google/" rel="noopener">
@@ -317,7 +317,7 @@ class EDIT_UX_UI_Design_Page {
                             <p class="md-section-header__eyebrow">12 programas DGERT-certificados</p>
                             <h2 class="md-section-header__title">Catálogo de Formação <span>em UX/UI Design</span></h2>
                         </div>
-                        <p class="md-section-header__lead">Bootcamps intensivos para career-changers, cursos completos para especialização profunda, e workshops curtos para upskilling pontual. Programas SIFIDE-elegíveis, leccionados por designers de produto em activo nas marcas que recrutam talento de design em Portugal.</p>
+                        <p class="md-section-header__lead">Bootcamps intensivos para career-changers, cursos completos para especialização profunda, e workshops curtos para upskilling pontual. Leccionados por designers de produto em activo nas marcas que recrutam talento de design em Portugal.</p>
                     </div>
                 </div>
                 <?php foreach ( self::CATALOG as $group => $slugs ) : ?>
@@ -345,7 +345,7 @@ class EDIT_UX_UI_Design_Page {
                 <div class="md-empresas-cta__inner">
                     <p class="md-empresas-cta__eyebrow">EDIT. PARA EMPRESAS</p>
                     <h2 class="md-empresas-cta__title">Sobe o nível da tua equipa digital<span class="md-dot md-dot--pink">.</span></h2>
-                    <p class="md-empresas-cta__lede">Bootcamps, cursos e workshops à medida da tua organização. DGERT-certificados, SIFIDE-elegíveis, leccionados por marketers em activo nas marcas que recrutam talento digital em Portugal.</p>
+                    <p class="md-empresas-cta__lede">Bootcamps, cursos e workshops à medida da tua organização. DGERT-certificados, leccionados por marketers em activo nas marcas que recrutam talento digital em Portugal.</p>
                     <a class="btn btn-yellow swipe-cta" href="https://empresas.weareedit.io/" target="_blank" rel="noopener"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Conhecer EDIT. Empresas →</span></a>
                 </div>
             </section>

@@ -94,7 +94,7 @@ class EDIT_Inteligencia_Artificial_Page {
                 'body'  => 'Os alunos saem com competências aplicáveis em qualquer função — porque IA é hoje uma layer horizontal, não um cargo específico. Os principais sectores recrutadores em Portugal: <strong>agências de comunicação e marketing</strong> (automação criativa, content production), <strong>scale-ups tech</strong> (LLM apps, RAG em produto), <strong>media e publishing</strong> (content workflows assistidos por IA), <strong>consultoras</strong> (transformação digital com IA) e o <strong>ecossistema de freelancers e founders</strong> a construir produtos AI-native. Faixas salariais 2026 (referência mercado PT): <strong>€30-45K</strong> para AI specialist sem experiência prévia; <strong>€45-65K</strong> para AI consultor com 2-4 anos; <strong>€65-100K+</strong> para AI lead ou senior AI engineer em scale-up.',
             ],
         ],
-        'cta_lead' => 'Abaixo estão os programas activos em Inteligência Artificial — Bootcamps intensivos para profissionais não-técnicos, Cursos completos para construção de produtos com IA, e Workshops curtos para domínio de ferramentas específicas. Todos elegíveis para SIFIDE.',
+        'cta_lead' => 'Abaixo estão os programas activos em Inteligência Artificial — Bootcamps intensivos para profissionais não-técnicos, Cursos completos para construção de produtos com IA, e Workshops curtos para domínio de ferramentas específicas.',
     ];
 
     public static function init() {
@@ -264,7 +264,7 @@ class EDIT_Inteligencia_Artificial_Page {
                         <span class="dgert-hero-pill-arrow" aria-hidden="true">↗</span>
                     </a>
                     <h1 class="md-hero__title md-hero__title--xl">Inteligência Artificial<span class="h1-dot h1-dot-pink">.</span><br>Aplicada<span class="h1-dot h1-dot-teal">.</span></h1>
-                    <p class="md-hero__lede md-hero__lede--yellow">11 formações DGERT-certificadas em Lisboa, Porto e online. Bootcamps, workshops e percursos avançados em IA aplicada — Cinema, Marketing, UX, Web e Produtos Digitais, leccionados por tutores que usam estas ferramentas em projectos reais. Programas SIFIDE-elegíveis.</p>
+                    <p class="md-hero__lede md-hero__lede--yellow">11 formações DGERT-certificadas em Lisboa, Porto e online. Bootcamps, workshops e percursos avançados em IA aplicada — Cinema, Marketing, UX, Web e Produtos Digitais, leccionados por tutores que usam estas ferramentas em projectos reais.</p>
                     <div class="md-hero__cta">
                         <a class="btn btn-yellow swipe-cta" href="#catalogo"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Ver os 11 cursos</span></a>
                         <a class="hero-reviews" href="https://weareedit.io/avaliacoes-google/" rel="noopener">
@@ -309,7 +309,7 @@ class EDIT_Inteligencia_Artificial_Page {
                             <p class="md-section-header__eyebrow">11 programas DGERT-certificados</p>
                             <h2 class="md-section-header__title">Catálogo de Formação <span>em Inteligência Artificial</span></h2>
                         </div>
-                        <p class="md-section-header__lead">Bootcamps intensivos para career-changers, cursos completos para especialização profunda, e workshops curtos para upskilling pontual. Programas SIFIDE-elegíveis, leccionados por profissionais que constroem com IA generativa, agentes e machine learning todos os dias.</p>
+                        <p class="md-section-header__lead">Bootcamps intensivos para career-changers, cursos completos para especialização profunda, e workshops curtos para upskilling pontual. Leccionados por profissionais que constroem com IA generativa, agentes e machine learning todos os dias.</p>
                     </div>
                 </div>
                 <?php foreach ( self::CATALOG as $group => $slugs ) : ?>
@@ -337,7 +337,7 @@ class EDIT_Inteligencia_Artificial_Page {
                 <div class="md-empresas-cta__inner">
                     <p class="md-empresas-cta__eyebrow">EDIT. PARA EMPRESAS</p>
                     <h2 class="md-empresas-cta__title">Sobe o nível da tua equipa digital<span class="md-dot md-dot--pink">.</span></h2>
-                    <p class="md-empresas-cta__lede">Bootcamps, cursos e workshops à medida da tua organização. DGERT-certificados, SIFIDE-elegíveis, leccionados por marketers em activo nas marcas que recrutam talento digital em Portugal.</p>
+                    <p class="md-empresas-cta__lede">Bootcamps, cursos e workshops à medida da tua organização. DGERT-certificados, leccionados por marketers em activo nas marcas que recrutam talento digital em Portugal.</p>
                     <a class="btn btn-yellow swipe-cta" href="https://empresas.weareedit.io/" target="_blank" rel="noopener"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Conhecer EDIT. Empresas →</span></a>
                 </div>
             </section>

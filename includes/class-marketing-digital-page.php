@@ -95,7 +95,7 @@ class EDIT_Marketing_Digital_Page {
                 'body'  => 'Os alunos da EDIT. saem para roles em paid media, performance marketing, growth, content strategy, e CRM. <strong>600+ alumni colocados</strong> em marcas como Farfetch, Worten, Sonae, NOS, EDP, FNAC, Adidas e Galp; agências independentes (We Are Social, Wunderman Thompson, OMD); e scale-ups portuguesas (Bolt, Sword Health, Talkdesk). Salários iniciais típicos em 2026: <strong>€25-32K</strong> para junior em paid media ou performance; <strong>€40-55K</strong> para senior com 3-5 anos; <strong>€60-80K+</strong> para Head of Marketing em scale-up.',
             ],
         ],
-        'cta_lead' => 'Abaixo estão os 16 programas activos em Marketing Digital — Bootcamps intensivos para career-changers, Cursos completos para especialização profunda, e Workshops curtos para upskilling pontual. Todos elegíveis para SIFIDE.',
+        'cta_lead' => 'Abaixo estão os 16 programas activos em Marketing Digital — Bootcamps intensivos para career-changers, Cursos completos para especialização profunda, e Workshops curtos para upskilling pontual.',
     ];
 
     /**
@@ -114,7 +114,7 @@ class EDIT_Marketing_Digital_Page {
         ],
         [
             'q' => 'Que opções de financiamento existem para a formação?',
-            'a' => 'A EDIT. é entidade formadora certificada pela DGERT (nº 18391), o que torna todas as formações elegíveis ao <strong>SIFIDE</strong> — crédito fiscal até 35% sobre o investimento em formação para empresas. Para particulares, existem opções de pagamento faseado (até 12 prestações sem juros) e descontos para alumni e early-birds. O Cheque Formação + Digital esteve em vigor até 30 de Junho de 2026; aguardam-se novidades sobre o programa de substituição.',
+            'a' => 'A EDIT. é entidade formadora certificada pela DGERT (nº 18391), com emissão de certificados individuais reconhecidos. Para particulares, existem opções de pagamento faseado (até 12 prestações sem juros) e descontos para alumni e early-birds.',
         ],
         [
             'q' => 'A EDIT. ajuda na colocação profissional?',
@@ -194,7 +194,7 @@ class EDIT_Marketing_Digital_Page {
 
     private static function set_rank_math_meta( int $page_id ): void {
         update_post_meta( $page_id, 'rank_math_title',       'Curso Marketing Digital Lisboa & Porto | EDIT. — 16 Programas DGERT' );
-        update_post_meta( $page_id, 'rank_math_description', '19 formações em Marketing Digital, DGERT certificadas, SIFIDE-elegíveis. Bootcamps, cursos e workshops em Lisboa, Porto e online. 600+ alumni colocados em Farfetch, Sonae, NOS, EDP.' );
+        update_post_meta( $page_id, 'rank_math_description', '19 formações em Marketing Digital, DGERT certificadas. Bootcamps, cursos e workshops em Lisboa, Porto e online. 600+ alumni colocados em Farfetch, Sonae, NOS, EDP.' );
         update_post_meta( $page_id, 'rank_math_focus_keyword', 'curso marketing digital' );
         update_post_meta( $page_id, 'rank_math_robots',      [ 'index', 'follow' ] );
     }
@@ -295,7 +295,7 @@ class EDIT_Marketing_Digital_Page {
                         <span class="dgert-hero-pill-arrow" aria-hidden="true">↗</span>
                     </a>
                     <h1 class="md-hero__title md-hero__title--xl">Marketing Digital<span class="h1-dot h1-dot-pink">.</span><br>Inteligência Artificial<span class="h1-dot h1-dot-teal">.</span></h1>
-                    <p class="md-hero__lede md-hero__lede--yellow">19 formações DGERT-certificadas em Lisboa, Porto e online. Bootcamps, cursos e workshops desenhados com marcas que recrutam talento digital em Portugal. Programas SIFIDE-elegíveis.</p>
+                    <p class="md-hero__lede md-hero__lede--yellow">19 formações DGERT-certificadas em Lisboa, Porto e online. Bootcamps, cursos e workshops desenhados com marcas que recrutam talento digital em Portugal.</p>
                     <div class="md-hero__cta">
                         <a class="btn btn-yellow swipe-cta" href="#catalogo"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Ver os 19 cursos</span></a>
                         <a class="hero-reviews" href="https://weareedit.io/avaliacoes-google/" rel="noopener">
@@ -341,7 +341,7 @@ class EDIT_Marketing_Digital_Page {
                             <p class="md-section-header__eyebrow">16 programas DGERT-certificados</p>
                             <h2 class="md-section-header__title">Catálogo de Formação <span>em Marketing Digital</span></h2>
                         </div>
-                        <p class="md-section-header__lead">Bootcamps intensivos para career-changers, cursos completos para especialização profunda, e workshops curtos para upskilling pontual. Programas SIFIDE-elegíveis, leccionados por marketers em activo nas marcas que recrutam talento digital em Portugal.</p>
+                        <p class="md-section-header__lead">Bootcamps intensivos para career-changers, cursos completos para especialização profunda, e workshops curtos para upskilling pontual. Leccionados por marketers em activo nas marcas que recrutam talento digital em Portugal.</p>
                     </div>
                 </div>
                 <?php foreach ( self::CATALOG as $group => $slugs ) : ?>
@@ -369,7 +369,7 @@ class EDIT_Marketing_Digital_Page {
                     <div class="md-dgert-band__copy">
                         <p class="md-dgert-band__eyebrow">DGERT nº 18391</p>
                         <h3 class="md-dgert-band__title">Entidade Formadora Certificada</h3>
-                        <p class="md-dgert-band__sub">Todas as formações elegíveis para SIFIDE — até 35% de crédito fiscal sobre o investimento em formação. Confirma a certificação no portal DGERT.</p>
+                        <p class="md-dgert-band__sub">Todas as formações são certificadas pela DGERT, com emissão de certificados individuais reconhecidos. Confirma a certificação no portal DGERT.</p>
                     </div>
                     <span class="md-dgert-band__arrow" aria-hidden="true">↗</span>
                 </div>
@@ -382,7 +382,7 @@ class EDIT_Marketing_Digital_Page {
                 <div class="md-empresas-cta__inner">
                     <p class="md-empresas-cta__eyebrow">EDIT. PARA EMPRESAS</p>
                     <h2 class="md-empresas-cta__title">Sobe o nível da tua equipa digital<span class="md-dot md-dot--pink">.</span></h2>
-                    <p class="md-empresas-cta__lede">Bootcamps, cursos e workshops à medida da tua organização. DGERT-certificados, SIFIDE-elegíveis, leccionados por marketers em activo nas marcas que recrutam talento digital em Portugal.</p>
+                    <p class="md-empresas-cta__lede">Bootcamps, cursos e workshops à medida da tua organização. DGERT-certificados, leccionados por marketers em activo nas marcas que recrutam talento digital em Portugal.</p>
                     <a class="btn btn-yellow swipe-cta" href="https://empresas.weareedit.io/" target="_blank" rel="noopener"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Conhecer EDIT. Empresas →</span></a>
                 </div>
             </section>

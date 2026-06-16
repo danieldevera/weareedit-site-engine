@@ -97,7 +97,7 @@ class EDIT_Data_Science_Page {
                 'body'  => 'Os alunos saem para roles em data analyst, data scientist, ML engineer, data engineer e BI. Os principais sectores recrutadores em Portugal: <strong>banca</strong> (perfis de risco, fraude, customer analytics), <strong>telcos</strong> (segmentação, churn, BI), <strong>retalho e e-commerce</strong> (recomendação, demand forecasting), <strong>scale-ups tech</strong> (data engineering, ML em produto) e <strong>consultoras</strong> (data strategy, transformação digital). Alumni da EDIT. estão colocados em empresas como <strong>Farfetch</strong> e <strong>Worten</strong>, entre outras. Faixas salariais 2026 (referência mercado PT): <strong>€22-30K</strong> para junior data analyst; <strong>€35-50K</strong> para data scientist com 2-4 anos; <strong>€55-80K+</strong> para senior data scientist ou data engineer em scale-up.',
             ],
         ],
-        'cta_lead' => 'Abaixo estão os programas activos em Data Science e Data Engineering — Bootcamps intensivos para entrada na área, Cursos completos para especialização profunda em Lisboa, Porto ou Remote, e Workshops curtos para upskilling específico. Todos elegíveis para SIFIDE.',
+        'cta_lead' => 'Abaixo estão os programas activos em Data Science e Data Engineering — Bootcamps intensivos para entrada na área, Cursos completos para especialização profunda em Lisboa, Porto ou Remote, e Workshops curtos para upskilling específico.',
     ];
 
     public static function init() {
@@ -263,7 +263,7 @@ class EDIT_Data_Science_Page {
                         <span class="dgert-hero-pill-arrow" aria-hidden="true">↗</span>
                     </a>
                     <h1 class="md-hero__title md-hero__title--xl">Data Science<span class="h1-dot h1-dot-pink">.</span><br>Inteligência Artificial<span class="h1-dot h1-dot-teal">.</span></h1>
-                    <p class="md-hero__lede md-hero__lede--yellow">11 formações DGERT-certificadas em Lisboa, Porto e online. Bootcamps, cursos e workshops em Data Science, Engineering e Machine Learning com tutores em activo nas marcas que mais recrutam talento digital em Portugal. Programas SIFIDE-elegíveis.</p>
+                    <p class="md-hero__lede md-hero__lede--yellow">11 formações DGERT-certificadas em Lisboa, Porto e online. Bootcamps, cursos e workshops em Data Science, Engineering e Machine Learning com tutores em activo nas marcas que mais recrutam talento digital em Portugal.</p>
                     <div class="md-hero__cta">
                         <a class="btn btn-yellow swipe-cta" href="#catalogo"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Ver os 11 cursos</span></a>
                         <a class="hero-reviews" href="https://weareedit.io/avaliacoes-google/" rel="noopener">
@@ -308,7 +308,7 @@ class EDIT_Data_Science_Page {
                             <p class="md-section-header__eyebrow">11 programas DGERT-certificados</p>
                             <h2 class="md-section-header__title">Catálogo de Formação <span>em Data Science</span></h2>
                         </div>
-                        <p class="md-section-header__lead">Bootcamps intensivos para career-changers, cursos completos para especialização profunda, e workshops curtos para upskilling pontual. Programas SIFIDE-elegíveis, leccionados por data scientists e engineers em activo nas empresas que recrutam talento de dados em Portugal.</p>
+                        <p class="md-section-header__lead">Bootcamps intensivos para career-changers, cursos completos para especialização profunda, e workshops curtos para upskilling pontual. Leccionados por data scientists e engineers em activo nas empresas que recrutam talento de dados em Portugal.</p>
                     </div>
                 </div>
                 <?php foreach ( self::CATALOG as $group => $slugs ) : ?>
@@ -336,7 +336,7 @@ class EDIT_Data_Science_Page {
                 <div class="md-empresas-cta__inner">
                     <p class="md-empresas-cta__eyebrow">EDIT. PARA EMPRESAS</p>
                     <h2 class="md-empresas-cta__title">Sobe o nível da tua equipa digital<span class="md-dot md-dot--pink">.</span></h2>
-                    <p class="md-empresas-cta__lede">Bootcamps, cursos e workshops à medida da tua organização. DGERT-certificados, SIFIDE-elegíveis, leccionados por marketers em activo nas marcas que recrutam talento digital em Portugal.</p>
+                    <p class="md-empresas-cta__lede">Bootcamps, cursos e workshops à medida da tua organização. DGERT-certificados, leccionados por marketers em activo nas marcas que recrutam talento digital em Portugal.</p>
                     <a class="btn btn-yellow swipe-cta" href="https://empresas.weareedit.io/" target="_blank" rel="noopener"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Conhecer EDIT. Empresas →</span></a>
                 </div>
             </section>

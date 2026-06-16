@@ -93,7 +93,7 @@ class EDIT_Programacao_Page {
                 'body'  => 'Os alunos saem para roles em frontend developer, backend developer, full-stack engineer, mobile developer e DevOps. Os principais sectores recrutadores em Portugal: <strong>scale-ups tech</strong> (product engineering), <strong>banca digital</strong> (mobile apps, internet banking, API teams), <strong>consultoras tech</strong> (delivery em large clients), <strong>telcos</strong> (produto digital) e <strong>ecossistema de scale-ups internacionais com hubs em Lisboa e Porto</strong>. Faixas salariais 2026 (referência mercado PT): <strong>€25-35K</strong> para junior developer; <strong>€40-55K</strong> para mid developer com 2-4 anos; <strong>€55-80K+</strong> para senior em scale-up; <strong>€75-110K+</strong> para tech lead ou engineering manager.',
             ],
         ],
-        'cta_lead' => 'Abaixo estão os programas activos em Programação — Bootcamps intensivos para entrada na área, Cursos completos para especialização profunda em Lisboa, Porto ou Remote, e Workshops curtos para upskilling específico. Todos elegíveis para SIFIDE.',
+        'cta_lead' => 'Abaixo estão os programas activos em Programação — Bootcamps intensivos para entrada na área, Cursos completos para especialização profunda em Lisboa, Porto ou Remote, e Workshops curtos para upskilling específico.',
     ];
 
     public static function init() {
@@ -163,7 +163,7 @@ class EDIT_Programacao_Page {
 
     private static function set_rank_math_meta( int $page_id ): void {
         update_post_meta( $page_id, 'rank_math_title',       'Curso Programação Web Lisboa & Porto | EDIT. — 8 Programas DGERT' );
-        update_post_meta( $page_id, 'rank_math_description', '10 formações em Programação: Front-End Engineer, Data Engineering, Webflow, Prompt Engineering, automação com IA. DGERT certificada, SIFIDE-elegível.' );
+        update_post_meta( $page_id, 'rank_math_description', '10 formações em Programação: Front-End Engineer, Data Engineering, Webflow, Prompt Engineering, automação com IA. DGERT certificada.' );
         update_post_meta( $page_id, 'rank_math_focus_keyword', 'curso programação' );
         update_post_meta( $page_id, 'rank_math_robots',      [ 'index', 'follow' ] );
     }
@@ -263,7 +263,7 @@ class EDIT_Programacao_Page {
                         <span class="dgert-hero-pill-arrow" aria-hidden="true">↗</span>
                     </a>
                     <h1 class="md-hero__title md-hero__title--xl">Programação<span class="h1-dot h1-dot-pink">.</span><br>Inteligência Artificial<span class="h1-dot h1-dot-teal">.</span></h1>
-                    <p class="md-hero__lede md-hero__lede--yellow">10 formações DGERT-certificadas em Lisboa, Porto e online. Bootcamps e workshops em Front-End Engineering, Data Engineering, Webflow e automação com IA — leccionados por developers em activo nas marcas que mais recrutam talento técnico em Portugal. Programas SIFIDE-elegíveis.</p>
+                    <p class="md-hero__lede md-hero__lede--yellow">10 formações DGERT-certificadas em Lisboa, Porto e online. Bootcamps e workshops em Front-End Engineering, Data Engineering, Webflow e automação com IA — leccionados por developers em activo nas marcas que mais recrutam talento técnico em Portugal.</p>
                     <div class="md-hero__cta">
                         <a class="btn btn-yellow swipe-cta" href="#catalogo"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Ver os 10 cursos</span></a>
                         <a class="hero-reviews" href="https://weareedit.io/avaliacoes-google/" rel="noopener">
@@ -308,7 +308,7 @@ class EDIT_Programacao_Page {
                             <p class="md-section-header__eyebrow">10 programas DGERT-certificados</p>
                             <h2 class="md-section-header__title">Catálogo de Formação <span>em Programação</span></h2>
                         </div>
-                        <p class="md-section-header__lead">Bootcamps intensivos para career-changers, cursos completos para especialização profunda, e workshops curtos para upskilling pontual. Programas SIFIDE-elegíveis, leccionados por programadores em activo nas empresas que recrutam talento técnico em Portugal.</p>
+                        <p class="md-section-header__lead">Bootcamps intensivos para career-changers, cursos completos para especialização profunda, e workshops curtos para upskilling pontual. Leccionados por programadores em activo nas empresas que recrutam talento técnico em Portugal.</p>
                     </div>
                 </div>
                 <?php foreach ( self::CATALOG as $group => $slugs ) : ?>
@@ -336,7 +336,7 @@ class EDIT_Programacao_Page {
                 <div class="md-empresas-cta__inner">
                     <p class="md-empresas-cta__eyebrow">EDIT. PARA EMPRESAS</p>
                     <h2 class="md-empresas-cta__title">Sobe o nível da tua equipa digital<span class="md-dot md-dot--pink">.</span></h2>
-                    <p class="md-empresas-cta__lede">Bootcamps, cursos e workshops à medida da tua organização. DGERT-certificados, SIFIDE-elegíveis, leccionados por marketers em activo nas marcas que recrutam talento digital em Portugal.</p>
+                    <p class="md-empresas-cta__lede">Bootcamps, cursos e workshops à medida da tua organização. DGERT-certificados, leccionados por marketers em activo nas marcas que recrutam talento digital em Portugal.</p>
                     <a class="btn btn-yellow swipe-cta" href="https://empresas.weareedit.io/" target="_blank" rel="noopener"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Conhecer EDIT. Empresas →</span></a>
                 </div>
             </section>
