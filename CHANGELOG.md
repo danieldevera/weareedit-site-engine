@@ -1,4 +1,8 @@
 # Changelog
+## v1.5.561 — 2026-06-16 (Empresas mixed-content fix + pillar "Porquê a EDIT." section removal)
+**Empresas (urgent):** the cached empresas.weareedit.io render was emitting `http://weareedit.io/...` stylesheet URLs (the render's SSL context produced http). Served on the https page, browsers BLOCKED those stylesheets as mixed content → the theme header rendered completely unstyled. Fixed by forcing all first-party asset URLs to https in render_page() before the HTML is cached (str_replace http://→https:// for weareedit.io / www / empresas). Plugin update busts the poisoned transient so it re-renders clean.
+**Pillar pages:** removed the "Porquê a EDIT." section from all 6 pillar classes (Marketing Digital, Marketing Digital IA, Data Science, UX/UI, IA, Programação) per Daniel — section-only. NOTE: SIFIDE / "até 35%" / Cheque-Formação claims still remain in ~6 other spots per pillar (hero lede, cta_lead, FAQ, section headers, DGERT band, Rank Math meta) — left in place per the section-only scope; full scrub pending a separate decision.
+
 ## v1.5.560 — 2026-06-16 (Course cards — badge priority rule: order + cap)
 Implemented Daniel's badge precedence rule. (1) Server-side reorder: every .special-labels-container's stacked tags are sorted to a fixed priority — early15 (Setembro Early-Bird promo) > AI UPGRADE > NOVO PROGRAMA (empty/other last). (2) Grid cards (.course) cap at the top 2 tags via CSS (3rd+ hidden) — tight corner; the product-page hero badge (the lone container NOT inside a .course card) keeps all 3. Empty badge boxes hidden everywhere. early15 text preserved verbatim + now sorts first, so the EARLY15 ?campanha= filter still matches and the cap never drops it.
 

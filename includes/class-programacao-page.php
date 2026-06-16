@@ -92,10 +92,6 @@ class EDIT_Programacao_Page {
                 'title' => 'Onde vão trabalhar os alumni',
                 'body'  => 'Os alunos saem para roles em frontend developer, backend developer, full-stack engineer, mobile developer e DevOps. Os principais sectores recrutadores em Portugal: <strong>scale-ups tech</strong> (product engineering), <strong>banca digital</strong> (mobile apps, internet banking, API teams), <strong>consultoras tech</strong> (delivery em large clients), <strong>telcos</strong> (produto digital) e <strong>ecossistema de scale-ups internacionais com hubs em Lisboa e Porto</strong>. Faixas salariais 2026 (referência mercado PT): <strong>€25-35K</strong> para junior developer; <strong>€40-55K</strong> para mid developer com 2-4 anos; <strong>€55-80K+</strong> para senior em scale-up; <strong>€75-110K+</strong> para tech lead ou engineering manager.',
             ],
-            [
-                'title' => 'Porquê a EDIT.',
-                'body'  => '<ul><li><strong>DGERT-certificada (nº 18391)</strong> — todas as formações elegíveis para SIFIDE (crédito fiscal até 35% sobre o investimento em formação).</li><li><strong>Tutores em activo</strong> — engineers, tech leads e CTOs que trabalham em produto real, não académicos.</li><li><strong>Projetos sobre stack moderno</strong> — usamos a stack que as empresas usam hoje, não tecnologia legacy.</li><li><strong>4.1 ★ / 67 reviews no Google</strong> — feedback verificável dos alumni de Lisboa e Porto.</li><li><strong>Disruptive Jobs</strong> — agência de recrutamento própria da EDIT., dedicada a ligar alunos a marcas. Mais do que formação: um pipeline de carreira.</li></ul>',
-            ],
         ],
         'cta_lead' => 'Abaixo estão os programas activos em Programação — Bootcamps intensivos para entrada na área, Cursos completos para especialização profunda em Lisboa, Porto ou Remote, e Workshops curtos para upskilling específico. Todos elegíveis para SIFIDE.',
     ];

@@ -94,10 +94,6 @@ class EDIT_Marketing_Digital_Page {
                 'title' => 'Onde vão trabalhar os alumni',
                 'body'  => 'Os alunos da EDIT. saem para roles em paid media, performance marketing, growth, content strategy, e CRM. <strong>600+ alumni colocados</strong> em marcas como Farfetch, Worten, Sonae, NOS, EDP, FNAC, Adidas e Galp; agências independentes (We Are Social, Wunderman Thompson, OMD); e scale-ups portuguesas (Bolt, Sword Health, Talkdesk). Salários iniciais típicos em 2026: <strong>€25-32K</strong> para junior em paid media ou performance; <strong>€40-55K</strong> para senior com 3-5 anos; <strong>€60-80K+</strong> para Head of Marketing em scale-up.',
             ],
-            [
-                'title' => 'Porquê a EDIT.',
-                'body'  => '<ul><li><strong>DGERT-certificada (nº 18391)</strong> — todas as formações elegíveis para SIFIDE (crédito fiscal até 35% sobre o investimento em formação).</li><li><strong>Tutores em activo</strong> — paid media managers e marketing leads nas empresas que recrutam talento digital em Portugal, não académicos.</li><li><strong>Cases reais sobre marcas reais</strong> — trabalhamos com briefs e dados de clientes consentidos, não exemplos fabricados.</li><li><strong>4.1 ★ / 67 reviews no Google</strong> — feedback verificável dos alumni de Lisboa e Porto.</li><li><strong>Disruptive Jobs</strong> — agência de recrutamento própria da EDIT., dedicada a ligar alunos a marcas. Mais do que formação: um pipeline de carreira.</li></ul>',
-            ],
         ],
         'cta_lead' => 'Abaixo estão os 16 programas activos em Marketing Digital — Bootcamps intensivos para career-changers, Cursos completos para especialização profunda, e Workshops curtos para upskilling pontual. Todos elegíveis para SIFIDE.',
     ];

@@ -1056,6 +1056,18 @@ HTML;
         get_footer();
         $html = self::a11y_chrome_fixes( self::dedupe_canonical( (string) ob_get_clean() ) );
 
+        // Mixed-content guard (2026-06-16): depending on the SSL-detection
+        // context of the render (cron cache-warm / internal request), the theme
+        // can emit http:// asset URLs. Cached and served on this https:// page,
+        // browsers BLOCK those http:// stylesheets → the header renders
+        // completely unstyled. Force every first-party asset URL to https so the
+        // cached HTML is always mixed-content-clean.
+        $html = str_replace(
+            [ 'http://weareedit.io', 'http://www.weareedit.io', 'http://empresas.weareedit.io' ],
+            [ 'https://weareedit.io', 'https://www.weareedit.io', 'https://empresas.weareedit.io' ],
+            $html
+        );
+
         if ( $can_cache ) {
             set_transient( $cache_key, $html, 12 * HOUR_IN_SECONDS );
         }

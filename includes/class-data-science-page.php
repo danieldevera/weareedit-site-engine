@@ -96,10 +96,6 @@ class EDIT_Data_Science_Page {
                 'title' => 'Onde vão trabalhar os alumni',
                 'body'  => 'Os alunos saem para roles em data analyst, data scientist, ML engineer, data engineer e BI. Os principais sectores recrutadores em Portugal: <strong>banca</strong> (perfis de risco, fraude, customer analytics), <strong>telcos</strong> (segmentação, churn, BI), <strong>retalho e e-commerce</strong> (recomendação, demand forecasting), <strong>scale-ups tech</strong> (data engineering, ML em produto) e <strong>consultoras</strong> (data strategy, transformação digital). Alumni da EDIT. estão colocados em empresas como <strong>Farfetch</strong> e <strong>Worten</strong>, entre outras. Faixas salariais 2026 (referência mercado PT): <strong>€22-30K</strong> para junior data analyst; <strong>€35-50K</strong> para data scientist com 2-4 anos; <strong>€55-80K+</strong> para senior data scientist ou data engineer em scale-up.',
             ],
-            [
-                'title' => 'Porquê a EDIT.',
-                'body'  => '<ul><li><strong>DGERT-certificada (nº 18391)</strong> — todas as formações elegíveis para SIFIDE (crédito fiscal até 35% sobre o investimento em formação).</li><li><strong>Tutores em activo</strong> — data scientists, ML engineers e data leads que trabalham na área, não académicos.</li><li><strong>Projetos reais sobre dados reais</strong> — usamos datasets autênticos com briefs de negócio, não exemplos sintéticos.</li><li><strong>4.1 ★ / 67 reviews no Google</strong> — feedback verificável dos alumni de Lisboa e Porto.</li><li><strong>Disruptive Jobs</strong> — agência de recrutamento própria da EDIT., dedicada a ligar alunos a marcas. Mais do que formação: um pipeline de carreira.</li></ul>',
-            ],
         ],
         'cta_lead' => 'Abaixo estão os programas activos em Data Science e Data Engineering — Bootcamps intensivos para entrada na área, Cursos completos para especialização profunda em Lisboa, Porto ou Remote, e Workshops curtos para upskilling específico. Todos elegíveis para SIFIDE.',
     ];

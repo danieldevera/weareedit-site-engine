@@ -93,10 +93,6 @@ class EDIT_Inteligencia_Artificial_Page {
                 'title' => 'Onde vão trabalhar os alumni',
                 'body'  => 'Os alunos saem com competências aplicáveis em qualquer função — porque IA é hoje uma layer horizontal, não um cargo específico. Os principais sectores recrutadores em Portugal: <strong>agências de comunicação e marketing</strong> (automação criativa, content production), <strong>scale-ups tech</strong> (LLM apps, RAG em produto), <strong>media e publishing</strong> (content workflows assistidos por IA), <strong>consultoras</strong> (transformação digital com IA) e o <strong>ecossistema de freelancers e founders</strong> a construir produtos AI-native. Faixas salariais 2026 (referência mercado PT): <strong>€30-45K</strong> para AI specialist sem experiência prévia; <strong>€45-65K</strong> para AI consultor com 2-4 anos; <strong>€65-100K+</strong> para AI lead ou senior AI engineer em scale-up.',
             ],
-            [
-                'title' => 'Porquê a EDIT.',
-                'body'  => '<ul><li><strong>DGERT-certificada (nº 18391)</strong> — todas as formações elegíveis para SIFIDE (crédito fiscal até 35% sobre o investimento em formação).</li><li><strong>Tutores que constroem com IA todos os dias</strong> — práticos a aplicar LLMs, agentes e RAG em produto real, não académicos.</li><li><strong>Currículo actualizado em ciclos curtos</strong> — IA evolui em meses, não anos. Reflectimos o estado da arte 2026.</li><li><strong>4.1 ★ / 67 reviews no Google</strong> — feedback verificável dos alumni de Lisboa e Porto.</li><li><strong>Disruptive Jobs</strong> — agência de recrutamento própria da EDIT., dedicada a ligar alunos a marcas. Mais do que formação: um pipeline de carreira.</li></ul>',
-            ],
         ],
         'cta_lead' => 'Abaixo estão os programas activos em Inteligência Artificial — Bootcamps intensivos para profissionais não-técnicos, Cursos completos para construção de produtos com IA, e Workshops curtos para domínio de ferramentas específicas. Todos elegíveis para SIFIDE.',
     ];

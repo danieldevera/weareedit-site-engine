@@ -96,10 +96,6 @@ class EDIT_UX_UI_Design_Page {
                 'title' => 'Onde vão trabalhar os alumni',
                 'body'  => 'Os alunos saem para roles em product designer, UX designer, UI designer, design lead e UX researcher. Os principais sectores recrutadores em Portugal: <strong>scale-ups tech</strong> (product teams), <strong>banca digital</strong> (mobile apps, internet banking), <strong>telcos</strong> (digital product), <strong>retalho e e-commerce</strong> (UX de conversão) e <strong>estúdios de design e agências</strong> (interaction + visual). Faixas salariais 2026 (referência mercado PT): <strong>€22-30K</strong> para junior UX/UI; <strong>€35-48K</strong> para product designer com 2-4 anos; <strong>€55-75K+</strong> para senior em scale-up; <strong>€65-90K</strong> para design lead.',
             ],
-            [
-                'title' => 'Porquê a EDIT.',
-                'body'  => '<ul><li><strong>DGERT-certificada (nº 18391)</strong> — todas as formações elegíveis para SIFIDE (crédito fiscal até 35% sobre o investimento em formação).</li><li><strong>Tutores em activo</strong> — product designers, design leads e UX researchers que trabalham na área, não académicos.</li><li><strong>Briefs reais sobre produtos reais</strong> — projetos com requisitos de negócio autênticos, não exercícios fictícios.</li><li><strong>4.1 ★ / 67 reviews no Google</strong> — feedback verificável dos alumni de Lisboa e Porto.</li><li><strong>Disruptive Jobs</strong> — agência de recrutamento própria da EDIT., dedicada a ligar alunos a marcas. Mais do que formação: um pipeline de carreira.</li></ul>',
-            ],
         ],
         'cta_lead' => 'Abaixo estão os programas activos em UX/UI Design — Bootcamps intensivos para entrada na área, Cursos completos para especialização profunda em Lisboa, Porto ou Remote, e Workshops curtos para upskilling específico. Todos elegíveis para SIFIDE.',
     ];
