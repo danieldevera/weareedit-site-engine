@@ -30,6 +30,14 @@ class EDIT_Internal_Marketing_Docs {
      *  Resilient to opcache + rewrite-rule resets without manual intervention. */
     const FLUSH_FLAG_PREFIX = 'edit_imd_rewrites_flushed_';
 
+    /**
+     * Old slug → new slug 301 map for renamed / superseded docs, so existing
+     * links and bookmarks to a retired doc bounce to its replacement.
+     */
+    const REDIRECTS = [
+        'education-foresight-strategy-2026-06-10-pt' => 'education-foresight-strategy-2026-06-16-pt',
+    ];
+
     public static function init() {
         // Belt + suspenders. Rewrite rules are the "clean URL" path but they
         // require .htaccess flushing which can fail silently in shared/managed
@@ -68,6 +76,7 @@ class EDIT_Internal_Marketing_Docs {
                 self::render_404( $m[1] );
                 exit;
             }
+            self::maybe_redirect( $slug );
             $file = WEAREDIT_SITE_ENGINE_PATH . self::DOCS_DIR . $slug . '.html';
             if ( ! file_exists( $file ) ) {
                 status_header( 404 );
@@ -100,6 +109,14 @@ class EDIT_Internal_Marketing_Docs {
         return $vars;
     }
 
+    /** 301 a renamed/superseded doc slug to its replacement, then exit. */
+    private static function maybe_redirect( $slug ) {
+        if ( isset( self::REDIRECTS[ $slug ] ) ) {
+            wp_safe_redirect( home_url( '/' . self::SLUG_BASE . '/' . self::REDIRECTS[ $slug ] . '/' ), 301 );
+            exit;
+        }
+    }
+
     /**
      * One-time rewrite flush after deploy, so the new routes resolve
      * without a manual permalink-save.
@@ -127,6 +144,8 @@ class EDIT_Internal_Marketing_Docs {
             status_header( 404 );
             exit;
         }
+
+        self::maybe_redirect( $slug );
 
         $path = WEAREDIT_SITE_ENGINE_PATH . self::DOCS_DIR . $slug . '.html';
         if ( ! file_exists( $path ) ) {
