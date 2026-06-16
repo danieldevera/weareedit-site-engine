@@ -36,6 +36,7 @@ class EDIT_Internal_Marketing_Docs {
      */
     const REDIRECTS = [
         'education-foresight-strategy-2026-06-10-pt' => 'education-foresight-strategy-2026-06-16-pt',
+        'education-foresight-strategy-2026-06-10'    => 'education-foresight-strategy-2026-06-16',
     ];
 
     public static function init() {

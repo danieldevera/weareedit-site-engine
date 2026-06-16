@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.564 — 2026-06-16 (Revalidate Education Foresight EN version + 301)
+Same revalidation applied to the ENGLISH Education Foresight doc: renamed education-foresight-strategy-2026-06-10.html to -2026-06-16.html, prepended the Revalidation 2026-06-16 layer (fresh GT data, rising-rank-not-volume correction, failed-course field test, re-ranked bets), and added the EN slug to the REDIRECTS map (301 old to new). Both PT + EN foresight docs now revalidated + redirected.
+
 ## v1.5.563 — 2026-06-16 (Internal docs — revalidate Education Foresight strategy + 301 old→new)
 Revalidated the Education Foresight & Growth Strategy (PT) doc against a fresh 12-month Google Trends pull (to 2026-06-16, via Supermetrics): chatgpt still dominates PT (67–100, not declining), "claude code" still negligible in PT (~1, faded after a Mar–Apr blip), PT-vs-GB specialist-tooling gap persists. Renamed `education-foresight-strategy-2026-06-10-pt.html` → `-2026-06-16-pt.html` and prepended a "Revalidação 2026-06-16" layer: data re-check table, a methodology correction (the "claude code = 100" figure is a Rising-Queries RANK, not absolute volume — it's tiny everywhere), a field-test reality check (the specialist Claude-Code course got ~0 PT intent), and a re-ranking (Part A mainstream anchoring = high confidence; Part B Claude-Code/agents cohorts = DOWNGRADED). Added a slug REDIRECTS map to EDIT_Internal_Marketing_Docs (301 old slug → new) wired into both render paths.
 
