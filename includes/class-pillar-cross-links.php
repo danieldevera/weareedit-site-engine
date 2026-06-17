@@ -125,7 +125,11 @@ body:not(:has(.class-remote-learning)) .sobre-curso font[color="#0090eb"] b{colo
    so on the white curriculum cards they're invisible (white-on-white) and hover
    yellow. Give them a readable darker grey by default + the page main colour on
    hover (Remote = blue #0090eb). */
-.sobre-curso a,.programa a,.text-block-container a,.text-block-container font a,.programa font a{color:#555555 !important;}
+/* Darker grey for the curriculum/content body text (was a faint theme grey).
+   `:not([color="#0090eb"])` protects the authored-blue description list. */
+.programa .text-block-container,.programa .text-block-container p,.programa .apresentacao,.text-block-container,.text-block-container p,.text-block-container font:not([color="#0090eb"]){color:#333333 !important;}
+/* Links: darker grey + BOLD so they stand out from the grey text. */
+.sobre-curso a,.programa a,.text-block-container a,.text-block-container font a,.programa font a{color:#333333 !important;font-weight:700 !important;}
 body:has(.class-remote-learning) .sobre-curso a:hover,
 body:has(.class-remote-learning) .programa a:hover,
 body:has(.class-remote-learning) .text-block-container a:hover,

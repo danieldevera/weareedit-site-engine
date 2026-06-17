@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.584 — 2026-06-17 (Course content — darker grey body text + bold links)
+Curriculum/content body text was a faint theme grey; darkened to #333 (scoped to .programa/.text-block-container, with :not([color="#0090eb"]) protecting the authored-blue description list). Course-content links now darker grey + bold so they stand out from the body text; blue hover on Remote courses retained.
+
 ## v1.5.583 — 2026-06-17 (Course content links — fix white-on-white + blue hover)
 Inline links inside the curriculum/description cards were painted white by the theme (designed for dark sections), so on the white cards they were invisible and hovered yellow. Course-content links (.sobre-curso/.programa/.text-block-container, incl. font-wrapped) now use a readable darker grey (#555) by default and the page main colour on hover — Remote courses → blue (#0090eb), scoped via :has(.class-remote-learning).
 
