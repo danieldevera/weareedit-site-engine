@@ -402,6 +402,37 @@
     footer .copyright .row{height:auto !important;}
   }
   .mocknote{background:#0a0a0a;border-bottom:1px solid #2a2a2a;color:#e8e8e8;font-size:12.5px;text-align:center;padding:7px 14px;font-weight:600;font-family:var(--font);}
+
+  /* ─────────── Corporate partnerships ─────────── */
+  .partners-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:38px;}
+  @media(max-width:900px){.partners-grid{grid-template-columns:repeat(3,1fr)}}
+  @media(max-width:560px){.partners-grid{grid-template-columns:repeat(2,1fr)}}
+  .pcard{border:1px solid var(--line);border-radius:14px;background:#fff;padding:30px 24px;display:flex;flex-direction:column;align-items:flex-start;gap:14px;}
+  .pcard .plogo{height:64px;width:auto;max-width:210px;object-fit:contain;object-position:left center;display:block;}
+  .pcard .pname{font-size:16px;font-weight:700;letter-spacing:-.01em;}
+  .pcard .pdesc{font-size:13px;color:var(--grey);line-height:1.5;}
+  .cert .cert-dgert{height:74px;width:auto;display:block;}
+
+  /* ─────────── Polish: swipe CTA · card hover · scroll reveal ─────────── */
+  .swipe-cta{position:relative;overflow:hidden;z-index:0;isolation:isolate;}
+  .swipe-cta .swipe-layer{position:absolute;inset:-2px;pointer-events:none;will-change:transform;}
+  .swipe-cta .swipe-pink{background:var(--pink);transform:translateX(-105%);transition:transform .18s cubic-bezier(.33,1,.68,1);z-index:1;}
+  .swipe-cta .swipe-teal{background:var(--teal);transform:translateX(105%);transition:transform .22s cubic-bezier(.65,0,.35,1) .18s;z-index:2;}
+  .swipe-cta .swipe-black{background:#0a0a0a;transform:translateX(-105%);transition:transform .25s cubic-bezier(.33,1,.68,1) .4s;z-index:3;}
+  .swipe-cta .swipe-label{position:relative;z-index:4;transition:color .18s ease .5s;display:inline-flex;align-items:center;gap:6px;}
+  .swipe-cta:hover .swipe-pink,.swipe-cta:hover .swipe-teal,.swipe-cta:hover .swipe-black{transform:translateX(0);}
+  .swipe-cta:hover .swipe-label{color:var(--yellow);}
+  /* card hover */
+  .gcard,.tcard,.ttile,.pstage,.ocard,.mod,.track,.pcard{transition:transform .2s ease,box-shadow .2s ease,border-color .2s ease;}
+  .gcard:hover,.tcard:hover,.ttile:hover,.pstage:hover,.ocard:hover,.track:hover,.pcard:hover{transform:translateY(-4px);box-shadow:0 14px 32px rgba(122,56,180,.15);border-color:var(--augment-purple);}
+  /* scroll + load reveal */
+  @media(prefers-reduced-motion:no-preference){
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity .65s cubic-bezier(.2,.6,.2,1),transform .65s cubic-bezier(.2,.6,.2,1);}
+    .reveal.in{opacity:1;transform:none;}
+    .hero .eyebrow,.hero h1,.hero .lede,.hero .dgert,.hero .btn-container{animation:augUp .7s both cubic-bezier(.2,.6,.2,1);}
+    .hero h1{animation-delay:.05s}.hero .lede{animation-delay:.15s}.hero .btn-container{animation-delay:.25s}
+    @keyframes augUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+  }
 </style>
 </head>
 <body>
@@ -439,7 +470,7 @@
     <p class="lede">Ao vivo e prático — sais a construir fluxos de trabalho com IA reais, prontos a usar. Para qualquer profissão, sem saber programar.</p>
     <p class="hero-urgency"><span class="live-dot" aria-hidden="true"></span> Inscrições abertas · próximo grupo arranca em <b>Setembro 2026</b> · vagas limitadas</p>
     <div class="ctas">
-      <a href="#inscrever" class="btn btn-purple btn-lg">Inscrever no próximo grupo</a>
+      <a href="#inscrever" class="btn btn-purple swipe-cta btn-lg">Inscrever no próximo grupo</a>
       <a href="#empresas" class="btn btn-ghost btn-lg">Formar a minha equipa</a>
     </div>
   </div>
@@ -707,6 +738,24 @@
 </section>
 
 <!-- TRACKS -->
+<!-- CORPORATE PARTNERSHIPS -->
+<section class="block">
+  <div class="wrap">
+    <p class="eyebrow">Parcerias Corporativas</p>
+    <h2>Construído com quem está a definir a IA em Portugal.</h2>
+    <p class="lead2">Colaboramos com empresas de IA de referência — para casos reais, mentoria e oportunidades de carreira para quem termina o programa.</p>
+    <div class="partners-grid">
+      <div class="pcard"><img class="plogo" src="https://img.logo.dev/feedzai.com?token=pk_JlAcqdcyQVODsnFOhpPEUQ&size=240&format=png&retina=true" alt="Feedzai"><div class="pname">Feedzai</div><div class="pdesc">ML em tempo real para prevenção de fraude na banca e fintech global. (Lisboa)</div></div>
+      <div class="pcard"><img class="plogo" src="https://img.logo.dev/unbabel.com?token=pk_JlAcqdcyQVODsnFOhpPEUQ&size=240&format=png&retina=true" alt="Unbabel"><div class="pname">Unbabel</div><div class="pdesc">Algoritmos de IA + revisão humana para suporte multilingue à escala. (Lisboa)</div></div>
+      <div class="pcard"><img class="plogo" src="https://img.logo.dev/defined.ai?token=pk_JlAcqdcyQVODsnFOhpPEUQ&size=240&format=png&retina=true" alt="Defined.ai"><div class="pname">Defined.ai</div><div class="pdesc">Marketplace de dados de treino éticos para visão, NLP e voz. (Lisboa)</div></div>
+      <div class="pcard"><img class="plogo" src="https://img.logo.dev/bysix.com?token=pk_JlAcqdcyQVODsnFOhpPEUQ&size=240&format=png&retina=true" alt="BySix"><div class="pname">BySix</div><div class="pdesc">Soluções Generative AI end-to-end, infraestrutura LLM à medida e estratégia de IA.</div></div>
+      <div class="pcard"><img class="plogo" src="https://img.logo.dev/nilg.ai?token=pk_JlAcqdcyQVODsnFOhpPEUQ&size=240&format=png&retina=true" alt="NILG.AI"><div class="pname">NILG.AI</div><div class="pdesc">IA e machine learning — processamento de dados, analytics e consultoria GenAI. (Porto)</div></div>
+      <div class="pcard"><img class="plogo" src="https://img.logo.dev/altar.io?token=pk_JlAcqdcyQVODsnFOhpPEUQ&size=240&format=png&retina=true" alt="Altar.io"><div class="pname">Altar.io</div><div class="pdesc">Software à medida e desenvolvimento de IA para startups e empresas. (Lisboa)</div></div>
+      <div class="pcard"><img class="plogo" src="https://img.logo.dev/seegno.com?token=pk_JlAcqdcyQVODsnFOhpPEUQ&size=240&format=png&retina=true" alt="Seegno"><div class="pname">Seegno</div><div class="pdesc">Engenharia de produto digital com IA e machine learning à medida. (Braga)</div></div>
+    </div>
+  </div>
+</section>
+
 <section class="block" id="empresas">
   <div class="wrap">
     <p class="eyebrow">Dois formatos</p>
@@ -726,7 +775,7 @@
           <li>Projeto final aplicado à tua empresa / projeto</li>
           <li>Certificado individual DGERT</li>
         </ul>
-        <a href="#inscrever" class="btn btn-purple">Inscrever e pagar</a>
+        <a href="#inscrever" class="btn btn-purple swipe-cta">Inscrever e pagar</a>
         <p class="pay-note">Pagamento seguro online · confirmação imediata da vaga</p>
       </div>
       <div class="track b2b">
@@ -752,6 +801,7 @@
     <p class="eyebrow">Certificação</p>
     <h2>Formação certificada, com certificados individuais.</h2>
     <div class="row">
+      <img class="cert-dgert" src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/augment/dgert-negro.png" alt="Entidade Formadora Certificada DGERT nº 18391">
       <div class="badge">Entidade Formadora Certificada DGERT (nº 18391)</div>
       <div class="note">Cada participante recebe um certificado individual de conclusão. Para empresas, a formação pode ser enquadrada no Fundo de Compensação do Trabalho.</div>
     </div>
@@ -809,7 +859,7 @@
     <h2>Pronto para te aumentares?</h2>
     <p>Junta-te ao próximo grupo remoto, ou pede uma proposta para a tua equipa. Resposta em 24 horas úteis.</p>
     <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-      <a href="#" class="btn btn-purple">Inscrever no próximo grupo</a>
+      <a href="#" class="btn btn-purple swipe-cta">Inscrever no próximo grupo</a>
       <a href="#" class="btn btn-ghost" style="border-color:#fff;color:#fff;">Formar a minha equipa</a>
     </div>
   </div>
@@ -1320,5 +1370,25 @@ geral@edit.com.pt<br />
     </div>
 </footer>
 
+<script>
+(function(){
+  // Swipe-CTA layer injection (idempotent — skips buttons that already have a label)
+  document.querySelectorAll('.swipe-cta').forEach(function(b){
+    if(b.querySelector('.swipe-label')) return;
+    var t=b.innerHTML;
+    b.innerHTML='<span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">'+t+'</span>';
+  });
+  // Scroll reveal — only tag below-the-fold elements so above-fold never flashes; no-JS = visible
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if(!('IntersectionObserver' in window)) return;
+  var sel='.block .eyebrow,.block h2,.block .lead2,.gcard,.tcard,.ttile,.pstage,.ocard,.mod,.track,.pcard,.toolwall,.faq-list';
+  var io=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12,rootMargin:'0px 0px -6% 0px'});
+  [].slice.call(document.querySelectorAll(sel)).forEach(function(el){
+    var r=el.getBoundingClientRect();
+    if(r.top < window.innerHeight*0.92) return;   // already visible: leave as-is
+    el.classList.add('reveal'); io.observe(el);
+  });
+})();
+</script>
 </body>
 </html>

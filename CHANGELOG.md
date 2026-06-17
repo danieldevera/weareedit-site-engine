@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.575 — 2026-06-17 (Augment — corporate partnerships, DGERT logo, polish)
+(1) New "Parcerias Corporativas" section: 7 PT AI companies (Feedzai, Unbabel, Defined.ai, BySix, NILG.AI, Altar.io, Seegno) as logo cards (Logo.dev, larger 64px logos) + name + PT tagline; placed before the empresas/formats section. (2) Added the black DGERT badge logo to the Certificação section row. (3) Polish: the EDIT swipe-CTA (pink->teal->black sweep, label flips yellow) applied to the primary purple CTAs via JS layer injection; lift+purple-shadow hover on all card types; load animation on the hero + IntersectionObserver scroll-reveal for section content (tags only below-fold elements so above-fold never flashes; no-JS = everything visible). Verified render via headless Chrome. Note: Seegno logo returns blank from Logo.dev — needs a real asset.
+
 ## v1.5.574 — 2026-06-17 (Augment — Daniel mentor card to pravatar placeholder)
 Swapped Daniel's real photo (daniel-devera-sign-off.png) for a pravatar placeholder on his Lead Mentors card, so all four cards are uniform placeholders during the design phase. Name/role/tag unchanged. All four photos to be replaced with real headshots before public launch.
 
