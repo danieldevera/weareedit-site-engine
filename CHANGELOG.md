@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.578 — 2026-06-17 (Augment feedback — fix save for logged-in users)
+Notes failed to save for logged-in admins: the widget's fetch sent the weareedit.io auth cookie to the subdomain, so WP REST demanded a nonce and 403'd the POST (anonymous requests already worked). Added credentials:'omit' to all three fetches (GET/POST/DELETE) so every request is treated as anonymous and authed by our token param instead — works for logged-in and anonymous alike. Backend was fine; this was purely the WP-REST cookie/nonce trap.
+
 ## v1.5.577 — 2026-06-17 (Augment — async team-feedback layer)
 New on-page feedback widget for the team-presentation round (class-augment-feedback.php). Daniel sends the preview link; team members click "+ Deixar nota" and drop pinned, author-attributed notes anywhere on the page. Notes are stored server-side (WP option) via REST under /wp-json/edit-augment/v1/notes — same-origin on the subdomain, write-gated by the preview token — so all feedback collects in one shared place and persists. "Notas (N)" opens a review panel listing everything with click-to-scroll. No logins for the team. Injected into the standalone Augment doc by render_page(); JS syntax-checked + bar render verified. Toggle off via EDIT_Augment_Feedback::ENABLED=false before public launch.
 

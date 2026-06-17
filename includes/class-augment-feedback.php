@@ -183,13 +183,13 @@ class EDIT_Augment_Feedback {
     pop.onclick=function(e){e.stopPropagation();};
     document.body.appendChild(pop); ta.focus();
   }
-  function load(){ fetch(BASE).then(function(r){return r.json();}).then(function(d){ notes=Array.isArray(d)?d:[]; render(); }).catch(function(){}); }
+  function load(){ fetch(BASE,{credentials:'omit'}).then(function(r){return r.json();}).then(function(d){ notes=Array.isArray(d)?d:[]; render(); }).catch(function(){}); }
   function save(n){
     n.secret=SECRET;
-    fetch(BASE,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(n)})
+    fetch(BASE,{method:'POST',credentials:'omit',headers:{'Content-Type':'application/json'},body:JSON.stringify(n)})
       .then(function(r){return r.json();}).then(function(saved){ if(saved&&saved.id){ notes.push(saved); render(); } });
   }
-  function del(id){ fetch(BASE+'/'+id+'?secret='+encodeURIComponent(SECRET),{method:'DELETE'}).then(function(){ notes=notes.filter(function(n){return n.id!==id;}); render(); }); }
+  function del(id){ fetch(BASE+'/'+id+'?secret='+encodeURIComponent(SECRET),{method:'DELETE',credentials:'omit'}).then(function(){ notes=notes.filter(function(n){return n.id!==id;}); render(); }); }
   addBtn.onclick=function(){ adding=!adding; addBtn.classList.toggle('on',adding); addBtn.textContent=adding?'Clica na página…':'+ Deixar nota'; document.body.classList.toggle('augfb-adding',adding); };
   listBtn.onclick=function(){ panel.classList.toggle('open'); };
   document.addEventListener('click',function(e){
