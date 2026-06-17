@@ -95,8 +95,11 @@ body.single-formacao section.alumni{padding-top:120px !important;}
 .epb-foot{display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid rgba(10,10,10,.12);}
 .epb-cnt{font-size:12.5px;font-weight:600;color:rgba(10,10,10,.5);}
 .epb-cta{font-size:13px;font-weight:800;display:inline-flex;gap:8px;align-items:center;color:#0a0a0a;}
-/* Mini Empresas banner — replaces the old in-company banner (hidden below) */
-section.banner.split-black-grey{display:none !important;}
+/* Mini Empresas banner — replaces the old in-company banner. Hide every variant
+   of the legacy theme in-company banner (split-black-grey AND bg-black etc.) —
+   they all wrap a .info-banner row, so target that. */
+section.banner.split-black-grey,
+section.banner:has(.info-banner){display:none !important;}
 .ceb-mini{position:relative;overflow:hidden;max-width:1180px;margin:56px auto 56px;display:flex;align-items:center;gap:28px;justify-content:space-between;flex-wrap:wrap;background:radial-gradient(140% 200% at 6% 50%,#191919,#0c0c0c 60%,#0a0a0a);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:20px 26px;}
 .ceb-mini__left{display:flex;align-items:center;gap:22px;min-width:0;}
 .ceb-mini__dgert{height:36px !important;max-height:36px !important;width:auto !important;display:block;flex:none;opacity:.95;}
@@ -106,6 +109,12 @@ section.banner.split-black-grey{display:none !important;}
 .ceb-mini__head em{font-family:Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;color:#ffdd06;}
 .ceb-mini__cta{flex:none;}
 @media (max-width:680px){.ceb-mini{gap:16px;}.ceb-mini__cta{width:100%;justify-content:center;}}
+/* New Empresas banner accents follow the page's typology colour. Default = yellow
+   (presencial); Remote Learning courses → blue (#0090eb). */
+body:has(.class-remote-learning) .ceb-mini__eyebrow,
+body:has(.class-remote-learning) .ceb-mini__head em{color:#0090eb !important;}
+body:has(.class-remote-learning) .ceb-mini__cta.btn-yellow{background:#0090eb !important;}
+body:has(.class-remote-learning) .ceb-mini__cta.btn-yellow .swipe-label{color:#ffffff !important;}
 /* Recolour the blue course highlight in the description to brand pink — but NOT
    on Remote Learning courses, whose typology colour IS blue (#0090eb), so the
    authored blue must stay. Scoped via :has() on the remote breadcrumb class;

@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.582 — 2026-06-17 (Course pages — hide legacy empresas banner + new banner follows typology colour)
+(1) The legacy theme in-company banner ("Gostavas de realizar este curso na tua empresa…") was still showing on courses whose variant is `section.banner.bg-black` (the old hide rule only caught `.split-black-grey`). Broadened the hide to `section.banner:has(.info-banner)` so every legacy variant is suppressed — the new `.ceb-mini` banner replaces it. (2) The new Empresas banner (`.ceb-mini`) was hard-yellow; now its accents (eyebrow, italic, CTA) follow the page's typology colour — Remote Learning courses → blue (#0090eb), white CTA label; presencial keeps yellow. Scoped via `:has(.class-remote-learning)`.
+
 ## v1.5.581 — 2026-06-17 (Single course page — hide redundant hero/CTA promo badges)
 On single course (product) pages the theme echoes the promo badge slot (AI UPGRADE / EARLY15) into the hero + sticky-CTA chrome, where it renders dark-on-dark and is redundant (Daniel: "not supposed to render"). Hidden via `body.single-formacao .special-labels-container{display:none}`, with `body.single-formacao .course-box .special-labels-container{display:flex}` re-showing the badges on the "outras formações" related-courses grid cards. Grid/archive/pillar card badges untouched.
 
