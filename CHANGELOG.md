@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.583 — 2026-06-17 (Course content links — fix white-on-white + blue hover)
+Inline links inside the curriculum/description cards were painted white by the theme (designed for dark sections), so on the white cards they were invisible and hovered yellow. Course-content links (.sobre-curso/.programa/.text-block-container, incl. font-wrapped) now use a readable darker grey (#555) by default and the page main colour on hover — Remote courses → blue (#0090eb), scoped via :has(.class-remote-learning).
+
 ## v1.5.582 — 2026-06-17 (Course pages — hide legacy empresas banner + new banner follows typology colour)
 (1) The legacy theme in-company banner ("Gostavas de realizar este curso na tua empresa…") was still showing on courses whose variant is `section.banner.bg-black` (the old hide rule only caught `.split-black-grey`). Broadened the hide to `section.banner:has(.info-banner)` so every legacy variant is suppressed — the new `.ceb-mini` banner replaces it. (2) The new Empresas banner (`.ceb-mini`) was hard-yellow; now its accents (eyebrow, italic, CTA) follow the page's typology colour — Remote Learning courses → blue (#0090eb), white CTA label; presencial keeps yellow. Scoped via `:has(.class-remote-learning)`.
 

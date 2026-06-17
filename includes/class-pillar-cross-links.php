@@ -121,6 +121,16 @@ body:has(.class-remote-learning) .ceb-mini__cta.btn-yellow .swipe-label{color:#f
    if :has() is unsupported the selector drops and the content stays authored blue. */
 body:not(:has(.class-remote-learning)) .sobre-curso font[color="#0090eb"],
 body:not(:has(.class-remote-learning)) .sobre-curso font[color="#0090eb"] b{color:#f92869 !important;}
+/* Course-content links: the theme paints them white (built for dark sections),
+   so on the white curriculum cards they're invisible (white-on-white) and hover
+   yellow. Give them a readable darker grey by default + the page main colour on
+   hover (Remote = blue #0090eb). */
+.sobre-curso a,.programa a,.text-block-container a,.text-block-container font a,.programa font a{color:#555555 !important;}
+body:has(.class-remote-learning) .sobre-curso a:hover,
+body:has(.class-remote-learning) .programa a:hover,
+body:has(.class-remote-learning) .text-block-container a:hover,
+body:has(.class-remote-learning) .text-block-container font a:hover,
+body:has(.class-remote-learning) .programa font a:hover{color:#0090eb !important;}
 </style>
         <?php
     }
