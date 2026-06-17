@@ -248,9 +248,25 @@
   .foot-col h4{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--grey);margin:0 0 14px;}
   .foot-col a{display:block;font-size:14px;color:var(--ink);text-decoration:none;padding:5px 0;}
   .foot-col a:hover{color:var(--pink);}
-  .foot-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:48px;padding-top:24px;border-top:1px solid var(--line);font-size:12.5px;color:var(--grey);}
+  .foot-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-top:48px;padding-top:24px;border-top:1px solid var(--line);font-size:12.5px;color:var(--grey);}
   .foot-bottom a{color:var(--grey);text-decoration:none;}
-  .foot-bottom a:hover{color:var(--ink);}
+  .foot-bottom a:hover{color:var(--pink);}
+  /* Full EDIT footer (light) — mirrors the empresas/main-site footer. */
+  .foot-logo{height:30px;width:auto;display:block;margin-bottom:22px;}
+  .foot-locs{display:grid;gap:16px;font-size:13px;color:var(--grey);line-height:1.55;}
+  .foot-locs span{color:var(--ink);font-weight:700;}
+  .foot-brand .dgert-foot{margin-top:22px;}
+  .foot-col .h4-mt{margin-top:26px;}
+  .foot-projects{margin-top:48px;border-top:1px solid var(--line);padding-top:30px;}
+  .foot-projects .lead{display:block;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);margin-bottom:16px;}
+  .proj-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  @media(max-width:680px){.proj-grid{grid-template-columns:repeat(2,1fr)}}
+  .proj-grid .box{background:#0a0a0a;border-radius:6px;height:96px;display:flex;align-items:center;justify-content:center;padding:20px;}
+  .proj-grid .box img{max-width:100%;max-height:54px;width:auto;height:auto;object-fit:contain;}
+  .foot-social{display:flex;gap:10px;}
+  .foot-social a{width:36px;height:36px;border:1px solid var(--line);border-radius:6px;display:flex;align-items:center;justify-content:center;color:var(--ink);transition:.15s;}
+  .foot-social a:hover{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .foot-social svg{width:16px;height:16px;fill:currentColor;display:block;}
   .mocknote{background:#0a0a0a;border-bottom:1px solid #2a2a2a;color:#e8e8e8;font-size:12.5px;text-align:center;padding:7px 14px;font-weight:600;font-family:var(--font);}
 </style>
 </head>
@@ -649,37 +665,70 @@
   <div class="wrap">
     <div class="foot-grid">
       <div class="foot-brand">
-        <div class="lockup">
-          <img src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/augment/edit-logo.png" alt="EDIT.">
-          <span class="pipe"></span>
-          <span class="prod">Augment<span class="tm">™</span></span>
+        <img class="foot-logo" src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/augment/edit-logo.png" alt="EDIT.">
+        <div class="foot-locs">
+          <div><span>Lisboa</span><br>Av. Aquilino Ribeiro Machado, Nº 8, 1800-399<br>geral@edit.com.pt<br>(+351) 210 182 455</div>
+          <div><span>Porto</span><br>Rua Alferes Malheiro 226, 4000-057<br>geral@edit.com.pt<br>(+351) 224 960 345</div>
         </div>
-        <p>Formação prática em Inteligência Artificial para profissionais — 100% remoto, ao vivo, em português.</p>
         <img class="dgert-foot" src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/augment/dgert-negro.png" alt="Entidade Formadora Certificada DGERT nº 18391">
       </div>
       <div class="foot-col">
-        <h4>Programa</h4>
-        <a href="#">Módulos</a>
-        <a href="#">Formato &amp; datas</a>
-        <a href="#">Certificação</a>
-        <a href="#inscrever">Inscrever</a>
+        <h4>Formação</h4>
+        <a href="https://weareedit.io/formacao_tipo/bootcamp-3/">Bootcamp</a>
+        <a href="https://weareedit.io/formacao_tipo/programa/">Curso</a>
+        <a href="https://weareedit.io/formacao_tipo/cursos-intensivos/">Curso Intensivo</a>
+        <a href="https://weareedit.io/formacao_tipo/remote-learning/">Remote Learning</a>
+        <a href="https://weareedit.io/formacao_tipo/workshops/">Workshop</a>
+        <a href="https://empresas.weareedit.io/">Empresas</a>
+        <h4 class="h4-mt">Eventos</h4>
+        <a href="https://weareedit.io/eventos?catID=50197">Business Innovation</a>
+        <a href="https://weareedit.io/eventos?catID=50194">Design</a>
+        <a href="https://weareedit.io/eventos?catID=50196">Digital Marketing</a>
+        <a href="https://weareedit.io/eventos?catID=50195">Programação</a>
       </div>
       <div class="foot-col">
-        <h4>Empresas</h4>
-        <a href="#empresas">Formação in-company</a>
-        <a href="#empresas">Pedir proposta</a>
-        <a href="#">Fundo de Compensação do Trabalho</a>
+        <h4>Remote Learning</h4>
+        <a href="https://weareedit.io/formacao/?tipoId=41794&amp;areaId=362245">Inteligência Artificial</a>
+        <a href="https://weareedit.io/formacao/?tipoId=41794&amp;areaId=254300">Gestão</a>
+        <a href="https://weareedit.io/formacao/?tipoId=41794&amp;areaId=15343">Data &amp; Business</a>
+        <a href="https://weareedit.io/formacao/?tipoId=41794&amp;areaId=1398">Marketing Digital</a>
+        <a href="https://weareedit.io/formacao/?tipoId=41794&amp;areaId=82">Programação</a>
+        <a href="https://weareedit.io/formacao/?tipoId=41794&amp;areaId=77">UXUI Design</a>
+        <h4 class="h4-mt">Outros</h4>
+        <a href="https://weareedit.io/profissoes/">Profissões</a>
+        <a href="https://weareedit.io/content-hub/">Content Hub</a>
+        <a href="https://weareedit.io/faqs/">FAQS</a>
       </div>
       <div class="foot-col">
-        <h4>Contacto</h4>
-        <a href="mailto:augment@weareedit.io">augment@weareedit.io</a>
-        <a href="#">Lisboa · Porto · Remoto</a>
-        <a href="https://weareedit.io" target="_blank" rel="noopener">weareedit.io</a>
+        <h4>Escola</h4>
+        <a href="https://weareedit.io/escola-3/">We are EDIT.</a>
+        <a href="https://weareedit.io/escola-3/recrutamento/">Recruitment Services</a>
+        <a href="https://empresas.weareedit.io/">Para Empresas</a>
+        <a href="https://weareedit.io/escola-3/campus/">Localizações</a>
+        <a href="https://weareedit.io/escola-3/estudantes/">Alunos Internacionais</a>
+        <a href="https://weareedit.io/escola-3/den/">DEN</a>
       </div>
     </div>
+
+    <div class="foot-projects">
+      <span class="lead">Outros projetos</span>
+      <div class="proj-grid">
+        <div class="box"><img src="https://weareedit.io/wp-content/uploads/2021/06/edit-work-e1708103507864.png" alt="EDIT. Work"></div>
+        <div class="box"><img src="https://weareedit.io/wp-content/uploads/2021/06/disruptive-jobs-logo-1.png" alt="Disruptive Jobs"></div>
+        <div class="box"><img src="https://weareedit.io/wp-content/uploads/2025/10/Frame-352-1.png" alt="The Transformation Space"></div>
+        <div class="box"><img src="https://weareedit.io/wp-content/uploads/2021/06/logoIo.png" alt="IO"></div>
+      </div>
+    </div>
+
     <div class="foot-bottom">
-      <span>© 2026 EDIT. — Disruptive Digital Education · Augment.</span>
-      <span>augment.weareedit.io · DGERT nº 18391 · <a href="#">Privacidade</a></span>
+      <ul class="foot-social" style="list-style:none;margin:0;padding:0;">
+        <a href="https://www.facebook.com/EDIT.education" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M13 22v-8h2.6l.4-3H13V9c0-.9.3-1.5 1.6-1.5H16V4.8c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1V11H7v3h2.6v8H13z"/></svg></a>
+        <a href="https://instagram.com/edit.education/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2c2.7 0 3 0 4.1.1 1 .1 1.7.2 2.3.5.6.2 1.1.5 1.6 1 .5.5.8 1 1 1.6.2.6.4 1.3.5 2.3.1 1.1.1 1.4.1 4.1s0 3-.1 4.1c-.1 1-.2 1.7-.5 2.3-.2.6-.5 1.1-1 1.6-.5.5-1 .8-1.6 1-.6.2-1.3.4-2.3.5-1.1.1-1.4.1-4.1.1s-3 0-4.1-.1c-1-.1-1.7-.2-2.3-.5-.6-.2-1.1-.5-1.6-1-.5-.5-.8-1-1-1.6-.2-.6-.4-1.3-.5-2.3C2 15 2 14.7 2 12s0-3 .1-4.1c.1-1 .2-1.7.5-2.3.2-.6.5-1.1 1-1.6.5-.5 1-.8 1.6-1 .6-.2 1.3-.4 2.3-.5C9 2 9.3 2 12 2zm0 3.4a6.6 6.6 0 100 13.2 6.6 6.6 0 000-13.2zm0 1.9a4.7 4.7 0 110 9.4 4.7 4.7 0 010-9.4zm6.4-2.4a1.1 1.1 0 100 2.2 1.1 1.1 0 000-2.2z"/></svg></a>
+        <a href="https://vimeo.com/editeducation" target="_blank" rel="noopener" aria-label="Vimeo"><svg viewBox="0 0 24 24"><path d="M22 7.4c-.1 2.1-1.6 5-4.4 8.7-2.9 3.8-5.4 5.7-7.4 5.7-1.3 0-2.3-1.2-3.2-3.5l-1.7-6.4C4.6 9.2 4 8 3.4 8c-.1 0-.6.3-1.4.9L1 7.7c1-.9 2-1.8 3-2.7 1.3-1.1 2.3-1.7 3-1.8 1.6-.2 2.5.9 2.9 3.2.4 2.5.7 4.1.9 4.7.5 2.3 1 3.4 1.6 3.4.5 0 1.2-.7 2.1-2.2.9-1.5 1.4-2.6 1.5-3.4.1-1-.3-1.5-1.2-1.5-.4 0-.9.1-1.3.3.9-2.9 2.6-4.4 5.1-4.3 1.9.1 2.8 1.3 2.7 3.6z"/></svg></a>
+        <a href="https://www.youtube.com/EDITEscoladeDesignInterativoeTecnologiaLisboa" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23 7.5c-.3-1-1-1.8-2-2C19.1 5 12 5 12 5s-7.1 0-9 .5c-1 .3-1.8 1-2 2C.5 9.4.5 12 .5 12s0 2.6.5 4.5c.3 1 1 1.8 2 2 1.9.5 9 .5 9 .5s7.1 0 9-.5c1-.3 1.8-1 2-2 .5-1.9.5-4.5.5-4.5s0-2.6-.5-4.5zM9.8 15.3V8.7l5.7 3.3-5.7 3.3z"/></svg></a>
+        <a href="https://www.linkedin.com/company/edit-education" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M6.9 8.5H3.6V21h3.3V8.5zM5.3 3.3a1.9 1.9 0 100 3.8 1.9 1.9 0 000-3.8zM21 13.9c0-3.1-1.7-4.6-3.9-4.6-1.8 0-2.6 1-3 1.7V8.5H10.7c0 .9 0 12.5 0 12.5H14v-7c0-.4 0-.7.1-1 .3-.7.9-1.4 1.9-1.4 1.4 0 1.9 1 1.9 2.6V21H21v-7.1z"/></svg></a>
+      </ul>
+      <span>© 2026 EDIT. — Disruptive Digital Education · DGERT nº 18391 · <a href="https://weareedit.io/politica-de-privacidade/" target="_blank" rel="noopener">Política de Privacidade</a></span>
     </div>
   </div>
 </footer>
