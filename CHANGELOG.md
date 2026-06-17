@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.579 — 2026-06-17 (Augment feedback — edit notes + visual add-mode cursor)
+(1) Edit existing notes: added a PUT /notes/{id} route (update_note, token-gated) + an "Editar" button in each note bubble that swaps to an editable textarea (Guardar/Cancelar); shows "· editado" after. (2) More visual add-mode: replaced the plain crosshair with a custom purple ring+plus SVG cursor, plus a fixed top hint banner ("Clica em qualquer ponto para deixar a tua nota · ESC para cancelar"; squared 8px, not a pill) shown only while adding, and ESC now cancels add-mode. JS syntax-checked. (Existing notes flushed on request.)
+
 ## v1.5.578 — 2026-06-17 (Augment feedback — fix save for logged-in users)
 Notes failed to save for logged-in admins: the widget's fetch sent the weareedit.io auth cookie to the subdomain, so WP REST demanded a nonce and 403'd the POST (anonymous requests already worked). Added credentials:'omit' to all three fetches (GET/POST/DELETE) so every request is treated as anonymous and authed by our token param instead — works for logged-in and anonymous alike. Backend was fine; this was purely the WP-REST cookie/nonce trap.
 

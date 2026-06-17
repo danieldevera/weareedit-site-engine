@@ -42,6 +42,7 @@ class EDIT_Augment_Feedback {
 		] );
 		register_rest_route( self::NS, '/notes/(?P<id>[a-z0-9]+)', [
 			[ 'methods' => 'DELETE', 'callback' => [ __CLASS__, 'delete_note' ], 'permission_callback' => '__return_true' ],
+			[ 'methods' => 'PUT',    'callback' => [ __CLASS__, 'update_note' ], 'permission_callback' => '__return_true' ],
 		] );
 	}
 
@@ -77,6 +78,23 @@ class EDIT_Augment_Feedback {
 		return new WP_REST_Response( $note, 201 );
 	}
 
+	public static function update_note( WP_REST_Request $req ) {
+		if ( ! hash_equals( self::SECRET, (string) $req->get_param( 'secret' ) ) ) {
+			return new WP_REST_Response( [ 'error' => 'forbidden' ], 403 );
+		}
+		$id   = (string) $req->get_param( 'id' );
+		$text = trim( wp_strip_all_tags( (string) $req->get_param( 'text' ) ) );
+		if ( $text === '' ) return new WP_REST_Response( [ 'error' => 'empty' ], 400 );
+		$notes = self::notes(); $found = false;
+		foreach ( $notes as &$n ) {
+			if ( ( $n['id'] ?? '' ) === $id ) { $n['text'] = mb_substr( $text, 0, 1000 ); $n['edited'] = time(); $found = true; break; }
+		}
+		unset( $n );
+		if ( ! $found ) return new WP_REST_Response( [ 'error' => 'not_found' ], 404 );
+		update_option( self::OPTION, $notes, false );
+		return new WP_REST_Response( [ 'ok' => true ], 200 );
+	}
+
 	public static function delete_note( WP_REST_Request $req ) {
 		if ( ! hash_equals( self::SECRET, (string) $req->get_param( 'secret' ) ) ) {
 			return new WP_REST_Response( [ 'error' => 'forbidden' ], 403 );
@@ -103,8 +121,11 @@ class EDIT_Augment_Feedback {
   #augfb-add{background:#7a38b4;color:#fff;}
   #augfb-add.on{background:#0a0a0a;}
   #augfb-list{background:#fff;color:#0a0a0a;border:1px solid #e6e6e3;}
-  body.augfb-adding{cursor:crosshair;}
-  body.augfb-adding *{cursor:crosshair !important;}
+  body.augfb-adding,body.augfb-adding *{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='20' cy='20' r='13' fill='%237a38b4' fill-opacity='0.2' stroke='%237a38b4' stroke-width='2.5'/%3E%3Cpath d='M20 13.5v13M13.5 20h13' stroke='%237a38b4' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E") 20 20, crosshair !important;}
+  #augfb-hint{position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:2147483200;background:#7a38b4;color:#fff;font-weight:700;font-size:14px;padding:11px 18px;border-radius:8px;box-shadow:0 10px 28px rgba(122,56,180,.4);display:none;align-items:center;gap:8px;font-family:'SctoGroteskA','Inter',-apple-system,Helvetica,Arial,sans-serif;pointer-events:none;}
+  body.augfb-adding #augfb-hint{display:flex;}
+  .augfb-actions{display:flex;gap:12px;}
+  .augfb-edit{background:none;border:0;color:#7a38b4;font-size:12px;font-weight:700;cursor:pointer;padding:0;}
   .augfb-pin{position:absolute;z-index:2147482000;width:28px;height:28px;border-radius:50% 50% 50% 2px;background:#7a38b4;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(122,56,180,.45);cursor:pointer;transform:translate(-50%,-100%);border:2px solid #fff;}
   .augfb-pin:hover{background:#DF086F;}
   .augfb-pop{position:absolute;z-index:2147483100;width:300px;max-width:88vw;background:#fff;border:1px solid #e6e6e3;border-radius:12px;box-shadow:0 16px 44px rgba(0,0,0,.22);padding:14px;font-family:'SctoGroteskA','Inter',-apple-system,Helvetica,Arial,sans-serif;transform:translate(-50%,12px);}
@@ -126,6 +147,7 @@ class EDIT_Augment_Feedback {
   <button id="augfb-list" type="button">Notas (0)</button>
   <button id="augfb-add" type="button">+ Deixar nota</button>
 </div>
+<div id="augfb-hint">📍 Clica em qualquer ponto para deixar a tua nota · ESC para cancelar</div>
 <div id="augfb-panel"><h4>Feedback da equipa</h4><div id="augfb-items"></div></div>
 <script>
 (function(){
@@ -156,15 +178,26 @@ class EDIT_Augment_Feedback {
     count();
   }
   function escapeHtml(s){ return (s||'').replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
-  function openRead(n,pin){
+  function openRead(n){
     closePops();
     var pop=document.createElement('div'); pop.className='augfb-pop';
     pop.style.left=n.xpct+'%'; pop.style.top=(n.y)+'px';
-    var when=new Date(n.ts*1000).toLocaleString('pt-PT');
-    pop.innerHTML='<div class="augfb-read">'+escapeHtml(n.text)+'</div><div class="augfb-meta"><span>'+escapeHtml(n.author)+' · '+when+'</span><button class="augfb-del">Apagar</button></div>';
+    var when=new Date((n.edited||n.ts)*1000).toLocaleString('pt-PT');
+    pop.innerHTML='<div class="augfb-read">'+escapeHtml(n.text)+'</div><div class="augfb-meta"><span>'+escapeHtml(n.author)+(n.edited?' · editado':'')+' · '+when+'</span><span class="augfb-actions"><button class="augfb-edit">Editar</button><button class="augfb-del">Apagar</button></span></div>';
     pop.querySelector('.augfb-del').onclick=function(){ del(n.id); pop.remove(); };
+    pop.querySelector('.augfb-edit').onclick=function(){ openEdit(n,pop); };
     pop.onclick=function(e){e.stopPropagation();};
     document.body.appendChild(pop);
+  }
+  function openEdit(n,pop){
+    pop.innerHTML='<textarea></textarea><div class="row"><button class="augfb-cancel">Cancelar</button><button class="augfb-save">Guardar</button></div>';
+    var ta=pop.querySelector('textarea'); ta.value=n.text; ta.focus();
+    pop.querySelector('.augfb-cancel').onclick=function(){ openRead(n); };
+    pop.querySelector('.augfb-save').onclick=function(){ var t=ta.value.trim(); if(!t)return; update(n.id,t); pop.remove(); };
+  }
+  function update(id,text){
+    fetch(BASE+'/'+id,{method:'PUT',credentials:'omit',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:text,secret:SECRET})})
+      .then(function(r){return r.json();}).then(function(){ var nn=notes.filter(function(x){return x.id===id;})[0]; if(nn){nn.text=text;nn.edited=Math.floor(Date.now()/1000);} render(); });
   }
   function closePops(){ [].forEach.call(document.querySelectorAll('.augfb-pop'),function(e){e.remove();}); }
   function openCompose(x,y){
@@ -192,6 +225,7 @@ class EDIT_Augment_Feedback {
   function del(id){ fetch(BASE+'/'+id+'?secret='+encodeURIComponent(SECRET),{method:'DELETE',credentials:'omit'}).then(function(){ notes=notes.filter(function(n){return n.id!==id;}); render(); }); }
   addBtn.onclick=function(){ adding=!adding; addBtn.classList.toggle('on',adding); addBtn.textContent=adding?'Clica na página…':'+ Deixar nota'; document.body.classList.toggle('augfb-adding',adding); };
   listBtn.onclick=function(){ panel.classList.toggle('open'); };
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&adding){ adding=false; addBtn.classList.remove('on'); addBtn.textContent='+ Deixar nota'; document.body.classList.remove('augfb-adding'); } });
   document.addEventListener('click',function(e){
     if(!adding){ if(!e.target.closest('.augfb-pop')&&!e.target.closest('.augfb-pin')) closePops(); return; }
     if(e.target.closest('#augfb-bar')||e.target.closest('.augfb-pop')) return;
