@@ -234,69 +234,175 @@
   .cta-band h2{color:#fff;margin:0 auto;}
   .cta-band p{color:#cfcfcf;font-size:17px;margin:16px auto 28px;max-width:54ch;}
 
-  /* ════════ EDIT footer — pillar markup + theme footer CSS (v1.5.571) ════════
-     Markup lifted verbatim from /marketing-digital/ (the WP theme footer). The
-     theme stylesheet is a 224KB interdependent bundle that would clobber this
-     standalone doc, so the footer-relevant theme rules are reproduced here at
-     their real values, scoped under `footer`, plus the pillar light override
-     (assets/marketing-digital.css, re-scoped to `footer`). Social glyphs use
-     the theme icon font linked in <head>. */
-  footer{background:#f7f5f0;color:#0a0a0a;padding-top:88px;}
-  footer .container{max-width:1230px;margin:0 auto;padding:0 30px;box-sizing:border-box;}
-  footer .footer-menu>.row,footer .copyright-text .row,footer .footer-newsletter .row{display:flex;flex-wrap:wrap;margin:0;}
-  footer [class*="col-"]{padding:0 15px;box-sizing:border-box;}
-  footer .col-md-3{width:25%;}
-  footer .col-md-6{width:50%;}
-  footer .col-sm-12,footer .col-md-12{width:100%;}
-  footer .col-sm-6,footer .col-xs-6{width:50%;}
-  footer .hide-desktop{display:none;}
-  footer .show-tablet,footer .show-mobile{display:none;}
-  @media(max-width:992px){footer .hide-tablet{display:none;}footer .hide-desktop{display:block;}footer .col-md-3{width:50%;}}
-  @media(max-width:600px){footer .col-md-3,footer .col-sm-6{width:100%;}}
-  footer .footer-logo{width:151px;margin-bottom:48px;}
-  footer .footer-logo img{width:100%;height:auto;display:block;}
-  footer .footer-menu{font-size:15px;}
-  footer .footer-menu>.row{margin-bottom:50px;}
-  footer .locations>div,footer .location-item{font-size:15px;line-height:1.67;letter-spacing:-.47px;color:#0a0a0a;margin-bottom:24px;}
-  footer .locations>div span,footer .location-item span{font-weight:500;color:#0a0a0a;}
-  footer h3{font-size:22px;font-weight:500;line-height:1;letter-spacing:-.69px;margin:0 0 18px;color:#0a0a0a;}
-  footer .footer-menu ul{margin:0 0 36px;padding:0;list-style:none;}
-  footer .footer-menu li{margin-bottom:4px;list-style:none;}
-  footer .footer-menu li a,footer a{color:#0a0a0a;text-decoration:none;font-weight:400;line-height:2;letter-spacing:-.47px;transition:color .2s;}
-  footer .footer-menu li a:hover,footer a:hover{color:#f92869;}
-  footer .other-projects{overflow:hidden;margin-top:10px;}
-  footer .other-projects .lead{display:flex;align-items:center;font-size:22px;font-weight:500;line-height:1.36;letter-spacing:-.69px;color:#0a0a0a;margin-bottom:46px;}
-  footer .other-projects .lead:after{content:'';flex:1;margin-left:22px;height:1px;background:rgba(10,10,10,.12);}
-  footer .other-projects .grid-box{margin-bottom:0;display:flex;align-items:center;justify-content:center;min-height:118px;padding:20px;}
-  footer .other-projects .logos-grid [class^="col-"]:not(:last-child){border-right:1px solid rgba(10,10,10,.10);}
-  footer .grid-box img{width:auto;max-width:100%;max-height:46px;height:auto;border:none;display:block;}
-  footer .footer-newsletter{padding:64px 0;margin-bottom:6px;}
-  footer .footer-newsletter hr,footer hr.light-grey,footer .light-grey{margin:0 0 40px;border:0;border-top:1px solid rgba(10,10,10,.12);background:none;height:0;}
-  footer .footer-newsletter p{font-size:28px;font-weight:700;line-height:1.07;letter-spacing:-.88px;color:#0a0a0a;margin:0;}
-  footer .footer-newsletter .btn-container{text-align:right;}
-  footer .footer-newsletter .v-center{align-items:center;}
-  footer .copyright{padding:22px 0;}
-  footer .social-footer ul{padding:0;margin:0;list-style:none;}
-  footer .social-footer li{display:inline-block;margin:0 16px 0 0;list-style:none;}
-  footer .social-footer li a{font-size:24px;color:#0a0a0a;text-decoration:none;line-height:1;}
-  footer [class^="icon-"]:before,footer [class*=" icon-"]:before{color:#0a0a0a;transition:color .2s;}
-  footer .social-footer li a:hover [class^="icon-"]:before,footer .social-footer li a:hover [class*=" icon-"]:before{color:#f92869;}
-  footer .politica-privacidade{display:inline-block;margin-left:4px;}
-  footer .copyright-text{margin-top:18px;}
-  footer .copyright-text .flex-right{display:flex;justify-content:flex-end;}
-  footer .copyright-text .copy-align{display:flex;align-items:center;gap:24px;flex-wrap:wrap;justify-content:flex-end;}
-  footer .copyright-text p{font-size:15px;color:#6a6a6a;margin:0;line-height:1.5;}
-  footer .copyright-text a{color:#6a6a6a;}
-  footer .btn.btn-yellow.swipe-cta,footer .btn-yellow.swipe-cta{background:#ffdd06;color:#0a0a0a;display:inline-block;padding:14px 26px;border-radius:6px;font-weight:700;font-size:14px;text-decoration:none;position:relative;overflow:hidden;}
-  footer .swipe-cta .swipe-layer{display:none;}
-  footer .swipe-cta .swipe-label{color:#0a0a0a;position:relative;z-index:2;}
-  footer img[src*="logo-edit"],footer img[src*="dgert-entidade-formadora-branco"],footer img[src*="edit-work"],footer img[src*="disruptive-jobs"],footer img[src*="Frame-352"],footer img[src*="logoIo"]{filter:brightness(0);}
-  footer .dgert-cert-link{display:inline-block;line-height:0;text-decoration:none;}
+  /* ==== REAL pillar footer CSS — pulled verbatim from style.css + bootstrap grid + marketing-digital.css (not hand-written) ==== */
+  /* REAL grid (bootstrap.min.css) */
+  .container{padding-right:15px;padding-left:15px;margin-right:auto;margin-left:auto}
+  @media (min-width:768px){.container{width:750px}}
+  @media (min-width:992px){.container{width:970px}}
+  @media (min-width:1200px){.container{width:1170px}}
+  .row{margin-right:-15px;margin-left:-15px}
+  .col-lg-1,.col-lg-10,.col-lg-11,.col-lg-12,.col-lg-2,.col-lg-3,.col-lg-4,.col-lg-5,.col-lg-6,.col-lg-7,.col-lg-8,.col-lg-9,.col-md-1,.col-md-10,.col-md-11,.col-md-12,.col-md-2,.col-md-3,.col-md-4,.col-md-5,.col-md-6,.col-md-7,.col-md-8,.col-md-9,.col-sm-1,.col-sm-10,.col-sm-11,.col-sm-12,.col-sm-2,.col-sm-3,.col-sm-4,.col-sm-5,.col-sm-6,.col-sm-7,.col-sm-8,.col-sm-9,.col-xs-1,.col-xs-10,.col-xs-11,.col-xs-12,.col-xs-2,.col-xs-3,.col-xs-4,.col-xs-5,.col-xs-6,.col-xs-7,.col-xs-8,.col-xs-9{position:relative;min-height:1px;padding-right:15px;padding-left:15px}
+  .col-xs-1,.col-xs-10,.col-xs-11,.col-xs-12,.col-xs-2,.col-xs-3,.col-xs-4,.col-xs-5,.col-xs-6,.col-xs-7,.col-xs-8,.col-xs-9{float:left}
+  .col-xs-12{width:100%}
+  .col-xs-11{width:91.66666667%}
+  .col-xs-10{width:83.33333333%}
+  .col-xs-9{width:75%}
+  .col-xs-8{width:66.66666667%}
+  .col-xs-7{width:58.33333333%}
+  .col-xs-6{width:50%}
+  .col-xs-5{width:41.66666667%}
+  .col-xs-4{width:33.33333333%}
+  .col-xs-3{width:25%}
+  .col-xs-2{width:16.66666667%}
+  .col-xs-1{width:8.33333333%}
+  @media (min-width:768px){.col-sm-1,.col-sm-10,.col-sm-11,.col-sm-12,.col-sm-2,.col-sm-3,.col-sm-4,.col-sm-5,.col-sm-6,.col-sm-7,.col-sm-8,.col-sm-9{float:left}.col-sm-12{width:100%}.col-sm-11{width:91.66666667%}.col-sm-10{width:83.33333333%}.col-sm-9{width:75%}.col-sm-8{width:66.66666667%}.col-sm-7{width:58.33333333%}.col-sm-6{width:50%}.col-sm-5{width:41.66666667%}.col-sm-4{width:33.33333333%}.col-sm-3{width:25%}.col-sm-2{width:16.66666667%}.col-sm-1{width:8.33333333%}}
+  @media (min-width:992px){.col-md-1,.col-md-10,.col-md-11,.col-md-12,.col-md-2,.col-md-3,.col-md-4,.col-md-5,.col-md-6,.col-md-7,.col-md-8,.col-md-9{float:left}.col-md-12{width:100%}.col-md-11{width:91.66666667%}.col-md-10{width:83.33333333%}.col-md-9{width:75%}.col-md-8{width:66.66666667%}.col-md-7{width:58.33333333%}.col-md-6{width:50%}.col-md-5{width:41.66666667%}.col-md-4{width:33.33333333%}.col-md-3{width:25%}.col-md-2{width:16.66666667%}.col-md-1{width:8.33333333%}}
+  @media (min-width:1200px){.col-lg-1,.col-lg-10,.col-lg-11,.col-lg-12,.col-lg-2,.col-lg-3,.col-lg-4,.col-lg-5,.col-lg-6,.col-lg-7,.col-lg-8,.col-lg-9{float:left}.col-lg-12{width:100%}.col-lg-11{width:91.66666667%}.col-lg-10{width:83.33333333%}.col-lg-9{width:75%}.col-lg-8{width:66.66666667%}.col-lg-7{width:58.33333333%}.col-lg-6{width:50%}.col-lg-5{width:41.66666667%}.col-lg-4{width:33.33333333%}.col-lg-3{width:25%}.col-lg-2{width:16.66666667%}.col-lg-1{width:8.33333333%}}
+  /* REAL theme footer + visibility (style.css) */
+  .footer___2x2YU{align-self:flex-end;padding:30px 30px 90px 33px;transform:translateX(-100%);-webkit-transition:-webkit-transform .5s ease;-moz-transition:-moz-transform .5s ease;-o-transition:-o-transform .5s ease;transition:transform .5s ease;transition-delay:.5s}
+  @media (min-width:1024px){.footer___2x2YU{padding:30px 60px 60px}}
+  .footer__item___3eUxy{padding-bottom:30px}
+  .footer__link___Nlcpd{position:relative;line-height:1.33333;font-size:18px;font-weight:500;font-stretch:normal;font-style:normal;line-height:normal;letter-spacing:-.56px;color:#fff;transition:color .2s ease-out}
+  @media (min-width:1250px){.container{width:1230px}}
+  .copyright a:hover{color:#ffdd06}
+  hr.light-grey{border-top:1px solid #3a3a3a}
+  .pad0{padding:0!important}
+  .row.is-flex{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-wrap:wrap;-ms-flex-wrap:wrap;flex-wrap:wrap}
+  .row.is-flex>[class*=col-]{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column}
+  .v-center>[class*=col-]{display:flex;justify-content:center}
+  .flex-right{align-items:flex-end}
+  .grid-sp-40 [class*=col-]{padding-right:20px;padding-left:20px}
+  .grid-sp-40 .grid-box{margin-bottom:40px}
+  .logos-grid .grid-box img{border:solid 1px #242424;width:100%;height:auto}
+  footer{background-color:#000;padding-top:100px}
+  footer h3{font-size:22px;font-weight:500;font-stretch:normal;font-style:normal;line-height:1;letter-spacing:-.69px;margin-top:0;color:#fff}
+  #logos-footer li{list-style:none;float:left;padding-right:15px;padding-left:15px;margin-bottom:30px}
+  .footer-menu{font-size:15px}
+  .footer-menu .location-item{color:#8f8f8f}
+  .footer-menu .locations>div span{font-weight:500;color:#fff}
+  .footer-menu .locations>div{font-weight:400;font-stretch:normal;font-style:normal;letter-spacing:-.47px;color:#8f8f8f;font-size:15px;margin-bottom:25px;line-height:1.67}
+  .footer-menu>.row{margin-bottom:60px}
+  .footer-menu li a{font-weight:400;font-stretch:normal;font-style:normal;line-height:2.67;letter-spacing:-.47px;color:#8f8f8f}
+  footer .logo-box{height:10em;display:flex;align-items:center;padding:0 60px;justify-content:center}
+  .footer-logo{width:151px;margin-bottom:55px}
+  .social-footer li a,.social-menu li a{text-decoration:none;font-size:24px!important}
+  .social-footer{z-index:100}
+  .social-footer li span:before{-webkit-transition:color .2s ease-in-out;-moz-transition:color .2s ease-in-out;-o-transition:color .2s ease-in-out;transition:color .2s ease-in-out}
+  .social-footer li a:hover span:before{color:#ffdd06}
+  .footer-newsletter{padding:70px 0;margin-bottom:30px}
+  .footer-newsletter hr{margin-bottom:90px}
+  .footer-newsletter p{font-size:28px;font-weight:700;font-stretch:normal;font-style:normal;line-height:1.07;letter-spacing:-.88px;color:#fff;padding:0;margin:0}
+  .footer-newsletter .btn-container{text-align:right}
+  .footer-logo img{width:100%}
+  footer .other-projects{overflow:hidden}
+  footer .other-projects .grid-sp-40 .grid-box{margin-bottom:0}
+  footer .other-projects .logos-grid .grid-box img{border:none}
+  footer .other-projects .lead{font-size:22px;font-weight:500;font-stretch:normal;font-style:normal;line-height:1.36;letter-spacing:-.69px;color:#fff;margin-bottom:50px;display:flex;align-items:center}
+  footer .other-projects .lead:after{content:'';flex:1;margin-left:22px;height:1px;background-color:#2e2e2e}
+  footer .other-projects [class^=col-]:not(:last-child){border-right:1px solid #272727}
+  .footer-menu ul{margin-bottom:0;margin:0 0 40px 0;padding:0;list-style:none}
+  .footer-menu a:hover{color:#ffdd06}
+  .copyright ul.social-footer a img{width:42px}
+  .copyright .row{height:120px}
+  .copyright{height:120px;background-color:#0d0d0d}
+  .copy-align{flex-direction:row;display:flex;vertical-align:middle;align-items:center}
+  .copy-align img{height:60px}
+  .copyright p{font-size:16px;font-weight:400;font-stretch:normal;font-style:normal;line-height:1.88;letter-spacing:-.5px;text-align:right;color:#8f8f8f;margin-bottom:0;margin-right:50px}
+  .social-footer{position:absolute;left:0;width:30%;padding:34px 0;height:120px;text-align:center;background-color:#171717}
+  .social-footer ul{padding:0}
+  .social-footer li{display:inline-block;margin:12px}
+  .section-financiamento .v-center>[class*=col-]{justify-content:top}
+  .filter-result .grid-sp-40 [class*=col-]{padding-right:15px;padding-left:15px}
+  .hide-desktop{display:none}
+  @media (min-width:992px){.show-tablet{display:none}}
+  @media (min-width:1200px){.show-desktop{display:block}}
+  @media (max-width:992px){.show-desktop{display:none}.hide-tablet{display:none}.hide-desktop{display:block}.social-footer{position:relative;width:100%}.copy-align{justify-content:space-between;width:100%}.copyright .row{height:180px}.footer-menu [class^=col-]:first-child .locations{display:none}.footer-menu>.row{margin-bottom:10px}.locations-tablet .location-item{margin-bottom:30px}.locations-tablet [class*=col-]{padding-top:30px}.footer-newsletter .v-center>[class*=col-]{align-items:center}.footer-newsletter .is-flex{display:block;margin-right:0}.footer-newsletter [class^=col-]:first-child{margin-bottom:30px}footer .other-projects .logos-grid [class^=col-]:nth-child(even){border-right:none}footer .other-projects .logos-grid [class^=col-]:nth-child(-n+2){margin-bottom:40px}.social-footer li a{font-size:30px!important}.social-footer li{margin:9px 15px}.copyright p{text-align:left;font-size:18px}.copyright p:first-child{margin-bottom:20px}}
+  @media (max-width:768px){.hide-mobile{display:none}.hide-desktop{display:block}.show-tablet{display:none}.show-desktop{display:none}.container{max-width:100%;padding:0 40px}.grid-sp-40 [class*=col-]{padding-right:10px;padding-left:10px}.grid-sp-40 .grid-box{margin-bottom:20px}.footer-newsletter p{font-size:22px}footer{background-color:#000;padding-top:40px}footer .other-projects .lead{font-size:18px}footer .other-projects img{width:100%}.footer-menu>.row{margin-bottom:0}.footer-newsletter{padding:0;margin-bottom:40px}footer .logos-grid{padding-bottom:30px}footer .logo-box{padding:0 25px}.footer-newsletter a{display:block;margin-top:30px}.footer-menu{font-size:18px}footer .other-projects .lead{margin-bottom:30px}.copy-align{flex-direction:column}.social-footer li a,.social-menu li a{text-decoration:none}.copyright-text{background-color:#0d0d0d;max-width:100%;padding:30px 40px 50px}.copyright-text [class*=col-]{width:100%}.copyright p:first-child{margin-bottom:15px}.copyright-text img{margin-top:20px}.copyright-text .copy-align{align-items:flex-start}.footer-newsletter .btn-container{text-align:right;width:100%}.footer-newsletter [class^=col-]:first-child{margin-bottom:10px}.footer-newsletter hr{margin-bottom:45px}.footer-menu [class^=col-]:first-child .locations{display:block}}
+  @media (max-width:992px){.logos-grid{margin-left:calc(8.33333333% - 15px)}}
+  @media (max-width:768px){.logos-grid{margin-left:-15px}.footer-menu .locations.show-mobile div{margin-bottom:30px}}
+  .footer-newsletter .row.is-flex{width:100%}
+  .disruptiveFooter .politica-privacidade a{margin-right:15px}
+  @media (max-width:992px){footer{padding-top:75px}footer .logos-grid{display:flex;flex-wrap:wrap}footer .copyright p{font-size:16px;line-height:1.56;letter-spacing:-.5px}footer .copyright .copyright-text{padding-top:34px;padding-bottom:39px}footer .copyright .copyright-text .row{height:auto}footer .other-projects .logos-grid .col-xs-6{margin-bottom:40px}footer .footer-newsletter{padding:20px 0 50px 0;margin-bottom:30px}footer .footer-newsletter hr{margin-bottom:69px}footer .logos-grid .col-sm-offset-1:nth-of-type(even){margin-left:0}.copyright{height:auto}.copyright p{margin-right:0}}
+  @media (max-width:768px){footer{padding-top:40px}footer .other-projects .logos-grid [class^=col-],footer .other-projects .logos-grid [class^=col-]:nth-child(-n+2){margin-bottom:20px}footer .copyright p{font-size:16px;line-height:1.56;letter-spacing:-.5px}}
+  #formacaoMenuFooter{display:flex;flex-direction:column}
+  #formacaoMenuFooter li:nth-child(1){order:0}
+  @media (max-width:992px){.footer___2x2YU{padding:30px 30px 15px 33px}}
+  @media (max-width:992px){.home .logos-grid{margin-left:-15px}}
+  section.programa .logos-grid{padding-bottom:42px}
+  @media (max-width:992px){.container{padding:0 80px;width:100%}}
+  @media (max-width:768px){.container{padding:0 40px}}
+  @media (max-width:992px){.page-template-in-company .logos-grid{margin-left:-20px;margin-right:-20px}}
+  @media (max-width:768px){.page-template-in-company .logos-grid{margin-left:-10px;margin-right:-10px}}
+  @media (max-width:768px){.parceiros .logos-grid{margin-left:-10px;margin-right:-10px}}
+  .logos-grid{margin-left:-20px;margin-right:-20px}
+  .page-template-recrutamento-digital footer .footer-menu{display:none}
+  #candidatar hr.light-grey,#eventoForm hr.light-grey,#falaConnosco hr.light-grey,#inCompanyForm hr.light-grey,#newsletterForm hr.light-grey,#pedirInfo hr.light-grey{margin:25px 0;border-color:#d0d0d0}
+  .page-template-page-liveStream section.relacionados hr.light-grey{margin-bottom:100px}
+  /* REAL pillar light override (marketing-digital.css) */
+  /* Theme footer light variant — when this preview page is the surface,
+     recolor the WP theme's dark footer chrome to match the cream canvas. */
+  footer { background:#f7f5f0 !important; color:#0a0a0a !important; }
+  footer a,
+  footer h3,
+  footer span,
+  footer p,
+  footer li,
+  footer div { color:#0a0a0a !important; }
+  footer a:hover { color:#f92869 !important; }
+  footer .footer-newsletter,
+  footer .copyright,
+  footer .social-footer { background:#f7f5f0 !important; }
+  footer .copyright a,
+  footer .social-footer a,
+  footer .social-footer .icon { color:#0a0a0a !important; }
+  /* Social-icon font ligatures (icon-facebook / icon-instagram / icon-vimeo /
+     icon-youtube / icon-linked-in) — color the glyph itself + ::before. */
+  footer [class^="icon-"],
+  footer [class*=" icon-"] { color:#0a0a0a !important; }
+  footer [class^="icon-"]::before,
+  footer [class*=" icon-"]::before { color:#0a0a0a !important; }
+  footer .social-footer a:hover [class^="icon-"],
+  footer .social-footer a:hover [class*=" icon-"],
+  footer .social-footer a:hover [class^="icon-"]::before,
+  footer .social-footer a:hover [class*=" icon-"]::before { color:#f92869 !important; }
+  
+  /* Footer 'Subscrever Newsletter' swipe-cta — preserve the locked yellow
+     button (background, dark text on the label) on the light footer. The
+     broad `footer span { color:#0a0a0a }` rule above made .swipe-label dark
+     text, but the cta lost its yellow bg distinction — explicit re-pin. */
+  footer .btn-yellow.swipe-cta { background:#ffdd06 !important; color:#0a0a0a !important; }
+  footer .btn-yellow.swipe-cta .swipe-label { color:#0a0a0a !important; }
+  footer .btn-yellow.swipe-cta:hover .swipe-label { color:#ffdd06 !important; }
+  footer hr,
+  footer .light-grey { border-color:rgba(10,10,10,.10) !important; background:rgba(10,10,10,.10) !important; }
+  /* Theme footer's logo images ship as white-on-transparent assets for the
+     dark footer. On the light variant we flip them to black via brightness(0).
+     Covers: main EDIT. logo, DGERT badge, and the four 'Outros projetos'
+     brand marks (EDIT Work, Disruptive Jobs, Transformation Space, io.foundation). */
+  footer img[src*="logo-edit"],
+  footer img[src*="dgert-entidade-formadora-branco"],
+  footer img[src*="edit-work"],
+  footer img[src*="disruptive-jobs"],
+  footer img[src*="Frame-352"],
+  footer img[src*="logoIo"] { filter:brightness(0); }
+
+  /* augment supplement: SVG social icons (theme icon-font is cross-origin-blocked
+     on the subdomain), + ensure footer container aligns to augment content width. */
+  footer .social-footer li a{display:inline-flex;align-items:center;color:#0a0a0a;text-decoration:none;}
+  footer .social-footer svg{width:22px;height:22px;fill:currentColor;display:block;}
+  footer .social-footer li a:hover,footer .social-footer li a:hover svg{color:#f92869;fill:#f92869;}
   footer .dgert-cert-link img{max-width:132px;height:auto;width:auto;}
-  footer .dgert-cert-link:hover{opacity:.78;}
+  footer .dgert-cert-link{display:inline-block;line-height:0;}
+  /* mobile: theme hides nav cols (.hide-mobile) & dark-bands the bottom bar via
+     absolute .social-footer — restore columns + keep the bar light/static. */
+  footer .hide-mobile{display:block !important;}
+  @media(max-width:768px){
+    footer .social-footer,footer .copyright{position:relative !important;left:auto !important;width:100% !important;height:auto !important;background:#f7f5f0 !important;text-align:left !important;}
+    footer .social-footer{padding:18px 0 !important;}
+    footer .copyright .row{height:auto !important;}
+  }
   .mocknote{background:#0a0a0a;border-bottom:1px solid #2a2a2a;color:#e8e8e8;font-size:12.5px;text-align:center;padding:7px 14px;font-weight:600;font-family:var(--font);}
 </style>
-  <link rel="stylesheet" href="https://weareedit.io/wp-content/cache/min/1/wp-content/themes/weareedit/css/fonts/social-icons.css">
 </head>
 <body>
 
@@ -1152,19 +1258,19 @@ geral@edit.com.pt<br />
             <ul>
 
                                         <li>
-                            <a target="_blank" href="https://www.facebook.com/EDIT.education"><span class="icon-facebook"></span></a>
+                            <a target="_blank" href="https://www.facebook.com/EDIT.education"><svg viewBox="0 0 24 24"><path d="M13 22v-8h2.6l.4-3H13V9c0-.9.3-1.5 1.6-1.5H16V4.8c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1V11H7v3h2.6v8H13z"/></svg></a>
                         </li>
                                             <li>
-                            <a target="_blank" href="https://instagram.com/edit.education/"><span class="icon-instagram"></span></a>
+                            <a target="_blank" href="https://instagram.com/edit.education/"><svg viewBox="0 0 24 24"><path d="M12 2c2.7 0 3 0 4.1.1 1 .1 1.7.2 2.3.5.6.2 1.1.5 1.6 1 .5.5.8 1 1 1.6.2.6.4 1.3.5 2.3.1 1.1.1 1.4.1 4.1s0 3-.1 4.1c-.1 1-.2 1.7-.5 2.3-.2.6-.5 1.1-1 1.6-.5.5-1 .8-1.6 1-.6.2-1.3.4-2.3.5-1.1.1-1.4.1-4.1.1s-3 0-4.1-.1c-1-.1-1.7-.2-2.3-.5-.6-.2-1.1-.5-1.6-1-.5-.5-.8-1-1-1.6-.2-.6-.4-1.3-.5-2.3C2 15 2 14.7 2 12s0-3 .1-4.1c.1-1 .2-1.7.5-2.3.2-.6.5-1.1 1-1.6.5-.5 1-.8 1.6-1 .6-.2 1.3-.4 2.3-.5C9 2 9.3 2 12 2zm0 3.4a6.6 6.6 0 100 13.2 6.6 6.6 0 000-13.2zm0 1.9a4.7 4.7 0 110 9.4 4.7 4.7 0 010-9.4zm6.4-2.4a1.1 1.1 0 100 2.2 1.1 1.1 0 000-2.2z"/></svg></a>
                         </li>
                                             <li>
-                            <a target="_blank" href="https://vimeo.com/editeducation"><span class="icon-vimeo"></span></a>
+                            <a target="_blank" href="https://vimeo.com/editeducation"><svg viewBox="0 0 24 24"><path d="M22 7.4c-.1 2.1-1.6 5-4.4 8.7-2.9 3.8-5.4 5.7-7.4 5.7-1.3 0-2.3-1.2-3.2-3.5l-1.7-6.4C4.6 9.2 4 8 3.4 8c-.1 0-.6.3-1.4.9L1 7.7c1-.9 2-1.8 3-2.7 1.3-1.1 2.3-1.7 3-1.8 1.6-.2 2.5.9 2.9 3.2.4 2.5.7 4.1.9 4.7.5 2.3 1 3.4 1.6 3.4.5 0 1.2-.7 2.1-2.2.9-1.5 1.4-2.6 1.5-3.4.1-1-.3-1.5-1.2-1.5-.4 0-.9.1-1.3.3.9-2.9 2.6-4.4 5.1-4.3 1.9.1 2.8 1.3 2.7 3.6z"/></svg></a>
                         </li>
                                             <li>
-                            <a target="_blank" href="https://www.youtube.com/EDITEscoladeDesignInterativoeTecnologiaLisboa"><span class="icon-youtube"></span></a>
+                            <a target="_blank" href="https://www.youtube.com/EDITEscoladeDesignInterativoeTecnologiaLisboa"><svg viewBox="0 0 24 24"><path d="M23 7.5c-.3-1-1-1.8-2-2C19.1 5 12 5 12 5s-7.1 0-9 .5c-1 .3-1.8 1-2 2C.5 9.4.5 12 .5 12s0 2.6.5 4.5c.3 1 1 1.8 2 2 1.9.5 9 .5 9 .5s7.1 0 9-.5c1-.3 1.8-1 2-2 .5-1.9.5-4.5.5-4.5s0-2.6-.5-4.5zM9.8 15.3V8.7l5.7 3.3-5.7 3.3z"/></svg></a>
                         </li>
                                             <li>
-                            <a target="_blank" href="https://www.linkedin.com/company/edit-education"><span class="icon-linked-in"></span></a>
+                            <a target="_blank" href="https://www.linkedin.com/company/edit-education"><svg viewBox="0 0 24 24"><path d="M6.9 8.5H3.6V21h3.3V8.5zM5.3 3.3a1.9 1.9 0 100 3.8 1.9 1.9 0 000-3.8zM21 13.9c0-3.1-1.7-4.6-3.9-4.6-1.8 0-2.6 1-3 1.7V8.5H10.7c0 .9 0 12.5 0 12.5H14v-7c0-.4 0-.7.1-1 .3-.7.9-1.4 1.9-1.4 1.4 0 1.9 1 1.9 2.6V21H21v-7.1z"/></svg></a>
                         </li>
                     
             </ul>
