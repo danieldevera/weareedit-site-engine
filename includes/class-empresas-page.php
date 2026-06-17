@@ -1698,6 +1698,61 @@ body.empresas-page .hero .ctas .cta-notation {
 body.empresas-page #edit-newsletter-strip {
   margin: 0 !important;
 }
+
+/* ── LIGHT FOOTER ────────────────────────────────────────────────────────
+   Recolour the theme footer to a clean light variant that matches the white
+   top bar. The theme footer is built for a dark background (white EDIT SVG,
+   white/mono partner logos, white social glyphs), so — mirroring the header
+   brightness(0) approach above — we flip the logo dark, sit the partner logos
+   on dark chips so white marks survive, and darken text/links. Scoped to the
+   empresas footer only; the dark content sections above are untouched. */
+body.empresas-page footer {
+  background: #f6f5f1 !important;
+  border-top: 1px solid #e3e1da !important;
+  color: #6a6a6a !important;
+}
+/* EDIT wordmark — white SVG → black (same flip the header uses). */
+body.empresas-page footer .footer-logo .logo img,
+body.empresas-page footer .footer-logo img {
+  filter: brightness(0) !important;
+}
+/* Section headings + location labels. */
+body.empresas-page footer h3 { color: #0a0a0a !important; }
+body.empresas-page footer .locations,
+body.empresas-page footer .locations div,
+body.empresas-page footer .location-item,
+body.empresas-page footer .footer-newsletter p { color: #6a6a6a !important; }
+body.empresas-page footer .locations span,
+body.empresas-page footer .location-item span { color: #0a0a0a !important; }
+/* Links — grey at rest, brand pink on hover. */
+body.empresas-page footer .footer-menu a,
+body.empresas-page footer a:not(.btn):not(.swipe-cta) { color: #555555 !important; }
+body.empresas-page footer .footer-menu a:hover,
+body.empresas-page footer a:not(.btn):not(.swipe-cta):hover { color: #f92869 !important; }
+/* Separators / hairlines. */
+body.empresas-page footer hr,
+body.empresas-page footer hr.light-grey,
+body.empresas-page footer .border-sep-box,
+body.empresas-page footer .other-projects { border-color: #e3e1da !important; }
+/* "Outros projetos" partner marks are white/mono for a dark footer — seat them
+   on dark 6px chips so they stay visible on the light background. */
+body.empresas-page footer .other-projects .grid-box {
+  background: #0a0a0a !important;
+  border-radius: 6px !important;
+  padding: 22px 24px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+body.empresas-page footer .other-projects .lead { color: #6a6a6a !important; }
+/* Social glyphs (icon font, currentColor) → dark, hover pink. */
+body.empresas-page footer .social-footer a,
+body.empresas-page footer .social-footer span { color: #0a0a0a !important; }
+body.empresas-page footer .social-footer a:hover,
+body.empresas-page footer .social-footer a:hover span { color: #f92869 !important; }
+/* Privacy line (theme ships an inline color:#8f8f8f — needs !important). */
+body.empresas-page footer .politica-privacidade a,
+body.empresas-page footer .copyright-text a { color: #6a6a6a !important; }
 CSS;
 
         echo "<style id=\"empresas-page-css\">\n" . $css . "\n" . $overrides . "\n</style>";

@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.568 — 2026-06-17 (Empresas — light footer to match the white top bar)
+The empresas page already forces a white top bar with a black EDIT lockup, but the theme footer below it stayed dark — visually inconsistent. Added a scoped LIGHT FOOTER block (`body.empresas-page footer`): soft off-white background (#f6f5f1), the white EDIT wordmark flipped dark via `filter:brightness(0)` (same approach the header uses), headings/location labels in ink, links grey→pink on hover, hairlines lightened, and the white/mono "Outros projetos" partner marks seated on dark 6px chips so they survive on light. Social glyphs darken (hover pink); the yellow "Subscrever Newsletter" swipe-CTA is untouched. CSS-only, scoped to the empresas footer — dark content sections above are unaffected. First half of the empresas+augment light-chrome pass.
+
 ## v1.5.567 — 2026-06-17 (Empresas — fix black-on-black header logo)
 The empresas page renders on the home template, whose header puts the logo in a DARK `.headerDesktop__content` panel (white logo over the dark hero). On empresas the bar is forced white, but the parent `header{background:#fff}` didn't reach the dark child panel — so the black-on-transparent EDIT lockup landed black-on-black (invisible). Added a closed-state rule whitening the `.headerDesktop` wrapper children (container/row/content/middle); the menuOpen dark-overlay state is excluded; the yellow "Fala connosco" is untouched. CSS-only.
 
