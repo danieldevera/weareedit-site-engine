@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.576 — 2026-06-17 (Augment — partnerships moved + Seegno removed)
+Moved the Parcerias Corporativas section to sit right after "O que vais construir" (before Programa). Removed the Seegno card (Logo.dev returned a blank logo) — 6 partners now: Feedzai, Unbabel, Defined.ai, BySix, NILG.AI, Altar.io.
+
 ## v1.5.575 — 2026-06-17 (Augment — corporate partnerships, DGERT logo, polish)
 (1) New "Parcerias Corporativas" section: 7 PT AI companies (Feedzai, Unbabel, Defined.ai, BySix, NILG.AI, Altar.io, Seegno) as logo cards (Logo.dev, larger 64px logos) + name + PT tagline; placed before the empresas/formats section. (2) Added the black DGERT badge logo to the Certificação section row. (3) Polish: the EDIT swipe-CTA (pink->teal->black sweep, label flips yellow) applied to the primary purple CTAs via JS layer injection; lift+purple-shadow hover on all card types; load animation on the hero + IntersectionObserver scroll-reveal for section content (tags only below-fold elements so above-fold never flashes; no-JS = everything visible). Verified render via headless Chrome. Note: Seegno logo returns blank from Logo.dev — needs a real asset.
 
