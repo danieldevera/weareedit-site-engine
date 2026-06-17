@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.581 — 2026-06-17 (Single course page — hide redundant hero/CTA promo badges)
+On single course (product) pages the theme echoes the promo badge slot (AI UPGRADE / EARLY15) into the hero + sticky-CTA chrome, where it renders dark-on-dark and is redundant (Daniel: "not supposed to render"). Hidden via `body.single-formacao .special-labels-container{display:none}`, with `body.single-formacao .course-box .special-labels-container{display:flex}` re-showing the badges on the "outras formações" related-courses grid cards. Grid/archive/pillar card badges untouched.
+
 ## v1.5.580 — 2026-06-17 (Remote courses — keep authored blue accent, not pink)
 The course-description highlight on Remote Learning courses (e.g. /curso-marketing-digital-online/) rendered PINK even though the content is authored blue (#0090eb) and Remote's typology colour IS blue. Cause: our own rule in class-pillar-cross-links.php force-recoloured `.sobre-curso font[color="#0090eb"]` to #f92869 site-wide. Scoped it to EXCLUDE remote courses via `body:not(:has(.class-remote-learning))`, so Remote courses keep their authored blue (title mention + the AI/Social/SEO/… bullet list) and other course types are unchanged. Degrades safely to authored blue if :has() is unsupported.
 

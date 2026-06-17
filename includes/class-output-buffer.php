@@ -143,6 +143,12 @@ class EDIT_Output_Buffer {
             // so it keeps all 3. Empty badge boxes hidden everywhere.
             . '.course .special-labels-container .course-promo-code:nth-of-type(n+3){display:none !important;}'
             . '.course-promo-code:empty{display:none !important;}'
+            // On the single course (product) page the theme also echoes the promo
+            // badge slot into the hero/CTA chrome, where it renders dark-on-dark and
+            // is redundant — hide it. Keep the badges on the "outras formações"
+            // related-courses grid cards (inside .course-box).
+            . 'body.single-formacao .special-labels-container{display:none !important;}'
+            . 'body.single-formacao .course-box .special-labels-container{display:flex !important;}'
             // Course "Ferramentas" tool-stack icons (Claude Code, ChatGPT, etc.)
             // ship as square PNGs with no size attrs and no CSS bounds, so they
             // render at intrinsic resolution and stretch the .adaptImage card.
