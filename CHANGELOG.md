@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.574 — 2026-06-17 (Augment — Daniel mentor card to pravatar placeholder)
+Swapped Daniel's real photo (daniel-devera-sign-off.png) for a pravatar placeholder on his Lead Mentors card, so all four cards are uniform placeholders during the design phase. Name/role/tag unchanged. All four photos to be replaced with real headshots before public launch.
+
 ## v1.5.573 — 2026-06-17 (Augment — Lead Mentors: purple-tinted cards + add Daniel)
 Ported the Lead Mentors section from the local mockup (~/Downloads/augment-mockup.html) into the live template: switched the four B&W .tcard mentors to the purple-tinted .gcard treatment (same duotone the Convidados section uses) and made Daniel Devera the lead card (IA Aplicada). Remaining 3 are role-based generic mentors (IA no Marketing / Dados & Análise / Design & UX) with pravatar placeholder photos — swap for real headshots when the lineup is confirmed. Verified render via headless Chrome.
 
