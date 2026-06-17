@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.580 — 2026-06-17 (Remote courses — keep authored blue accent, not pink)
+The course-description highlight on Remote Learning courses (e.g. /curso-marketing-digital-online/) rendered PINK even though the content is authored blue (#0090eb) and Remote's typology colour IS blue. Cause: our own rule in class-pillar-cross-links.php force-recoloured `.sobre-curso font[color="#0090eb"]` to #f92869 site-wide. Scoped it to EXCLUDE remote courses via `body:not(:has(.class-remote-learning))`, so Remote courses keep their authored blue (title mention + the AI/Social/SEO/… bullet list) and other course types are unchanged. Degrades safely to authored blue if :has() is unsupported.
+
 ## v1.5.579 — 2026-06-17 (Augment feedback — edit notes + visual add-mode cursor)
 (1) Edit existing notes: added a PUT /notes/{id} route (update_note, token-gated) + an "Editar" button in each note bubble that swaps to an editable textarea (Guardar/Cancelar); shows "· editado" after. (2) More visual add-mode: replaced the plain crosshair with a custom purple ring+plus SVG cursor, plus a fixed top hint banner ("Clica em qualquer ponto para deixar a tua nota · ESC para cancelar"; squared 8px, not a pill) shown only while adding, and ESC now cancels add-mode. JS syntax-checked. (Existing notes flushed on request.)
 
