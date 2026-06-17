@@ -1335,6 +1335,21 @@ body.empresas-page header[role="banner"] {
   background: #ffffff !important;
   border-bottom: 1px solid #ececec !important;
 }
+/* Home-template header (empresas renders on page-template-page-home) puts the
+   logo inside a DARK .headerDesktop__content panel — white logo over the dark
+   hero. On empresas we want a solid WHITE bar, so the parent header{bg:#fff}
+   isn't enough: the dark child panel stays, and the black-on-transparent EDIT
+   lockup lands black-on-black. Whiten the header wrapper children (closed state
+   only — the menuOpen dark overlay is excluded so it still works). Fix
+   2026-06-17. Yellow "Fala connosco" (.headerDesktop__inCompany) is NOT in
+   these selectors, so it keeps its colour. */
+body.empresas-page .headerDesktop:not([class*="menuOpen"]),
+body.empresas-page .headerDesktop:not([class*="menuOpen"]) .headerDesktop__container,
+body.empresas-page .headerDesktop:not([class*="menuOpen"]) .headerDesktop__row,
+body.empresas-page .headerDesktop:not([class*="menuOpen"]) .headerDesktop__content,
+body.empresas-page .headerDesktop:not([class*="menuOpen"]) .headerDesktop__middle {
+  background-color: #ffffff !important;
+}
 body.empresas-page header a:not(.cta-yellow):not([class*="connosco"]),
 body.empresas-page .site-header a:not(.cta-yellow):not([class*="connosco"]) {
   color: #0a0a0a !important;

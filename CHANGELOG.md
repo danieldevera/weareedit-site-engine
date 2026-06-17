@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.567 — 2026-06-17 (Empresas — fix black-on-black header logo)
+The empresas page renders on the home template, whose header puts the logo in a DARK `.headerDesktop__content` panel (white logo over the dark hero). On empresas the bar is forced white, but the parent `header{background:#fff}` didn't reach the dark child panel — so the black-on-transparent EDIT lockup landed black-on-black (invisible). Added a closed-state rule whitening the `.headerDesktop` wrapper children (container/row/content/middle); the menuOpen dark-overlay state is excluded; the yellow "Fala connosco" is untouched. CSS-only.
+
 ## v1.5.566 — 2026-06-17 (Internal docs — card-grid index + per-page quick-nav bar)
 Internal Marketing Documents UX: (1) index redesigned from a flat list into a responsive CARD GRID (auto-fill minmax 280px, hover lift + pink accent). (2) Every doc page now gets a sticky QUICK-NAV bar injected after <body> via new serve_doc() — back-to-index link + a "jump to another doc" dropdown (current doc preselected) + EDIT. Internal tag. Both render paths route through serve_doc() (replaces raw readfile); injection uses substr_replace to avoid regex backreference issues; bar is fully inline-styled so it never clashes with doc CSS. No content changes to the docs themselves.
 
