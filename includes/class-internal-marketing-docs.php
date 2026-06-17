@@ -84,9 +84,7 @@ class EDIT_Internal_Marketing_Docs {
                 self::render_404( $slug );
                 exit;
             }
-            header( 'Content-Type: text/html; charset=utf-8' );
-            header( 'X-Robots-Tag: noindex, nofollow', true );
-            readfile( $file );
+            self::serve_doc( $file, $slug );
             exit;
         }
         // Not our URL; let WP continue normally.
@@ -155,10 +153,50 @@ class EDIT_Internal_Marketing_Docs {
             exit;
         }
 
+        self::serve_doc( $path, $slug );
+        exit;
+    }
+
+    /**
+     * Serve a doc file with a sticky quick-nav bar injected after <body>.
+     * The bar = back-to-index link + a "jump to another doc" dropdown.
+     */
+    private static function serve_doc( $file, $current_slug ) {
         header( 'Content-Type: text/html; charset=utf-8' );
         header( 'X-Robots-Tag: noindex, nofollow', true );
-        readfile( $path );
-        exit;
+        $html = (string) file_get_contents( $file );
+        $nav  = self::quick_nav_html( $current_slug );
+        if ( preg_match( '/<body[^>]*>/i', $html, $m, PREG_OFFSET_CAPTURE ) ) {
+            $pos  = $m[0][1] + strlen( $m[0][0] );
+            $html = substr_replace( $html, $nav, $pos, 0 ); // substr_replace avoids regex backreference issues
+        } else {
+            $html = $nav . $html;
+        }
+        echo $html;
+    }
+
+    /** Sticky quick-nav bar HTML (inline-styled so it never clashes with doc CSS). */
+    private static function quick_nav_html( $current_slug ) {
+        $base = home_url( '/' . self::SLUG_BASE );
+        $opts = '';
+        foreach ( self::discover_docs() as $d ) {
+            $sel   = ( $d['slug'] === $current_slug ) ? ' selected' : '';
+            $opts .= '<option value="' . esc_url( $base . '/' . $d['slug'] . '/' ) . '"' . $sel . '>'
+                   . esc_html( $d['title'] ) . '</option>';
+        }
+        return '<div style="position:sticky;top:0;z-index:2147483000;background:#0a0a0a;color:#fff;'
+            . 'font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif;'
+            . 'display:flex;align-items:center;gap:14px;padding:10px 18px;font-size:13px;'
+            . 'box-shadow:0 1px 0 rgba(255,255,255,.08);">'
+            . '<a href="' . esc_url( $base . '/' ) . '" style="color:#fff;text-decoration:none;font-weight:700;white-space:nowrap;">&larr; Marketing Docs</a>'
+            . '<span style="opacity:.35;">|</span>'
+            . '<select onchange="if(this.value)window.location.href=this.value;" '
+            . 'style="flex:1;max-width:520px;background:#1a1a1a;color:#fff;border:1px solid #333;'
+            . 'border-radius:5px;padding:6px 9px;font-size:13px;font-family:inherit;cursor:pointer;">'
+            . '<option value="">Ir para outro documento&hellip;</option>' . $opts . '</select>'
+            . '<span style="margin-left:auto;font-size:11px;color:#f92869;font-weight:700;'
+            . 'letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;">EDIT. Internal</span>'
+            . '</div>';
     }
 
     private static function discover_docs() {
@@ -206,17 +244,18 @@ class EDIT_Internal_Marketing_Docs {
   :root { --ink:#0a0a0a; --pink:#f92869; --yellow:#ffdd06; --grey:#666; --soft:#fafafa; }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; background:var(--soft); color:var(--ink); padding:48px 24px; line-height:1.5; }
-  .wrap { max-width:880px; margin:0 auto; }
+  .wrap { max-width:1080px; margin:0 auto; }
   .eyebrow { font-size:11px; font-weight:700; color:var(--pink); letter-spacing:0.22em; text-transform:uppercase; margin-bottom:12px; }
   h1 { font-size:38px; font-weight:800; letter-spacing:-0.02em; margin-bottom:8px; }
   .sub { color:var(--grey); font-size:14px; margin-bottom:36px; }
-  .docs { background:#fff; border:1px solid #e5e5e5; border-radius:8px; overflow:hidden; }
-  .doc { padding:20px 24px; border-bottom:1px solid #f0f0f0; display:flex; justify-content:space-between; align-items:center; gap:16px; transition:background 0.15s; }
-  .doc:last-child { border-bottom:none; }
-  .doc:hover { background:#fafafa; }
-  .doc .title { font-size:16px; font-weight:700; color:var(--ink); text-decoration:none; }
-  .doc .title:hover { color:var(--pink); }
+  .docs { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; }
+  .doc { display:flex; flex-direction:column; justify-content:space-between; gap:20px; min-height:128px; background:#fff; border:1px solid #e5e5e5; border-radius:10px; padding:22px 22px 18px; text-decoration:none; color:var(--ink); transition:border-color .15s, box-shadow .15s, transform .15s; }
+  .doc:hover { border-color:var(--pink); box-shadow:0 6px 20px rgba(0,0,0,.07); transform:translateY(-2px); }
+  .doc .title { font-size:16px; font-weight:700; line-height:1.32; color:var(--ink); }
+  .doc:hover .title { color:var(--pink); }
+  .doc .meta { display:flex; align-items:center; justify-content:space-between; }
   .doc .date { font-size:12px; color:var(--grey); font-variant-numeric:tabular-nums; }
+  .doc .arrow { color:var(--pink); font-weight:700; font-size:18px; line-height:1; }
   .empty { background:#fff; padding:48px 24px; text-align:center; color:var(--grey); border:1px dashed #ddd; border-radius:8px; font-size:14px; }
   .empty code { background:#f0f0f0; padding:2px 8px; border-radius:3px; font-size:12px; }
   footer { margin-top:36px; padding-top:20px; border-top:1px solid #e5e5e5; color:var(--grey); font-size:12px; text-align:center; }
@@ -236,12 +275,10 @@ class EDIT_Internal_Marketing_Docs {
   <?php else: ?>
     <div class="docs">
       <?php foreach ( $docs as $doc ): ?>
-        <div class="doc">
-          <a class="title" href="<?php echo esc_url( home_url( '/' . self::SLUG_BASE . '/' . $doc['slug'] . '/' ) ); ?>">
-            <?php echo esc_html( $doc['title'] ); ?>
-          </a>
-          <span class="date"><?php echo esc_html( $doc['date'] ); ?></span>
-        </div>
+        <a class="doc" href="<?php echo esc_url( home_url( '/' . self::SLUG_BASE . '/' . $doc['slug'] . '/' ) ); ?>">
+          <span class="title"><?php echo esc_html( $doc['title'] ); ?></span>
+          <span class="meta"><span class="date"><?php echo esc_html( $doc['date'] ); ?></span><span class="arrow">&rsaquo;</span></span>
+        </a>
       <?php endforeach; ?>
     </div>
   <?php endif; ?>

@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.566 — 2026-06-17 (Internal docs — card-grid index + per-page quick-nav bar)
+Internal Marketing Documents UX: (1) index redesigned from a flat list into a responsive CARD GRID (auto-fill minmax 280px, hover lift + pink accent). (2) Every doc page now gets a sticky QUICK-NAV bar injected after <body> via new serve_doc() — back-to-index link + a "jump to another doc" dropdown (current doc preselected) + EDIT. Internal tag. Both render paths route through serve_doc() (replaces raw readfile); injection uses substr_replace to avoid regex backreference issues; bar is fully inline-styled so it never clashes with doc CSS. No content changes to the docs themselves.
+
 ## v1.5.565 — 2026-06-16 (Internal docs — publish AAI + DataOps traffic audits)
 Published two page-level traffic audits to the marketing repo (GA4 + GSC via Supermetrics, 90d). AAI Bootcamp: 1,000 sessions, 89%% engagement, 22 conversions — Paid Search converts 8.6x better than Organic (14 of 22 conversions). DataOps Bootcamp: 100 sessions, 94%% engagement, 0 conversions, ZERO Paid Search — demand+distribution problem, niche term (mirrors the SEO/Claude-Code failure pattern). Drop-in noindex HTML; no code changes.
 
