@@ -129,6 +129,9 @@ class EDIT_Augment_Page {
             header( 'X-Robots-Tag: noindex, nofollow', true );
         }
         header( 'Content-Type: text/html; charset=UTF-8' );
+        if ( class_exists( 'EDIT_Augment_Feedback' ) ) {
+            $html = EDIT_Augment_Feedback::inject_widget( $html );
+        }
         echo $html;
         exit;
     }

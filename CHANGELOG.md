@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.577 — 2026-06-17 (Augment — async team-feedback layer)
+New on-page feedback widget for the team-presentation round (class-augment-feedback.php). Daniel sends the preview link; team members click "+ Deixar nota" and drop pinned, author-attributed notes anywhere on the page. Notes are stored server-side (WP option) via REST under /wp-json/edit-augment/v1/notes — same-origin on the subdomain, write-gated by the preview token — so all feedback collects in one shared place and persists. "Notas (N)" opens a review panel listing everything with click-to-scroll. No logins for the team. Injected into the standalone Augment doc by render_page(); JS syntax-checked + bar render verified. Toggle off via EDIT_Augment_Feedback::ENABLED=false before public launch.
+
 ## v1.5.576 — 2026-06-17 (Augment — partnerships moved + Seegno removed)
 Moved the Parcerias Corporativas section to sit right after "O que vais construir" (before Programa). Removed the Seegno card (Logo.dev returned a blank logo) — 6 partners now: Feedzai, Unbabel, Defined.ai, BySix, NILG.AI, Altar.io.
 
