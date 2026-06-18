@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.591 — 2026-06-18 (HOTFIX — black hero: doubled URL in data-bg/og)
+v1.5.590 rewrote the hero data-bg + og:image to an ABSOLUTE plugin URL, but the targets already carried the https://weareedit.io prefix — producing a doubled domain (https://weareedit.iohttps://weareedit.io/...), a broken URL, and a black hero (no background image loaded). Fixed by using wp_make_link_relative() so the replacement is a relative /wp-content/plugins/... path.
+
 ## v1.5.590 — 2026-06-18 (Editorial #3 — fix hero: crop dead black top)
 The full-size hero led with a large black band (the artwork's black top half). Re-cropped to lead with the gradient — keeps DISRUPTIVE BLOG + title + "Por Daniel Devera" byline + full pencil, drops the dead black top. Bundled asset now 2000x840 (ratio 2.381); per-post aspect-ratio updated to match.
 

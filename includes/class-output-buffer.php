@@ -650,7 +650,10 @@ HTML;
             // TODO: generalise into the Blog Uploader / a reusable author field.
             if ( 'do-prompt-ao-produto-o-design-ja-nao-termina-num-ficheiro' === get_post_field( 'post_name', get_queried_object_id() ) ) {
 
-                $assets = WEAREDIT_SITE_ENGINE_URL . 'assets/img/';
+                // RELATIVE plugin path — the data-bg / og:image targets already
+                // carry the https://weareedit.io prefix, so an absolute URL here
+                // would double the domain (broken URL → black hero). v1.5.590 bug.
+                $assets = wp_make_link_relative( WEAREDIT_SITE_ENGINE_URL ) . 'assets/img/';
 
                 // Hero — swap the trimmed (cropped) banner for the full artwork
                 // (byline + full pencil), cropped to lead with the gradient and
