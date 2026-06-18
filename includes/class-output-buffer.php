@@ -158,7 +158,7 @@ class EDIT_Output_Buffer {
             // Blog post hero H1 — dual colour (accent after the colon). Brand pink.
             . 'body.single-blog .hero h1 .eblog-h1-accent{color:#f92869 !important;}'
             // Blog body copy — soften from near-black to a lighter editorial grey.
-            . 'body.single-blog .text-block-container,body.single-blog .text-block-container p,body.single-blog .text-block-container li{color:#6f6f6f !important;}'
+            . 'body.single-blog .text-block-container,body.single-blog .text-block-container p,body.single-blog .text-block-container li{color:#aaaaaa !important;}'
             // Course "Ferramentas" tool-stack icons (Claude Code, ChatGPT, etc.)
             // ship as square PNGs with no size attrs and no CSS bounds, so they
             // render at intrinsic resolution and stretch the .adaptImage card.

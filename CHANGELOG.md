@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.598 — 2026-06-18 (Blog body — lighter general text)
+Blog post body copy lightened from #6f6f6f to #aaaaaa (.text-block-container) for a softer, more readable read on the dark editorial background.
+
 ## v1.5.597 — 2026-06-18 (Editorial #3 hero — widen to content width)
 Hero <img> max-width 1000px → 1200px so the banner matches the article content width (measured ~1196px / 200→1396 at a 1600 viewport) instead of sitting narrower than the body.
 
