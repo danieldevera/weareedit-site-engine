@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.595 — 2026-06-18 (Editorial #3 hero — Daniel's clean image as-is)
+Replaced the hero asset with Daniel's re-exported clean banner (editorial_#3_trimmed.png, 2549x1144) byte-for-byte — no crop, no re-encode, no alteration. Plain <img> placement unchanged.
+
 ## v1.5.594 — 2026-06-18 (Editorial #3 hero — crop black top/right bars off the image)
 Cropped the baked-in pure-black margins (97px top, 345px right) off editorial-3-hero.png so the gradient fills the frame; pencil preserved. Image only — no code/placement change (1655x743, ratio 2.227).
 
