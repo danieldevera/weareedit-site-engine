@@ -2,233 +2,220 @@
 <html lang="pt-PT">
 <head>
 <meta charset="UTF-8">
-<title>EDIT. · Manual de Instagram + Sprint de Crescimento 30 Dias · 2026-06-11</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EDIT. · Estratégia Instagram — Cadência Sustentável · 2026-06-18</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
   :root {
-    --yellow:#ffdd06; --pink:#f5366b; --teal:#60c5b3; --coral:#ec8172;
-    --magenta:#DF086F; --ink:#0a0a0a; --grey:#666; --bg:#fafafa;
-    --soft:#f0f0f0; --good:#1b9e3e; --bad:#d62728; --warn:#ec8172;
+    --yellow:#ffdd06; --pink:#f92869; --teal:#60c5b3; --coral:#ec8172;
+    --ink:#0a0a0a; --grey:#5b5b5b; --line:#e6e6e6; --bg:#fafafa; --soft:#f3f3f3;
+    --good:#1b9e3e; --bad:#d62728;
   }
   * { box-sizing:border-box; margin:0; padding:0; }
   body {
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
     background:var(--bg); color:var(--ink); padding:32px 40px;
-    line-height:1.5; max-width:1320px; margin:0 auto; font-size:14px;
+    line-height:1.55; max-width:1100px; margin:0 auto; font-size:14px;
+    -webkit-font-smoothing:antialiased;
   }
-  h1 { font-size:36px; font-weight:800; margin-bottom:4px; letter-spacing:-1px; }
+  h1 { font-size:34px; font-weight:800; margin-bottom:4px; letter-spacing:-0.5px; }
   h1 .pink { color: var(--pink); }
-  .subtitle { color:var(--grey); font-size:14px; margin-bottom:28px; }
-
-  .hero {
-    background: linear-gradient(135deg, var(--ink) 0%, #1a1a1a 100%);
-    color:#fff; padding:28px 32px; border-radius:8px; margin-bottom:24px;
-    border-left:6px solid var(--pink);
-  }
-  .hero h2 { color:var(--yellow); font-size:18px; margin-bottom:14px; letter-spacing:0.4px; text-transform:uppercase; }
-  .hero p { font-size:16px; margin-bottom:10px; }
-  .hero strong { color:var(--yellow); }
-  .hero .big-q { font-size:24px; font-weight:800; margin-top:14px; line-height:1.3; }
-  .hero .urgent { display:inline-block; background:var(--pink); color:#fff; padding:4px 12px; border-radius:14px; font-size:11px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; margin-bottom:10px; }
-
-  .grid-4 { display:grid; grid-template-columns:repeat(4, 1fr); gap:14px; margin-bottom:24px; }
-  .kpi {
-    background:#fff; padding:18px 20px; border-radius:6px; border:1px solid #e5e5e5;
-    border-left:4px solid var(--teal);
-  }
-  .kpi.pink { border-left-color:var(--pink); }
-  .kpi.yellow { border-left-color:var(--yellow); }
-  .kpi.coral { border-left-color:var(--coral); }
-  .kpi.ink { border-left-color:var(--ink); }
-  .kpi.bad { border-left-color:var(--bad); }
-  .kpi .label { font-size:11px; text-transform:uppercase; letter-spacing:0.5px; color:var(--grey); margin-bottom:6px; font-weight:600; }
-  .kpi .value { font-size:28px; font-weight:800; color:var(--ink); margin-bottom:2px; }
-  .kpi .sub { font-size:12px; color:var(--grey); }
-  .kpi .sub strong { color:var(--bad); }
+  .subtitle { color:var(--grey); font-size:14px; margin-bottom:24px; }
 
   .panel {
-    background:#fff; padding:24px 28px; border-radius:8px; border:1px solid #e5e5e5;
-    margin-bottom:20px;
+    background:#fff; padding:24px 28px; border:1px solid var(--line);
+    border-radius:6px; margin-bottom:18px;
   }
+  .panel.accent-pink { border-left:4px solid var(--pink); }
+  .panel.accent-teal { border-left:4px solid var(--teal); }
+  .panel.accent-yellow { border-left:4px solid var(--yellow); }
   .panel h2 {
-    font-size:22px; margin-bottom:6px; border-bottom:3px solid var(--yellow);
-    padding-bottom:8px; display:flex; align-items:center; gap:10px;
+    font-size:21px; margin-bottom:6px; padding-bottom:8px;
+    border-bottom:2px solid var(--line); display:flex; align-items:baseline; gap:10px;
   }
-  .panel h2 .num {
-    background:var(--ink); color:var(--yellow); width:32px; height:32px;
-    border-radius:50%; font-size:16px; display:inline-flex; align-items:center;
-    justify-content:center; font-weight:800;
-  }
-  .panel h3 { font-size:15px; margin-top:20px; color:var(--pink); font-weight:700; }
-  .panel .note { color:var(--grey); font-size:13px; margin-bottom:16px; }
+  .panel h2 .n { font-size:13px; font-weight:800; color:var(--pink); letter-spacing:.04em; }
+  .panel h3 { font-size:14px; margin:18px 0 8px; color:var(--ink); text-transform:uppercase; letter-spacing:.04em; }
+  .panel p { margin:0 0 12px; }
+  .lead { font-size:15px; color:#222; }
+  .eyebrow { font-size:12px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--pink); margin-bottom:6px; }
 
-  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px; }
-  .chart-box { position:relative; height:380px; }
-  .chart-box.tall { height:480px; }
+  .grid-4 { display:grid; grid-template-columns:repeat(4, 1fr); gap:14px; margin-bottom:18px; }
+  .kpi { background:#fff; padding:16px 18px; border:1px solid var(--line); border-radius:6px; border-left:4px solid var(--teal); }
+  .kpi.bad { border-left-color:var(--bad); }
+  .kpi.yellow { border-left-color:var(--yellow); }
+  .kpi.good { border-left-color:var(--good); }
+  .kpi .label { font-size:11px; text-transform:uppercase; letter-spacing:.5px; color:var(--grey); margin-bottom:6px; font-weight:600; }
+  .kpi .value { font-size:26px; font-weight:800; margin-bottom:2px; }
+  .kpi .sub { font-size:12px; color:var(--grey); }
+  .kpi .sub strong { color:var(--bad); }
+  .kpi.good .sub strong { color:var(--good); }
 
-  table { width:100%; border-collapse:collapse; font-size:13px; margin-top:10px; }
-  th { text-align:left; padding:10px 12px; background:var(--soft); font-weight:700; border-bottom:2px solid #ddd; font-size:11px; text-transform:uppercase; letter-spacing:0.4px; }
-  td { padding:10px 12px; border-bottom:1px solid var(--soft); vertical-align:middle; }
+  table { width:100%; border-collapse:collapse; font-size:13px; margin-top:8px; }
+  th { text-align:left; padding:9px 11px; background:var(--soft); font-weight:700; border-bottom:2px solid #ddd; font-size:11px; text-transform:uppercase; letter-spacing:.4px; }
+  td { padding:9px 11px; border-bottom:1px solid var(--soft); vertical-align:top; }
   td.num, th.num { text-align:right; font-variant-numeric:tabular-nums; font-weight:600; }
-  .pill {
-    display:inline-block; padding:3px 9px; border-radius:4px; font-size:11px;
-    font-weight:700; letter-spacing:0.3px; text-transform:uppercase;
-  }
-  .pill.feed { background:rgba(96,197,179,0.18); color:#2a8378; }
-  .pill.reel { background:rgba(245,54,107,0.15); color:var(--pink); }
-  .pill.good { background:rgba(27,158,62,0.15); color:var(--good); }
-  .pill.bad { background:rgba(214,39,40,0.15); color:var(--bad); }
-  .pill.warn { background:rgba(255,221,6,0.3); color:#8a7400; }
+  .tag { display:inline-block; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:700; letter-spacing:.3px; }
+  .tag.feed { background:rgba(96,197,179,0.18); color:#2a8378; }
+  .tag.reel { background:rgba(249,40,105,0.13); color:var(--pink); }
+  .tag.good { background:rgba(27,158,62,0.15); color:var(--good); }
+  .tag.warn { background:rgba(255,221,6,0.32); color:#8a7400; }
 
-  .playbook-grid { display:grid; grid-template-columns: 1fr 1.4fr; gap:20px; margin-bottom:20px; }
-  .play-card { background:#fff; padding:24px 28px; border-radius:8px; border:1px solid #e5e5e5; }
-  .play-card.maint { border-top:6px solid var(--teal); }
-  .play-card.sprint { border-top:6px solid var(--pink); background:linear-gradient(180deg, #fff 0%, #fff8fa 100%); }
-  .play-card h2 { font-size:22px; margin-bottom:8px; }
-  .play-card h2 .badge { background:var(--ink); color:var(--yellow); padding:3px 10px; font-size:11px; border-radius:4px; margin-left:8px; vertical-align:middle; font-weight:700; }
-  .play-card .why { color:var(--grey); font-size:13px; margin-bottom:18px; font-style:italic; }
-  .play-card h3 { font-size:14px; margin-top:18px; margin-bottom:10px; color:var(--ink); padding-bottom:6px; border-bottom:1px dashed #ddd; }
-  .play-card ul { padding-left:22px; }
-  .play-card li { font-size:13px; margin-bottom:7px; }
-  .play-card li strong { color:var(--pink); }
-  .play-card.maint h3 { color:#2a8378; }
-  .play-card.sprint h3 { color:var(--pink); }
+  ul, ol { padding-left:20px; margin:0 0 12px; }
+  li { margin-bottom:7px; }
+  li strong { color:var(--ink); }
 
-  .sprint-cal { display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin:14px 0 4px 0; }
-  .week-card { background:#fff; border:1px solid #e5e5e5; border-radius:6px; padding:14px 16px; }
-  .week-card .wk-label { font-size:11px; color:var(--grey); text-transform:uppercase; letter-spacing:0.5px; font-weight:700; }
-  .week-card .wk-title { font-size:15px; font-weight:800; margin:4px 0 8px 0; color:var(--ink); }
-  .week-card ul { padding-left:18px; }
-  .week-card li { font-size:12px; margin-bottom:5px; line-height:1.4; }
-  .week-card.w1 { border-top:4px solid var(--pink); }
-  .week-card.w2 { border-top:4px solid var(--yellow); }
-  .week-card.w3 { border-top:4px solid var(--teal); }
-  .week-card.w4 { border-top:4px solid var(--coral); }
+  .week-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; margin-top:10px; }
+  .slot { background:#fff; border:1px solid var(--line); border-radius:6px; padding:16px 18px; border-top:4px solid var(--teal); }
+  .slot.ter { border-top-color:var(--pink); }
+  .slot.qui { border-top-color:var(--yellow); }
+  .slot.sab { border-top-color:var(--teal); }
+  .slot .day { font-size:11px; text-transform:uppercase; letter-spacing:.5px; color:var(--grey); font-weight:700; }
+  .slot .title { font-size:15px; font-weight:800; margin:3px 0 8px; }
+  .slot ul { padding-left:16px; margin:0; }
+  .slot li { font-size:12.5px; margin-bottom:5px; }
 
-  .decision {
-    background:linear-gradient(135deg, var(--yellow) 0%, var(--coral) 100%);
-    padding:24px 28px; border-radius:8px; margin-bottom:20px;
-  }
-  .decision h2 { font-size:20px; margin-bottom:14px; }
-  .decision .rule-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; }
-  .decision .rule {
-    background:rgba(0,0,0,0.85); color:#fff; padding:14px 16px; border-radius:4px;
-  }
-  .decision .rule .metric { font-size:11px; opacity:0.7; text-transform:uppercase; letter-spacing:0.4px; margin-bottom:4px; }
-  .decision .rule .now { font-size:13px; color:#fff; opacity:0.85; }
-  .decision .rule .target { font-size:22px; font-weight:800; color:var(--yellow); margin:2px 0; }
-  .decision .verdict {
-    background:#fff; padding:14px 18px; border-radius:4px; margin-top:14px;
-    font-size:14px;
-  }
-  .decision .verdict strong { color:var(--pink); }
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:8px; }
+  .chart-box { position:relative; height:360px; }
+  .chart-box.tall { height:460px; }
 
-  .quickwins { background:#fff; padding:24px 28px; border-radius:8px; border:1px solid #e5e5e5; margin-bottom:20px; }
-  .quickwins h2 { font-size:20px; margin-bottom:14px; border-bottom:3px solid var(--pink); padding-bottom:8px; }
-  .quickwins ol { padding-left:24px; }
-  .quickwins li { font-size:14px; margin-bottom:8px; }
-  .quickwins li strong { color:var(--pink); }
+  .targets { display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin-top:10px; }
+  .target { background:var(--soft); border:1px solid var(--line); border-radius:6px; padding:14px 16px; }
+  .target .metric { font-size:11px; text-transform:uppercase; letter-spacing:.4px; color:var(--grey); margin-bottom:4px; font-weight:600; }
+  .target .from { font-size:12px; color:var(--grey); }
+  .target .to { font-size:20px; font-weight:800; color:var(--ink); margin:2px 0; }
+  .target .to span { color:var(--good); }
 
-  .today {
-    background:#0a0a0a; color:#fff; padding:24px 28px; border-radius:8px; margin-bottom:20px;
-    border-left:6px solid var(--yellow);
-  }
-  .today h2 { color:var(--yellow); font-size:18px; text-transform:uppercase; letter-spacing:0.4px; margin-bottom:14px; }
-  .today .schedule { display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; }
-  .today .slot { background:rgba(255,255,255,0.06); padding:12px 14px; border-radius:4px; border-left:3px solid var(--teal); }
-  .today .slot.done { border-left-color:var(--good); opacity:0.7; }
-  .today .slot.next { border-left-color:var(--pink); }
-  .today .slot .time { font-size:11px; color:rgba(255,255,255,0.6); text-transform:uppercase; letter-spacing:0.4px; margin-bottom:4px; font-weight:600; }
-  .today .slot .what { font-size:14px; font-weight:700; margin-bottom:2px; }
-  .today .slot .who { font-size:11px; color:rgba(255,255,255,0.55); }
-
-  footer { color:var(--grey); font-size:12px; text-align:center; padding:14px; margin-top:24px; border-top:1px solid #eee; }
-
-  .data-source-tag { font-size:11px; color:var(--grey); margin-top:4px; }
+  footer { color:var(--grey); font-size:12px; text-align:center; padding:16px; margin-top:20px; border-top:1px solid var(--line); }
 </style>
 </head>
 <body>
 
-<h1>EDIT. <span class="pink">Instagram</span> · Manual + Sprint de Crescimento 30 Dias</h1>
-<div class="subtitle">Atualizado 2026-06-18 (revalidação Dia 7, dados live IGI) · Perfil @edit.education · Dados: Supermetrics MCP (IGI) · Baseline: 11 Jun · Janela 100 dias: 2 Mar → 10 Jun 2026</div>
+<h1>EDIT. <span class="pink">Instagram</span> · Estratégia de Cadência Sustentável</h1>
+<div class="subtitle">Reescrito 2026-06-18 · Perfil @edit.education · Dados live: Supermetrics MCP (IGI) · Substitui o plano de Sprint 30 dias (não executável com a capacidade atual)</div>
 
-<!-- HOJE — distribuição Disruptive News Ed#3 -->
-<div class="today">
-  <h2>🚀 Hoje, Quinta 18 Jun · Distribuição Disruptive News Ed#3 "Do prompt ao produto"</h2>
-  <div class="schedule">
-    <div class="slot next">
-      <div class="time">13:30</div>
-      <div class="what">Newsletter Brevo Ed#3</div>
-      <div class="who">Mão Barros · "Do prompt ao produto"</div>
+<!-- ONDE ESTAMOS -->
+<div class="panel accent-pink">
+  <div class="eyebrow">Onde estamos · dados live</div>
+  <h2>O ponto de partida honesto</h2>
+  <p class="lead">O Sprint de 30 dias (≈6 posts/semana) assumia uma capacidade que não existe — 1 pessoa, sem recurso de social dedicado. A semana 1 provou-o: <strong>2 posts publicados, não 6</strong>. Em vez de lutar contra a realidade, esta estratégia constrói à volta do que é <em>mesmo</em> sustentável e do conteúdo que já produzimos.</p>
+  <div class="grid-4">
+    <div class="kpi bad">
+      <div class="label">Total de seguidores</div>
+      <div class="value">9.948</div>
+      <div class="sub"><strong>−14 líquidos / 30d</strong></div>
     </div>
-    <div class="slot">
-      <div class="time">14:30</div>
-      <div class="what">LinkedIn Página EDIT.</div>
-      <div class="who">Lunch peak B2B</div>
+    <div class="kpi bad">
+      <div class="label">Novos seguidores · últimos 4d</div>
+      <div class="value">0</div>
+      <div class="sub"><strong>crescimento parou</strong></div>
     </div>
-    <div class="slot">
-      <div class="time">15:00</div>
-      <div class="what">LinkedIn Daniel pessoal</div>
-      <div class="who">Boost ~7× alcance</div>
+    <div class="kpi yellow">
+      <div class="label">Alcance 30 dias</div>
+      <div class="value">3.139</div>
+      <div class="sub">~105/dia · picos em dias de post</div>
     </div>
-    <div class="slot">
-      <div class="time">18:30</div>
-      <div class="what">Instagram @edit.education (mirror)</div>
-      <div class="who">Reel/quote-card · gatilho de comentário</div>
+    <div class="kpi">
+      <div class="label">Visitas ao perfil (30d)</div>
+      <div class="value">9.012</div>
+      <div class="sub">~300/dia</div>
     </div>
   </div>
-  <p style="margin-top:14px; font-size:13px; color:rgba(255,255,255,0.7);">
-    ⚠️ Evitar publicar entre 10h–11h (sobreposição com pico de aberturas do Brevo). ⚠️ Evitar Sexta tarde + Sábado (engagement B2B cai 30%+).
-  </p>
+  <p>Mas há um sinal claro nos dados: <strong>nos dias em que publicamos, o alcance dispara</strong> — 03 Jun 357, 05 Jun 319, 08 Jun 263, 15 Jun 230. O canal <em>reage</em> a conteúdo; o problema nunca foi o algoritmo, foi a frequência. E o tráfego que o IG envia para o site converte a <strong>5,56%</strong> (o mais alto de qualquer canal não-pesquisa) — a audiência de crossover tem alta intenção.</p>
 </div>
 
-<!-- HERO -->
-<div class="hero">
-  <span class="urgent">Decisão pendente</span>
-  <h2>O dilema do Instagram</h2>
-  <p><strong>9.948 seguidores</strong> · <strong>1.400 publicações</strong> ao longo de anos · audiência <em>passiva</em>. Crescimento <strong>estagnou</strong>: +59 brutos/30d mas <strong>−14 líquidos</strong>, e <strong>0 novos nos últimos 4 dias</strong>. Taxa de interação está em <strong>0,5–0,7%</strong> (saudável no setor = 2–5%).</p>
-  <p>Enquanto isso, o GA4 mostra que o tráfego referenciado pelo IG converte a <strong>5,56%</strong> — o mais alto de qualquer canal não-IA-search — mas o volume é apenas <strong>3 leads / 90 dias</strong>. <em>A audiência que faz crossover tem alta intenção. A audiência no seu todo não está a mover-se.</em></p>
-  <p class="big-q">Manter ao mínimo custo — ou correr um Sprint de 30 dias com decisão hard go/no-go ao dia 30?</p>
+<!-- A NOVA ESTRATÉGIA -->
+<div class="panel accent-teal">
+  <h2><span class="n">01</span> A estratégia: Cadência Sustentável (3 posts/semana)</h2>
+  <p class="lead">Princípio único: <strong>não criar conteúdo novo só para o Instagram. Espelhar e reembalar o que já existe</strong> — a newsletter, os posts de alumni, as imagens de bootcamp, as dicas dos tutores. Zero produção do zero. Cada post tem uma fonte que já foi feita para outro fim.</p>
+
+  <div class="week-grid">
+    <div class="slot ter">
+      <div class="day">Terça</div>
+      <div class="title">Alumni Spotlight</div>
+      <ul>
+        <li>1 graduado/semana, formato fixo</li>
+        <li><strong>6 já prontos</strong> no banco de testemunhos (Diogo, Mónica, Martim, Ana, Filipa, Ana Rita)</li>
+        <li>= 6 semanas de conteúdo já no banco</li>
+      </ul>
+    </div>
+    <div class="slot qui">
+      <div class="day">Quinta</div>
+      <div class="title">Mirror da Newsletter</div>
+      <ul>
+        <li>Cada Disruptive News → 1 carrossel/quote-card na mesma manhã</li>
+        <li><strong>Padrão validado</strong> — é nestes dias que o alcance dispara</li>
+        <li>Mesma quote-hero, mesmo CTA, mesmo código promo</li>
+      </ul>
+    </div>
+    <div class="slot sab">
+      <div class="day">Sábado</div>
+      <div class="title">Lift Visual (soft)</div>
+      <ul>
+        <li>Bastidores de bootcamp, momento de sala, dica de tutor</li>
+        <li>Enche a grelha sem fazer pitch, esforço mínimo</li>
+        <li>Reutiliza footage que já existe</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Stories · 2–3 por semana (reembalar, não criar)</h3>
+  <ul>
+    <li>Repartilhar a quote-card da newsletter com sticker "Lê no link"</li>
+    <li>Countdown na última semana antes de deadlines (EARLY15 / EARLY10)</li>
+    <li>Tutor takeover ocasional — 24h "1 prompt que uso todos os dias"</li>
+  </ul>
 </div>
 
-<!-- KPI GRID -->
-<div class="grid-4">
-  <div class="kpi bad">
-    <div class="label">Total de seguidores</div>
-    <div class="value">9.948</div>
-    <div class="sub"><strong>−14 líquidos vs 11 Jun</strong> · +59 brutos/30d</div>
-  </div>
-  <div class="kpi">
-    <div class="label">Alcance 30 dias</div>
-    <div class="value">3.139</div>
-    <div class="sub">~105/dia · picos só em dias de post</div>
-  </div>
-  <div class="kpi yellow">
-    <div class="label">Visitas ao perfil (30d)</div>
-    <div class="value">9.012</div>
-    <div class="sub">~300/dia (era 311)</div>
-  </div>
-  <div class="kpi bad">
-    <div class="label">Novos seguidores · últimos 4d</div>
-    <div class="value">0</div>
-    <div class="sub"><strong>14–17 Jun: crescimento parou</strong></div>
-  </div>
+<!-- 6 SEMANAS BANCADAS -->
+<div class="panel accent-yellow">
+  <h2><span class="n">02</span> As próximas 6 semanas já estão escritas</h2>
+  <p>A série "Alumni em Destaque" que acabámos de montar dá-nos o slot de Terça resolvido até final de Julho. Rotação de acento amarelo → rosa → teal para a série ler como um conjunto.</p>
+  <table>
+    <tr><th>Semana</th><th>Terça · Alumni</th><th>Quinta · Newsletter</th><th>Sábado · Soft</th></tr>
+    <tr><td>23–28 Jun</td><td>Martim (20/20)</td><td>Mirror Ed#3 "Do prompt ao produto"</td><td>Bastidores bootcamp</td></tr>
+    <tr><td>30 Jun–5 Jul</td><td>Ana Madureira (UX+IA)</td><td>Countdown EARLY15 (expira 30 Jun)</td><td>Dica de tutor</td></tr>
+    <tr><td>7–12 Jul</td><td>Diogo Canudo</td><td>Mirror Ed#4</td><td>Momento de sala</td></tr>
+    <tr><td>14–19 Jul</td><td>Mónica Eleutério</td><td>Quote-card editorial</td><td>Bastidores</td></tr>
+    <tr><td>21–26 Jul</td><td>Filipa Duarte</td><td>Mirror Ed#5</td><td>Dica de tutor</td></tr>
+    <tr><td>28 Jul–2 Ago</td><td>Ana Rita Ribeiro</td><td>Quote-card editorial</td><td>Momento de sala</td></tr>
+  </table>
+  <p style="margin-top:12px; font-size:13px; color:var(--grey);">Cada Alumni Spotlight = pull-quote já redigido no <strong>Banco de Testemunhos</strong>. Cada mirror = a quote-hero da própria edição. Esforço por post: ~15 min de montagem, não criação.</p>
 </div>
 
-<!-- CHECKPOINT DIA 7 -->
-<div class="hero" style="border-left-color:var(--bad); background:linear-gradient(135deg,#1a0a0a 0%,#1a1a1a 100%);">
-  <span class="urgent" style="background:var(--bad);">Checkpoint · Dia 7 · 18 Jun</span>
-  <h2>O Sprint não arrancou</h2>
-  <p>Dados live IGI (11→17 Jun): <strong>apenas 2 publicações</strong> em 7 dias (plano: ~6) · <strong>9 novos seguidores brutos</strong>, dos quais <strong>0 nos últimos 4 dias</strong> (14–17 Jun) · seguidores totais <strong>9.948</strong> = <strong>−14 líquidos</strong> vs baseline (≈73 unfollows comeram os 59 ganhos). A cadência ficou ao nível de manutenção, não 5×.</p>
-  <p>Mas a hipótese central confirma-se: <strong>nos dias com publicação, o alcance responde</strong> — 03 Jun 357, 05 Jun 319, 08 Jun 263, 15 Jun 230. O canal reage a conteúdo; só não foi alimentado. <em>O Sprint não falhou — não foi testado.</em></p>
-  <p class="big-q">Decisão antecipada: comprometer com a cadência diária nos 23 dias que faltam — ou reverter já para a Base de Manutenção e realocar esforço para LinkedIn + Google Ads + GEO?</p>
+<!-- METAS REALISTAS -->
+<div class="panel accent-teal">
+  <h2><span class="n">03</span> Metas realistas (90 dias, não 30)</h2>
+  <p>Esquecer o "+300 seguidores/mês". O objetivo primeiro é <strong>parar a hemorragia</strong> e voltar a crescimento líquido positivo, com esforço sustentável. Reavaliar a 18 Set.</p>
+  <div class="targets">
+    <div class="target">
+      <div class="metric">Crescimento líquido / mês</div>
+      <div class="from">Agora: −14</div>
+      <div class="to"><span>≥ +40</span></div>
+    </div>
+    <div class="target">
+      <div class="metric">Cadência</div>
+      <div class="from">Agora: ~2/semana irregular</div>
+      <div class="to"><span>3/semana</span> fixo</div>
+    </div>
+    <div class="target">
+      <div class="metric">Dias de alcance &gt;200/semana</div>
+      <div class="from">Agora: 1</div>
+      <div class="to"><span>≥ 2</span></div>
+    </div>
+    <div class="target">
+      <div class="metric">IG → leads no site / mês</div>
+      <div class="from">Agora: ~1</div>
+      <div class="to"><span>≥ 2</span></div>
+    </div>
+  </div>
+  <p style="margin-top:14px;"><strong>Enquadramento honesto:</strong> o Instagram é um canal de <em>apoio</em>, não um motor de crescimento. A função dele: (1) manter a marca quente para a audiência de crossover de alta intenção, (2) reciclar conteúdo já feito a custo marginal quase zero. As apostas de crescimento continuam a ser LinkedIn + Google Ads + GEO — não sobre-investir aqui.</p>
 </div>
 
-<!-- DIAGNOSIS -->
+<!-- DIAGNÓSTICO / EVIDÊNCIA -->
 <div class="panel">
-  <h2><span class="num">1</span>Diagnóstico — dados de 100 dias</h2>
-  <p class="note">O que o conteúdo realmente publicado nos diz. Top 15 publicações por views no período 2 Mar → 10 Jun.</p>
+  <h2><span class="n">04</span> Porque é que isto funciona — a evidência</h2>
+  <p style="color:var(--grey); font-size:13px; margin-bottom:6px;">100 dias de dados (2 Mar → 10 Jun). O que realmente moveu views e interação.</p>
 
   <div class="two-col">
     <div>
@@ -236,288 +223,52 @@
       <div class="chart-box tall"><canvas id="topPostsChart"></canvas></div>
     </div>
     <div>
-      <h3>Alcance diário do perfil — últimos 30 dias</h3>
+      <h3>Alcance diário — últimos 30 dias (live)</h3>
       <div class="chart-box tall"><canvas id="reachChart"></canvas></div>
     </div>
   </div>
 
   <div class="two-col">
     <div>
-      <h3>Views médias por formato (últimos 100d)</h3>
+      <h3>Views médias por formato</h3>
       <div class="chart-box"><canvas id="formatChart"></canvas></div>
     </div>
     <div>
-      <h3>Ações de interação por formato</h3>
+      <h3>Interações por formato</h3>
       <div class="chart-box"><canvas id="engagementChart"></canvas></div>
     </div>
   </div>
 
-  <h3>Top 5 publicações — o que está realmente a funcionar</h3>
-  <table>
-    <tr>
-      <th>Data</th><th>Tipo</th><th>Tema</th>
-      <th class="num">Views</th><th class="num">Alcance</th><th class="num">Likes</th><th class="num">Saves+Shares</th><th>Sinal</th>
-    </tr>
-    <tr>
-      <td>10 Mar</td><td><span class="pill feed">FEED</span></td>
-      <td>Cheque Formação Digital + Alumni 15%</td>
-      <td class="num">2.866</td><td class="num">529</td><td class="num">8</td><td class="num">4</td>
-      <td><span class="pill good">Proposta de valor clara</span></td>
-    </tr>
-    <tr>
-      <td>6 Abr</td><td><span class="pill feed">FEED</span></td>
-      <td>Evento "Where AI Gets Practical" (grátis)</td>
-      <td class="num">2.132</td><td class="num">588</td><td class="num">11</td><td class="num">10</td>
-      <td><span class="pill good">Hook de evento gratuito</span></td>
-    </tr>
-    <tr>
-      <td>22 Abr</td><td><span class="pill feed">FEED</span></td>
-      <td>Curso Product &amp; Project Management</td>
-      <td class="num">2.097</td><td class="num">356</td><td class="num">7</td><td class="num">3</td>
-      <td><span class="pill warn">Pitch de curso</span></td>
-    </tr>
-    <tr>
-      <td>2 Mar</td><td><span class="pill feed">FEED</span></td>
-      <td>Inscrições cursos 200h + 5% desconto</td>
-      <td class="num">1.811</td><td class="num">441</td><td class="num">0</td><td class="num">0</td>
-      <td><span class="pill warn">Views, interação zero</span></td>
-    </tr>
-    <tr>
-      <td>6 Mar</td><td><span class="pill reel">REELS</span></td>
-      <td>CUPRA briefing 360 — Histórias de Alumni</td>
-      <td class="num">1.698</td><td class="num">987</td><td class="num">20</td><td class="num">6</td>
-      <td><span class="pill good">⭐ Maior interação</span></td>
-    </tr>
-    <tr>
-      <td>13 Mar</td><td><span class="pill reel">REELS</span></td>
-      <td>Bootcamps arranque — bastidores</td>
-      <td class="num">1.267</td><td class="num">819</td><td class="num">12</td><td class="num">26</td>
-      <td><span class="pill good">⭐ Shares virais (26)</span></td>
-    </tr>
-    <tr>
-      <td>2 Abr</td><td><span class="pill reel">REELS</span></td>
-      <td>Testemunho alumni: Nuno Duarte → Bringin</td>
-      <td class="num">1.466</td><td class="num">717</td><td class="num">10</td><td class="num">3</td>
-      <td><span class="pill good">⭐ Encaixe founder-conteúdo</span></td>
-    </tr>
-    <tr>
-      <td>5 Jun</td><td><span class="pill feed">FEED</span></td>
-      <td>"Agentes IA não tiveram infância" (mirror Newsletter Ed#1)</td>
-      <td class="num">1.172</td><td class="num">583</td><td class="num">5</td><td class="num">2</td>
-      <td><span class="pill good">Cross-canal funciona</span></td>
-    </tr>
-  </table>
-
-  <h3>O que os dados dizem</h3>
+  <h3>O que os dados confirmam</h3>
   <ul>
-    <li><strong>REELS pontuam acima do peso.</strong> 4 reels enviados em 100 dias. Alcance médio de reel = 740 vs alcance médio de feed = 380 (≈2× mais alto). Mas estamos a publicar apenas 1,2 reels/mês — mal testámos o formato.</li>
-    <li><strong>Histórias reais de alunos geram interação.</strong> O reel CUPRA briefing + testemunho do Nuno Duarte são 1 + 3 em volume de likes+shares. A série "Inspire Others" alumni (Diogo Gouveia) atinge 14 likes — a contagem de likes mais alta do período.</li>
-    <li><strong>Publicações com proposta de valor clara conquistam as views.</strong> Cheque Formação Digital (2,8k views) + Evento "Where AI Gets Practical" gratuito (2,1k views) lideram. Especificidade &gt; benefício vago.</li>
-    <li><strong>Replicação cross-canal funciona.</strong> O mirror "Agentes IA" da Newsletter Ed#1 (5 Jun) entrou no top-10 por alcance (583) nos primeiros 6 dias.</li>
-    <li><strong>A publicação 200h course inscriptions teve 1.811 views e ZERO interação.</strong> Despejos de catálogo de cursos não movem as pessoas — hooks de ângulo único movem.</li>
-    <li><strong>A audiência lê mas não reage.</strong> 24 likes + 2 comentários nas top 5 publicações. A base de seguidores está a tratar a EDIT. como um feed curado para ler, não uma comunidade para conversar.</li>
+    <li><strong>Reels rendem acima do peso.</strong> Alcance médio de reel ≈740 vs feed ≈380 (2×). Mas só publicámos 1,2 reels/mês — o formato mal foi testado. A Cadência mete 1 reel/semana sem custo extra (alumni + tutor takeover são naturalmente reel).</li>
+    <li><strong>Histórias reais de alunos geram interação.</strong> O reel CUPRA briefing + testemunho do Nuno Duarte lideram likes+shares. É exatamente o que o slot de Terça (Alumni Spotlight) explora.</li>
+    <li><strong>Mirror da newsletter funciona.</strong> O post "Agentes IA" (5 Jun) entrou no top-10 de alcance em 6 dias. Por isso é o slot fixo de Quinta.</li>
+    <li><strong>Despejos de catálogo não movem.</strong> O post "cursos 200h" teve 1.811 views e ZERO interação. Hooks de ângulo único &gt; listas de cursos.</li>
   </ul>
 </div>
 
-<!-- PLAYBOOK -->
-<div class="playbook-grid">
-  <div class="play-card maint">
-    <h2>Base de Manutenção <span class="badge">sempre-ativa</span></h2>
-    <p class="why">Se não correrem o Sprint — ou depois do Sprint terminar — esta é a cadência de esforço mínimo que evita que o canal continue a decair e que apoia o resto da stack (newsletter, lançamentos de curso, anúncios).</p>
-
-    <h3>Cadência semanal (3 publicações/semana)</h3>
-    <ul>
-      <li><strong>Quinta de manhã · Réplica de newsletter</strong>. Cada edição da Disruptive News tem um companheiro IG de 1 imagem na mesma manhã, 08:30 Lisboa. Ligação: mesmo código promocional, mesmo CTA, mesma quote hero. <em>Padrão validado pelo post "Agentes IA" de 5 Jun.</em></li>
-      <li><strong>Terça · Lançamento de curso / drop de Bootcamp</strong>. O que estiver a vender naquela semana — curso único, data clara, deadline, desconto. Evitar despejos de catálogo.</li>
-      <li><strong>Sábado · Lift visual</strong>. Bastidores de bootcamps, citações de alumni, momentos de sala de aula. Conteúdo soft que enche a grelha sem fazer pitch.</li>
-    </ul>
-
-    <h3>Stories: 3–4 por semana</h3>
-    <ul>
-      <li>Repartilhar quote-card de artigo da newsletter com sticker "Lê no link"</li>
-      <li>Countdown de início de curso (última semana antes dos deadlines EARLY15 / EARLY10)</li>
-      <li>Tutor takeover (Carla, Naiara, Mão, Miguel) — 24h "1 prompt que uso diariamente"</li>
-    </ul>
-
-    <h3>Reels: 1 por mês mínimo</h3>
-    <ul>
-      <li>Reutilizar o que já se constrói — o reel AAI Bootcamp v6 acabou de ser entregue. Usa-o.</li>
-      <li>Pipeline standard de reel existe em <code>/Bootcamp - AAI/build/</code>. Re-skin para próximo bootcamp/curso em ~30 min.</li>
-    </ul>
-
-    <h3>O que NÃO fazer</h3>
-    <ul>
-      <li>Sem carrosséis de "catálogo de cursos" (o post de 2 Mar — 1.811 views, 0 interação)</li>
-      <li>Sem stacks longos de hashtags uniformes — algoritmo penaliza padrões copy-paste</li>
-      <li>Sem investimento Meta pago (conta dormente, intencional)</li>
-    </ul>
-
-    <h3>Tracking</h3>
-    <ul>
-      <li>Semanalmente: abrir dashboard IGI, registar novos seguidores + alcance por post numa folha</li>
-      <li>Mensalmente: extrair top 5 posts, identificar o padrão de formato/tema, dobrar a aposta no formato que ganha</li>
-    </ul>
-  </div>
-
-  <div class="play-card sprint">
-    <h2>Sprint de Crescimento 30 Dias <span class="badge" style="background:var(--pink);color:#fff;">11 Jun → 11 Jul</span></h2>
-    <p class="why">Um teste limitado para descobrir se o Instagram da EDIT. consegue realmente crescer a velocidade de 5–10× /mês em seguidores, OU se o algoritmo da plataforma decidiu que a conta é um feed só-de-leitura de baixa interação. Dia 30 tem decisão hard go/no-go. Ângulo forte de urgência: <strong>EARLY15 (15% off cursos Setembro) expira 30 Jun</strong> — o Sprint corre pelos 21 dias mais carregados comercialmente do ano.</p>
-
-    <h3>Cadência — plano de publicação do Sprint</h3>
-    <ul>
-      <li><strong>Publicação diária feed ou reel (Seg-Sáb)</strong> = 26 posts em 30 dias. Isto é <strong>5× a cadência atual</strong>.</li>
-      <li><strong>3 reels/semana mínimo</strong> = 13 reels em 30 dias vs 4 nos últimos 100 dias. Teste real do formato.</li>
-      <li><strong>Stories diárias</strong> (1-3 por dia) — pulsar o algoritmo</li>
-    </ul>
-
-    <h3>Mix de conteúdo — 26 posts alocados</h3>
-    <ul>
-      <li><strong>8 posts: Histórias de alumni / alunos</strong> — o formato com maior interação. Template CUPRA briefing reel (n=1.698 views, 20 likes) — replicar semanalmente. Nome da série: "Inspire Others"</li>
-      <li><strong>6 posts: Réplicas de newsletter</strong> — 4 Edições × 1 mirror principal + 1 repost de quote-card story cada. Carla Qui 11 Jun ✅, Mão Qui 18 Jun, depois 25 Jun + 2 Jul.</li>
-      <li><strong>5 posts: Tutor takeovers</strong> — single-prompt / single-tip da Carla, Naiara, Mão, Miguel, Daniel. Estilo da partilha pessoal do Daniel — voz-primeiro, marca-leve.</li>
-      <li><strong>4 posts: Urgência de curso</strong> — carrosséis de countdown EARLY15 (T-21, T-14, T-7, T-1 dias)</li>
-      <li><strong>3 posts: Processo / bastidores</strong> — sala do Bootcamp, prep do tutor, última-semana-antes-Setembro</li>
-    </ul>
-
-    <h3>Mix de formatos</h3>
-    <ul>
-      <li><strong>~13 reels</strong> (50%): histórias de alunos, tutor takeovers, urgência de countdown</li>
-      <li><strong>~10 carrosséis</strong> (38%): réplicas de newsletter com 3-5 slides (hook · corpo · CTA), conteúdo de processo</li>
-      <li><strong>~3 posts feed single</strong> (12%): hero shots de lançamento de curso, urgência single-frame</li>
-    </ul>
-
-    <h3>Alavancas táticas a testar</h3>
-    <ul>
-      <li><strong>Banco de hooks</strong> — toda a publicação abre com uma pergunta ou um número. Sem aberturas com nome de curso.</li>
-      <li><strong>Carrosséis com copy editorial</strong> — a nossa audiência lê (view count alto, interação baixa) → dá-lhes mais para ler. Carrosséis de 3-5 slides.</li>
-      <li><strong>Gatilhos de interação</strong> — todo o reel termina com "Comenta X" / "Salva isto" / "Marca alguém que..." — pedido explícito.</li>
-      <li><strong>Auditoria de bio Dia 1</strong> — atual conversão visita-perfil→seguir de 0,62%. Testar nova bio + highlight reel destacado + link-in-bio limpo.</li>
-      <li><strong>Renovação de hashtags</strong> — padrão atual é repetitivo (#edit, #AI). Construir 4 sets rotativos de 8-10 hashtags, sem sobreposição.</li>
-      <li><strong>Posts collab com tutor</strong> — convidar 2-3 tutores como colaboradores. Cada collab põe o post tanto no feed deles como no da EDIT. = duplica superfície de alcance.</li>
-    </ul>
-
-    <h3>Calendário de urgência — EARLY15 é o catalisador</h3>
-    <ul>
-      <li><strong>10–16 Jun (Semana 1)</strong>: Setup + primeiro mirror. Carla Ed#2 Qui 11 Jun ✅ = primeiro proof-point.</li>
-      <li><strong>17–23 Jun (Semana 2)</strong>: Push. Mão Ed#3 Qui 18. Alumni-pesado.</li>
-      <li><strong>24–30 Jun (Semana 3)</strong>: <strong>Countdown EARLY15.</strong> Urgência diária. Daniel Ed#4 Qua 25. Posts de última chamada em 28, 29, 30.</li>
-      <li><strong>1–10 Jul (Semana 4 parcial)</strong>: Transição EARLY10. Calendário ainda morno. Carla Cardoso (ou convidado) Ed#5 Qui 2 Jul.</li>
-    </ul>
-  </div>
+<!-- O QUE NÃO FAZER -->
+<div class="panel accent-pink">
+  <h2><span class="n">05</span> O que NÃO fazer</h2>
+  <ul>
+    <li><span class="tag warn">EVITAR</span> Voltar a planos de "daily posting" — não é sustentável e já falhou. 3/semana <em>cumpridos</em> &gt; 6/semana planeados e falhados.</li>
+    <li><span class="tag warn">EVITAR</span> Criar conteúdo de raiz só para IG. Se não tem uma fonte (newsletter, alumni, bootcamp), não entra no calendário.</li>
+    <li><span class="tag warn">EVITAR</span> Carrosséis de catálogo de cursos (1.811 views, 0 interação).</li>
+    <li><span class="tag warn">EVITAR</span> Stacks longos de hashtags repetidas — rodar 3–4 sets.</li>
+    <li><span class="tag warn">EVITAR</span> Investimento Meta pago (conta dormente, intencional).</li>
+  </ul>
 </div>
 
-<!-- SPRINT CALENDAR -->
-<div class="panel">
-  <h2><span class="num">2</span>Calendário Sprint 30 dias — enquadramento semanal</h2>
-  <p class="note">Tema de cada semana. Registar delta de seguidores + delta de alcance no fim de cada semana.</p>
-  <div class="sprint-cal">
-    <div class="week-card w1">
-      <div class="wk-label">Semana 1 · 10–16 Jun</div>
-      <div class="wk-title">Setup + Prova</div>
-      <ul>
-        <li>Reescrita de bio + auditoria de highlight reel</li>
-        <li>Rotação de hashtags (4 sets)</li>
-        <li>Carla Ed#2 IG mirror — Qui 11 ✅</li>
-        <li>Lançamento reel AAI Bootcamp v6</li>
-        <li>2 histórias de alumni</li>
-        <li>Stories diárias x7</li>
-      </ul>
-    </div>
-    <div class="week-card w2">
-      <div class="wk-label">Semana 2 · 17–23 Jun</div>
-      <div class="wk-title">Aceleração</div>
-      <ul>
-        <li>Mão Ed#3 IG mirror — Qui 18</li>
-        <li>3 reels (tutor takeover · alumni · processo)</li>
-        <li>Carrossel countdown EARLY15 T-14</li>
-        <li>2 posts collab com tutor</li>
-        <li>Stories x10–14 (2/dia)</li>
-      </ul>
-    </div>
-    <div class="week-card w3">
-      <div class="wk-label">Semana 3 · 24–30 Jun</div>
-      <div class="wk-title">EARLY15 Push Final 🔥</div>
-      <ul>
-        <li>Daniel Ed#4 IG mirror — Qua 25</li>
-        <li>Reels countdown diários (T-5, T-4, T-3, T-2, T-1)</li>
-        <li>3 reposts de stories de alumni</li>
-        <li>Stories x14–21 (2-3/dia)</li>
-        <li>Última chamada meia-noite Seg 30 Jun</li>
-      </ul>
-    </div>
-    <div class="week-card w4">
-      <div class="wk-label">Semana 4 · 1–11 Jul</div>
-      <div class="wk-title">Transição EARLY10 + Leitura</div>
-      <ul>
-        <li>Carla Cardoso / convidado Ed#5 — Qui 2</li>
-        <li>Post de lançamento EARLY10</li>
-        <li>3 reels — análise do que mudou</li>
-        <li><strong>Avaliação go/no-go Dia 30</strong></li>
-      </ul>
-    </div>
-  </div>
-</div>
-
-<!-- DECISION RULE -->
-<div class="decision">
-  <h2>🎯 Regra de decisão go/no-go Dia 30</h2>
-  <p style="margin-bottom:12px;">Ao dia 30 (11 Jul), medir 4 métricas vs baseline atual. <strong>Precisamos de ≥2 de 4 hits para estender o Sprint.</strong></p>
-  <div class="rule-grid">
-    <div class="rule">
-      <div class="metric">Crescimento de seguidores (30d)</div>
-      <div class="now">Baseline: +58 (0,58%/mês)</div>
-      <div class="target">≥ +300</div>
-      <div class="metric" style="margin-top:4px;">= 3%/mês · 5× lift</div>
-    </div>
-    <div class="rule">
-      <div class="metric">Visitas ao perfil (média diária)</div>
-      <div class="now">Baseline: 311/dia</div>
-      <div class="target">≥ 500/dia</div>
-      <div class="metric" style="margin-top:4px;">= +60%</div>
-    </div>
-    <div class="rule">
-      <div class="metric">Conversão visita → seguir</div>
-      <div class="now">Baseline: 0,62%</div>
-      <div class="target">≥ 1,0%</div>
-      <div class="metric" style="margin-top:4px;">= +60% bio a funcionar</div>
-    </div>
-    <div class="rule">
-      <div class="metric">IG → leads no site (GA4)</div>
-      <div class="now">Baseline: ~1/mês (3 em 90d)</div>
-      <div class="target">≥ 5 em 30d</div>
-      <div class="metric" style="margin-top:4px;">= 5× funil direto</div>
-    </div>
-  </div>
-  <div class="verdict">
-    <strong>≥2 hits ao dia 30</strong> = estender Sprint a 90 dias + orçamentar tempo editorial. O canal é responsivo.<br>
-    <strong>0–1 hits ao dia 30</strong> = reverter para Base de Manutenção. O canal é só-de-leitura. Realocar esforço para editorial LinkedIn + Google Ads + GEO (onde as vitórias já estão a compor-se).
-  </div>
-</div>
-
-<!-- QUICK WINS -->
-<div class="quickwins">
-  <h2>🚀 Próximos 7 dias — vitórias rápidas para arrancar o Sprint</h2>
-  <ol>
-    <li><strong>Quarta 10 Jun ✅</strong>: auditoria de bio + reescrita (testar nova proposta de valor, single CTA, link para /formacao/ ou landing page EARLY15). Reordenar highlight reels: topo = Alumni, Cursos, AAI, Bastidores.</li>
-    <li><strong>Quinta 11 Jun ✅ HOJE</strong>: Newsletter Ed#2 da Carla (enviada 09:30). LinkedIn EDIT. página às 12:30. Daniel partilha pessoal 13:30. Post IG 18:30. Usar pull-quote "Coletivamente convergimos" como hero card.</li>
-    <li><strong>Sexta 12 Jun</strong>: Publicar reel AAI Bootcamp v6 no IG. Primeiro teste real-volume de reel pós-lançamento de Sprint. Hook caption: pergunta primeiro ("Tens uma ideia mas não sabes onde começar?"). Terminar com pedido explícito de comentário.</li>
-    <li><strong>Sábado 13 Jun</strong>: Construir 4 sets de rotação de hashtags (8-10 cada, sem sobreposição). Guardar em folha para o team.</li>
-    <li><strong>Domingo 14 Jun</strong>: Bloquear calendário de 30 dias em Notion / Trello. Fazer match entre tipo de conteúdo e tema da semana.</li>
-    <li><strong>Segunda 15 Jun</strong>: Outreach para Carla, Naiara, Mão, Miguel — convidar 1 post collab a cada para Semana 2. Brief por DM.</li>
-    <li><strong>Terça 16 Jun</strong>: Primeiro reel de testemunho de alumni (replicar formato CUPRA briefing que marcou 20 likes / 26 shares).</li>
-  </ol>
-</div>
-
-<!-- FOOTER -->
 <footer>
-  Atualizado 2026-06-18 (revalidação Dia 7 · dados live IGI) · Daniel Devera (Founder) · Dados: Instagram Insights via Supermetrics MCP · Próxima revisão: Dia 30 (11 Jul 2026)
+  Reescrito 2026-06-18 (estratégia realista · dados live IGI) · Daniel Devera (Founder) · Dados: Instagram Insights via Supermetrics MCP · Próxima revisão: 18 Set 2026 · Relacionado: Banco de Testemunhos (Alumni)
 </footer>
 
 <script>
 Chart.register(ChartDataLabels);
 Chart.defaults.font.family = '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
 
-// --- Top 15 publicações por views ---
+// --- Top 15 publicações por views (100 dias) ---
 const topPosts = [
   { label: '10 Mar · Cheque Formação Digital', v: 2866, fmt: 'FEED' },
   { label: '6 Abr · Where AI Gets Practical', v: 2132, fmt: 'FEED' },
@@ -541,7 +292,7 @@ new Chart(document.getElementById('topPostsChart'), {
     labels: topPosts.map(p=>p.label),
     datasets:[{
       data: topPosts.map(p=>p.v),
-      backgroundColor: topPosts.map(p => p.fmt === 'REELS' ? '#f5366b' : '#60c5b3'),
+      backgroundColor: topPosts.map(p => p.fmt === 'REELS' ? '#f92869' : '#60c5b3'),
       borderWidth:0
     }]
   },
@@ -549,30 +300,23 @@ new Chart(document.getElementById('topPostsChart'), {
     indexAxis:'y',
     plugins:{
       legend:{ display:false },
-      datalabels:{
-        anchor:'end', align:'end', color:'#0a0a0a',
-        font:{size:11, weight:'700'},
-        formatter: v => v.toLocaleString('pt-PT')
-      },
+      datalabels:{ anchor:'end', align:'end', color:'#0a0a0a', font:{size:11, weight:'700'}, formatter: v => v.toLocaleString('pt-PT') },
       tooltip:{ callbacks:{ label: ctx => ctx.raw.toLocaleString('pt-PT') + ' views' } }
     },
-    scales:{
-      x:{ ticks:{ callback: v => v.toLocaleString('pt-PT') }, title:{display:true, text:'Views (100 dias)'} },
-      y:{ ticks:{ font:{size:11} } }
-    }
+    scales:{ x:{ ticks:{ callback: v => v.toLocaleString('pt-PT') }, title:{display:true, text:'Views (100 dias)'} }, y:{ ticks:{ font:{size:11} } } }
   }
 });
 
-// --- Alcance diário últimos 30 dias ---
+// --- Alcance diário últimos 30 dias (LIVE, 19 Mai → 17 Jun) ---
 const dailyReach = [
-  {d:'05-11', r:109}, {d:'05-12', r:58}, {d:'05-13', r:298}, {d:'05-14', r:130},
-  {d:'05-15', r:146}, {d:'05-16', r:31}, {d:'05-17', r:24}, {d:'05-18', r:139},
   {d:'05-19', r:55}, {d:'05-20', r:11}, {d:'05-21', r:13}, {d:'05-22', r:14},
   {d:'05-23', r:12}, {d:'05-24', r:14}, {d:'05-25', r:8}, {d:'05-26', r:254},
   {d:'05-27', r:238}, {d:'05-28', r:69}, {d:'05-29', r:70}, {d:'05-30', r:42},
   {d:'05-31', r:39}, {d:'06-01', r:31}, {d:'06-02', r:239}, {d:'06-03', r:357},
   {d:'06-04', r:41}, {d:'06-05', r:319}, {d:'06-06', r:151}, {d:'06-07', r:66},
-  {d:'06-08', r:263}, {d:'06-09', r:69}
+  {d:'06-08', r:263}, {d:'06-09', r:69}, {d:'06-10', r:33}, {d:'06-11', r:281},
+  {d:'06-12', r:94}, {d:'06-13', r:26}, {d:'06-14', r:48}, {d:'06-15', r:230},
+  {d:'06-16', r:35}, {d:'06-17', r:17}
 ];
 new Chart(document.getElementById('reachChart'), {
   type:'line',
@@ -581,9 +325,9 @@ new Chart(document.getElementById('reachChart'), {
     datasets:[{
       label:'Alcance do perfil',
       data: dailyReach.map(d=>d.r),
-      borderColor:'#f5366b',
-      backgroundColor:'rgba(245,54,107,0.15)',
-      fill:true, tension:0.3, pointRadius:3, pointBackgroundColor:'#f5366b'
+      borderColor:'#f92869',
+      backgroundColor:'rgba(249,40,105,0.13)',
+      fill:true, tension:0.3, pointRadius:3, pointBackgroundColor:'#f92869'
     }]
   },
   options:{
@@ -592,10 +336,7 @@ new Chart(document.getElementById('reachChart'), {
       datalabels:{ display:false },
       tooltip:{ callbacks:{ label: ctx => ctx.raw + ' alcance' } }
     },
-    scales:{
-      x:{ ticks:{ font:{size:10}, maxRotation:60, minRotation:60 } },
-      y:{ title:{display:true, text:'Alcance diário'}, beginAtZero:true }
-    }
+    scales:{ x:{ ticks:{ font:{size:10}, maxRotation:60, minRotation:60 } }, y:{ title:{display:true, text:'Alcance diário'}, beginAtZero:true } }
   }
 });
 
@@ -605,18 +346,14 @@ new Chart(document.getElementById('formatChart'), {
   data:{
     labels:['FEED (n=26)','REELS (n=4)'],
     datasets:[
-      { label:'Views médias', data:[1110, 1278], backgroundColor:['#60c5b3','#f5366b'], borderWidth:0 },
-      { label:'Alcance médio', data:[380, 740], backgroundColor:['rgba(96,197,179,0.5)','rgba(245,54,107,0.5)'], borderWidth:0 }
+      { label:'Views médias', data:[1110, 1278], backgroundColor:['#60c5b3','#f92869'], borderWidth:0 },
+      { label:'Alcance médio', data:[380, 740], backgroundColor:['rgba(96,197,179,0.5)','rgba(249,40,105,0.5)'], borderWidth:0 }
     ]
   },
   options:{
     plugins:{
       legend:{ display:true, position:'bottom' },
-      datalabels:{
-        color:'#0a0a0a', font:{size:11, weight:'700'},
-        anchor:'end', align:'end',
-        formatter: v => v.toLocaleString('pt-PT')
-      },
+      datalabels:{ color:'#0a0a0a', font:{size:11, weight:'700'}, anchor:'end', align:'end', formatter: v => v.toLocaleString('pt-PT') },
       tooltip:{ callbacks:{ label: ctx => ctx.dataset.label + ': ' + ctx.raw.toLocaleString('pt-PT') } }
     },
     scales:{ y:{ beginAtZero:true } }
@@ -630,7 +367,7 @@ new Chart(document.getElementById('engagementChart'), {
     labels:['Likes','Comentários','Shares','Saves'],
     datasets:[
       { label:'FEED média', data:[5.2, 0.1, 1.2, 1.0], backgroundColor:'#60c5b3' },
-      { label:'REELS média', data:[12.0, 0.5, 8.7, 0.5], backgroundColor:'#f5366b' }
+      { label:'REELS média', data:[12.0, 0.5, 8.7, 0.5], backgroundColor:'#f92869' }
     ]
   },
   options:{
