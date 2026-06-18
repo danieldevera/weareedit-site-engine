@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EDIT. — Google Ads: o caso de ROI (antes de desligar) · 2026-06-18</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+  :root{--ink:#0a0a0a;--grey:#5b5b5b;--line:#e6e6e6;--bg:#fafafa;--soft:#f3f3f3;
+    --yellow:#ffdd06;--pink:#f92869;--teal:#60c5b3;--good:#1b9e3e;--bad:#d62728;--warn:#ec8172;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.55;font-size:14px;
+    max-width:840px;margin:0 auto;padding:44px 28px 80px;-webkit-font-smoothing:antialiased;}
+  header.doc{border-bottom:3px solid var(--ink);padding-bottom:18px;margin-bottom:26px;}
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--pink);margin-bottom:8px;}
+  h1{font-size:29px;font-weight:800;line-height:1.15;margin-bottom:6px;letter-spacing:-.4px;}
+  .sub{color:var(--grey);font-size:14px;}
+  h2{font-size:20px;font-weight:800;margin:30px 0 10px;padding-bottom:8px;border-bottom:2px solid var(--line);}
+  p{margin:0 0 13px;}
+  .lead{font-size:15.5px;color:#1a1a1a;}
+  .panel{background:#fff;border:1px solid var(--line);border-radius:6px;padding:20px 22px;margin:14px 0;}
+  .panel.pink{border-left:4px solid var(--pink);}
+  .panel.good{border-left:4px solid var(--good);background:#f6fbf7;}
+  .panel.note{border-left:4px solid var(--yellow);background:#fffdf0;}
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:6px 0 12px;}
+  th{text-align:left;padding:9px 11px;background:var(--soft);font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--grey);border-bottom:2px solid #ddd;}
+  td{padding:9px 11px;border-bottom:1px solid var(--soft);}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;}
+  tr.total td{font-weight:800;border-top:2px solid #ddd;background:#fcfcfc;}
+  .flag{display:inline-block;font-size:11px;font-weight:700;border-radius:4px;padding:1px 7px;}
+  .flag.bad{background:rgba(214,39,40,.13);color:var(--bad);}
+  .flag.good{background:rgba(27,158,62,.15);color:var(--good);}
+  .flag.warn{background:rgba(255,221,6,.34);color:#8a7400;}
+  ol,ul{margin:0 0 13px;padding-left:22px;}
+  li{margin-bottom:8px;}
+  li strong{color:var(--ink);}
+  .chart-box{position:relative;height:300px;margin:8px 0 4px;}
+  .quote{background:var(--ink);color:#fff;border-radius:6px;padding:22px 24px;font-size:15.5px;line-height:1.5;margin:12px 0;}
+  .quote strong{color:var(--yellow);}
+  footer{margin-top:36px;border-top:1px solid var(--line);padding-top:14px;font-size:12px;color:var(--grey);}
+  .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:12px 0;}
+  .kpi{background:#fff;border:1px solid var(--line);border-radius:6px;border-left:4px solid var(--teal);padding:14px 16px;}
+  .kpi.bad{border-left-color:var(--bad);}.kpi.good{border-left-color:var(--good);}
+  .kpi .l{font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--grey);font-weight:600;margin-bottom:5px;}
+  .kpi .v{font-size:24px;font-weight:800;}
+  .kpi .s{font-size:12px;color:var(--grey);}
+</style>
+</head>
+<body>
+
+<header class="doc">
+  <p class="eyebrow">Documento interno de marketing · confidencial · decisão</p>
+  <h1>Google Ads: o caso de ROI — antes de desligar</h1>
+  <p class="sub">Porque é que o ROI "não apareceu", o que está mesmo a falhar, e o que fazer a seguir · dados live Supermetrics (Google Ads + GA4) · 18 Jun 2026</p>
+</header>
+
+<div class="panel pink">
+  <p class="lead">O ROI sempre lá esteve — o que faltava era a <strong>medição</strong>. O Google Ads reportou <strong>~0 conversões</strong> durante semanas enquanto o GA4 registava leads pagos a entrar. A conta estava a otimizar para um tag que nunca disparou. <strong>Corrigido a 18 Jun.</strong> Esta nota mostra os números reais antes de tomar a decisão de cortar.</p>
+</div>
+
+<div class="kpis">
+  <div class="kpi"><div class="l">Investimento (Mar–18 Jun)</div><div class="v">€7.786</div><div class="s">4 meses</div></div>
+  <div class="kpi"><div class="l">Leads pagos reais (GA4)</div><div class="v">~35</div><div class="s">google/cpc · medição correta</div></div>
+  <div class="kpi good"><div class="l">Melhor mês (Abril)</div><div class="v">€51</div><div class="s">por lead, com gasto controlado</div></div>
+</div>
+
+<h2>Os números reais</h2>
+<p>Leads atribuídos a paid via GA4 (a fonte de verdade — o tracking do Ads estava partido), contra o gasto real do mês:</p>
+<table>
+  <tr><th>Mês</th><th class="num">Gasto</th><th class="num">Impressões</th><th class="num">Leads pagos</th><th class="num">Custo/lead</th><th>Sinal</th></tr>
+  <tr><td>Março</td><td class="num">€5.527</td><td class="num">283.892</td><td class="num">13,3</td><td class="num">€415</td><td><span class="flag bad">Descontrolado</span></td></tr>
+  <tr><td>Abril</td><td class="num">€458</td><td class="num">72.381</td><td class="num">9,0</td><td class="num">€51</td><td><span class="flag good">Excelente</span></td></tr>
+  <tr><td>Maio</td><td class="num">€693</td><td class="num">41.829</td><td class="num">6,5</td><td class="num">€106</td><td><span class="flag good">Sólido</span></td></tr>
+  <tr><td>Junho (até 18)</td><td class="num">€1.108</td><td class="num">7.814</td><td class="num">6,0</td><td class="num">€184</td><td><span class="flag warn">A degradar</span></td></tr>
+  <tr class="total"><td>Total</td><td class="num">€7.786</td><td class="num">405.916</td><td class="num">34,9</td><td class="num">€223</td><td></td></tr>
+</table>
+
+<div class="chart-box"><canvas id="cplChart"></canvas></div>
+<p style="font-size:12.5px;color:var(--grey);">Custo por lead por mês. Março (€415) sozinho representa <strong>71% de todo o gasto</strong> e arrasta a média. Excluindo Março, o custo/lead real é <strong>~€105</strong>.</p>
+
+<h2>O que está mesmo a falhar (3 coisas — todas corrigíveis)</h2>
+<ol>
+  <li><strong>Medimos o ROI com uma régua partida.</strong> A conversão Primary apontava para um tag nativo que registava 0; o GA4 (com os dados reais, ~35 leads) estava como Secondary. Por isso o ROI era "invisível". Corrigido a 18 Jun.</li>
+  <li><strong>Março foi um descontrolo isolado.</strong> €5.527 — 71% de todo o gasto — para 13 leads a €415, em 284k impressões de alcance largo e não-segmentado. Aconteceu <em>antes</em> da arquitetura de negative keywords (ativa a 9 Jun). É este mês que distorce tudo.</li>
+  <li><strong>Junho otimizou para sinal morto.</strong> Com o tracking partido, o Smart Bidding perseguiu uma conversão que não registava → gasto a subir (€1.108, CPC €1,48), leads a descer (6). Também corrigido a 18 Jun.</li>
+</ol>
+
+<div class="panel good">
+  <p style="margin:0;"><strong>A prova de que funciona: Abril = €51/lead.</strong> Quando o gasto foi controlado, segmentado e medido, o paid entregou leads a €51. Para cursos de ticket alto (bootcamps €1.500–7.500), mesmo um lead a €100–180 é rentável com uma taxa de inscrição de um dígito. <strong>Abril é o tecto real, não Março.</strong></p>
+</div>
+
+<h2>Recomendação — não desligar às cegas</h2>
+<p>Nunca chegámos a medir isto a sério. Agora o tracking está corrigido <em>e</em> os negatives estão ativos. Por isso:</p>
+<ul>
+  <li><strong>Correr um teste limpo de 30 dias</strong>, com budget travado (~€500–700/mês), à disciplina de Abril: só os cursos que melhor convertem, com alvo de CPA apertado. Medir custo/lead → inscrição real. <strong>Depois</strong> decidir com números indiscutíveis.</li>
+  <li><strong>Se a equipa insistir em cortar já: pausar, não apagar.</strong> Manter conta + histórico, cortar o gasto largo, manter um core enxuto. Realocar para <strong>orgânico/SEO/GEO</strong> — que já é a maior fonte de leads.</li>
+</ul>
+
+<div class="panel note">
+  <p style="margin:0;"><strong>Para fechar o ROI a 100%:</strong> custo/lead é metade da equação. Falta cruzar <em>lead → inscrição × valor do curso</em> (dados de deals no Brevo) para um ROAS verdadeiro. Próximo passo recomendado depois do teste de 30 dias.</p>
+</div>
+
+<h2>Para dizer à equipa</h2>
+<div class="quote">
+  "Não conseguíamos mostrar ROI porque o tracking de conversões estava partido — encontrei e corrigi hoje. Os dados reais mostram que o paid trouxe <strong>~35 leads</strong>, e em Abril (com gasto controlado) chegámos a <strong>€51/lead</strong>. Um mês mau — Março, antes da limpeza de keywords — distorceu a média. Dêem-me <strong>30 dias limpos e travados</strong> agora que está corrigido, e mostro um CPA real. Entretanto, corto o gasto largo desperdiçado, não o canal."
+</div>
+
+<footer>
+  EDIT. — Disruptive Digital Education · Documento interno de marketing · 2026-06-18 · Dados: Google Ads + GA4 (web) via Supermetrics · Conta Ads 1819388015 · GA4 prop 309106832 · valores em EUR.
+</footer>
+
+<script>
+Chart.register(ChartDataLabels);
+Chart.defaults.font.family='-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif';
+new Chart(document.getElementById('cplChart'),{
+  type:'bar',
+  data:{
+    labels:['Março','Abril','Maio','Junho (até 18)'],
+    datasets:[{
+      data:[415,51,106,184],
+      backgroundColor:['#d62728','#1b9e3e','#1b9e3e','#ec8172'],
+      borderWidth:0
+    }]
+  },
+  options:{
+    plugins:{
+      legend:{display:false},
+      title:{display:true,text:'Custo por lead pago (€) — por mês',font:{size:13,weight:'700'},color:'#0a0a0a'},
+      datalabels:{anchor:'end',align:'end',color:'#0a0a0a',font:{size:12,weight:'800'},formatter:v=>'€'+v},
+      tooltip:{callbacks:{label:ctx=>'€'+ctx.raw+' / lead'}}
+    },
+    scales:{y:{beginAtZero:true,title:{display:true,text:'€ por lead'}}}
+  }
+});
+</script>
+
+</body>
+</html>
