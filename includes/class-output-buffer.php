@@ -149,14 +149,16 @@ class EDIT_Output_Buffer {
             // related-courses grid cards (inside .course-box).
             . 'body.single-formacao .special-labels-container{display:none !important;}'
             . 'body.single-formacao .course-box .special-labels-container{display:flex !important;}'
-            // Single blog post hero (.about-image): the trimmed editorial banner is
-            // full-bleed (~850px tall on wide screens) and bleeds past the article
-            // column. The image carries title/author top-to-bottom so it can't be
-            // cropped — cap it by constraining width to the content layout (centered),
-            // which drops height to ~450px and keeps the whole image.
-            . 'body.single-blog .about-image{max-width:1000px !important;margin-left:auto !important;margin-right:auto !important;}'
+            // Single blog post hero (.about-image): a wide ~2.23:1 editorial banner
+            // rendered as a data-bg cover div. The theme gives the div a large
+            // (near-square) height, so background-size:cover crops the wide banner
+            // into a tall sliver. Pin the div to the banner's own aspect ratio so
+            // the whole image shows as a clean letterbox, capped to the content width.
+            . 'body.single-blog .about-image{max-width:1000px !important;height:auto !important;aspect-ratio:2549/1144 !important;background-size:cover !important;background-position:center !important;margin-left:auto !important;margin-right:auto !important;}'
             // Blog post hero H1 — dual colour (accent after the colon). Brand pink.
             . 'body.single-blog .hero h1 .eblog-h1-accent{color:#f92869 !important;}'
+            // Blog body copy — soften from near-black to a lighter editorial grey.
+            . 'body.single-blog .text-block-container,body.single-blog .text-block-container p,body.single-blog .text-block-container li{color:#6f6f6f !important;}'
             // Course "Ferramentas" tool-stack icons (Claude Code, ChatGPT, etc.)
             // ship as square PNGs with no size attrs and no CSS bounds, so they
             // render at intrinsic resolution and stretch the .adaptImage card.

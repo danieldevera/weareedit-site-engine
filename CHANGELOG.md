@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.587 — 2026-06-18 (Blog post — fix hero banner aspect + lighter body grey)
+Two single-blog fixes. (1) The hero banner (.about-image data-bg div) was rendering as a giant near-square block because the theme gives the div a large height and background-size:cover cropped the wide 2.23:1 banner into a tall sliver. Pinned the div to the banner's own aspect-ratio (2549/1144) with height:auto so the whole image shows as a clean letterbox, still capped to the 1000px content width. (2) Softened blog body copy from near-black to a lighter editorial grey (#6f6f6f) on .text-block-container.
+
 ## v1.5.586 — 2026-06-18 (Blog post hero — dual-colour H1)
 Blog post hero H1 is now dual-colour: the part after the first ": " is wrapped (output buffer, scoped to single blog posts) and rendered in brand pink (#f92869) — e.g. "Do prompt ao produto: [pink]o design já não termina num ficheiro[/pink]". No-op for titles without a colon.
 
