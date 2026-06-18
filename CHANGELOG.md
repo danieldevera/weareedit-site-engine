@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.586 — 2026-06-18 (Blog post hero — dual-colour H1)
+Blog post hero H1 is now dual-colour: the part after the first ": " is wrapped (output buffer, scoped to single blog posts) and rendered in brand pink (#f92869) — e.g. "Do prompt ao produto: [pink]o design já não termina num ficheiro[/pink]". No-op for titles without a colon.
+
 ## v1.5.585 — 2026-06-18 (Blog post hero — cap the full-bleed banner)
 Single blog post hero (.about-image) was full-bleed (~850px tall on wide screens) and bled past the article column. The editorial banner carries title/author top-to-bottom so it can't be cropped — capped it by constraining width to the content layout (max-width 1000px, centered), dropping height to ~450px while keeping the whole image. Scoped to body.single-blog.
 

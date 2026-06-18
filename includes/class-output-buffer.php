@@ -155,6 +155,8 @@ class EDIT_Output_Buffer {
             // cropped — cap it by constraining width to the content layout (centered),
             // which drops height to ~450px and keeps the whole image.
             . 'body.single-blog .about-image{max-width:1000px !important;margin-left:auto !important;margin-right:auto !important;}'
+            // Blog post hero H1 — dual colour (accent after the colon). Brand pink.
+            . 'body.single-blog .hero h1 .eblog-h1-accent{color:#f92869 !important;}'
             // Course "Ferramentas" tool-stack icons (Claude Code, ChatGPT, etc.)
             // ship as square PNGs with no size attrs and no CSS bounds, so they
             // render at intrinsic resolution and stretch the .adaptImage card.
@@ -626,6 +628,19 @@ HTML;
             '/wp-content/plugins/weareedit-site-engine/',
             $html
         );
+
+        // 1ab. Blog post hero H1 — dual colour. Accent the part after the first
+        // ": " (e.g. "Do prompt ao produto: <accent>o design já não termina…</accent>").
+        // Scoped to single blog posts; no-op if the title has no colon.
+        if ( is_singular( 'blog' ) ) {
+            $html = preg_replace_callback(
+                '#(<h1>)([^<:]+):\s*(.+?)(</h1>)#u',
+                function ( $m ) {
+                    return $m[1] . $m[2] . ': <span class="eblog-h1-accent">' . $m[3] . '</span>' . $m[4];
+                },
+                $html, 1
+            );
+        }
 
         // 1aa. Rank Math emits og:type=article for every singular CPT (course
         // pages, /formacao-in-company/, /criticas-google/ etc.). These are
