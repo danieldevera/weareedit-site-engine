@@ -642,6 +642,53 @@ HTML;
                 },
                 $html, 1
             );
+
+            // 1ac. Per-article enrichment that the WYSIWYG body editor strips on
+            // save (external authority links + the styled "Sobre o autor" bleed
+            // block). Injected here so it renders reliably. Scoped to the exact
+            // post so the literal string replacements can't collide elsewhere.
+            // TODO: generalise into the Blog Uploader / a reusable author field.
+            if ( 'do-prompt-ao-produto-o-design-ja-nao-termina-num-ficheiro' === get_post_field( 'post_name', get_queried_object_id() ) ) {
+
+                // External authority links woven onto the named tools/products.
+                $auth = array(
+                    'lançou os <strong>Agents</strong>'
+                        => 'lançou os <strong><a href="https://www.framer.com/" target="_blank" rel="noopener">Agents</a></strong>',
+                    'com o Make descreves'
+                        => 'com o <a href="https://www.figma.com/make/" target="_blank" rel="noopener">Make</a> descreves',
+                    'com o Sites, publicas'
+                        => 'com o <a href="https://www.figma.com/sites/" target="_blank" rel="noopener">Sites</a>, publicas',
+                    'via MCP (Claude Code, Cursor)'
+                        => 'via <a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener">MCP</a> (<a href="https://www.anthropic.com/claude-code" target="_blank" rel="noopener">Claude Code</a>, <a href="https://cursor.com/" target="_blank" rel="noopener">Cursor</a>)',
+                    'A <strong>Framer</strong> levou'
+                        => 'A <strong><a href="https://www.framer.com/" target="_blank" rel="noopener">Framer</a></strong> levou',
+                    'A <strong>Webflow</strong>,'
+                        => 'A <strong><a href="https://webflow.com/" target="_blank" rel="noopener">Webflow</a></strong>,',
+                    'A Framer 3.0 já'
+                        => 'A <a href="https://www.framer.com/" target="_blank" rel="noopener">Framer 3.0</a> já',
+                );
+                $html = str_replace( array_keys( $auth ), array_values( $auth ), $html );
+
+                // "Sobre o autor" — Daniel (locked dark-bleed pattern). Injected
+                // just above the "Partilhar:" share row, at the end of the body.
+                $author_bio = '<aside class="edit-author-bio" style="background:transparent;color:#fff;padding:48px 0 56px 0;font-family:\'Helvetica Neue\',Arial,sans-serif;border-top:1px solid rgba(255,255,255,0.15);margin-top:48px;">'
+                    . '<div style="display:flex;gap:36px;align-items:flex-start;flex-wrap:wrap;">'
+                    . '<img src="https://weareedit.io/wp-content/uploads/2021/05/Daniel-Devera.png" alt="Daniel Devera — Founder · EDIT. Disruptive Digital Education" style="width:148px;height:148px;border-radius:50%;border:3px solid #f92869;object-fit:cover;object-position:center 15%;flex-shrink:0;">'
+                    . '<div style="flex:1;min-width:280px;">'
+                    . '<p style="margin:0 0 14px 0;font-size:12px;font-weight:700;color:#f92869;letter-spacing:0.22em;text-transform:uppercase;">Sobre o autor</p>'
+                    . '<h3 style="margin:0 0 10px 0;font-size:38px;font-weight:800;color:#fff;letter-spacing:-0.02em;line-height:1.05;">Daniel Devera</h3>'
+                    . '<p style="margin:0 0 26px 0;font-size:15px;color:rgba(255,255,255,0.65);font-weight:600;">Founder · EDIT. Disruptive Digital Education</p>'
+                    . '<p style="margin:0 0 20px 0;font-size:16px;line-height:1.65;color:rgba(255,255,255,0.85);">Fundador da EDIT., onde há mais de uma década desenha programas de educação digital que preparam pessoas para o mercado real. Passou a carreira na intersecção entre design, tecnologia e negócio — e escreve sobre o que aí vem antes de virar consenso.</p>'
+                    . '<p style="margin:0 0 32px 0;font-size:16px;line-height:1.65;color:rgba(255,255,255,0.85);">Escreve sobre: IA aplicada, design de produto, no-code e o futuro das profissões digitais.</p>'
+                    . '<p style="margin:0;font-size:15px;font-weight:700;color:#fff;white-space:nowrap;"><a href="https://weareedit.io/equipa/daniel-devera/" style="color:#fff;text-decoration:underline;text-decoration-color:#f92869;text-decoration-thickness:2px;text-underline-offset:5px;">Perfil completo</a><span style="color:rgba(255,255,255,0.4);margin:0 16px;">·</span><a href="https://www.linkedin.com/in/danieldevera/" style="color:#fff;text-decoration:underline;text-decoration-color:#f92869;text-decoration-thickness:2px;text-underline-offset:5px;">LinkedIn</a><span style="color:rgba(255,255,255,0.4);margin:0 16px;">·</span><a href="https://www.wikidata.org/wiki/Q139907903" style="color:#fff;text-decoration:underline;text-decoration-color:#f92869;text-decoration-thickness:2px;text-underline-offset:5px;">Wikidata</a></p>'
+                    . '</div></div></aside>';
+
+                $html = preg_replace(
+                    '#(<p class="partilhar">)#',
+                    $author_bio . '$1',
+                    $html, 1
+                );
+            }
         }
 
         // 1aa. Rank Math emits og:type=article for every singular CPT (course

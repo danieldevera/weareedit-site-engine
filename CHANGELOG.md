@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.588 — 2026-06-18 (Editorial #3 article — authority links + author block)
+Per-article enrichment for "Do prompt ao produto" that the WYSIWYG body editor strips on save, injected via the output buffer (scoped to the exact post slug). (1) External authority links woven onto the named tools: Framer Agents, Figma Make, Figma Sites, MCP, Claude Code, Cursor, Framer, Webflow, Framer 3.0. (2) The locked "Sobre o autor" dark-bleed block for Daniel (148px circle photo + pink ring, role, bio, Perfil/LinkedIn/Wikidata CTAs) injected just above the "Partilhar:" share row. TODO: generalise into the Blog Uploader / a reusable author field so this isn't post-specific.
+
 ## v1.5.587 — 2026-06-18 (Blog post — fix hero banner aspect + lighter body grey)
 Two single-blog fixes. (1) The hero banner (.about-image data-bg div) was rendering as a giant near-square block because the theme gives the div a large height and background-size:cover cropped the wide 2.23:1 banner into a tall sliver. Pinned the div to the banner's own aspect-ratio (2549/1144) with height:auto so the whole image shows as a clean letterbox, still capped to the 1000px content width. (2) Softened blog body copy from near-black to a lighter editorial grey (#6f6f6f) on .text-block-container.
 
