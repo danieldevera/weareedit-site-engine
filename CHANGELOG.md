@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.597 — 2026-06-18 (Editorial #3 hero — widen to content width)
+Hero <img> max-width 1000px → 1200px so the banner matches the article content width (measured ~1196px / 200→1396 at a 1600 viewport) instead of sitting narrower than the body.
+
 ## v1.5.596 — 2026-06-18 (Editorial #3 hero — point at Daniel's WP media URL)
 Hero <img> now points at Daniel's WP-media upload (editorial_3_trimmed-4.png) instead of the plugin-bundled copy (which is removed). WP-hosted = Imagify/WebP optimized, no plugin bloat. Placement unchanged.
 
