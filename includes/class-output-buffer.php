@@ -660,7 +660,7 @@ HTML;
                 // natural aspect, so the full 2000x840 art shows uncropped.
                 $html = preg_replace(
                     '#<div\b[^>]*\bclass="about-image\b[^"]*"[^>]*>\s*</div>#',
-                    '<img src="' . $assets . 'editorial-3-hero.png" alt="Do prompt ao produto: o design na era da IA — EDIT. Disruptive Blog" style="display:block;width:100%;max-width:1000px;height:auto;margin:0 auto;">',
+                    '<img src="https://weareedit.io/wp-content/uploads/2026/06/editorial_3_trimmed-4.png" alt="Do prompt ao produto: o design na era da IA — EDIT. Disruptive Blog" style="display:block;width:100%;max-width:1000px;height:auto;margin:0 auto;">',
                     $html,
                     1
                 );

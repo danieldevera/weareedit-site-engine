@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.596 — 2026-06-18 (Editorial #3 hero — point at Daniel's WP media URL)
+Hero <img> now points at Daniel's WP-media upload (editorial_3_trimmed-4.png) instead of the plugin-bundled copy (which is removed). WP-hosted = Imagify/WebP optimized, no plugin bloat. Placement unchanged.
+
 ## v1.5.595 — 2026-06-18 (Editorial #3 hero — Daniel's clean image as-is)
 Replaced the hero asset with Daniel's re-exported clean banner (editorial_#3_trimmed.png, 2549x1144) byte-for-byte — no crop, no re-encode, no alteration. Plain <img> placement unchanged.
 
