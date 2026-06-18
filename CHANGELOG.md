@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.589 — 2026-06-18 (Editorial #3 article — full-size hero, OG image, color avatar)
+More per-post enrichment for "Do prompt ao produto". (1) Hero now uses the FULL-size artwork (byline + full pencil) instead of the trimmed/cropped banner: data-bg rewritten to bundled assets/img/editorial-3-hero.png (2000x1292, ratio 1.548) + per-post aspect-ratio override. (2) og:image rewritten from the small trimmed 768x345 thumb to assets/img/editorial-3-og.png (1200x630, full composition). (3) Author block headshot swapped to Daniel's color chalkboard avatar (WP media URL) and dropped the CSS pink border since the ring is baked into the image.
+
 ## v1.5.588 — 2026-06-18 (Editorial #3 article — authority links + author block)
 Per-article enrichment for "Do prompt ao produto" that the WYSIWYG body editor strips on save, injected via the output buffer (scoped to the exact post slug). (1) External authority links woven onto the named tools: Framer Agents, Figma Make, Figma Sites, MCP, Claude Code, Cursor, Framer, Webflow, Framer 3.0. (2) The locked "Sobre o autor" dark-bleed block for Daniel (148px circle photo + pink ring, role, bio, Perfil/LinkedIn/Wikidata CTAs) injected just above the "Partilhar:" share row. TODO: generalise into the Blog Uploader / a reusable author field so this isn't post-specific.
 

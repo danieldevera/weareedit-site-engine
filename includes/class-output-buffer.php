@@ -650,6 +650,26 @@ HTML;
             // TODO: generalise into the Blog Uploader / a reusable author field.
             if ( 'do-prompt-ao-produto-o-design-ja-nao-termina-num-ficheiro' === get_post_field( 'post_name', get_queried_object_id() ) ) {
 
+                $assets = WEAREDIT_SITE_ENGINE_URL . 'assets/img/';
+
+                // Hero — swap the trimmed (cropped) banner for the FULL-size
+                // artwork (3081x1990 → bundled 2000x1292, ratio 1.548) so the
+                // byline + full pencil show. data-bg + og:image both point at
+                // the old trimmed file; rewrite to the plugin-hosted versions.
+                $html = str_replace(
+                    '/wp-content/uploads/2026/06/editorial_3_trimmed.png',
+                    $assets . 'editorial-3-hero.png',
+                    $html
+                );
+                $html = str_replace(
+                    '/wp-content/uploads/2026/06/editorial_3_trimmed-768x345.png',
+                    $assets . 'editorial-3-og.png',
+                    $html
+                );
+                // Per-post hero aspect override (full art is 1.548, not the
+                // global 2.23). Appended last so it wins on source order.
+                $html .= '<style>body.single-blog .about-image{aspect-ratio:2000/1292 !important;}</style>';
+
                 // External authority links woven onto the named tools/products.
                 $auth = array(
                     'lançou os <strong>Agents</strong>'
@@ -673,7 +693,7 @@ HTML;
                 // just above the "Partilhar:" share row, at the end of the body.
                 $author_bio = '<aside class="edit-author-bio" style="background:transparent;color:#fff;padding:48px 0 56px 0;font-family:\'Helvetica Neue\',Arial,sans-serif;border-top:1px solid rgba(255,255,255,0.15);margin-top:48px;">'
                     . '<div style="display:flex;gap:36px;align-items:flex-start;flex-wrap:wrap;">'
-                    . '<img src="https://weareedit.io/wp-content/uploads/2021/05/Daniel-Devera.png" alt="Daniel Devera — Founder · EDIT. Disruptive Digital Education" style="width:148px;height:148px;border-radius:50%;border:3px solid #f92869;object-fit:cover;object-position:center 15%;flex-shrink:0;">'
+                    . '<img src="https://weareedit.io/wp-content/uploads/2026/06/daniel-devera-avatar.png" alt="Daniel Devera — Founder · EDIT. Disruptive Digital Education" style="width:148px;height:148px;border-radius:50%;object-fit:cover;object-position:center;flex-shrink:0;">'
                     . '<div style="flex:1;min-width:280px;">'
                     . '<p style="margin:0 0 14px 0;font-size:12px;font-weight:700;color:#f92869;letter-spacing:0.22em;text-transform:uppercase;">Sobre o autor</p>'
                     . '<h3 style="margin:0 0 10px 0;font-size:38px;font-weight:800;color:#fff;letter-spacing:-0.02em;line-height:1.05;">Daniel Devera</h3>'
