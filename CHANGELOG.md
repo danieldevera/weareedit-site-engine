@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.590 — 2026-06-18 (Editorial #3 — fix hero: crop dead black top)
+The full-size hero led with a large black band (the artwork's black top half). Re-cropped to lead with the gradient — keeps DISRUPTIVE BLOG + title + "Por Daniel Devera" byline + full pencil, drops the dead black top. Bundled asset now 2000x840 (ratio 2.381); per-post aspect-ratio updated to match.
+
 ## v1.5.589 — 2026-06-18 (Editorial #3 article — full-size hero, OG image, color avatar)
 More per-post enrichment for "Do prompt ao produto". (1) Hero now uses the FULL-size artwork (byline + full pencil) instead of the trimmed/cropped banner: data-bg rewritten to bundled assets/img/editorial-3-hero.png (2000x1292, ratio 1.548) + per-post aspect-ratio override. (2) og:image rewritten from the small trimmed 768x345 thumb to assets/img/editorial-3-og.png (1200x630, full composition). (3) Author block headshot swapped to Daniel's color chalkboard avatar (WP media URL) and dropped the CSS pink border since the ring is baked into the image.
 

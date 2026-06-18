@@ -652,10 +652,11 @@ HTML;
 
                 $assets = WEAREDIT_SITE_ENGINE_URL . 'assets/img/';
 
-                // Hero — swap the trimmed (cropped) banner for the FULL-size
-                // artwork (3081x1990 → bundled 2000x1292, ratio 1.548) so the
-                // byline + full pencil show. data-bg + og:image both point at
-                // the old trimmed file; rewrite to the plugin-hosted versions.
+                // Hero — swap the trimmed (cropped) banner for the full artwork
+                // (byline + full pencil), cropped to lead with the gradient and
+                // drop the dead black top: bundled 2000x840, ratio 2.381.
+                // data-bg + og:image both point at the old trimmed file; rewrite
+                // to the plugin-hosted versions.
                 $html = str_replace(
                     '/wp-content/uploads/2026/06/editorial_3_trimmed.png',
                     $assets . 'editorial-3-hero.png',
@@ -668,7 +669,7 @@ HTML;
                 );
                 // Per-post hero aspect override (full art is 1.548, not the
                 // global 2.23). Appended last so it wins on source order.
-                $html .= '<style>body.single-blog .about-image{aspect-ratio:2000/1292 !important;}</style>';
+                $html .= '<style>body.single-blog .about-image{aspect-ratio:2000/840 !important;}</style>';
 
                 // External authority links woven onto the named tools/products.
                 $auth = array(
