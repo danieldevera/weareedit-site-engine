@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.599 — 2026-06-18 (Editorial #3 — shorten slug + 301 redirect)
+Editorial #3 slug shortened to /blog/do-prompt-ao-produto/ (Rank Math URL-length fix, 84→short). (1) Output-buffer enrichment now keys off the new slug 'do-prompt-ao-produto'. (2) Added a loop-safe 301 (old long slug → new) that only fires on a genuine 404, as a backup to WP core wp_old_slug_redirect. Email article link updated to the short URL (UTMs preserved). Daniel changes the post slug in WP + Atualizar.
+
 ## v1.5.598 — 2026-06-18 (Blog body — lighter general text)
 Blog post body copy lightened from #6f6f6f to #aaaaaa (.text-block-container) for a softer, more readable read on the dark editorial background.
 

@@ -3,7 +3,7 @@
  * Plugin Name: * weareedit.io Site Engine
  * Plugin URI:  https://github.com/danieldevera/weareedit-site-engine
  * Description: Custom site engine for weareedit.io — SEO (meta tags, OG, schema.org, sitemap, hreflang), GEO/LLM optimization (llms.txt, AI crawler rules, Wikidata-linked Person/Organization schema), brand customization (hero typography, dot accents, CTA hover animations), Google Reviews aggregation, output-buffer HTML rewrites, virtual pages, WP Rocket cache integration, and one-time data fixes.
- * Version:     1.5.598
+ * Version:     1.5.599
  * Author:      Daniel Devera
  * License:     GPL-2.0+
  * Text Domain: weareedit-site-engine
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.598' );
+define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.599' );
 
 // Reset PHP opcache after plugin updates so new class bytecode is loaded
 // immediately instead of on the next opcache TTL. Mitigates v1.5.391/392
@@ -566,6 +566,23 @@ add_action( 'init', function () {
     update_option( 'edit_seo_fix_settings', $settings, false );
     if ( function_exists( 'wp_cache_flush' ) ) wp_cache_flush();
     if ( function_exists( 'rocket_clean_domain' ) ) rocket_clean_domain();
+}, 5 );
+
+/**
+ * 301: Editorial #3 slug was shortened (2026-06-18) from the long
+ * descriptive slug to /blog/do-prompt-ao-produto/ (Rank Math URL-length
+ * fix). WordPress core wp_old_slug_redirect() normally handles this, but
+ * we add a deterministic, LOOP-SAFE backup: only fires when the old URL
+ * is a genuine 404 (i.e. AFTER the slug actually moved), so it can never
+ * ping-pong with redirect_canonical before the slug change.
+ */
+add_action( 'template_redirect', function () {
+    if ( ! is_404() ) return;
+    $path = trim( (string) parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ), '/' );
+    if ( 'blog/do-prompt-ao-produto-o-design-ja-nao-termina-num-ficheiro' === $path ) {
+        wp_safe_redirect( home_url( '/blog/do-prompt-ao-produto/' ), 301 );
+        exit;
+    }
 }, 5 );
 
 /**

@@ -648,7 +648,7 @@ HTML;
             // block). Injected here so it renders reliably. Scoped to the exact
             // post so the literal string replacements can't collide elsewhere.
             // TODO: generalise into the Blog Uploader / a reusable author field.
-            if ( 'do-prompt-ao-produto-o-design-ja-nao-termina-num-ficheiro' === get_post_field( 'post_name', get_queried_object_id() ) ) {
+            if ( 'do-prompt-ao-produto' === get_post_field( 'post_name', get_queried_object_id() ) ) {
 
                 // RELATIVE plugin path — the data-bg / og:image targets already
                 // carry the https://weareedit.io prefix, so an absolute URL here
