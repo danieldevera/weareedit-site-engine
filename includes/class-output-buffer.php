@@ -655,36 +655,19 @@ HTML;
                 // would double the domain (broken URL → black hero). v1.5.590 bug.
                 $assets = wp_make_link_relative( WEAREDIT_SITE_ENGINE_URL ) . 'assets/img/';
 
-                // Hero — swap the trimmed (cropped) banner for the full artwork
-                // (byline + full pencil), cropped to lead with the gradient and
-                // drop the dead black top: bundled 2000x840, ratio 2.381.
-                // data-bg + og:image both point at the old trimmed file; rewrite
-                // to the plugin-hosted versions.
-                $html = str_replace(
-                    '/wp-content/uploads/2026/06/editorial_3_trimmed.png',
-                    $assets . 'editorial-3-hero.png',
-                    $html
+                // Hero — just place the image. No cover/aspect/inline CSS hacks:
+                // replace the theme's background-cover div with a plain <img> at
+                // natural aspect, so the full 2000x840 art shows uncropped.
+                $html = preg_replace(
+                    '#<div\b[^>]*\bclass="about-image\b[^"]*"[^>]*>\s*</div>#',
+                    '<img src="' . $assets . 'editorial-3-hero.png" alt="Do prompt ao produto: o design na era da IA — EDIT. Disruptive Blog" style="display:block;width:100%;max-width:1000px;height:auto;margin:0 auto;">',
+                    $html,
+                    1
                 );
+                // Share image — point og:image at the full 1200x630 composition.
                 $html = str_replace(
                     '/wp-content/uploads/2026/06/editorial_3_trimmed-768x345.png',
                     $assets . 'editorial-3-og.png',
-                    $html
-                );
-                // Per-post hero aspect (full art is 2.381, not the global 2.23).
-                // A same-specificity head rule loses to the global rule / WP
-                // Rocket used-CSS, so force it INLINE on the element (inline
-                // !important beats every stylesheet) and keep a bumped-
-                // specificity head rule ([data-bg] → 0,3,1) as backup. WP Rocket
-                // lazyload only APPENDS background-image, so it won't wipe this.
-                $hero_css = 'height:auto !important;aspect-ratio:2000/840 !important;background-size:cover !important;background-position:center !important;';
-                $html = preg_replace(
-                    '#(<div\b[^>]*\bclass="about-image\b[^"]*"[^>]*?)\s+style="[^"]*"#',
-                    '$1 style="' . $hero_css . '"',
-                    $html, 1
-                );
-                $html = str_replace(
-                    '</head>',
-                    '<style>body.single-blog .about-image[data-bg]{' . $hero_css . '}</style></head>',
                     $html
                 );
 

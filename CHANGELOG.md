@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.593 — 2026-06-18 (Editorial #3 hero — just place the image, no CSS hacks)
+Removed all hero aspect/cover/inline-style adjustment code. The theme's background-cover .about-image div (which kept cropping the banner) is now replaced with a plain <img> at natural aspect (width:100%, max-width:1000px, height:auto, centered) — the full 2000x840 art shows uncropped, no cover, no aspect-ratio overrides. og:image still pointed at the full 1200x630 share image.
+
 ## v1.5.592 — 2026-06-18 (HOTFIX — hero aspect: force inline so the banner stops cropping)
 The per-post 2.381 hero aspect was set via a same-specificity head rule, which lost the cascade to the global single-blog .about-image rule (2.23) / WP Rocket used-CSS — so the box rendered taller than the art and background-size:cover vertical-centre-cropped it (DISRUPTIVE BLOG tag + "Por Daniel Devera" byline cut off, zoomed title). Now forced INLINE on the element (inline !important beats every stylesheet; Rocket lazyload only appends background-image so it survives) plus a bumped-specificity [data-bg] head rule as backup.
 
