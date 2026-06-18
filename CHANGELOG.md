@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.585 — 2026-06-18 (Blog post hero — cap the full-bleed banner)
+Single blog post hero (.about-image) was full-bleed (~850px tall on wide screens) and bled past the article column. The editorial banner carries title/author top-to-bottom so it can't be cropped — capped it by constraining width to the content layout (max-width 1000px, centered), dropping height to ~450px while keeping the whole image. Scoped to body.single-blog.
+
 ## v1.5.584 — 2026-06-17 (Course content — darker grey body text + bold links)
 Curriculum/content body text was a faint theme grey; darkened to #333 (scoped to .programa/.text-block-container, with :not([color="#0090eb"]) protecting the authored-blue description list). Course-content links now darker grey + bold so they stand out from the body text; blue hover on Remote courses retained.
 

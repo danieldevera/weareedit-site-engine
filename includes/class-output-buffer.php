@@ -149,6 +149,12 @@ class EDIT_Output_Buffer {
             // related-courses grid cards (inside .course-box).
             . 'body.single-formacao .special-labels-container{display:none !important;}'
             . 'body.single-formacao .course-box .special-labels-container{display:flex !important;}'
+            // Single blog post hero (.about-image): the trimmed editorial banner is
+            // full-bleed (~850px tall on wide screens) and bleeds past the article
+            // column. The image carries title/author top-to-bottom so it can't be
+            // cropped — cap it by constraining width to the content layout (centered),
+            // which drops height to ~450px and keeps the whole image.
+            . 'body.single-blog .about-image{max-width:1000px !important;margin-left:auto !important;margin-right:auto !important;}'
             // Course "Ferramentas" tool-stack icons (Claude Code, ChatGPT, etc.)
             // ship as square PNGs with no size attrs and no CSS bounds, so they
             // render at intrinsic resolution and stretch the .adaptImage card.
