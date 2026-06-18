@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.592 — 2026-06-18 (HOTFIX — hero aspect: force inline so the banner stops cropping)
+The per-post 2.381 hero aspect was set via a same-specificity head rule, which lost the cascade to the global single-blog .about-image rule (2.23) / WP Rocket used-CSS — so the box rendered taller than the art and background-size:cover vertical-centre-cropped it (DISRUPTIVE BLOG tag + "Por Daniel Devera" byline cut off, zoomed title). Now forced INLINE on the element (inline !important beats every stylesheet; Rocket lazyload only appends background-image so it survives) plus a bumped-specificity [data-bg] head rule as backup.
+
 ## v1.5.591 — 2026-06-18 (HOTFIX — black hero: doubled URL in data-bg/og)
 v1.5.590 rewrote the hero data-bg + og:image to an ABSOLUTE plugin URL, but the targets already carried the https://weareedit.io prefix — producing a doubled domain (https://weareedit.iohttps://weareedit.io/...), a broken URL, and a black hero (no background image loaded). Fixed by using wp_make_link_relative() so the replacement is a relative /wp-content/plugins/... path.
 

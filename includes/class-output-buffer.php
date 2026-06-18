@@ -670,9 +670,23 @@ HTML;
                     $assets . 'editorial-3-og.png',
                     $html
                 );
-                // Per-post hero aspect override (full art is 1.548, not the
-                // global 2.23). Appended last so it wins on source order.
-                $html .= '<style>body.single-blog .about-image{aspect-ratio:2000/840 !important;}</style>';
+                // Per-post hero aspect (full art is 2.381, not the global 2.23).
+                // A same-specificity head rule loses to the global rule / WP
+                // Rocket used-CSS, so force it INLINE on the element (inline
+                // !important beats every stylesheet) and keep a bumped-
+                // specificity head rule ([data-bg] → 0,3,1) as backup. WP Rocket
+                // lazyload only APPENDS background-image, so it won't wipe this.
+                $hero_css = 'height:auto !important;aspect-ratio:2000/840 !important;background-size:cover !important;background-position:center !important;';
+                $html = preg_replace(
+                    '#(<div\b[^>]*\bclass="about-image\b[^"]*"[^>]*?)\s+style="[^"]*"#',
+                    '$1 style="' . $hero_css . '"',
+                    $html, 1
+                );
+                $html = str_replace(
+                    '</head>',
+                    '<style>body.single-blog .about-image[data-bg]{' . $hero_css . '}</style></head>',
+                    $html
+                );
 
                 // External authority links woven onto the named tools/products.
                 $auth = array(
