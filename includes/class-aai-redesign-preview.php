@@ -4,17 +4,21 @@
  * ─────────────────────────────────────────────────────────────────────────────
  * A disposable, token-gated working duplicate of the Advanced Artificial
  * Intelligence bootcamp page, used to iterate the new on-page conversion
- * sections (alumni proof, curriculum/outcomes, student creations, tools,
- * certificate, instructor) LIVE without touching the real Formação page.
+ * sections LIVE without touching the real Formação page.
  *
- * Path-matched (not subdomain) at /aai-preview/. Mirrors the Augment-page
- * gating: STATUS='preview' → only logged-in admins or ?preview=<TOKEN> see it;
- * everyone else (and every crawler) gets a clean noindex 404. No WP post is
- * created — we short-circuit at template_redirect priority 0 and emit our own
- * standalone HTML document, then exit.
+ * Rendering: proxies the REAL course page server-side (so we inherit the live
+ * theme chrome — head/CSS, nav header, hero, footer) and SPLICES our new
+ * sections into the body, dropping the old course body:
  *
- * Once the sections are locked, they get ported into the real AAI Formação
- * page and this class can be set to 'off' / removed.
+ *     [ real page: top … through the hero ]   (up to <section class="ceb-mini">)
+ *     [ our scoped #aai-rd sections fragment ]
+ *     [ real page: <footer> … </html> ]
+ *
+ * Our sections are scoped under #aai-rd so the theme CSS and ours don't clash.
+ * Path-matched at /aai-preview/, token-gated like the Augment page: admins or
+ * ?preview=<TOKEN> see it; everyone else (and every crawler) gets a noindex
+ * 404. No WP post is created. If the live fetch/splice fails, falls back to a
+ * self-contained standalone template.
  *
  * @since 1.5.605
  */
@@ -23,16 +27,19 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class EDIT_AAI_Redesign_Preview {
 
-    /** 'preview' = gated; 'off' = inert. (Never goes 'live' — port to real page instead.) */
-    const STATUS = 'preview';
-
-    /** Match path (with/without trailing slash). */
-    const PATH = '/aai-preview';
-
-    /** Share-link bypass token. */
+    const STATUS        = 'preview';
+    const PATH          = '/aai-preview';
     const PREVIEW_TOKEN = 'aai-2026-preview';
 
-    const TEMPLATE = 'includes/templates/aai-redesign-preview.html';
+    /** Real course page we proxy + splice into. */
+    const LIVE_URL = 'https://weareedit.io/formacao/bootcamp-advanced-artificial-intelligence/';
+
+    /** Splice markers in the live markup. */
+    const HERO_BODY_MARK = 'class="ceb-mini"';   // first body section right after the hero
+    const FOOTER_MARK    = '<footer ';            // site footer start
+
+    const SECTIONS  = 'includes/templates/aai-redesign-sections.html';  // scoped fragment
+    const TEMPLATE  = 'includes/templates/aai-redesign-preview.html';   // standalone fallback
 
     public static function init(): void {
         if ( self::STATUS === 'off' ) return;
@@ -43,8 +50,7 @@ class EDIT_AAI_Redesign_Preview {
 
     private static function is_target_request(): bool {
         $path = (string) parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ), PHP_URL_PATH );
-        $path = rtrim( $path, '/' );
-        return $path === self::PATH;
+        return rtrim( $path, '/' ) === self::PATH;
     }
 
     private static function should_render_publicly(): bool {
@@ -62,18 +68,91 @@ class EDIT_AAI_Redesign_Preview {
             exit;
         }
 
-        $file = WEAREDIT_SITE_ENGINE_PATH . self::TEMPLATE;
-        if ( ! file_exists( $file ) ) {
-            status_header( 500 );
-            nocache_headers();
-            echo 'AAI preview template missing.';
-            exit;
+        $fragment = self::sections_fragment();
+
+        // Preferred: splice our sections into the real (proxied) course page.
+        $live = self::live_html();
+        if ( $live !== '' ) {
+            $spliced = self::splice( $live, $fragment );
+            if ( $spliced !== '' ) { self::emit( $spliced ); return; }
         }
 
-        $html = (string) file_get_contents( $file );
-        $html = str_replace( '<!--EDIT-HEAD-->', '<meta name="robots" content="noindex,nofollow">', $html );
-        $html = str_replace( '<!--CERT-URL-->', esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/aai/cert-sample.jpg' ), $html );
+        // Fallback: self-contained standalone template.
+        $file = WEAREDIT_SITE_ENGINE_PATH . self::TEMPLATE;
+        if ( file_exists( $file ) ) {
+            $html = (string) file_get_contents( $file );
+            $html = str_replace( '<!--EDIT-HEAD-->', '<meta name="robots" content="noindex,nofollow">', $html );
+            $html = str_replace( '<!--CERT-URL-->', esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/aai/cert-sample.jpg' ), $html );
+            self::emit( $html );
+            return;
+        }
 
+        status_header( 500 );
+        nocache_headers();
+        echo 'AAI preview unavailable.';
+        exit;
+    }
+
+    /** Scoped #aai-rd sections fragment, with the certificate URL resolved. */
+    private static function sections_fragment(): string {
+        $f = WEAREDIT_SITE_ENGINE_PATH . self::SECTIONS;
+        $html = file_exists( $f ) ? (string) file_get_contents( $f ) : '';
+        return str_replace( '<!--CERT-URL-->', esc_url( WEAREDIT_SITE_ENGINE_URL . 'assets/aai/cert-sample.jpg' ), $html );
+    }
+
+    /** Fetch the live course page (5-min transient cache; ?nocache to bypass). */
+    private static function live_html(): string {
+        $key = 'edit_aai_live_html';
+        if ( empty( $_GET['nocache'] ) ) {
+            $cached = get_transient( $key );
+            if ( is_string( $cached ) && $cached !== '' ) return $cached;
+        }
+        $resp = wp_remote_get( self::LIVE_URL, [
+            'timeout'     => 12,
+            'redirection' => 3,
+            'sslverify'   => false,
+            'headers'     => [ 'User-Agent' => 'edit-aai-preview/1.0 (+weareedit.io)' ],
+        ] );
+        if ( is_wp_error( $resp ) ) return '';
+        if ( (int) wp_remote_retrieve_response_code( $resp ) !== 200 ) return '';
+        $body = (string) wp_remote_retrieve_body( $resp );
+        if ( $body === '' ) return '';
+        set_transient( $key, $body, 300 );
+        return $body;
+    }
+
+    /** Splice: [top..hero] + our sections + [footer..end]. '' on failure. */
+    private static function splice( string $live, string $fragment ): string {
+        $mark = strpos( $live, self::HERO_BODY_MARK );
+        if ( $mark === false ) return '';
+        $cut = strrpos( substr( $live, 0, $mark ), '<section' );
+        if ( $cut === false ) return '';
+
+        $foot = strpos( $live, self::FOOTER_MARK );
+        if ( $foot === false || $foot <= $cut ) return '';
+
+        $top     = substr( $live, 0, $cut );
+        $dropped = substr( $live, $cut, $foot - $cut );
+        $footer  = substr( $live, $foot );
+
+        // The dropped body region may close a wrapper <div> that was opened up
+        // in the hero/top region. Re-balance: append however many </div> the
+        // dropped region closed-but-didn't-open, so $top isn't left dangling.
+        $opens   = substr_count( $dropped, '<div' );
+        $closes  = substr_count( $dropped, '</div>' );
+        $missing = max( 0, $closes - $opens );
+        if ( $missing > 0 ) {
+            $top .= str_repeat( '</div>', $missing );
+        }
+
+        // Force noindex on the proxied <head> (defence-in-depth; the route is
+        // already 404 to non-admins/crawlers).
+        $top = preg_replace( '/<head[^>]*>/i', '$0<meta name="robots" content="noindex,nofollow">', $top, 1 );
+
+        return $top . "\n<!-- AAI redesign sections (preview) -->\n" . $fragment . "\n" . $footer;
+    }
+
+    private static function emit( string $html ): void {
         status_header( 200 );
         nocache_headers();
         header( 'X-Robots-Tag: noindex, nofollow', true );
