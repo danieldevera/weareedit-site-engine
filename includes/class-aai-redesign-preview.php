@@ -176,9 +176,17 @@ class EDIT_AAI_Redesign_Preview {
                     $ibs    = strrpos( substr( $chunk, 0, $ib ), '<div' );
                     $dates  = $ibs !== false ? substr( $chunk, 0, $ibs ) : $chunk;
                     $action = $ibs !== false ? substr( $chunk, $ibs ) : '';
+                    // The dates chunk carries the theme's ancestor </div>s (it
+                    // over-closes), which would pop #info_bar several levels up
+                    // the DOM — so it stops being a sibling of the dates box and
+                    // no margin can pull the action bar flush. Trim those stray
+                    // trailing closes so #aai-infobar wraps exactly the dates and
+                    // #info_bar lands right after it as a true sibling.
+                    $dates  = self::balance_chunk( $dates );
+                    $action = self::balance_chunk( $action );
                     $info_bar = '<div id="aai-infobar">' . $dates . '</div>' . $action;
                 } else {
-                    $info_bar = '<div id="aai-infobar">' . $chunk . '</div>';
+                    $info_bar = '<div id="aai-infobar">' . self::balance_chunk( $chunk ) . '</div>';
                 }
             }
         }
@@ -205,6 +213,25 @@ class EDIT_AAI_Redesign_Preview {
         $fragment = str_replace( '<!--PROGRAMA-->', $programa, $fragment );
 
         return $top . "\n<!-- AAI redesign sections (preview) -->\n" . $fragment . "\n" . $footer;
+    }
+
+    /**
+     * Make an extracted HTML chunk self-balanced: trim stray trailing </div>s
+     * if it over-closes (carried ancestor closes), or append </div>s if it
+     * leaves wrappers open. Lets the dates box + action bar sit as siblings.
+     */
+    private static function balance_chunk( string $html ): string {
+        $diff = substr_count( $html, '<div' ) - substr_count( $html, '</div>' );
+        if ( $diff < 0 ) {
+            // Over-closed: drop the spurious trailing closes one at a time.
+            while ( $diff < 0 && preg_match( '#</div>\s*$#', $html ) ) {
+                $html = preg_replace( '#</div>\s*$#', '', $html, 1 );
+                $diff++;
+            }
+        } elseif ( $diff > 0 ) {
+            $html .= str_repeat( '</div>', $diff );
+        }
+        return $html;
     }
 
     private static function emit( string $html ): void {
