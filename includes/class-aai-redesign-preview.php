@@ -149,6 +149,16 @@ class EDIT_AAI_Redesign_Preview {
         // already 404 to non-admins/crawlers).
         $top = preg_replace( '/<head[^>]*>/i', '$0<meta name="robots" content="noindex,nofollow">', $top, 1 );
 
+        // Hard-strip the EARLY15 promo bar/overlay (JS-built — sets inline
+        // styles a CSS rule can't beat) and the breadcrumbs nav, so they're
+        // gone on the preview rather than merely hidden.
+        $kill_scripts = '#<(script|style)\b[^>]*\bid="edit-(promo|early15)[^"]*"[^>]*>.*?</\1>#is';
+        $kill_bcrumb  = '#<nav\b[^>]*class="edit-breadcrumbs"[^>]*>.*?</nav>#is';
+        foreach ( array( 'top', 'footer' ) as $part ) {
+            $$part = preg_replace( $kill_scripts, '', $$part );
+            $$part = preg_replace( $kill_bcrumb, '', $$part );
+        }
+
         return $top . "\n<!-- AAI redesign sections (preview) -->\n" . $fragment . "\n" . $footer;
     }
 
