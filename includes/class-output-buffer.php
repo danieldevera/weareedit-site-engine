@@ -711,13 +711,28 @@ HTML;
                 );
             }
 
-            // 1ad. Carla article hero — replicate the do-prompt fix exactly:
-            // swap the theme's background-cover div for a plain <img> at natural
-            // aspect, so the full art shows uncropped (no black band top/right).
-            if ( 'vinte-e-cinco-cabecas-dois-pensamentos-o-paradoxo-da-criatividade-aumentada' === get_post_field( 'post_name', get_queried_object_id() ) ) {
+            // 1ad. Blog hero fix — replicate the do-prompt treatment for other
+            // articles whose hero still uses the theme's background-cover div
+            // (constrained inside the black hero section → black band). Swap it
+            // for a plain <img> at natural aspect so the full banner shows
+            // uncropped. Per-article image: trimmed plugin asset where the
+            // source PNG had a baked-in black band, else the original upload.
+            $blog_hero = array(
+                'vinte-e-cinco-cabecas-dois-pensamentos-o-paradoxo-da-criatividade-aumentada' => array(
+                    'src' => WEAREDIT_SITE_ENGINE_URL . 'assets/img/carla-hero-trimmed.png',
+                    'alt' => 'Vinte e cinco cabeças, dois pensamentos: o paradoxo da criatividade aumentada — EDIT. Disruptive Blog',
+                ),
+                'os-agentes-nao-tiveram-infancia-branding-na-era-da-ia' => array(
+                    'src' => 'https://weareedit.io/wp-content/uploads/2026/06/og-image-padded.png',
+                    'alt' => 'Os agentes não tiveram infância: branding na era da IA — EDIT. Disruptive Blog',
+                ),
+            );
+            $blog_slug = get_post_field( 'post_name', get_queried_object_id() );
+            if ( isset( $blog_hero[ $blog_slug ] ) ) {
+                $h = $blog_hero[ $blog_slug ];
                 $html = preg_replace(
                     '#<div\b[^>]*\bclass="about-image\b[^"]*"[^>]*>\s*</div>#',
-                    '<img src="https://weareedit.io/wp-content/uploads/2026/06/artigo_website_hero_carla-geraldes-v2.png" alt="Vinte e cinco cabeças, dois pensamentos: o paradoxo da criatividade aumentada — EDIT. Disruptive Blog" style="display:block;width:100%;max-width:1200px;height:auto;margin:0 auto;">',
+                    '<img src="' . esc_url( $h['src'] ) . '" alt="' . esc_attr( $h['alt'] ) . '" style="display:block;width:100%;max-width:1200px;height:auto;margin:0 auto;">',
                     $html,
                     1
                 );
