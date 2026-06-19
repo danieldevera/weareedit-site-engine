@@ -3,7 +3,7 @@
   .edit-breadcrumbs,.breadcrumb,#ez-toc-container{display:none !important;}
   [id^="edit-promo"]{display:none !important;}
 
-  /* AAI hero — adapted from the Augment dark hero; neon-waves video tinted purple→pink */
+  /* AAI hero,adapted from the Augment dark hero; neon-waves video tinted purple→pink */
   #aai-hero{position:relative;overflow:hidden;background:#0a0a0a;color:#fff;padding:170px 0 0;min-height:80vh;display:flex;align-items:flex-start;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;width:100vw;max-width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);margin-top:-110px;}
   #aai-hero *{box-sizing:border-box;}
   #aai-hero .vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;transform:scale(1.22);z-index:0;pointer-events:none;filter:hue-rotate(55deg) saturate(1.15) brightness(.82);}
@@ -45,7 +45,7 @@
     </a>
     <p class="eyebrow">Augment Series™ · Bootcamp</p>
     <h1>Advanced Artificial<br>Intelligence<span class="dp">.</span></h1>
-    <p class="lede">60 horas, ao vivo. Das LLMs aos agentes de IA — sais a construir, não só a usar. Para profissionais que querem dominar a IA a sério.</p>
+    <p class="lede">40 horas, ao vivo. Das LLMs aos agentes de IA: sais a construir, não só a usar. Para profissionais que querem dominar a IA a sério.</p>
   </div>
 </section>
 
@@ -170,13 +170,28 @@
   #aai-rd .wf-stage .st{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);margin-bottom:4px;}
   #aai-rd .wf-stage .sd{font-size:13px;color:var(--grey);margin-bottom:16px;}
   #aai-rd .wf-logos{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-  #aai-rd .wf-tool{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:13px 6px;text-align:center;min-height:74px;}
-  #aai-rd .wf-tool img{width:28px;height:28px;display:block;object-fit:contain;}
-  #aai-rd .wf-tool .nm{font-size:11.5px;font-weight:700;color:#333;line-height:1.15;}
+  #aai-rd .wf-tool{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:16px 6px;text-align:center;min-height:96px;text-decoration:none;color:inherit;transition:.15s;}
+  #aai-rd .wf-tool:hover{background:#fff;border-color:var(--ink);transform:translateY(-3px);box-shadow:0 12px 26px rgba(0,0,0,.13);}
+  #aai-rd .wf-tool img{width:42px;height:42px;display:block;object-fit:contain;}
+  #aai-rd .wf-tool .nm{font-size:12px;font-weight:700;color:#333;line-height:1.15;}
+
+  /* instructor quote (redesigned) */
+  #aai-rd .nq2{display:grid;grid-template-columns:300px 1fr;gap:48px;align-items:center;background:linear-gradient(180deg,#fff,#fafafa);border:1px solid var(--line);border-radius:12px;padding:44px;}
+  #aai-rd .nq2-photo{position:relative;}
+  #aai-rd .nq2-photo img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;}
+  #aai-rd .nq2-photo .tag{position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);background:var(--yellow);color:var(--ink);font-weight:800;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:7px 16px;border-radius:4px;white-space:nowrap;}
+  #aai-rd .nq2-q{font-family:Georgia,serif;font-size:26px;line-height:1.42;color:#1a1a1a;margin-bottom:26px;}
+  #aai-rd .nq2-q .mk{color:var(--pink);font-weight:800;}
+  #aai-rd .nq2-q em{font-style:italic;background:linear-gradient(180deg,transparent 60%,rgba(96,197,179,.4) 60% 92%,transparent 92%);}
+  #aai-rd .nq2-sign{display:flex;align-items:center;gap:14px;}
+  #aai-rd .nq2-sign .bar{width:34px;height:3px;background:var(--pink);flex:0 0 auto;}
+  #aai-rd .nq2-nm{font-size:18px;font-weight:800;}
+  #aai-rd .nq2-rl{font-size:13.5px;color:var(--grey);margin-top:2px;}
 
   @media(max-width:780px){
     #aai-rd .ap-cards,#aai-rd .cu-grid,#aai-rd .nq-block,#aai-rd .tl-grid,#aai-rd .pq-grid,#aai-rd .inv-wrap{grid-template-columns:1fr;}
     #aai-rd .wf{flex-direction:column;}#aai-rd .wf-arrow{transform:rotate(90deg);padding:10px 0;}
+    #aai-rd .nq2{grid-template-columns:1fr;gap:30px;}#aai-rd .nq2-photo img{max-width:280px;margin:0 auto;}
     #aai-rd .ap-stats,#aai-rd .ce-trust{grid-template-columns:1fr 1fr;}
     #aai-rd .sc-grid{grid-template-columns:1fr 1fr;}
     #aai-rd .cu-mod{grid-template-columns:40px 1fr;}#aai-rd .cu-mod .hrs{grid-column:2;justify-self:start;margin-top:8px;}
@@ -190,11 +205,11 @@
   <section class="sec">
     <div class="eyebrow">Para quem é este bootcamp</div>
     <h2>Se já percebeste que a IA <span class="hl">não vai esperar por ti.</span></h2>
-    <p class="lead">Para profissionais que querem parar de "ir experimentando" e começar a usar IA com método — para produzir mais, melhor e mais rápido no trabalho real.</p>
+    <p class="lead">Para profissionais que querem parar de "ir experimentando" e começar a usar IA com método, para produzir mais, melhor e mais rápido no trabalho real.</p>
     <div class="pq-grid">
-      <div class="pq-card"><div class="h">Profissionais &amp; gestores</div><div class="s">Que querem integrar IA no dia a dia da função e da equipa — sem serem técnicos.</div></div>
+      <div class="pq-card"><div class="h">Profissionais &amp; gestores</div><div class="s">Que querem integrar IA no dia a dia da função e da equipa, sem serem técnicos.</div></div>
       <div class="pq-card"><div class="h">Criativos &amp; marketers</div><div class="s">Que querem produzir texto, imagem, vídeo e voz com IA, do conceito ao resultado.</div></div>
-      <div class="pq-card"><div class="h">Empreendedores &amp; makers</div><div class="s">Que querem construir produtos, agentes e automações — mesmo sem código.</div></div>
+      <div class="pq-card"><div class="h">Empreendedores &amp; makers</div><div class="s">Que querem construir produtos, agentes e automações, mesmo sem código.</div></div>
     </div>
     <p class="pq-not"><b>Não precisas de background técnico.</b> Precisas de querer sair a construir, não só a ver demos.</p>
   </section>
@@ -202,10 +217,10 @@
   <!-- 2 · ALUMNI PROOF -->
   <section class="sec alt">
     <div class="eyebrow">Histórias de quem já fez o curso</div>
-    <h2>Não acreditas em nós — <span class="hl">acredita em quem saiu daqui.</span></h2>
+    <h2>Não acreditas em nós? <span class="hl">Acredita em quem saiu daqui.</span></h2>
     <p class="lead">Profissionais reais que terminaram o Advanced Artificial Intelligence e já estão a aplicar IA no dia a dia.</p>
     <div class="ap-stats">
-      <div class="ap-stat"><div class="n">60<span class="u">h</span></div><div class="l">de formação prática, ao vivo</div></div>
+      <div class="ap-stat"><div class="n">40<span class="u">h</span></div><div class="l">de formação prática, ao vivo</div></div>
       <div class="ap-stat"><div class="n pink">20<span class="u">/20</span></div><div class="l">classificação máxima de alumni</div></div>
       <div class="ap-stat"><div class="n teal">4</div><div class="l">módulos: LLMs, geração, automação, agentes</div></div>
       <div class="ap-stat"><div class="n">DGERT</div><div class="l">entidade formadora certificada</div></div>
@@ -216,7 +231,7 @@
         <div class="ap-who"><div class="ph">MD</div><div><div class="nm">Martim D.</div><div class="rl">Sales Marketing Manager · MariaJoãoBahia</div></div></div>
       </div>
       <div class="ap-card">
-        <p class="q">O verdadeiro valor da IA não está em substituir pessoas — está em libertar tempo para o pensamento crítico, a criatividade e a capacidade de encontrar melhores soluções.</p>
+        <p class="q">O verdadeiro valor da IA não está em substituir pessoas, está em libertar tempo para o pensamento crítico, a criatividade e a capacidade de encontrar melhores soluções.</p>
         <div class="ap-who"><div class="ph">DC</div><div><div class="nm">Diogo Canudo</div><div class="rl">Gestor de Núcleo de Criatividade e Planeamento</div></div></div>
       </div>
     </div>
@@ -225,8 +240,8 @@
   <!-- 3 · WHAT YOU WALK AWAY WITH (deliverables) -->
   <section class="sec">
     <div class="eyebrow">O que os alunos constroem</div>
-    <h2>Não sais com apontamentos — <span class="hl">sais com produtos que construíste.</span></h2>
-    <p class="lead">Ao longo do curso, cada aluno cria projetos reais com IA — de apps a agentes, de vídeo a voz.</p>
+    <h2>Não sais com apontamentos. <span class="hl">Sais com produtos que construíste.</span></h2>
+    <p class="lead">Ao longo do curso, cada aluno cria projetos reais com IA, de apps a agentes, de vídeo a voz.</p>
     <div class="sc-grid">
       <div class="sc-card"><div class="sc-thumb sc-t1">🖥️<span class="ph">[ screenshot do projeto ]</span></div><div class="sc-meta"><span class="sc-tool">Lovable</span><h3>App full-stack funcional</h3><p>Uma aplicação real construída do zero.</p></div></div>
       <div class="sc-card"><div class="sc-thumb sc-t2">🔗<span class="ph">[ screenshot do fluxo ]</span></div><div class="sc-meta"><span class="sc-tool">n8n</span><h3>Agente de IA + automação</h3><p>Um workflow que executa tarefas sozinho.</p></div></div>
@@ -235,19 +250,19 @@
       <div class="sc-card"><div class="sc-thumb sc-t5">🎙️<span class="ph">[ player de áudio ]</span></div><div class="sc-meta"><span class="sc-tool">ElevenLabs</span><h3>Voz e locução IA</h3><p>Narração e vozes para os projetos.</p></div></div>
       <div class="sc-card"><div class="sc-thumb sc-t6">🎯<span class="ph">[ projeto final ]</span></div><div class="sc-meta"><span class="sc-tool">Projeto final</span><h3>Aplicado ao teu negócio</h3><p>O capstone que junta tudo.</p></div></div>
     </div>
-    <div class="sc-banner"><div><div class="t">No fim, o teu portefólio tem <span>produtos</span> — não certificados.</div><div class="s">É isto que mostras numa entrevista ou a um cliente.</div></div><a href="#" class="btn">Quero construir →</a></div>
+    <div class="sc-banner"><div><div class="t">No fim, o teu portefólio tem <span>produtos</span>, não certificados.</div><div class="s">É isto que mostras numa entrevista ou a um cliente.</div></div><a href="#" class="btn">Quero construir →</a></div>
   </section>
 
   <!-- 4 · HOW YOU GET THERE (curriculum as outcomes) -->
   <section class="sec alt">
-    <div class="eyebrow">O programa · 60 horas, ao vivo</div>
+    <div class="eyebrow">O programa · 40 horas, ao vivo</div>
     <h2>De "ouvi falar de IA" a <span class="hl">usá-la todos os dias no trabalho.</span></h2>
     <p class="lead">Quatro módulos práticos que vão do contexto à construção. Cada um deixa-te com uma capacidade nova.</p>
     <div class="cu-mods">
-      <div class="cu-mod"><div class="num">01</div><div><div class="ti">Introdução à IA, Contextualização e Tendências de Mercado</div><div class="out"><b>Sais a saber:</b> onde a IA cria valor real no teu setor — e onde é só ruído.</div></div><div class="hrs">4h</div></div>
+      <div class="cu-mod"><div class="num">01</div><div><div class="ti">Introdução à IA, Contextualização e Tendências de Mercado</div><div class="out"><b>Sais a saber:</b> onde a IA cria valor real no teu setor, e onde é só ruído.</div></div><div class="hrs">4h</div></div>
       <div class="cu-mod"><div class="num">02</div><div><div class="ti">LLMs como Copiloto para Profissionais do Conhecimento</div><div class="out"><b>Sais a saber:</b> usar LLMs (ChatGPT, Claude, Gemini) como copiloto diário para escrever, analisar e decidir muito mais rápido.</div></div><div class="hrs">16h</div></div>
       <div class="cu-mod"><div class="num">03</div><div><div class="ti">Geração de Imagens, Vídeo e Áudio com IA</div><div class="out"><b>Sais a saber:</b> produzir conteúdo visual e áudio com IA, do conceito ao resultado final.</div></div><div class="hrs">8h</div></div>
-      <div class="cu-mod flag"><div class="num">04</div><div><div class="ti">Automatização de Processos, Agentes de IA e Vibe Coding <span class="cu-adv">Nível avançado</span></div><div class="out"><b>Sais a saber:</b> automatizar tarefas e <b>construir os teus próprios agentes e fluxos de IA</b> — mesmo sem background técnico. É aqui que deixas de <em>usar</em> IA e começas a <em>construir</em> com ela.</div></div><div class="hrs">12h</div></div>
+      <div class="cu-mod flag"><div class="num">04</div><div><div class="ti">Automatização de Processos, Agentes de IA e Vibe Coding <span class="cu-adv">Nível avançado</span></div><div class="out"><b>Sais a saber:</b> automatizar tarefas e <b>construir os teus próprios agentes e fluxos de IA</b>, mesmo sem background técnico. É aqui que deixas de <em>usar</em> IA e começas a <em>construir</em> com ela.</div></div><div class="hrs">12h</div></div>
     </div>
     <div class="cu-band">
       <div class="lab">No fim do curso, vais conseguir</div>
@@ -255,7 +270,7 @@
         <div class="cu-oc"><div class="ck">✓</div><div>Integrar IA no teu fluxo de trabalho e poupar horas por semana.</div></div>
         <div class="cu-oc"><div class="ck">✓</div><div>Construir agentes e automações que trabalham por ti.</div></div>
         <div class="cu-oc"><div class="ck">✓</div><div>Produzir conteúdo (texto, imagem, vídeo, áudio) com IA.</div></div>
-        <div class="cu-oc"><div class="ck">✓</div><div>Liderar a conversa de IA na tua equipa — com critério, não hype.</div></div>
+        <div class="cu-oc"><div class="ck">✓</div><div>Liderar a conversa de IA na tua equipa, com critério, não hype.</div></div>
       </div>
     </div>
   </section>
@@ -270,10 +285,10 @@
         <div class="st">1 · Pensar &amp; pesquisar</div>
         <div class="sd">LLMs como copiloto diário.</div>
         <div class="wf-logos">
-          <div class="wf-tool"><img src="https://www.google.com/s2/favicons?domain=openai.com&sz=128" alt=""><span class="nm">ChatGPT</span></div>
-          <div class="wf-tool"><img src="https://www.google.com/s2/favicons?domain=claude.ai&sz=128" alt=""><span class="nm">Claude</span></div>
-          <div class="wf-tool"><img src="https://www.google.com/s2/favicons?domain=gemini.google.com&sz=128" alt=""><span class="nm">Gemini</span></div>
-          <div class="wf-tool"><img src="https://www.google.com/s2/favicons?domain=perplexity.ai&sz=128" alt=""><span class="nm">Perplexity</span></div>
+          <a class="wf-tool" href="https://chatgpt.com" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=openai.com&sz=128" alt=""><span class="nm">ChatGPT</span></a>
+          <a class="wf-tool" href="https://claude.ai" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=claude.ai&sz=128" alt=""><span class="nm">Claude</span></a>
+          <a class="wf-tool" href="https://gemini.google.com" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=gemini.google.com&sz=128" alt=""><span class="nm">Gemini</span></a>
+          <a class="wf-tool" href="https://perplexity.ai" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=perplexity.ai&sz=128" alt=""><span class="nm">Perplexity</span></a>
         </div>
       </div>
       <div class="wf-arrow">&rarr;</div>
@@ -281,10 +296,10 @@
         <div class="st">2 · Criar</div>
         <div class="sd">Imagem, vídeo e voz com IA.</div>
         <div class="wf-logos">
-          <div class="wf-tool"><img src="https://www.google.com/s2/favicons?domain=midjourney.com&sz=128" alt=""><span class="nm">Midjourney</span></div>
-          <div class="wf-tool"><img src="https://www.google.com/s2/favicons?domain=higgsfield.ai&sz=128" alt=""><span class="nm">Higgsfield</span></div>
-          <div class="wf-tool"><img src="https://www.google.com/s2/favicons?domain=heygen.com&sz=128" alt=""><span class="nm">HeyGen</span></div>
-          <div class="wf-tool"><img src="https://www.google.com/s2/favicons?domain=elevenlabs.io&sz=128" alt=""><span class="nm">ElevenLabs</span></div>
+          <a class="wf-tool" href="https://midjourney.com" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=midjourney.com&sz=128" alt=""><span class="nm">Midjourney</span></a>
+          <a class="wf-tool" href="https://higgsfield.ai" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=higgsfield.ai&sz=128" alt=""><span class="nm">Higgsfield</span></a>
+          <a class="wf-tool" href="https://heygen.com" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=heygen.com&sz=128" alt=""><span class="nm">HeyGen</span></a>
+          <a class="wf-tool" href="https://elevenlabs.io" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=elevenlabs.io&sz=128" alt=""><span class="nm">ElevenLabs</span></a>
         </div>
       </div>
       <div class="wf-arrow">&rarr;</div>
@@ -292,10 +307,10 @@
         <div class="st">3 · Construir &amp; automatizar</div>
         <div class="sd">Apps, agentes e fluxos.</div>
         <div class="wf-logos">
-          <div class="wf-tool"><img src="https://www.google.com/s2/favicons?domain=lovable.dev&sz=128" alt=""><span class="nm">Lovable</span></div>
-          <div class="wf-tool"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=128" alt=""><span class="nm">n8n</span></div>
-          <div class="wf-tool"><img src="https://www.google.com/s2/favicons?domain=cursor.com&sz=128" alt=""><span class="nm">Cursor</span></div>
-          <div class="wf-tool"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=128" alt=""><span class="nm">Make</span></div>
+          <a class="wf-tool" href="https://lovable.dev" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=lovable.dev&sz=128" alt=""><span class="nm">Lovable</span></a>
+          <a class="wf-tool" href="https://n8n.io" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=128" alt=""><span class="nm">n8n</span></a>
+          <a class="wf-tool" href="https://cursor.com" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=cursor.com&sz=128" alt=""><span class="nm">Cursor</span></a>
+          <a class="wf-tool" href="https://make.com" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=128" alt=""><span class="nm">Make</span></a>
         </div>
       </div>
     </div>
@@ -303,45 +318,59 @@
 
   <!-- 6 · WHO TEACHES YOU (authority) -->
   <section class="sec alt">
-    <div class="eyebrow" style="text-align:center;">Quem te vai formar</div>
-    <div class="nq-block">
-      <div class="nq-photo"><div class="ph">FOTO<br>NAIARA</div><div class="tag">A tua formadora</div></div>
+    <div class="eyebrow">Quem te vai formar</div>
+    <h2>Não aprendes IA com qualquer um. <span class="hl">Aprendes com a Naiara.</span></h2>
+    <p class="lead">18+ anos de Inteligência Artificial aplicada ao negócio. Quem já a teve em sala, percebe a diferença.</p>
+    <div class="nq2">
+      <div class="nq2-photo">
+        <img src="https://weareedit.io/wp-content/uploads/2026/02/naiara-back-vignetted-2.jpg" alt="Naiara Back">
+        <div class="tag">A tua formadora</div>
+      </div>
       <div>
-        <p class="nq-q"><span class="mark">&ldquo;</span>O meu objetivo não é ensinar-te a usar ferramentas — é <em>desafiar a tua forma de pensar</em>. A IA não veio substituir o teu valor; veio amplificá-lo. No fim, não levas só prompts: levas uma nova forma de trabalhar.<span class="mark">&rdquo;</span></p>
-        <div class="nq-sign"><div class="bar"></div><div><div class="nm">Naiara Back</div><div class="rl">Estrategista Digital · Especialista em Inteligência Artificial</div></div></div>
+        <p class="nq2-q"><span class="mk">&ldquo;</span>O meu objetivo não é ensinar-te a usar ferramentas. É <em>desafiar a tua forma de pensar</em>. A IA não veio substituir o teu valor: veio amplificá-lo. No fim, não levas só prompts. Levas uma nova forma de trabalhar.<span class="mk">&rdquo;</span></p>
+        <div class="nq2-sign"><div class="bar"></div><div><div class="nq2-nm">Naiara Back</div><div class="nq2-rl">Especialista em IA aplicada ao negócio · 18+ anos</div></div></div>
       </div>
     </div>
   </section>
 
-  <!-- 7 · FULL PROGRAMME (depth) — real section reused from the live page -->
+  <!-- 7 · FULL PROGRAMME (depth) -->
   <style>
-    /* PROGRAMA keeps its original (theme) design — only drop the duplicate
-       tool-logos block (.ferramentas / .logos-grid); already covered by the
-       "O teu arsenal de IA" section above. */
-    #aai-rd .aai-programa .ferramentas,
-    #aai-rd .aai-programa .logos-grid{display:none !important;}
+    /* PROGRAMA: the proxied block is a dark bg-black section; our #aai-rd light
+       wrapper + reset were exposing it half-styled (magenta bars on white + a
+       black void). Render it as the dark section it is on the live page. */
+    #aai-rd .aai-programa{background:#0d0d0d;margin:30px 0 0;padding:58px 0;}
+    #aai-rd .aai-programa .programa{background:transparent !important;padding:0 !important;}
+    #aai-rd .aai-programa .container{max-width:1080px !important;width:auto !important;margin:0 auto !important;padding:0 28px !important;}
+    #aai-rd .aai-programa [class*="col-"]{background:transparent !important;}
+    #aai-rd .aai-programa h2.titulo-curso{color:#fff !important;font-size:30px !important;margin:0 0 10px !important;}
+    #aai-rd .aai-programa h2.text-muted{color:#7a7a7a !important;}
+    #aai-rd .aai-programa .apresentacao{color:#bdbdbd !important;}
+    #aai-rd .aai-programa .text-block-container,#aai-rd .aai-programa .text-container,#aai-rd .aai-programa h4,#aai-rd .aai-programa .list-title,#aai-rd .aai-programa p,#aai-rd .aai-programa li{color:#d8d8d8 !important;}
+    #aai-rd .aai-programa h3{margin:30px 0 12px !important;}
+    #aai-rd .aai-programa .text-container{margin-bottom:16px !important;}
+    #aai-rd .aai-programa .ferramentas,#aai-rd .aai-programa .logos-grid{display:none !important;}
   </style>
   <!--PROGRAMA-->
 
   <!-- 8 · INVESTMENT + WHAT'S INCLUDED + RISK REVERSAL -->
   <section class="sec">
     <div class="eyebrow">Investimento</div>
-    <h2>60 horas, portefólio real e certificação — <span class="hl">por €375 ×2.</span></h2>
+    <h2>40 horas, portefólio real e certificação, <span class="hl">por €375 ×2.</span></h2>
     <p class="lead">Tudo o que está incluído quando te inscreves no Advanced Artificial Intelligence.</p>
     <div class="inv-wrap">
       <div class="inv-incl">
         <div class="lab">Incluído na inscrição</div>
-        <div class="inv-li"><div class="ck">✓</div><div><b>60h de formação ao vivo</b>, em remoto, com formadores especialistas.</div></div>
+        <div class="inv-li"><div class="ck">✓</div><div><b>40h de formação ao vivo</b>, em remoto, com formadores especialistas.</div></div>
         <div class="inv-li"><div class="ck">✓</div><div><b>Portefólio de produtos reais</b> construídos durante o curso.</div></div>
-        <div class="inv-li"><div class="ck">✓</div><div><b>Certificado DGERT</b> — entidade formadora certificada.</div></div>
-        <div class="inv-li"><div class="ck">✓</div><div><b>Stack de IA da aula</b> — aprendes a usar (e rentabilizar) o arsenal completo.</div></div>
+        <div class="inv-li"><div class="ck">✓</div><div><b>Certificado DGERT</b>, entidade formadora certificada.</div></div>
+        <div class="inv-li"><div class="ck">✓</div><div><b>Stack de IA da aula</b>, aprendes a usar (e rentabilizar) o arsenal completo.</div></div>
         <div class="inv-li"><div class="ck">✓</div><div><b>Acompanhamento</b> e feedback nos teus projetos.</div></div>
       </div>
       <div class="inv-price">
         <div class="amt">€375 <span class="x">×2</span></div>
         <div class="sub">Pagamento em 2 prestações · €750 total</div>
         <a href="#" class="btn">Quero inscrever-me →</a>
-        <div class="guar">Em dúvida? Fala connosco antes — 15 min, sem compromisso.</div>
+        <div class="guar">Em dúvida? Fala connosco antes, 15 min, sem compromisso.</div>
       </div>
     </div>
   </section>
@@ -351,8 +380,8 @@
     <div class="eyebrow">Perguntas frequentes</div>
     <h2>Ainda com <span class="hl">dúvidas?</span></h2>
     <div class="faq">
-      <details open><summary>Preciso de saber programar?</summary><div class="a">Não. O bootcamp foi desenhado para profissionais sem background técnico — incluindo o módulo de agentes e automação, com abordagem no-code / vibe coding.</div></details>
-      <details><summary>O curso é ao vivo ou gravado?</summary><div class="a">100% ao vivo, em remoto, com formadores. As sessões são interativas — constróis durante a aula, não vês só slides.</div></details>
+      <details open><summary>Preciso de saber programar?</summary><div class="a">Não. O bootcamp foi desenhado para profissionais sem background técnico, incluindo o módulo de agentes e automação, com abordagem no-code / vibe coding.</div></details>
+      <details><summary>O curso é ao vivo ou gravado?</summary><div class="a">100% ao vivo, em remoto, com formadores. As sessões são interativas: constróis durante a aula, não vês só slides.</div></details>
       <details><summary>Em que horário decorre?</summary><div class="a">Segunda e Quarta, das 19h às 23h (pós-laboral), de 29 de Junho a 20 de Julho de 2026.</div></details>
       <details><summary>Recebo certificado?</summary><div class="a">Sim. A EDIT. é entidade formadora certificada pela DGERT e emite certificado no final do curso.</div></details>
       <details><summary>Como funciona o pagamento?</summary><div class="a">€750 no total, em 2 prestações de €375. Fala connosco para condições e faturação.</div></details>
@@ -363,7 +392,7 @@
   <!-- 10 · FINAL CTA (urgency, date fixed) -->
   <section class="sec fin">
     <h2>A próxima turma <span class="hl">começa a 29 de Junho.</span></h2>
-    <p>Remote Learning · 60h · pós-laboral (Seg + Qua, 19h–23h) · certificado DGERT · vagas limitadas.</p>
+    <p>Remote Learning · 40h · pós-laboral (Seg + Qua, 19h às 23h) · certificado DGERT · vagas limitadas.</p>
     <a href="#" class="btn">Quero o meu lugar →</a>
   </section>
 
