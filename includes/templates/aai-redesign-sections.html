@@ -397,3 +397,17 @@
   </section>
 
 </div>
+
+<style>
+  /* LIGHT FOOTER — flip the proxied dark theme footer to a light variant. */
+  footer{background:#ffffff !important;color:#16181d !important;border-top:1px solid #ececec !important;}
+  footer .container,footer .footer-menu,footer .row,footer .col-sm-12,footer .col-md-3,footer [class*="col-"]{background:transparent !important;}
+  footer h2,footer h3,footer h4,footer h5,footer p,footer span,footer li,footer label,footer .title,footer div{color:#16181d !important;}
+  footer a{color:#5b5b5b !important;text-decoration:none !important;}
+  footer a:hover{color:#f92869 !important;}
+  footer hr,footer .separator,footer .line{border-color:#ececec !important;background:#ececec !important;}
+  /* footer logos are white assets — invert so they read on light; the project
+     cards lose their dark fill */
+  footer .footer-logo img,footer .outros-projetos img,footer .partners img,footer img{filter:invert(1) grayscale(1) !important;}
+  footer .outros-projetos a,footer .partners a,footer [class*="outros"] > div{background:transparent !important;border-color:#e8e8e8 !important;}
+</style>
