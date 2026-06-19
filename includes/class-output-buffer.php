@@ -710,6 +710,18 @@ HTML;
                     $html, 1
                 );
             }
+
+            // 1ad. Carla article hero — replicate the do-prompt fix exactly:
+            // swap the theme's background-cover div for a plain <img> at natural
+            // aspect, so the full art shows uncropped (no black band top/right).
+            if ( 'vinte-e-cinco-cabecas-dois-pensamentos-o-paradoxo-da-criatividade-aumentada' === get_post_field( 'post_name', get_queried_object_id() ) ) {
+                $html = preg_replace(
+                    '#<div\b[^>]*\bclass="about-image\b[^"]*"[^>]*>\s*</div>#',
+                    '<img src="https://weareedit.io/wp-content/uploads/2026/06/artigo_website_hero_carla-geraldes-v2.png" alt="Vinte e cinco cabeças, dois pensamentos: o paradoxo da criatividade aumentada — EDIT. Disruptive Blog" style="display:block;width:100%;max-width:1200px;height:auto;margin:0 auto;">',
+                    $html,
+                    1
+                );
+            }
         }
 
         // 1aa. Rank Math emits og:type=article for every singular CPT (course
