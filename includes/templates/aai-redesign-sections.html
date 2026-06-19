@@ -1,4 +1,60 @@
 <style>
+  /* hide proxied chrome we're replacing on the redesign preview */
+  .edit-breadcrumbs,.breadcrumb{display:none !important;}
+  [id^="edit-promo"]{display:none !important;}
+
+  /* AAI hero — adapted from the Augment dark hero; neon-waves video tinted purple→pink */
+  #aai-hero{position:relative;overflow:hidden;background:#0a0a0a;color:#fff;padding:96px 0 84px;min-height:80vh;display:flex;align-items:center;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;}
+  #aai-hero *{box-sizing:border-box;}
+  #aai-hero .vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none;filter:hue-rotate(55deg) saturate(1.15);}
+  #aai-hero .veil{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(10,10,10,.72) 0%,rgba(10,10,10,.45) 45%,rgba(10,10,10,.25) 100%);}
+  #aai-hero .wrap{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:0 28px;width:100%;}
+  #aai-hero .dgert{display:inline-flex;align-items:center;gap:14px;text-decoration:none;color:#fff;margin-bottom:28px;transition:opacity .2s;}
+  #aai-hero .dgert:hover{opacity:.85;}
+  #aai-hero .dgert img{height:42px;width:auto;display:block;}
+  #aai-hero .dgert-txt{font-size:16px;font-weight:600;letter-spacing:-.01em;}
+  #aai-hero .dgert-arrow{font-size:14px;opacity:.7;}
+  #aai-hero .eyebrow{font-size:12px;letter-spacing:.2em;color:#ffdd06;font-weight:700;text-transform:uppercase;margin:0 0 22px;}
+  #aai-hero h1{font-size:clamp(52px,8vw,110px);line-height:1.0;font-weight:500;letter-spacing:-.02em;color:#fff;margin:0 0 30px;}
+  #aai-hero h1 .dp{color:#f92869;}
+  #aai-hero h1 .dt{color:#60c5b3;}
+  #aai-hero .lede{font-size:clamp(19px,1.6vw,25px);line-height:1.4;color:#ffdd06;font-weight:500;max-width:920px;margin:0 0 30px;}
+  #aai-hero .urg{display:inline-flex;align-items:center;gap:10px;font-size:14px;color:#fff;font-weight:500;margin:0 0 28px;}
+  #aai-hero .urg b{color:#ffdd06;font-weight:700;}
+  #aai-hero .dot{width:9px;height:9px;border-radius:50%;background:#60c5b3;box-shadow:0 0 0 0 rgba(96,197,179,.6);animation:aaipulse 2.2s infinite;}
+  @keyframes aaipulse{0%{box-shadow:0 0 0 0 rgba(96,197,179,.55)}70%{box-shadow:0 0 0 9px rgba(96,197,179,0)}100%{box-shadow:0 0 0 0 rgba(96,197,179,0)}}
+  #aai-hero .ctas{display:flex;flex-wrap:wrap;gap:16px;align-items:center;}
+  #aai-hero .btn{display:inline-block;font-weight:800;font-size:17px;text-decoration:none;padding:18px 34px;border-radius:6px;transition:.15s;border:0;cursor:pointer;}
+  #aai-hero .btn-y{background:#ffdd06;color:#0a0a0a;}
+  #aai-hero .btn-y:hover{transform:translateY(-1px);filter:brightness(1.03);}
+  #aai-hero .btn-g{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.55);}
+  #aai-hero .btn-g:hover{background:#fff;color:#0a0a0a;}
+  @media(max-width:760px){#aai-hero{min-height:auto;padding:64px 0 56px;}#aai-hero h1{font-size:40px;}}
+</style>
+
+<section id="aai-hero">
+  <video class="vid" autoplay muted loop playsinline aria-hidden="true">
+    <source src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/augment/augment-hero-loop-v5.mp4" type="video/mp4">
+  </video>
+  <div class="veil" aria-hidden="true"></div>
+  <div class="wrap">
+    <a class="dgert" href="https://www.dgert.gov.pt/entidades-formadoras-certificadas" target="_blank" rel="noopener noreferrer">
+      <img src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/augment/dgert-branco.png" alt="Entidade Formadora Certificada DGERT">
+      <span class="dgert-txt">Entidade Formadora Certificada</span>
+      <span class="dgert-arrow" aria-hidden="true">↗</span>
+    </a>
+    <p class="eyebrow">Advanced Artificial Intelligence · Bootcamp</p>
+    <h1>Advanced Artificial<br>Intelligence<span class="dp">.</span></h1>
+    <p class="lede">60 horas, ao vivo. Das LLMs aos agentes de IA — sais a construir, não só a usar. Para profissionais que querem dominar a IA a sério.</p>
+    <p class="urg"><span class="dot" aria-hidden="true"></span> Inscrições abertas · próxima turma arranca em <b>Setembro 2026</b> · vagas limitadas</p>
+    <div class="ctas">
+      <a href="#inscrever" class="btn btn-y">Inscrever na próxima turma</a>
+      <a href="#contacto" class="btn btn-g">Falar connosco</a>
+    </div>
+  </div>
+</section>
+
+<style>
   #aai-rd{--ink:#111;--grey:#5b5b5b;--line:#e8e8e8;--soft:#fafafa;--yellow:#ffdd06;--pink:#f92869;--teal:#60c5b3;--purple:#7a38b4;
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:var(--ink);line-height:1.55;background:var(--soft);}
   #aai-rd *{box-sizing:border-box;margin:0;padding:0;}

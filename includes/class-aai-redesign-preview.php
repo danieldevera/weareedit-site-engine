@@ -35,7 +35,7 @@ class EDIT_AAI_Redesign_Preview {
     const LIVE_URL = 'https://weareedit.io/formacao/bootcamp-advanced-artificial-intelligence/';
 
     /** Splice markers in the live markup. */
-    const HERO_BODY_MARK = 'class="ceb-mini"';   // first body section right after the hero
+    const HERO_BODY_MARK = 'banner-image"';       // start of the course hero <section> — cut here to drop the real hero + body (we render our own Augment-adapted hero instead)
     const FOOTER_MARK    = '<footer ';            // site footer start
 
     const SECTIONS  = 'includes/templates/aai-redesign-sections.html';  // scoped fragment
