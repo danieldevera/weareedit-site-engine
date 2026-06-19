@@ -108,7 +108,7 @@ class EDIT_AAI_Redesign_Preview {
             if ( is_string( $cached ) && $cached !== '' ) return $cached;
         }
         $resp = wp_remote_get( self::LIVE_URL, [
-            'timeout'     => 12,
+            'timeout'     => 22,
             'redirection' => 3,
             'sslverify'   => false,
             'headers'     => [ 'User-Agent' => 'edit-aai-preview/1.0 (+weareedit.io)' ],
