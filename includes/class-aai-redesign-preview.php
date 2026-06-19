@@ -60,6 +60,10 @@ class EDIT_AAI_Redesign_Preview {
     }
 
     public static function render_page(): void {
+        // This is a live working preview that changes every release — never let
+        // WP Rocket (or other page caches) cache it, or edits won't show.
+        if ( ! defined( 'DONOTCACHEPAGE' ) ) define( 'DONOTCACHEPAGE', true );
+
         if ( ! self::should_render_publicly() ) {
             status_header( 404 );
             nocache_headers();
