@@ -159,6 +159,25 @@ class EDIT_AAI_Redesign_Preview {
             $$part = preg_replace( $kill_bcrumb, '', $$part );
         }
 
+        // Remove the old course H1 (e.g. "Bootcamp / Advanced Artificial
+        // Intelligence", class color-<Type>) — we render our own hero title.
+        $top = preg_replace( '#<h1\b[^>]*class="[^"]*\bcolor-[^"]*"[^>]*>.*?</h1>#is', '', $top );
+
+        // Extract the real date/info bar (dates row .formacao-info + action bar
+        // #info_bar) and re-place it under our hero, overlapping the video.
+        // It runs from .formacao-info to the end of $top (already trimmed at the
+        // hero start). The <!--INFO-BAR--> marker in the fragment is the target.
+        $info_bar = '';
+        $fi = strpos( $top, 'class="formacao-info ' );
+        if ( $fi !== false ) {
+            $start = strrpos( substr( $top, 0, $fi ), '<div' );
+            if ( $start !== false ) {
+                $info_bar = '<div id="aai-infobar">' . substr( $top, $start ) . '</div>';
+                $top      = substr( $top, 0, $start );
+            }
+        }
+        $fragment = str_replace( '<!--INFO-BAR-->', $info_bar, $fragment );
+
         return $top . "\n<!-- AAI redesign sections (preview) -->\n" . $fragment . "\n" . $footer;
     }
 
