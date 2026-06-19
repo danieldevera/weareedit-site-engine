@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--EDIT-HEAD-->
+<title>AAI Bootcamp — preview de redesign · EDIT.</title>
+<style>
+  :root{--ink:#111;--grey:#5b5b5b;--line:#e8e8e8;--soft:#fafafa;
+    --yellow:#ffdd06;--pink:#f92869;--teal:#60c5b3;--purple:#7a38b4;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    background:var(--soft);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .sec{max-width:1080px;margin:0 auto;padding:62px 28px;}
+  .eyebrow{font-size:13px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--pink);margin-bottom:12px;}
+  h2{font-size:36px;font-weight:800;letter-spacing:-1px;line-height:1.1;margin-bottom:10px;}
+  h2 .hl{background:linear-gradient(180deg,transparent 62%,var(--yellow) 62% 92%,transparent 92%);}
+  .lead{font-size:17px;color:var(--grey);max-width:640px;margin-bottom:36px;}
+  .btn{background:var(--ink);color:var(--yellow);font-weight:800;font-size:15px;border:none;border-radius:6px;padding:15px 30px;text-decoration:none;display:inline-block;}
+  .alt{background:#fff;}
+
+  /* preview ribbon */
+  .pvbar{background:var(--ink);color:#fff;font-size:12.5px;text-align:center;padding:9px 16px;letter-spacing:.02em;}
+  .pvbar b{color:var(--yellow);}
+
+  /* hero */
+  .hero{max-width:1080px;margin:0 auto;padding:64px 28px 8px;}
+  .hero .eyebrow{color:var(--teal);}
+  .hero h1{font-size:48px;font-weight:800;letter-spacing:-1.5px;line-height:1.06;margin-bottom:14px;}
+  .hero h1 .hl{background:linear-gradient(180deg,transparent 62%,var(--yellow) 62% 92%,transparent 92%);}
+  .hero p{font-size:18px;color:var(--grey);max-width:600px;}
+
+  /* ALUMNI PROOF (ap-) */
+  .ap-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:6px;background:#fff;overflow:hidden;margin-bottom:36px;}
+  .ap-stat{padding:22px 20px;border-right:1px solid var(--line);}.ap-stat:last-child{border-right:none;}
+  .ap-stat .n{font-size:30px;font-weight:800;line-height:1;}.ap-stat .n .u{font-size:16px;color:var(--grey);}
+  .ap-stat .n.pink{color:var(--pink);}.ap-stat .n.teal{color:var(--teal);}
+  .ap-stat .l{font-size:12.5px;color:var(--grey);margin-top:6px;}
+  .ap-cards{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .ap-card{background:#fff;border:1px solid var(--line);border-radius:6px;padding:28px;position:relative;}
+  .ap-card .badge{position:absolute;top:0;right:24px;transform:translateY(-50%);background:var(--ink);color:var(--yellow);font-weight:800;font-size:13px;padding:7px 12px;border-radius:4px;}
+  .ap-card .q{font-family:Georgia,serif;font-size:18px;line-height:1.5;color:#1a1a1a;margin-bottom:20px;}
+  .ap-card .q::before{content:"\201C";color:var(--pink);font-weight:800;}.ap-card .q::after{content:"\201D";color:var(--pink);font-weight:800;}
+  .ap-who{display:flex;align-items:center;gap:12px;}
+  .ap-who .ph{width:46px;height:46px;border-radius:6px;background:var(--soft);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--grey);font-size:15px;}
+  .ap-who .nm{font-weight:800;font-size:14px;}.ap-who .rl{font-size:12.5px;color:var(--grey);}
+
+  /* CURRICULUM (cu-) */
+  .cu-mods{display:flex;flex-direction:column;gap:14px;margin-bottom:36px;}
+  .cu-mod{display:grid;grid-template-columns:54px 1fr auto;gap:22px;align-items:start;background:#fff;border:1px solid var(--line);border-radius:6px;padding:24px 26px;}
+  .cu-mod .num{font-size:30px;font-weight:800;color:var(--line);line-height:1;}
+  .cu-mod.flag{border-color:var(--ink);border-left:5px solid var(--pink);}.cu-mod.flag .num{color:var(--pink);}
+  .cu-mod .ti{font-size:18px;font-weight:800;margin-bottom:5px;}
+  .cu-mod .out{font-size:14.5px;color:var(--grey);}.cu-mod .out b{color:var(--ink);}
+  .cu-mod .hrs{font-size:13px;font-weight:800;color:var(--ink);background:var(--yellow);border-radius:4px;padding:5px 10px;white-space:nowrap;}
+  .cu-adv{display:inline-block;font-size:11px;font-weight:800;text-transform:uppercase;color:#fff;background:var(--pink);border-radius:4px;padding:2px 8px;margin-left:8px;vertical-align:middle;}
+  .cu-band{background:var(--ink);color:#fff;border-radius:6px;padding:34px;}
+  .cu-band .lab{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--yellow);font-weight:800;margin-bottom:18px;}
+  .cu-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 34px;}
+  .cu-oc{display:flex;gap:12px;align-items:flex-start;font-size:15px;}
+  .cu-oc .ck{width:22px;height:22px;border-radius:4px;background:var(--teal);color:var(--ink);font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;}
+
+  /* STUDENT CREATIONS (sc-) */
+  .sc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .sc-card{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;transition:.15s;}
+  .sc-card:hover{border-color:var(--ink);transform:translateY(-3px);box-shadow:0 14px 30px rgba(0,0,0,.08);}
+  .sc-thumb{height:150px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:32px;position:relative;}
+  .sc-thumb .ph{position:absolute;left:12px;bottom:10px;font-size:11px;font-weight:700;opacity:.85;}
+  .sc-t1{background:linear-gradient(135deg,#111,#333);}.sc-t2{background:linear-gradient(135deg,var(--teal),#2a8378);}
+  .sc-t3{background:linear-gradient(135deg,var(--pink),#b3164a);}.sc-t4{background:linear-gradient(135deg,var(--purple),#4d1f73);}
+  .sc-t5{background:linear-gradient(135deg,#ec8172,#c85a48);}.sc-t6{background:linear-gradient(135deg,#111,#444);}
+  .sc-meta{padding:16px 18px;}
+  .sc-tool{display:inline-block;font-size:11px;font-weight:800;text-transform:uppercase;color:var(--ink);background:var(--yellow);border-radius:4px;padding:2px 8px;margin-bottom:9px;}
+  .sc-meta h3{font-size:16px;font-weight:800;margin-bottom:4px;}.sc-meta p{font-size:13px;color:var(--grey);}
+  .sc-banner{margin-top:30px;background:var(--ink);color:#fff;border-radius:8px;padding:26px 30px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+  .sc-banner .t{font-size:19px;font-weight:800;}.sc-banner .t span{color:var(--yellow);}.sc-banner .s{font-size:14px;color:#bdbdbd;margin-top:3px;}
+
+  /* TOOLS (tl-) */
+  .tl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .tl-logo{background:#fff;border:1px solid var(--line);border-radius:6px;height:96px;display:flex;align-items:center;justify-content:center;padding:18px;transition:.15s;}
+  .tl-logo:hover{border-color:var(--ink);transform:translateY(-2px);}
+  .tl-logo img{max-height:34px;max-width:130px;filter:grayscale(100%);opacity:.78;transition:.15s;}
+  .tl-logo:hover img{filter:none;opacity:1;}
+  .tl-logo .txt{font-size:18px;font-weight:800;color:#444;display:none;}
+  .tl-stat{display:inline-flex;align-items:baseline;gap:8px;margin-bottom:30px;}
+  .tl-stat .n{font-size:22px;font-weight:800;color:var(--pink);}.tl-stat .l{font-size:14px;color:var(--grey);}
+
+  /* CERTIFICATE (ce-) design B */
+  .ce-wrap{text-align:center;}
+  .ce-frame{position:relative;display:inline-block;background:#fff;padding:18px;border:1px solid var(--line);border-radius:8px;box-shadow:0 24px 60px rgba(0,0,0,.14),0 2px 8px rgba(0,0,0,.05);}
+  .ce-frame img{display:block;width:100%;max-width:620px;height:auto;border-radius:4px;}
+  .ce-frame::before{content:"";position:absolute;left:-1px;top:-1px;width:64px;height:6px;background:var(--yellow);border-radius:8px 0 0 0;}
+  .ce-frame::after{content:"";position:absolute;left:-1px;top:-1px;width:6px;height:64px;background:var(--yellow);border-radius:8px 0 0 0;}
+  .ce-ribbon{position:absolute;right:-12px;top:26px;background:var(--ink);color:var(--yellow);font-weight:800;font-size:14px;padding:10px 16px;border-radius:4px;box-shadow:0 8px 22px rgba(0,0,0,.2);transform:rotate(3deg);}
+  .ce-trust{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:46px 0 36px;text-align:left;}
+  .ce-t{background:var(--soft);border:1px solid var(--line);border-top:4px solid var(--teal);border-radius:6px;padding:18px;}
+  .ce-t:nth-child(2){border-top-color:var(--pink);}.ce-t:nth-child(3){border-top-color:var(--yellow);}
+  .ce-t .h{font-size:14px;font-weight:800;margin-bottom:4px;}.ce-t .s{font-size:12.5px;color:var(--grey);}
+
+  /* NAIARA (nq-) */
+  .nq-block{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:8px;padding:44px 48px;}
+  .nq-photo{position:relative;width:170px;flex-shrink:0;}
+  .nq-photo .ph{width:170px;height:170px;border-radius:8px;background:var(--soft);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:#bbb;font-weight:800;font-size:13px;text-align:center;}
+  .nq-photo .ph::after{content:"";position:absolute;left:-8px;top:-8px;width:46px;height:46px;border-top:3px solid var(--pink);border-left:3px solid var(--pink);border-radius:8px 0 0 0;}
+  .nq-photo .tag{position:absolute;left:50%;bottom:-13px;transform:translateX(-50%);background:var(--yellow);color:var(--ink);font-weight:800;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;border-radius:4px;white-space:nowrap;}
+  .nq-q{font-family:Georgia,serif;font-size:24px;line-height:1.44;color:#1a1a1a;margin-bottom:22px;}
+  .nq-q .mark{color:var(--pink);font-weight:800;}
+  .nq-q em{font-style:italic;background:linear-gradient(180deg,transparent 60%,rgba(96,197,179,.45) 60% 92%,transparent 92%);}
+  .nq-sign{display:flex;align-items:center;gap:14px;}.nq-sign .bar{width:32px;height:3px;background:var(--pink);}
+  .nq-sign .nm{font-size:16px;font-weight:800;}.nq-sign .rl{font-size:13px;color:var(--grey);margin-top:2px;}
+
+  /* final CTA */
+  .fin{background:var(--ink);color:#fff;text-align:center;}
+  .fin h2{font-size:34px;margin-bottom:10px;}.fin h2 .hl{color:var(--yellow);background:none;}
+  .fin p{color:#bdbdbd;font-size:16px;margin-bottom:24px;}
+  .fin .btn{background:var(--yellow);color:var(--ink);}
+
+  @media(max-width:780px){
+    .ap-cards,.cu-grid,.nq-block,.tl-grid{grid-template-columns:1fr;}
+    .ap-stats,.ce-trust{grid-template-columns:1fr 1fr;}
+    .sc-grid{grid-template-columns:1fr 1fr;}
+    .cu-mod{grid-template-columns:40px 1fr;}.cu-mod .hrs{grid-column:2;justify-self:start;margin-top:8px;}
+    .hero h1{font-size:34px;}h2{font-size:28px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="pvbar">🔒 <b>PREVIEW</b> · redesign do AAI Bootcamp · página de trabalho (não pública) · <b>/aai-preview/</b></div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="eyebrow">Advanced Artificial Intelligence · Bootcamp</div>
+  <h1>Aprende a usar — e a <span class="hl">construir</span> — com IA.</h1>
+  <p>60 horas práticas, ao vivo. Das LLMs aos agentes de IA. Sais com produtos construídos e um certificado que vale.</p>
+</div>
+
+<!-- ALUMNI PROOF -->
+<section class="sec">
+  <div class="eyebrow">Histórias de quem já fez o curso</div>
+  <h2>Não acreditas em nós — <span class="hl">acredita em quem saiu daqui.</span></h2>
+  <p class="lead">Profissionais reais que terminaram o Advanced Artificial Intelligence e já estão a aplicar IA no dia a dia.</p>
+  <div class="ap-stats">
+    <div class="ap-stat"><div class="n">60<span class="u">h</span></div><div class="l">de formação prática, ao vivo</div></div>
+    <div class="ap-stat"><div class="n pink">20<span class="u">/20</span></div><div class="l">classificação máxima de alumni</div></div>
+    <div class="ap-stat"><div class="n teal">4</div><div class="l">módulos: LLMs, geração, automação, agentes</div></div>
+    <div class="ap-stat"><div class="n">DGERT</div><div class="l">entidade formadora certificada</div></div>
+  </div>
+  <div class="ap-cards">
+    <div class="ap-card"><div class="badge">20/20</div>
+      <p class="q">Uma experiência enriquecedora que me permitiu aprofundar o conhecimento em IA generativa, automação, agentes de IA e na aplicação prática de ferramentas de IA em contexto de negócio.</p>
+      <div class="ap-who"><div class="ph">MD</div><div><div class="nm">Martim D.</div><div class="rl">Sales Marketing Manager · MariaJoãoBahia</div></div></div>
+    </div>
+    <div class="ap-card">
+      <p class="q">O verdadeiro valor da IA não está em substituir pessoas — está em libertar tempo para o pensamento crítico, a criatividade e a capacidade de encontrar melhores soluções.</p>
+      <div class="ap-who"><div class="ph">DC</div><div><div class="nm">Diogo Canudo</div><div class="rl">Gestor de Núcleo de Criatividade e Planeamento</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CURRICULUM -->
+<section class="sec alt">
+  <div class="eyebrow">O programa · 60 horas, ao vivo</div>
+  <h2>De "ouvi falar de IA" a <span class="hl">usá-la todos os dias no trabalho.</span></h2>
+  <p class="lead">Quatro módulos práticos que vão do contexto à construção. Cada um deixa-te com uma capacidade nova.</p>
+  <div class="cu-mods">
+    <div class="cu-mod"><div class="num">01</div><div><div class="ti">Introdução à IA, Contextualização e Tendências de Mercado</div><div class="out"><b>Sais a saber:</b> onde a IA cria valor real no teu setor — e onde é só ruído.</div></div><div class="hrs">4h</div></div>
+    <div class="cu-mod"><div class="num">02</div><div><div class="ti">LLMs como Copiloto para Profissionais do Conhecimento</div><div class="out"><b>Sais a saber:</b> usar LLMs (ChatGPT, Claude, Gemini) como copiloto diário para escrever, analisar e decidir muito mais rápido.</div></div><div class="hrs">16h</div></div>
+    <div class="cu-mod"><div class="num">03</div><div><div class="ti">Geração de Imagens, Vídeo e Áudio com IA</div><div class="out"><b>Sais a saber:</b> produzir conteúdo visual e áudio com IA, do conceito ao resultado final.</div></div><div class="hrs">8h</div></div>
+    <div class="cu-mod flag"><div class="num">04</div><div><div class="ti">Automatização de Processos, Agentes de IA e Vibe Coding <span class="cu-adv">Nível avançado</span></div><div class="out"><b>Sais a saber:</b> automatizar tarefas e <b>construir os teus próprios agentes e fluxos de IA</b> — mesmo sem background técnico. É aqui que deixas de <em>usar</em> IA e começas a <em>construir</em> com ela.</div></div><div class="hrs">12h</div></div>
+  </div>
+  <div class="cu-band">
+    <div class="lab">No fim do curso, vais conseguir</div>
+    <div class="cu-grid">
+      <div class="cu-oc"><div class="ck">✓</div><div>Integrar IA no teu fluxo de trabalho e poupar horas por semana.</div></div>
+      <div class="cu-oc"><div class="ck">✓</div><div>Construir agentes e automações que trabalham por ti.</div></div>
+      <div class="cu-oc"><div class="ck">✓</div><div>Produzir conteúdo (texto, imagem, vídeo, áudio) com IA.</div></div>
+      <div class="cu-oc"><div class="ck">✓</div><div>Liderar a conversa de IA na tua equipa — com critério, não hype.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- STUDENT CREATIONS -->
+<section class="sec">
+  <div class="eyebrow">O que os alunos constroem</div>
+  <h2>Não sais com apontamentos — <span class="hl">sais com produtos que construíste.</span></h2>
+  <p class="lead">Ao longo do curso, cada aluno cria projetos reais com IA — de apps a agentes, de vídeo a voz.</p>
+  <div class="sc-grid">
+    <div class="sc-card"><div class="sc-thumb sc-t1">🖥️<span class="ph">[ screenshot do projeto ]</span></div><div class="sc-meta"><span class="sc-tool">Lovable</span><h3>App full-stack funcional</h3><p>Uma aplicação real construída do zero.</p></div></div>
+    <div class="sc-card"><div class="sc-thumb sc-t2">🔗<span class="ph">[ screenshot do fluxo ]</span></div><div class="sc-meta"><span class="sc-tool">n8n</span><h3>Agente de IA + automação</h3><p>Um workflow que executa tarefas sozinho.</p></div></div>
+    <div class="sc-card"><div class="sc-thumb sc-t3">🎬<span class="ph">[ frame do vídeo ]</span></div><div class="sc-meta"><span class="sc-tool">HeyGen</span><h3>Vídeo com avatar IA</h3><p>Conteúdo em vídeo gerado com IA.</p></div></div>
+    <div class="sc-card"><div class="sc-thumb sc-t4">🎨<span class="ph">[ imagem gerada ]</span></div><div class="sc-meta"><span class="sc-tool">Higgsfield</span><h3>Visuais de marca</h3><p>Direção de arte e imagens com IA.</p></div></div>
+    <div class="sc-card"><div class="sc-thumb sc-t5">🎙️<span class="ph">[ player de áudio ]</span></div><div class="sc-meta"><span class="sc-tool">ElevenLabs</span><h3>Voz e locução IA</h3><p>Narração e vozes para os projetos.</p></div></div>
+    <div class="sc-card"><div class="sc-thumb sc-t6">🎯<span class="ph">[ projeto final ]</span></div><div class="sc-meta"><span class="sc-tool">Projeto final</span><h3>Aplicado ao teu negócio</h3><p>O capstone que junta tudo.</p></div></div>
+  </div>
+  <div class="sc-banner"><div><div class="t">No fim, o teu portefólio tem <span>produtos</span> — não certificados.</div><div class="s">É isto que mostras numa entrevista ou a um cliente.</div></div><a href="#" class="btn">Quero construir →</a></div>
+</section>
+
+<!-- TOOLS -->
+<section class="sec alt">
+  <div class="eyebrow">O teu arsenal de IA</div>
+  <h2>Sais a dominar as ferramentas que o <span class="hl">mercado usa hoje.</span></h2>
+  <p class="lead">Das LLMs à geração de vídeo, áudio e automação — o stack que as equipas de topo já usam.</p>
+  <div class="tl-stat"><span class="n">€222/mês</span><span class="l">em ferramentas de IA de ponta — que vais aprender a rentabilizar</span></div>
+  <div class="tl-grid">
+    <div class="tl-logo"><img src="https://cdn.simpleicons.org/openai/333333" alt="ChatGPT" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="txt">ChatGPT</span></div>
+    <div class="tl-logo"><img src="https://cdn.simpleicons.org/claude/333333" alt="Claude" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="txt">Claude</span></div>
+    <div class="tl-logo"><img src="https://cdn.simpleicons.org/googlegemini/333333" alt="Gemini" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="txt">Gemini</span></div>
+    <div class="tl-logo"><img src="https://cdn.simpleicons.org/n8n/333333" alt="n8n" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="txt">n8n</span></div>
+    <div class="tl-logo"><img src="https://cdn.simpleicons.org/elevenlabs/333333" alt="ElevenLabs" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="txt">ElevenLabs</span></div>
+    <div class="tl-logo"><img src="https://cdn.simpleicons.org/lovable/333333" alt="Lovable" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="txt">Lovable</span></div>
+    <div class="tl-logo"><img src="https://cdn.simpleicons.org/heygen/333333" alt="HeyGen" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="txt">HeyGen</span></div>
+    <div class="tl-logo"><img src="https://cdn.simpleicons.org/higgsfield/333333" alt="Higgsfield" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="txt">Higgsfield</span></div>
+  </div>
+</section>
+
+<!-- CERTIFICATE -->
+<section class="sec">
+  <div class="ce-wrap">
+    <div class="eyebrow">O teu certificado</div>
+    <h2>Sais com <span class="hl">prova.</span> Não com um PDF qualquer.</h2>
+    <p class="lead" style="margin-left:auto;margin-right:auto;">Reconhecido, com o teu nome e a tua classificação — assinado pelo fundador e emitido por entidade formadora certificada.</p>
+    <div class="ce-frame"><div class="ce-ribbon">Nota 20/20</div><img src="<!--CERT-URL-->" alt="Certificado EDIT."></div>
+    <div class="ce-trust">
+      <div class="ce-t"><div class="h">Certificação DGERT</div><div class="s">Entidade formadora oficialmente certificada.</div></div>
+      <div class="ce-t"><div class="h">A tua classificação</div><div class="s">Os melhores saem com 20/20 no documento.</div></div>
+      <div class="ce-t"><div class="h">Assinado pelo fundador</div><div class="s">Não é um template genérico.</div></div>
+      <div class="ce-t"><div class="h">Partilhável no LinkedIn</div><div class="s">Prova real para o mercado, no dia em que terminas.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- NAIARA -->
+<section class="sec alt">
+  <div class="eyebrow" style="text-align:center;">Quem te vai formar</div>
+  <div class="nq-block">
+    <div class="nq-photo"><div class="ph">FOTO<br>NAIARA</div><div class="tag">A tua formadora</div></div>
+    <div>
+      <p class="nq-q"><span class="mark">&ldquo;</span>O meu objetivo não é ensinar-te a usar ferramentas — é <em>desafiar a tua forma de pensar</em>. A IA não veio substituir o teu valor; veio amplificá-lo. No fim, não levas só prompts: levas uma nova forma de trabalhar.<span class="mark">&rdquo;</span></p>
+      <div class="nq-sign"><div class="bar"></div><div><div class="nm">Naiara Back</div><div class="rl">Estrategista Digital · Especialista em Inteligência Artificial</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="sec fin">
+  <h2>A próxima turma arranca em <span class="hl">Setembro.</span></h2>
+  <p>Remote Learning · 60h · certificado DGERT · vagas limitadas por turma.</p>
+  <a href="#" class="btn">Quero o meu lugar →</a>
+</section>
+
+</body>
+</html>
