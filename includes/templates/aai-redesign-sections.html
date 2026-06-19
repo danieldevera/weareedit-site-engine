@@ -163,8 +163,20 @@
   #aai-rd .faq details[open] summary::after{content:"\2013";}
   #aai-rd .faq .a{font-size:15px;color:var(--grey);margin-top:12px;}
 
+  /* tools workflow */
+  #aai-rd .wf{display:flex;align-items:stretch;gap:0;margin-top:6px;}
+  #aai-rd .wf-stage{flex:1;background:#fff;border:1px solid var(--line);border-radius:8px;padding:22px 20px;}
+  #aai-rd .wf-arrow{display:flex;align-items:center;justify-content:center;color:var(--pink);font-size:24px;font-weight:800;padding:0 12px;flex:0 0 auto;}
+  #aai-rd .wf-stage .st{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);margin-bottom:4px;}
+  #aai-rd .wf-stage .sd{font-size:13px;color:var(--grey);margin-bottom:16px;}
+  #aai-rd .wf-logos{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  #aai-rd .wf-tool{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:13px 6px;text-align:center;min-height:74px;}
+  #aai-rd .wf-tool img{width:28px;height:28px;display:block;object-fit:contain;}
+  #aai-rd .wf-tool .nm{font-size:11.5px;font-weight:700;color:#333;line-height:1.15;}
+
   @media(max-width:780px){
     #aai-rd .ap-cards,#aai-rd .cu-grid,#aai-rd .nq-block,#aai-rd .tl-grid,#aai-rd .pq-grid,#aai-rd .inv-wrap{grid-template-columns:1fr;}
+    #aai-rd .wf{flex-direction:column;}#aai-rd .wf-arrow{transform:rotate(90deg);padding:10px 0;}
     #aai-rd .ap-stats,#aai-rd .ce-trust{grid-template-columns:1fr 1fr;}
     #aai-rd .sc-grid{grid-template-columns:1fr 1fr;}
     #aai-rd .cu-mod{grid-template-columns:40px 1fr;}#aai-rd .cu-mod .hrs{grid-column:2;justify-self:start;margin-top:8px;}
@@ -248,21 +260,44 @@
     </div>
   </section>
 
-  <!-- 5 · TOOLS -->
+  <!-- 5 · TOOLS (workflow) -->
   <section class="sec">
     <div class="eyebrow">O teu arsenal de IA</div>
-    <h2>Sais a dominar as ferramentas que o <span class="hl">mercado usa hoje.</span></h2>
-    <p class="lead">Das LLMs à geração de vídeo, áudio e automação — o stack que as equipas de topo já usam.</p>
-    <div class="tl-stat"><span class="n">€222/mês</span><span class="l">em ferramentas de IA de ponta — que vais aprender a rentabilizar</span></div>
-    <div class="tl-grid">
-      <div class="tl-logo"><img src="https://cdn.simpleicons.org/openai/333333" alt="ChatGPT" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="txt">ChatGPT</span></div>
-      <div class="tl-logo"><img src="https://cdn.simpleicons.org/claude/333333" alt="Claude" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="txt">Claude</span></div>
-      <div class="tl-logo"><img src="https://cdn.simpleicons.org/googlegemini/333333" alt="Gemini" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="txt">Gemini</span></div>
-      <div class="tl-logo"><img src="https://cdn.simpleicons.org/n8n/333333" alt="n8n" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="txt">n8n</span></div>
-      <div class="tl-logo"><img src="https://cdn.simpleicons.org/elevenlabs/333333" alt="ElevenLabs" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="txt">ElevenLabs</span></div>
-      <div class="tl-logo"><img src="https://cdn.simpleicons.org/lovable/333333" alt="Lovable" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="txt">Lovable</span></div>
-      <div class="tl-logo"><img src="https://cdn.simpleicons.org/heygen/333333" alt="HeyGen" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="txt">HeyGen</span></div>
-      <div class="tl-logo"><img src="https://cdn.simpleicons.org/higgsfield/333333" alt="Higgsfield" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="txt">Higgsfield</span></div>
+    <h2>O workflow que vais <span class="hl">dominar.</span></h2>
+    <p class="lead">Mais do que uma lista de apps: 12 ferramentas organizadas pela forma como as vais usar, do primeiro prompt ao produto final.</p>
+    <div class="wf">
+      <div class="wf-stage">
+        <div class="st">1 · Pensar &amp; pesquisar</div>
+        <div class="sd">LLMs como copiloto diário.</div>
+        <div class="wf-logos">
+          <div class="wf-tool"><img src="https://www.google.com/s2/favicons?domain=openai.com&sz=128" alt=""><span class="nm">ChatGPT</span></div>
+          <div class="wf-tool"><img src="https://www.google.com/s2/favicons?domain=claude.ai&sz=128" alt=""><span class="nm">Claude</span></div>
+          <div class="wf-tool"><img src="https://www.google.com/s2/favicons?domain=gemini.google.com&sz=128" alt=""><span class="nm">Gemini</span></div>
+          <div class="wf-tool"><img src="https://www.google.com/s2/favicons?domain=perplexity.ai&sz=128" alt=""><span class="nm">Perplexity</span></div>
+        </div>
+      </div>
+      <div class="wf-arrow">&rarr;</div>
+      <div class="wf-stage">
+        <div class="st">2 · Criar</div>
+        <div class="sd">Imagem, vídeo e voz com IA.</div>
+        <div class="wf-logos">
+          <div class="wf-tool"><img src="https://www.google.com/s2/favicons?domain=midjourney.com&sz=128" alt=""><span class="nm">Midjourney</span></div>
+          <div class="wf-tool"><img src="https://www.google.com/s2/favicons?domain=higgsfield.ai&sz=128" alt=""><span class="nm">Higgsfield</span></div>
+          <div class="wf-tool"><img src="https://www.google.com/s2/favicons?domain=heygen.com&sz=128" alt=""><span class="nm">HeyGen</span></div>
+          <div class="wf-tool"><img src="https://www.google.com/s2/favicons?domain=elevenlabs.io&sz=128" alt=""><span class="nm">ElevenLabs</span></div>
+        </div>
+      </div>
+      <div class="wf-arrow">&rarr;</div>
+      <div class="wf-stage">
+        <div class="st">3 · Construir &amp; automatizar</div>
+        <div class="sd">Apps, agentes e fluxos.</div>
+        <div class="wf-logos">
+          <div class="wf-tool"><img src="https://www.google.com/s2/favicons?domain=lovable.dev&sz=128" alt=""><span class="nm">Lovable</span></div>
+          <div class="wf-tool"><img src="https://www.google.com/s2/favicons?domain=n8n.io&sz=128" alt=""><span class="nm">n8n</span></div>
+          <div class="wf-tool"><img src="https://www.google.com/s2/favicons?domain=cursor.com&sz=128" alt=""><span class="nm">Cursor</span></div>
+          <div class="wf-tool"><img src="https://www.google.com/s2/favicons?domain=make.com&sz=128" alt=""><span class="nm">Make</span></div>
+        </div>
+      </div>
     </div>
   </section>
 
