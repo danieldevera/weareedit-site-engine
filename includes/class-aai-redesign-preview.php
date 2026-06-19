@@ -165,8 +165,21 @@ class EDIT_AAI_Redesign_Preview {
         if ( $fi !== false ) {
             $start = strrpos( substr( $top, 0, $fi ), '<div' );
             if ( $start !== false ) {
-                $info_bar = '<div id="aai-infobar">' . substr( $top, $start ) . '</div>';
-                $top      = substr( $top, 0, $start );
+                $chunk = substr( $top, $start );   // .formacao-info … then #info_bar …
+                $top   = substr( $top, 0, $start );
+                // Split: the dates (.formacao-info) go inside the boxed card; the
+                // action bar (#info_bar) stays full-width OUTSIDE the box, so the
+                // box hugs the dates (no empty reserved height / dark band) and
+                // the action bar can carry its own drop shadow.
+                $ib = strpos( $chunk, 'id="info_bar"' );
+                if ( $ib !== false ) {
+                    $ibs    = strrpos( substr( $chunk, 0, $ib ), '<div' );
+                    $dates  = $ibs !== false ? substr( $chunk, 0, $ibs ) : $chunk;
+                    $action = $ibs !== false ? substr( $chunk, $ibs ) : '';
+                    $info_bar = '<div id="aai-infobar">' . $dates . '</div>' . $action;
+                } else {
+                    $info_bar = '<div id="aai-infobar">' . $chunk . '</div>';
+                }
             }
         }
         // Self-balance $top: close any wrappers left open by dropping the old
