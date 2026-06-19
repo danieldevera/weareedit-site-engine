@@ -131,19 +131,8 @@ class EDIT_AAI_Redesign_Preview {
         $foot = strpos( $live, self::FOOTER_MARK );
         if ( $foot === false || $foot <= $cut ) return '';
 
-        $top     = substr( $live, 0, $cut );
-        $dropped = substr( $live, $cut, $foot - $cut );
-        $footer  = substr( $live, $foot );
-
-        // The dropped body region may close a wrapper <div> that was opened up
-        // in the hero/top region. Re-balance: append however many </div> the
-        // dropped region closed-but-didn't-open, so $top isn't left dangling.
-        $opens   = substr_count( $dropped, '<div' );
-        $closes  = substr_count( $dropped, '</div>' );
-        $missing = max( 0, $closes - $opens );
-        if ( $missing > 0 ) {
-            $top .= str_repeat( '</div>', $missing );
-        }
+        $top    = substr( $live, 0, $cut );
+        $footer = substr( $live, $foot );
 
         // Force noindex on the proxied <head> (defence-in-depth; the route is
         // already 404 to non-admins/crawlers).
@@ -176,6 +165,13 @@ class EDIT_AAI_Redesign_Preview {
                 $top      = substr( $top, 0, $start );
             }
         }
+        // Self-balance $top: close any wrappers left open by dropping the old
+        // hero + extracting the info bar (the theme's offset grid column), so
+        // our hero/sections inject at full body width — not inside a padded,
+        // offset column. This is what lets the hero sit edge-to-edge.
+        $open = substr_count( $top, '<div' ) - substr_count( $top, '</div>' );
+        if ( $open > 0 ) { $top .= str_repeat( '</div>', $open ); }
+
         $fragment = str_replace( '<!--INFO-BAR-->', $info_bar, $fragment );
 
         return $top . "\n<!-- AAI redesign sections (preview) -->\n" . $fragment . "\n" . $footer;
