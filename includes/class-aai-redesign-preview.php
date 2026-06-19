@@ -176,7 +176,20 @@ class EDIT_AAI_Redesign_Preview {
         $open = substr_count( $top, '<div' ) - substr_count( $top, '</div>' );
         if ( $open > 0 ) { $top .= str_repeat( '</div>', $open ); }
 
+        // Extract the real course program/curriculum section (.programa) for the
+        // <!--PROGRAMA--> slot. It lives in the dropped body, so search $live.
+        $programa = '';
+        $pp = strpos( $live, 'class="programa ' );
+        if ( $pp !== false ) {
+            $pstart = strrpos( substr( $live, 0, $pp ), '<section' );
+            $pend   = strpos( $live, '<section', $pp + 16 );
+            if ( $pstart !== false && $pend !== false && $pend > $pstart ) {
+                $programa = '<div class="aai-programa">' . substr( $live, $pstart, $pend - $pstart ) . '</div>';
+            }
+        }
+
         $fragment = str_replace( '<!--INFO-BAR-->', $info_bar, $fragment );
+        $fragment = str_replace( '<!--PROGRAMA-->', $programa, $fragment );
 
         return $top . "\n<!-- AAI redesign sections (preview) -->\n" . $fragment . "\n" . $footer;
     }
