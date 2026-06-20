@@ -68,19 +68,35 @@
   .aai-rd .btn{background:var(--ink);color:var(--yellow);font-weight:800;font-size:15px;border:none;border-radius:6px;padding:15px 30px;text-decoration:none;display:inline-block;}
   .aai-rd .alt{background:#fff;}
 
-  .aai-rd .ap-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:6px;background:#fff;overflow:hidden;margin-bottom:36px;}
-  .aai-rd .ap-stat{padding:22px 20px;border-right:1px solid var(--line);}.aai-rd .ap-stat:last-child{border-right:none;}
-  .aai-rd .ap-stat .n{font-size:30px;font-weight:800;line-height:1;}.aai-rd .ap-stat .n .u{font-size:16px;color:var(--grey);}
-  .aai-rd .ap-stat .n.pink{color:var(--pink);}.aai-rd .ap-stat .n.teal{color:var(--teal);}
-  .aai-rd .ap-stat .l{font-size:12.5px;color:var(--grey);margin-top:6px;}
-  .aai-rd .ap-cards{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
-  .aai-rd .ap-card{background:#fff;border:1px solid var(--line);border-radius:6px;padding:28px;position:relative;}
-  .aai-rd .ap-card .badge{position:absolute;top:0;right:24px;transform:translateY(-50%);background:var(--ink);color:var(--yellow);font-weight:800;font-size:13px;padding:7px 12px;border-radius:4px;}
-  .aai-rd .ap-card .q{font-family:Georgia,serif;font-size:18px;line-height:1.5;color:#1a1a1a;margin-bottom:20px;}
-  .aai-rd .ap-card .q::before{content:"\201C";color:var(--pink);font-weight:800;}.aai-rd .ap-card .q::after{content:"\201D";color:var(--pink);font-weight:800;}
-  .aai-rd .ap-who{display:flex;align-items:center;gap:12px;}
-  .aai-rd .ap-who .ph{width:46px;height:46px;border-radius:6px;background:var(--soft);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--grey);font-size:15px;}
-  .aai-rd .ap-who .nm{font-weight:800;font-size:14px;}.aai-rd .ap-who .rl{font-size:12.5px;color:var(--grey);}
+  /* 2 · ALUMNI PROOF — light-premium, edge-to-edge band (locked 2026-06-20) */
+  .aai-rd .ap2-band{background:#e3e1db;width:100vw;max-width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);}
+  .aai-rd .ap2-inner{max-width:1080px;margin:0 auto;padding:74px 28px;}
+  .aai-rd .ap2-h2{font-size:38px;font-weight:800;letter-spacing:-1px;line-height:1.12;margin-bottom:14px;color:var(--ink);}
+  .aai-rd .ap2-h2 .hl2{background:var(--yellow);-webkit-box-decoration-break:clone;box-decoration-break:clone;padding:1px 10px;border-radius:4px;}
+  .aai-rd .ap2-lead{font-size:17px;color:var(--grey);max-width:680px;margin-bottom:34px;}
+  .aai-rd .ap2-lead b{color:var(--ink);font-weight:700;}
+  .aai-rd .ap2-stats{display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border-radius:14px;box-shadow:0 16px 40px rgba(16,16,20,.10);padding:30px 0;margin-bottom:34px;}
+  .aai-rd .ap2-stat{padding:0 30px;border-right:1px solid #ededed;}.aai-rd .ap2-stat:last-child{border-right:none;}
+  .aai-rd .ap2-n{font-size:46px;font-weight:800;line-height:1;letter-spacing:-1.5px;}
+  .aai-rd .ap2-n .u{font-size:18px;font-weight:800;color:var(--grey);letter-spacing:0;}
+  .aai-rd .ap2-n.coral{color:#ec8172;}.aai-rd .ap2-n.blue{color:#0090eb;}.aai-rd .ap2-n.pink{color:var(--pink);}.aai-rd .ap2-n.teal{color:#33a08c;}
+  .aai-rd .ap2-ind{display:flex;align-items:center;gap:6px;margin:16px 0;height:18px;}
+  .aai-rd .ap2-bar{width:18px;height:6px;border-radius:3px;}
+  .aai-rd .ap2-dot{width:18px;height:18px;border-radius:50%;border:2px solid #fff;margin-right:-5px;}
+  .aai-rd .ap2-l{font-size:13px;color:var(--grey);}
+  .aai-rd .ap2-cards{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  .aai-rd .ap2-card{position:relative;background:#fff;border-radius:14px;box-shadow:0 22px 48px rgba(16,16,20,.13);padding:36px 36px 30px;overflow:hidden;}
+  .aai-rd .ap2-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#f92869,#ec8172);}
+  .aai-rd .ap2-qm{font-family:Georgia,serif;font-size:62px;line-height:.7;color:var(--pink);height:34px;}
+  .aai-rd .ap2-q{font-family:Georgia,serif;font-style:italic;font-size:20px;line-height:1.5;color:#1a1a1a;margin:6px 0 22px;}
+  .aai-rd .ap2-div{height:1px;background:#ededed;margin-bottom:20px;}
+  .aai-rd .ap2-who{display:flex;align-items:center;gap:14px;}
+  .aai-rd .ap2-ph{width:56px;height:56px;border-radius:50%;object-fit:cover;flex:none;background:#eee;}
+  .aai-rd .ap2-nm{font-weight:800;font-size:16px;display:flex;align-items:center;gap:8px;color:var(--ink);}
+  .aai-rd .ap2-nm a{display:inline-flex;}
+  .aai-rd .ap2-rl{font-size:13.5px;color:var(--grey);margin-top:3px;}
+  .aai-rd .ap2-badge{position:absolute;top:26px;right:30px;background:var(--ink);color:var(--yellow);font-weight:800;font-size:13px;padding:7px 12px;border-radius:6px;}
+  @media(max-width:760px){.aai-rd .ap2-inner{padding:48px 20px;}.aai-rd .ap2-h2{font-size:28px;}.aai-rd .ap2-stats{grid-template-columns:repeat(2,1fr);gap:24px 0;}.aai-rd .ap2-stat{padding:0 20px;}.aai-rd .ap2-cards{grid-template-columns:1fr;}}
 
   .aai-rd .cu-mods{display:flex;flex-direction:column;gap:14px;margin-bottom:36px;}
   .aai-rd .cu-mod{display:grid;grid-template-columns:54px 1fr auto;gap:22px;align-items:start;background:#fff;border:1px solid var(--line);border-radius:6px;padding:24px 26px;}
@@ -217,26 +233,49 @@
   </section>
 
   <!-- 2 · ALUMNI PROOF -->
-  <section class="sec alt">
+  <section class="ap2-band">
+   <div class="ap2-inner">
     <div class="eyebrow"><span class="secnum">03</span>Histórias de quem já fez o curso</div>
-    <h2>Não acreditas em nós? <span class="hl">Acredita em quem saiu daqui.</span></h2>
-    <p class="lead">Profissionais reais que terminaram o Advanced Artificial Intelligence e já estão a aplicar IA no dia a dia.</p>
-    <div class="ap-stats">
-      <div class="ap-stat"><div class="n">3<span class="u">ª</span></div><div class="l">edição do bootcamp</div></div>
-      <div class="ap-stat"><div class="n">38</div><div class="l">alumni já formados</div></div>
-      <div class="ap-stat"><div class="n pink">4,8<span class="u">/5</span></div><div class="l">classificação dos alumni</div></div>
-      <div class="ap-stat"><div class="n teal">5,0<span class="u">/5</span></div><div class="l">classificação dos tutores</div></div>
-    </div>
-    <div class="ap-cards">
-      <div class="ap-card"><div class="badge">20/20</div>
-        <p class="q">Uma experiência enriquecedora que me permitiu aprofundar o conhecimento em IA generativa, automação, agentes de IA e na aplicação prática de ferramentas de IA em contexto de negócio.</p>
-        <div class="ap-who"><img class="ph" src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/aai/alumni-martim-d.jpg" alt="Martim D." style="object-fit:cover;"><div><div class="nm">Martim D.<a href="https://www.linkedin.com/in/martim-afonso-d-9063b5b5/" target="_blank" rel="noopener" aria-label="LinkedIn de Martim D." style="display:inline-flex;vertical-align:middle;margin-left:7px;"><svg viewBox="0 0 24 24" width="15" height="15" fill="#0A66C2"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a></div><div class="rl">Sales Marketing Manager · MariaJoãoBahia</div></div></div>
+    <h2 class="ap2-h2">A prova são os nossos alumni.<br><span class="hl2">E o que saíram a construir.</span></h2>
+    <p class="ap2-lead">Pessoas que terminaram o <b>Advanced Artificial Intelligence</b> e já estão a aplicar IA no dia a dia nas empresas e projetos pessoais.</p>
+    <div class="ap2-stats">
+      <div class="ap2-stat">
+        <div class="ap2-n coral">3</div>
+        <div class="ap2-ind"><span class="ap2-bar" style="background:#ec8172"></span><span class="ap2-bar" style="background:#ec8172"></span><span class="ap2-bar" style="background:#ec8172"></span></div>
+        <div class="ap2-l">edições do bootcamp</div>
       </div>
-      <div class="ap-card">
-        <p class="q">O verdadeiro valor da IA não está em substituir pessoas, está em libertar tempo para o pensamento crítico, a criatividade e a capacidade de encontrar melhores soluções.</p>
-        <div class="ap-who"><img class="ph" src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/aai/alumni-diogo-canudo.jpg" alt="Diogo Canudo" style="object-fit:cover;"><div><div class="nm">Diogo Canudo<a href="https://www.linkedin.com/in/diogo-canudo/" target="_blank" rel="noopener" aria-label="LinkedIn de Diogo Canudo" style="display:inline-flex;vertical-align:middle;margin-left:7px;"><svg viewBox="0 0 24 24" width="15" height="15" fill="#0A66C2"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a></div><div class="rl">Gestor de Núcleo de Criatividade e Planeamento</div></div></div>
+      <div class="ap2-stat">
+        <div class="ap2-n blue">38</div>
+        <div class="ap2-ind"><span class="ap2-dot" style="background:#cfcdc9"></span><span class="ap2-dot" style="background:#cfcdc9"></span><span class="ap2-dot" style="background:#cfcdc9"></span><span class="ap2-dot" style="background:#cfcdc9"></span><span class="ap2-dot" style="background:#cfcdc9"></span><span class="ap2-dot" style="background:#0090eb"></span></div>
+        <div class="ap2-l">alumni já formados</div>
+      </div>
+      <div class="ap2-stat">
+        <div class="ap2-n pink">4,8<span class="u">/5</span></div>
+        <div class="ap2-ind"><span class="ap2-bar" style="background:#f92869"></span><span class="ap2-bar" style="background:#f92869"></span><span class="ap2-bar" style="background:#f92869"></span><span class="ap2-bar" style="background:#f92869"></span><span class="ap2-bar" style="background:#f92869;opacity:.26"></span></div>
+        <div class="ap2-l">classificação dos alumni</div>
+      </div>
+      <div class="ap2-stat">
+        <div class="ap2-n teal">5,0<span class="u">/5</span></div>
+        <div class="ap2-ind"><span class="ap2-bar" style="background:#33a08c"></span><span class="ap2-bar" style="background:#33a08c"></span><span class="ap2-bar" style="background:#33a08c"></span><span class="ap2-bar" style="background:#33a08c"></span><span class="ap2-bar" style="background:#33a08c"></span></div>
+        <div class="ap2-l">classificação dos tutores</div>
       </div>
     </div>
+    <div class="ap2-cards">
+      <article class="ap2-card">
+        <div class="ap2-badge">20/20</div>
+        <div class="ap2-qm">&#8220;</div>
+        <p class="ap2-q">Uma experiência enriquecedora que me permitiu aprofundar o conhecimento em IA generativa, automação, agentes de IA e na aplicação prática de ferramentas de IA em contexto de negócio.</p>
+        <div class="ap2-div"></div>
+        <div class="ap2-who"><img class="ap2-ph" src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/aai/alumni-martim-d.jpg" alt="Martim D."><div><div class="ap2-nm">Martim D.<a href="https://www.linkedin.com/in/martim-afonso-d-9063b5b5/" target="_blank" rel="noopener" aria-label="LinkedIn de Martim D."><svg viewBox="0 0 24 24" width="16" height="16" fill="#0A66C2"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a></div><div class="ap2-rl">Sales Marketing Manager · MariaJoãoBahia</div></div></div>
+      </article>
+      <article class="ap2-card">
+        <div class="ap2-qm">&#8220;</div>
+        <p class="ap2-q">O verdadeiro valor da IA não está em substituir pessoas, está em libertar tempo para o pensamento crítico, a criatividade e a capacidade de encontrar melhores soluções.</p>
+        <div class="ap2-div"></div>
+        <div class="ap2-who"><img class="ap2-ph" src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/aai/alumni-diogo-canudo.jpg" alt="Diogo Canudo"><div><div class="ap2-nm">Diogo Canudo<a href="https://www.linkedin.com/in/diogo-canudo/" target="_blank" rel="noopener" aria-label="LinkedIn de Diogo Canudo"><svg viewBox="0 0 24 24" width="16" height="16" fill="#0A66C2"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg></a></div><div class="ap2-rl">Gestor de Núcleo de Criatividade e Planeamento</div></div></div>
+      </article>
+    </div>
+   </div>
   </section>
 
   <!-- 3 · WHAT YOU WALK AWAY WITH (deliverables) — HIDDEN (block 04) -->
