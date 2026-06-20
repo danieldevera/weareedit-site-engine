@@ -339,7 +339,7 @@
 
 <!-- EDUCATION block: verbatim live course-details (Sobre / Visão Geral / O que inclui / DGERT / Mensalidades / Programa), inserted after block 07, standalone so it renders exactly like the live page -->
 <style>
-  .aai-education{position:relative;margin-top:48px;}
+  .aai-education{position:relative;width:100vw;max-width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);padding-top:48px;background:#f2f1ec !important;overflow:hidden;}
   .aai-education::before{content:"06";display:block;max-width:1080px;margin:0 auto;padding:0 28px 6px;font-weight:800;font-size:12px;letter-spacing:.06em;color:#c2c2c2;}
   /* the live intro box pulls itself up to overlap the (dark) section above it on
      the live page; here it lands on block 07 — reset that so it sits below */
@@ -350,10 +350,9 @@
   html body .aai-education,html body .aai-education section,html body .aai-education .bg-black,html body .aai-education .programa,html body .aai-education .programa.bg-black,html body .aai-education .bg-light-grey{background-color:#f2f1ec !important;background-image:none !important;}
   html body .aai-education .programa,html body .aai-education .programa.bg-black{margin-top:0 !important;}
   html body .aai-education .programa::before,html body .aai-education .programa::after{background:transparent !important;}
-  /* DIAGNOSTIC: tint the black band yellow + outline the two sub-sections to locate it */
-  html body div.aai-education section.programa.bg-black{background:#ffdd06 !important;background-color:#ffdd06 !important;outline:5px solid #ff0000 !important;}
-  html body div.aai-education section.programa.bg-black *[style*="#000"],html body div.aai-education section.programa.bg-black [class*="black"]{background:#ffdd06 !important;}
-  html body div.aai-education section.visao-geral{outline:5px solid #00c800 !important;}
+  /* the black band was .programa.bg-black; this is the specificity that actually
+     wins over the theme rule (div/section tags added) */
+  html body div.aai-education section.programa.bg-black{background:#f2f1ec !important;background-color:#f2f1ec !important;background-image:none !important;}
   .aai-education .programa .titulo-curso,.aai-education .programa h2,.aai-education .programa h3,.aai-education .programa h4,.aai-education .programa p,.aai-education .programa li,.aai-education .programa .text-muted,.aai-education .programa span,.aai-education .programa div{color:#16181d !important;}
   .aai-education .programa .text-muted{color:#6b6b6b !important;}
   /* keep all content columns at one consistent width, aligned with the rest of the page */
