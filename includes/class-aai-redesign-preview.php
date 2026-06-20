@@ -209,8 +209,25 @@ class EDIT_AAI_Redesign_Preview {
             }
         }
 
+        // Extract the full course-details "education" block verbatim: the
+        // .visao-geral section (Sobre / Visão Geral / O que inclui / DGERT /
+        // Mensalidades) through the end of .programa, up to the next section
+        // (.ceb-mini). Injected as-is (outside #aai-rd) so it renders exactly
+        // like the live page.
+        $education = '';
+        $ve = strpos( $live, 'class="visao-geral' );
+        $cm = strpos( $live, 'class="ceb-mini' );
+        if ( $ve !== false && $cm !== false && $cm > $ve ) {
+            $estart = strrpos( substr( $live, 0, $ve ), '<section' );
+            $eend   = strrpos( substr( $live, 0, $cm ), '<section' );
+            if ( $estart !== false && $eend !== false && $eend > $estart ) {
+                $education = '<div class="aai-education">' . substr( $live, $estart, $eend - $estart ) . '</div>';
+            }
+        }
+
         $fragment = str_replace( '<!--INFO-BAR-->', $info_bar, $fragment );
         $fragment = str_replace( '<!--PROGRAMA-->', $programa, $fragment );
+        $fragment = str_replace( '<!--EDUCATION-->', $education, $fragment );
 
         return $top . "\n<!-- AAI redesign sections (preview) -->\n" . $fragment . "\n" . $footer;
     }
