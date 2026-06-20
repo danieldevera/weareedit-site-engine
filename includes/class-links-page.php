@@ -55,7 +55,11 @@ class EDIT_Links_Page {
 			'social_whatsapp'  => 'https://wa.me/351936508449',
 			'social_site'      => 'https://weareedit.io/',
 			'social_linkedin'  => 'https://www.linkedin.com/school/edit-education/',
-			'author_photos'  => "Daniel Devera | {$base}links-author-daniel.png\nCarla Geraldes | {$base}links-author-carla.png",
+			'author_photos'  => "Daniel | {$base}links-author-daniel.png\nDaniel Devera | {$base}links-author-daniel.png\nCarla Geraldes | {$base}links-author-carla.png",
+			// Per-slug author override (the blog's WP post_author is "Daniel" on
+			// every post, so guest authors like Carla need correcting here).
+			// Format per line:  post-slug | Author Name | photo URL
+			'article_authors' => "do-prompt-ao-produto | Daniel Devera | {$base}links-author-daniel.png\nvinte-e-cinco-cabecas-dois-pensamentos-o-paradoxo-da-criatividade-aumentada | Carla Geraldes | {$base}links-author-carla.png\nos-agentes-nao-tiveram-infancia-branding-na-era-da-ia | Daniel Devera | {$base}links-author-daniel.png",
 		];
 	}
 
@@ -75,8 +79,29 @@ class EDIT_Links_Page {
 
 	/* ─────────────────────── Dynamic content ──────────────────────────── */
 
-	/** Latest 3 published blog posts; falls back to the locked editorial trio. */
+	/** Parse the per-slug author override: `slug | Name | photo URL` per line. */
+	private static function article_overrides( $raw ) {
+		$map = [];
+		foreach ( preg_split( '/\r\n|\r|\n/', (string) $raw ) as $line ) {
+			$parts = array_map( 'trim', explode( '|', $line ) );
+			if ( count( $parts ) >= 2 && $parts[0] !== '' ) {
+				$map[ $parts[0] ] = [ 'name' => $parts[1], 'photo' => $parts[2] ?? '' ];
+			}
+		}
+		return $map;
+	}
+
+	/**
+	 * Latest 3 published blog posts (title/URL), with author resolved from the
+	 * per-slug override first (WP post_author is unreliable on this blog), then
+	 * post_author + the photo map. Titles are tag-stripped (some post titles
+	 * contain inline HTML). Falls back to the locked editorial trio.
+	 */
 	private static function latest_articles() {
+		$s         = self::settings();
+		$photos    = self::author_photo_map( $s['author_photos'] );
+		$overrides = self::article_overrides( $s['article_authors'] );
+		$base      = WEAREDIT_SITE_ENGINE_URL . 'assets/';
 		$out = [];
 		if ( post_type_exists( 'blog' ) ) {
 			$q = new WP_Query( [
@@ -89,19 +114,28 @@ class EDIT_Links_Page {
 				'ignore_sticky_posts' => true,
 			] );
 			foreach ( $q->posts as $p ) {
+				$slug = $p->post_name;
+				if ( isset( $overrides[ $slug ] ) ) {
+					$author = $overrides[ $slug ]['name'];
+					$photo  = $overrides[ $slug ]['photo'];
+				} else {
+					$author = get_the_author_meta( 'display_name', $p->post_author ) ?: 'EDIT.';
+					$photo  = $photos[ $author ] ?? '';
+				}
 				$out[] = [
-					'title'  => get_the_title( $p ),
+					'title'  => wp_strip_all_tags( get_the_title( $p ) ),
 					'url'    => get_permalink( $p ),
-					'author' => get_the_author_meta( 'display_name', $p->post_author ) ?: 'EDIT.',
+					'author' => $author,
+					'photo'  => $photo,
 				];
 			}
 			wp_reset_postdata();
 		}
 		if ( empty( $out ) ) {
 			$out = [
-				[ 'title' => 'Do prompt ao produto: o design na era da IA', 'author' => 'Daniel Devera', 'url' => 'https://weareedit.io/blog/do-prompt-ao-produto/' ],
-				[ 'title' => 'O paradoxo da criatividade aumentada',         'author' => 'Carla Geraldes', 'url' => 'https://weareedit.io/blog/vinte-e-cinco-cabecas-dois-pensamentos-o-paradoxo-da-criatividade-aumentada/' ],
-				[ 'title' => 'Branding na era da IA',                        'author' => 'Daniel Devera', 'url' => 'https://weareedit.io/blog/os-agentes-nao-tiveram-infancia-branding-na-era-da-ia/' ],
+				[ 'title' => 'Do prompt ao produto: o design na era da IA', 'author' => 'Daniel Devera', 'photo' => $base . 'links-author-daniel.png', 'url' => 'https://weareedit.io/blog/do-prompt-ao-produto/' ],
+				[ 'title' => 'O paradoxo da criatividade aumentada',         'author' => 'Carla Geraldes', 'photo' => $base . 'links-author-carla.png',  'url' => 'https://weareedit.io/blog/vinte-e-cinco-cabecas-dois-pensamentos-o-paradoxo-da-criatividade-aumentada/' ],
+				[ 'title' => 'Branding na era da IA',                        'author' => 'Daniel Devera', 'photo' => $base . 'links-author-daniel.png', 'url' => 'https://weareedit.io/blog/os-agentes-nao-tiveram-infancia-branding-na-era-da-ia/' ],
 			];
 		}
 		return $out;
@@ -134,7 +168,6 @@ class EDIT_Links_Page {
 		$base      = WEAREDIT_SITE_ENGINE_URL . 'assets/';
 		$font_base = wp_make_link_relative( WEAREDIT_SITE_ENGINE_URL ) . 'assets/fonts/';
 		$home      = 'https://weareedit.io';
-		$photos    = self::author_photo_map( $s['author_photos'] );
 
 		$areas = [
 			[ 'label' => 'Marketing Digital',       'url' => $home . '/marketing-digital/',             'bg' => '#ffdd06', 'tx' => '#0a0a0a', 'class' => 'EDIT_Marketing_Digital_Page',     'fb' => 16 ],
@@ -213,8 +246,8 @@ a{color:inherit;text-decoration:none;}
 .eb{display:flex;align-items:center;gap:16px;background:var(--pink);border-radius:14px;padding:20px 22px;}
 .eb .ic{width:30px;height:30px;flex:none;}
 .eb .t{flex:1;}
-.eb .k{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;opacity:.9;}
-.eb .h{font-size:21px;font-weight:900;letter-spacing:-.01em;margin-top:2px;}
+.eb .k{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;opacity:.9;}
+.eb .h{display:block;font-size:21px;font-weight:900;letter-spacing:-.01em;margin-top:3px;}
 .eb .arr{font-size:24px;font-weight:700;}
 .eb-cd{display:flex;gap:8px;margin-top:12px;}
 .eb-cd .u{background:rgba(10,10,15,.28);border-radius:8px;padding:7px 0;min-width:52px;text-align:center;}
@@ -312,7 +345,7 @@ a{color:inherit;text-decoration:none;}
   <section class="sec">
     <p class="label">Artigos</p>
     <?php foreach ( self::latest_articles() as $art ) :
-        $photo = $photos[ $art['author'] ] ?? '';
+        $photo = $art['photo'] ?? '';
         $initial = mb_strtoupper( mb_substr( $art['author'], 0, 1 ) );
     ?>
     <a class="art" href="<?php echo esc_url( $art['url'] ); ?>" data-evt="Artigo: <?php echo esc_attr( $art['title'] ); ?>" data-section="artigos">
@@ -403,6 +436,7 @@ document.querySelectorAll('a[data-evt]').forEach(function(a){
 			'social_site'      => $url( 'social_site' ),
 			'social_linkedin'  => $url( 'social_linkedin' ),
 			'author_photos'    => sanitize_textarea_field( $input['author_photos'] ?? '' ),
+			'article_authors'  => sanitize_textarea_field( $input['article_authors'] ?? '' ),
 		];
 	}
 
@@ -443,6 +477,10 @@ document.querySelectorAll('a[data-evt]').forEach(function(a){
 					<tr><th scope="row">Mapa Nome | URL da foto</th><td>
 						<textarea name="<?php echo self::OPTION; ?>[author_photos]" rows="4" class="large-text" style="font-family:monospace;"><?php echo esc_textarea( $s['author_photos'] ); ?></textarea>
 						<p class="description">Uma linha por autor: <code>Nome do Autor | https://.../foto.png</code>. O nome tem de coincidir com o autor do post no WordPress. Sem foto, mostra a inicial.</p>
+					</td></tr>
+					<tr><th scope="row">Autor por artigo (override)</th><td>
+						<textarea name="<?php echo self::OPTION; ?>[article_authors]" rows="4" class="large-text" style="font-family:monospace;"><?php echo esc_textarea( $s['article_authors'] ); ?></textarea>
+						<p class="description">Os artigos puxam o autor do WordPress, mas no blog o autor está quase sempre como "Daniel". Para corrigir autores convidados (ex.: Carla), defina aqui por slug: <code>slug-do-artigo | Nome do Autor | https://.../foto.png</code> (uma linha por artigo).</p>
 					</td></tr>
 				</table>
 				<?php submit_button(); ?>
