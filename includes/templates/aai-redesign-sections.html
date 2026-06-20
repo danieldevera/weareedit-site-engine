@@ -350,6 +350,10 @@
   html body .aai-education,html body .aai-education section,html body .aai-education .bg-black,html body .aai-education .programa,html body .aai-education .programa.bg-black,html body .aai-education .bg-light-grey{background-color:#f2f1ec !important;background-image:none !important;}
   html body .aai-education .programa,html body .aai-education .programa.bg-black{margin-top:0 !important;}
   html body .aai-education .programa::before,html body .aai-education .programa::after{background:transparent !important;}
+  /* DIAGNOSTIC: tint the black band yellow + outline the two sub-sections to locate it */
+  html body div.aai-education section.programa.bg-black{background:#ffdd06 !important;background-color:#ffdd06 !important;outline:5px solid #ff0000 !important;}
+  html body div.aai-education section.programa.bg-black *[style*="#000"],html body div.aai-education section.programa.bg-black [class*="black"]{background:#ffdd06 !important;}
+  html body div.aai-education section.visao-geral{outline:5px solid #00c800 !important;}
   .aai-education .programa .titulo-curso,.aai-education .programa h2,.aai-education .programa h3,.aai-education .programa h4,.aai-education .programa p,.aai-education .programa li,.aai-education .programa .text-muted,.aai-education .programa span,.aai-education .programa div{color:#16181d !important;}
   .aai-education .programa .text-muted{color:#6b6b6b !important;}
   /* keep all content columns at one consistent width, aligned with the rest of the page */
