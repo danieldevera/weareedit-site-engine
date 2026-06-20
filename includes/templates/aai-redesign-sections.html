@@ -347,7 +347,9 @@
   /* drop the duplicate "Ferramentas de trabalho" logo block (covered by block 04) */
   .aai-education .ferramentas{display:none !important;}
   /* replace the dark/black sections + bands with the light theme grey */
-  .aai-education,.aai-education .bg-black,.aai-education .programa,.aai-education .bg-light-grey{background:#f2f1ec !important;}
+  html body .aai-education,html body .aai-education section,html body .aai-education .bg-black,html body .aai-education .programa,html body .aai-education .programa.bg-black,html body .aai-education .bg-light-grey{background-color:#f2f1ec !important;background-image:none !important;}
+  html body .aai-education .programa,html body .aai-education .programa.bg-black{margin-top:0 !important;}
+  html body .aai-education .programa::before,html body .aai-education .programa::after{background:transparent !important;}
   .aai-education .programa .titulo-curso,.aai-education .programa h2,.aai-education .programa h3,.aai-education .programa h4,.aai-education .programa p,.aai-education .programa li,.aai-education .programa .text-muted,.aai-education .programa span,.aai-education .programa div{color:#16181d !important;}
   .aai-education .programa .text-muted{color:#6b6b6b !important;}
   /* keep all content columns at one consistent width, aligned with the rest of the page */
