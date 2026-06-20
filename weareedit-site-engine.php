@@ -3,7 +3,7 @@
  * Plugin Name: * weareedit.io Site Engine
  * Plugin URI:  https://github.com/danieldevera/weareedit-site-engine
  * Description: Custom site engine for weareedit.io — SEO (meta tags, OG, schema.org, sitemap, hreflang), GEO/LLM optimization (llms.txt, AI crawler rules, Wikidata-linked Person/Organization schema), brand customization (hero typography, dot accents, CTA hover animations), Google Reviews aggregation, output-buffer HTML rewrites, virtual pages, WP Rocket cache integration, and one-time data fixes.
- * Version:     1.5.661
+ * Version:     1.5.662
  * Author:      Daniel Devera
  * License:     GPL-2.0+
  * Text Domain: weareedit-site-engine
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.661' );
+define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.662' );
 
 // Reset PHP opcache after plugin updates so new class bytecode is loaded
 // immediately instead of on the next opcache TTL. Mitigates v1.5.391/392
@@ -375,6 +375,7 @@ require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-title-spacing.php';
 require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-bfcache-rerender.php';
 require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-wellknown-ai.php';
 require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-criticas-page.php';
+require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-links-page.php';
 require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-wp-rocket-shield.php';
 require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-cf7-debug.php';
 require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-cf7-mail-tags.php';
@@ -439,6 +440,7 @@ function weareedit_site_engine_init() {
     EDIT_BFCache_Rerender::init();
     EDIT_Wellknown_AI::init();
     EDIT_Criticas_Page::init();
+    EDIT_Links_Page::init();
     EDIT_WP_Rocket_Shield::init();
     EDIT_CF7_Debug::init();
     EDIT_CF7_Mail_Tags::init();
