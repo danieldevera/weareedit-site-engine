@@ -73,6 +73,7 @@ class EDIT_Links_Page {
 			'social_whatsapp'  => 'https://wa.me/351936508449',
 			'social_site'      => 'https://weareedit.io/',
 			'social_linkedin'  => 'https://www.linkedin.com/school/edit-education/',
+			'social_facebook'  => 'https://www.facebook.com/EDIT.education',
 			'author_photos'  => "Daniel | {$base}links-author-daniel.png\nDaniel Devera | {$base}links-author-daniel.png\nCarla Geraldes | {$base}links-author-carla.png",
 			// Per-slug author override (the blog's WP post_author is "Daniel" on
 			// every post, so guest authors like Carla need correcting here).
@@ -200,11 +201,13 @@ class EDIT_Links_Page {
 		$wa = '<svg viewBox="0 0 24 24"><path fill="#fff" d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.47-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.88 1.21 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35M12.05 21.79h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.89 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.69 1.45h.01c6.55 0 11.89-5.34 11.89-11.89a11.82 11.82 0 0 0-3.48-8.42"/></svg>';
 		$gl = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 9h19M2.5 15h19M12 2.5c2.5 2.6 2.5 16.4 0 19M12 2.5c-2.5 2.6-2.5 16.4 0 19"/></svg>';
 		$li = '<svg viewBox="0 0 24 24"><path fill="#fff" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>';
+		$fb = '<svg viewBox="0 0 24 24"><path fill="#fff" d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.1 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.88v2.26h3.32l-.53 3.49h-2.79V24C19.61 23.1 24 18.1 24 12.07z"/></svg>';
 		$socials = [
 			[ 'label' => 'Instagram', 'url' => $s['social_instagram'], 'svg' => $ig ],
+			[ 'label' => 'Facebook',  'url' => $s['social_facebook'],  'svg' => $fb ],
 			[ 'label' => 'WhatsApp',  'url' => $s['social_whatsapp'],  'svg' => $wa ],
-			[ 'label' => 'Site',      'url' => $s['social_site'],      'svg' => $gl ],
 			[ 'label' => 'LinkedIn',  'url' => $s['social_linkedin'],  'svg' => $li ],
+			[ 'label' => 'Site',      'url' => $s['social_site'],      'svg' => $gl ],
 		];
 
 		$tag_svg    = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>';
@@ -244,14 +247,17 @@ html{-webkit-text-size-adjust:100%;}
 body{font-family:'SctoGroteskA',-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;background:var(--ink);color:#fff;line-height:1.5;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
 a{color:inherit;text-decoration:none;}
 .wrap{max-width:520px;margin:0 auto;padding-bottom:56px;}
-.hero{position:relative;text-align:center;padding:56px 24px 44px;background:
+.hero{position:relative;overflow:hidden;text-align:center;padding:56px 24px 44px;background:var(--ink);}
+.hero::before{content:'';position:absolute;inset:-30%;z-index:0;pointer-events:none;will-change:transform;background:
  radial-gradient(120% 90% at 0% 0%, #f92869 0%, transparent 55%),
  radial-gradient(120% 90% at 100% 0%, #ffdd06 0%, transparent 55%),
  radial-gradient(130% 100% at 0% 100%, #60c5b3 0%, transparent 55%),
- radial-gradient(130% 100% at 100% 100%, #0090eb 0%, transparent 55%),
- var(--ink);}
-.hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,10,15,.15) 0%,rgba(10,10,15,.55) 55%,var(--ink) 100%);pointer-events:none;}
+ radial-gradient(130% 100% at 100% 100%, #0090eb 0%, transparent 55%);
+ animation:meshDrift 22s ease-in-out infinite alternate;}
+.hero::after{content:'';position:absolute;inset:0;z-index:0;background:linear-gradient(to bottom,rgba(10,10,15,.15) 0%,rgba(10,10,15,.55) 55%,var(--ink) 100%);pointer-events:none;}
 .hero>*{position:relative;z-index:1;}
+@keyframes meshDrift{0%{transform:translate3d(0,0,0) scale(1.1);}50%{transform:translate3d(-5%,4%,0) scale(1.22);}100%{transform:translate3d(4%,-3%,0) scale(1.12);}}
+@media(prefers-reduced-motion:reduce){.hero::before{animation:none;}}
 .logo{width:150px;height:auto;display:block;margin:0 auto 16px;}
 .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--yellow);font-weight:700;margin-bottom:14px;}
 .bio{font-size:15px;font-weight:500;max-width:380px;margin:0 auto 20px;color:#fff;}
@@ -277,10 +283,11 @@ a{color:inherit;text-decoration:none;}
 .area .nm b{display:block;font-size:22px;font-weight:900;letter-spacing:-.02em;}
 .area .nm span{font-size:13px;font-weight:500;opacity:.72;}
 .area .arr{font-size:24px;font-weight:700;}
-.socials{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
-.soc{display:flex;flex-direction:column;align-items:center;gap:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.13);border-radius:12px;padding:18px 6px 14px;}
-.soc svg{width:26px;height:26px;}
-.soc span{font-size:12px;font-weight:600;}
+.socials{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;}
+.soc{display:flex;flex-direction:column;align-items:center;gap:9px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.13);border-radius:12px;padding:16px 3px 12px;}
+.soc svg{width:24px;height:24px;}
+.soc span{font-size:11px;font-weight:600;}
+@media(max-width:360px){.soc span{font-size:10px;}}
 .art{display:flex;align-items:center;gap:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:14px 18px;margin-bottom:14px;}
 .art .ph{width:56px;height:56px;border-radius:50%;object-fit:cover;flex:none;border:2px solid var(--pink);background:#161620;}
 .art .ph.init{display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;color:#fff;background:#23232e;}
@@ -454,6 +461,7 @@ document.querySelectorAll('a[data-evt]').forEach(function(a){
 			'social_whatsapp'  => $url( 'social_whatsapp' ),
 			'social_site'      => $url( 'social_site' ),
 			'social_linkedin'  => $url( 'social_linkedin' ),
+			'social_facebook'  => $url( 'social_facebook' ),
 			'author_photos'    => sanitize_textarea_field( $input['author_photos'] ?? '' ),
 			'article_authors'  => sanitize_textarea_field( $input['article_authors'] ?? '' ),
 		];
@@ -491,6 +499,7 @@ document.querySelectorAll('a[data-evt]').forEach(function(a){
 					<tr><th scope="row">WhatsApp</th><td><input type="url" name="<?php echo self::OPTION; ?>[social_whatsapp]" value="<?php echo $f('social_whatsapp'); ?>" class="regular-text"></td></tr>
 					<tr><th scope="row">Site</th><td><input type="url" name="<?php echo self::OPTION; ?>[social_site]" value="<?php echo $f('social_site'); ?>" class="regular-text"></td></tr>
 					<tr><th scope="row">LinkedIn</th><td><input type="url" name="<?php echo self::OPTION; ?>[social_linkedin]" value="<?php echo $f('social_linkedin'); ?>" class="regular-text"></td></tr>
+					<tr><th scope="row">Facebook</th><td><input type="url" name="<?php echo self::OPTION; ?>[social_facebook]" value="<?php echo $f('social_facebook'); ?>" class="regular-text"></td></tr>
 
 					<tr><th colspan="2"><h2 style="margin:18px 0 0;">Fotos de autor</h2></th></tr>
 					<tr><th scope="row">Mapa Nome | URL da foto</th><td>
