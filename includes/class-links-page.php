@@ -50,6 +50,7 @@ class EDIT_Links_Page {
 			'eb_eyebrow'     => 'Inscrições Setembro 2026',
 			'eb_headline'    => 'Early Bird · -15% de desconto',
 			'eb_url'         => 'https://weareedit.io/formacao/',
+			'eb_deadline'    => '2026-06-30T23:59:59',
 			'social_instagram' => 'https://www.instagram.com/edit.education/',
 			'social_whatsapp'  => 'https://wa.me/351936508449',
 			'social_site'      => 'https://weareedit.io/',
@@ -215,6 +216,10 @@ a{color:inherit;text-decoration:none;}
 .eb .k{font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;opacity:.9;}
 .eb .h{font-size:21px;font-weight:900;letter-spacing:-.01em;margin-top:2px;}
 .eb .arr{font-size:24px;font-weight:700;}
+.eb-cd{display:flex;gap:8px;margin-top:12px;}
+.eb-cd .u{background:rgba(10,10,15,.28);border-radius:8px;padding:7px 0;min-width:52px;text-align:center;}
+.eb-cd .u b{display:block;font-size:20px;font-weight:900;line-height:1;font-variant-numeric:tabular-nums;}
+.eb-cd .u span{font-size:9px;letter-spacing:.06em;text-transform:uppercase;opacity:.85;}
 .area{display:flex;align-items:center;gap:14px;border-radius:14px;padding:20px 24px;margin-bottom:12px;}
 .area .nm{flex:1;}
 .area .nm b{display:block;font-size:22px;font-weight:900;letter-spacing:-.02em;}
@@ -254,12 +259,30 @@ a{color:inherit;text-decoration:none;}
     <a class="cta" href="<?php echo esc_url( $s['cta_url'] ); ?>" data-evt="Ver todos os cursos" data-section="hero">Ver todos os cursos &rarr;</a>
   </header>
 
-  <?php if ( $s['eb_enabled'] === '1' && $s['eb_headline'] !== '' ) : ?>
+  <?php
+  $eb_ms = 0;
+  if ( $s['eb_deadline'] !== '' ) {
+    try { $eb_dt = new DateTime( $s['eb_deadline'], wp_timezone() ); $eb_ms = $eb_dt->getTimestamp() * 1000; }
+    catch ( Exception $e ) { $eb_ms = 0; }
+  }
+  $eb_live = ( $s['eb_enabled'] === '1' && $s['eb_headline'] !== '' && ( $eb_ms === 0 || $eb_ms > time() * 1000 ) );
+  if ( $eb_live ) : ?>
   <section class="sec">
     <p class="label">Em destaque</p>
     <a class="eb" href="<?php echo esc_url( $s['eb_url'] ); ?>" data-evt="Early Bird" data-section="destaque">
       <span class="ic"><?php echo $tag_svg; ?></span>
-      <span class="t"><span class="k"><?php echo esc_html( $s['eb_eyebrow'] ); ?></span><span class="h"><?php echo esc_html( $s['eb_headline'] ); ?></span></span>
+      <span class="t">
+        <span class="k"><?php echo esc_html( $s['eb_eyebrow'] ); ?></span>
+        <span class="h"><?php echo esc_html( $s['eb_headline'] ); ?></span>
+        <?php if ( $eb_ms > 0 ) : ?>
+        <span class="eb-cd" id="ebcd" data-target="<?php echo (int) $eb_ms; ?>">
+          <span class="u"><b id="cd-d">--</b><span>dias</span></span>
+          <span class="u"><b id="cd-h">--</b><span>horas</span></span>
+          <span class="u"><b id="cd-m">--</b><span>min</span></span>
+          <span class="u"><b id="cd-s">--</b><span>seg</span></span>
+        </span>
+        <?php endif; ?>
+      </span>
       <span class="arr">&rarr;</span>
     </a>
   </section>
@@ -322,6 +345,21 @@ document.querySelectorAll('a[data-evt]').forEach(function(a){
     }
   });
 });
+(function(){
+  var el=document.getElementById('ebcd'); if(!el) return;
+  var target=parseInt(el.getAttribute('data-target'),10);
+  var D=document.getElementById('cd-d'),H=document.getElementById('cd-h'),M=document.getElementById('cd-m'),S=document.getElementById('cd-s');
+  function p(n){return n<10?'0'+n:''+n;}
+  function tick(){
+    var diff=target-Date.now();
+    if(diff<=0){var sec=el.closest('.sec'); if(sec) sec.style.display='none'; return;}
+    D.textContent=Math.floor(diff/86400000);
+    H.textContent=p(Math.floor(diff%86400000/3600000));
+    M.textContent=p(Math.floor(diff%3600000/60000));
+    S.textContent=p(Math.floor(diff%60000/1000));
+  }
+  tick(); setInterval(tick,1000);
+})();
 </script>
 </body>
 </html><?php
@@ -359,6 +397,7 @@ document.querySelectorAll('a[data-evt]').forEach(function(a){
 			'eb_eyebrow'       => $txt( 'eb_eyebrow' ),
 			'eb_headline'      => $txt( 'eb_headline' ),
 			'eb_url'           => $url( 'eb_url' ),
+			'eb_deadline'      => sanitize_text_field( $input['eb_deadline'] ?? '' ),
 			'social_instagram' => $url( 'social_instagram' ),
 			'social_whatsapp'  => $url( 'social_whatsapp' ),
 			'social_site'      => $url( 'social_site' ),
@@ -392,6 +431,7 @@ document.querySelectorAll('a[data-evt]').forEach(function(a){
 					<tr><th scope="row">Eyebrow</th><td><input type="text" name="<?php echo self::OPTION; ?>[eb_eyebrow]" value="<?php echo $f('eb_eyebrow'); ?>" class="regular-text"></td></tr>
 					<tr><th scope="row">Headline</th><td><input type="text" name="<?php echo self::OPTION; ?>[eb_headline]" value="<?php echo $f('eb_headline'); ?>" class="large-text"></td></tr>
 					<tr><th scope="row">URL</th><td><input type="url" name="<?php echo self::OPTION; ?>[eb_url]" value="<?php echo $f('eb_url'); ?>" class="regular-text"></td></tr>
+					<tr><th scope="row">Deadline do countdown</th><td><input type="datetime-local" name="<?php echo self::OPTION; ?>[eb_deadline]" value="<?php echo esc_attr( substr( (string) $s['eb_deadline'], 0, 16 ) ); ?>" step="1"> <span class="description">Quando chega a zero, o destaque desaparece automaticamente. Deixe vazio para esconder o countdown.</span></td></tr>
 
 					<tr><th colspan="2"><h2 style="margin:18px 0 0;">Ligações (redes)</h2></th></tr>
 					<tr><th scope="row">Instagram</th><td><input type="url" name="<?php echo self::OPTION; ?>[social_instagram]" value="<?php echo $f('social_instagram'); ?>" class="regular-text"></td></tr>
