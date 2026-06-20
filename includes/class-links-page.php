@@ -200,7 +200,7 @@ class EDIT_Links_Page {
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>EDIT. — Links | Disruptive Digital Education</title>
 <meta name="description" content="Todos os links da EDIT.: cursos, áreas de formação, redes sociais e artigos. Lisboa · Porto · Remote.">
-<meta name="robots" content="noindex, follow">
+<meta name="robots" content="index, follow">
 <link rel="canonical" href="<?php echo esc_url( $home . '/links/' ); ?>">
 <meta property="og:title" content="EDIT. — Links">
 <meta property="og:description" content="Cursos, áreas, redes e artigos da EDIT. num só sítio.">
