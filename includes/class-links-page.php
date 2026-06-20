@@ -248,15 +248,19 @@ body{font-family:'SctoGroteskA',-apple-system,BlinkMacSystemFont,'Helvetica Neue
 a{color:inherit;text-decoration:none;}
 .wrap{max-width:520px;margin:0 auto;padding-bottom:56px;}
 .hero{position:relative;overflow:hidden;text-align:center;padding:56px 24px 44px;background:var(--ink);}
-.hero::before{content:'';position:absolute;inset:-30%;z-index:0;pointer-events:none;will-change:transform;background:
+.hero::before{content:'';position:absolute;inset:-55%;z-index:0;pointer-events:none;will-change:transform;background:
  radial-gradient(120% 90% at 0% 0%, #f92869 0%, transparent 55%),
  radial-gradient(120% 90% at 100% 0%, #ffdd06 0%, transparent 55%),
  radial-gradient(130% 100% at 0% 100%, #60c5b3 0%, transparent 55%),
  radial-gradient(130% 100% at 100% 100%, #0090eb 0%, transparent 55%);
- animation:meshDrift 22s ease-in-out infinite alternate;}
+ animation:meshDrift 14s ease-in-out infinite alternate;}
 .hero::after{content:'';position:absolute;inset:0;z-index:0;background:linear-gradient(to bottom,rgba(10,10,15,.15) 0%,rgba(10,10,15,.55) 55%,var(--ink) 100%);pointer-events:none;}
 .hero>*{position:relative;z-index:1;}
-@keyframes meshDrift{0%{transform:translate3d(0,0,0) scale(1.1);}50%{transform:translate3d(-5%,4%,0) scale(1.22);}100%{transform:translate3d(4%,-3%,0) scale(1.12);}}
+@keyframes meshDrift{
+ 0%{transform:translate3d(-14%,-10%,0) scale(1.15) rotate(0deg);}
+ 50%{transform:translate3d(14%,10%,0) scale(1.45) rotate(8deg);}
+ 100%{transform:translate3d(-10%,14%,0) scale(1.25) rotate(-6deg);}
+}
 @media(prefers-reduced-motion:reduce){.hero::before{animation:none;}}
 .logo{width:150px;height:auto;display:block;margin:0 auto 16px;}
 .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--yellow);font-weight:700;margin-bottom:14px;}
