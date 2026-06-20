@@ -149,6 +149,15 @@ class EDIT_Output_Buffer {
             // related-courses grid cards (inside .course-box).
             . 'body.single-formacao .special-labels-container{display:none !important;}'
             . 'body.single-formacao .course-box .special-labels-container{display:flex !important;}'
+            // Course "Estrutura da Formação" / programa section: every module block
+            // carries `wow animate__fadeInUp`, and WOW.js hides `.wow` elements
+            // (visibility:hidden) until scroll-revealed. On long course pages the
+            // lower modules often never trigger, so the program renders CUT OFF —
+            // only the first module shows, the rest stay invisible. Force the whole
+            // program section visible on all viewports (same safety-net the homepage
+            // hero already uses). Animation still plays via animate__fadeInUp where
+            // WOW fires; this just guarantees the content always lands visible.
+            . 'body.single-formacao .programa .wow,body.single-formacao .programa .wow.animate__fadeInUp,body.single-formacao .programa-curso .wow,body.single-formacao .programa2 .wow{visibility:visible !important;opacity:1 !important;transform:none !important;animation:none !important;animation-name:none !important;}'
             // Single blog post hero (.about-image): a wide ~2.23:1 editorial banner
             // rendered as a data-bg cover div. The theme gives the div a large
             // (near-square) height, so background-size:cover crops the wide banner
