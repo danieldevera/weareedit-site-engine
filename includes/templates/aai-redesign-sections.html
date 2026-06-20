@@ -202,7 +202,7 @@
   .aai-rd .nq2-photo{position:relative;}
   .aai-rd .nq2-photo img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;}
   .aai-rd .nq2-photo .tag{position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);background:var(--yellow);color:var(--ink);font-weight:800;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:7px 16px;border-radius:4px;white-space:nowrap;}
-  .aai-rd .nq2-q{font-family:Georgia,serif;font-size:26px;line-height:1.42;color:#1a1a1a;margin-bottom:26px;}
+  .aai-rd .nq2-q{font-family:Georgia,serif;font-size:26px;line-height:1.42;color:#1a1a1a;margin-bottom:26px;transition:opacity .55s ease;min-height:200px;}
   .aai-rd .nq2-q .mk{color:var(--pink);font-weight:800;}
   .aai-rd .nq2-q em{font-style:italic;background:linear-gradient(180deg,transparent 60%,rgba(96,197,179,.4) 60% 92%,transparent 92%);}
   .aai-rd .nq2-sign{display:flex;align-items:center;gap:14px;}
@@ -376,9 +376,10 @@
         <div class="tag">A tua formadora</div>
       </div>
       <div>
-        <p class="nq2-q"><span class="mk">&ldquo;</span>O meu objetivo não é ensinar-te a usar ferramentas. É <em>desafiar a tua forma de pensar</em>. A IA não veio substituir o teu valor: veio amplificá-lo. No fim, não levas só prompts. Levas uma nova forma de trabalhar.<span class="mk">&rdquo;</span></p>
+        <p class="nq2-q" id="naiaraQuote"><span class="mk">&ldquo;</span>O meu objetivo não é ensinar-te a usar ferramentas. É <em>desafiar a tua forma de pensar</em>. A IA não veio substituir o teu valor: veio amplificá-lo. No fim, não levas só prompts. Levas uma nova forma de trabalhar.<span class="mk">&rdquo;</span></p>
         <div class="nq2-sign"><div class="bar"></div><div><div class="nq2-nm">Naiara Back</div><div class="nq2-rl">Especialista em IA aplicada ao negócio · 18+ anos</div></div></div>
         <a class="nq2-cta" href="https://weareedit.io/equipa/naiara-back/" target="_blank" rel="noopener">Ver perfil completo <span aria-hidden="true">&rarr;</span></a>
+        <script>(function(){var el=document.getElementById('naiaraQuote');if(!el)return;var q=['<span class="mk">&ldquo;</span>O meu objetivo não é ensinar-te a usar ferramentas. É <em>desafiar a tua forma de pensar</em>. A IA não veio substituir o teu valor: veio amplificá-lo. No fim, não levas só prompts. Levas uma nova forma de trabalhar.<span class="mk">&rdquo;</span>','<span class="mk">&ldquo;</span>Ainda estamos no momento em que ser um <em>profissional híbrido</em>, capaz de unir estratégia humana e IA, é um diferencial. Daqui a uns meses, será apenas o básico.<span class="mk">&rdquo;</span>','<span class="mk">&ldquo;</span>Tal como o digital mudou a comunicação, a IA está a mudar a lógica do trabalho. Vivemos uma <em>nova alfabetização profissional</em>: aprender a pesquisar, criar e decidir com IA.<span class="mk">&rdquo;</span>','<span class="mk">&ldquo;</span>Antes, aprendíamos uma ferramenta e esse conhecimento acompanhava-nos durante anos. Agora, precisamos de <em>reaprender enquanto trabalhamos</em>.<span class="mk">&rdquo;</span>','<span class="mk">&ldquo;</span>O conhecimento profissional passou a ter um prazo de validade menor. A IA tornou a <em>aprendizagem contínua</em> uma competência de mercado.<span class="mk">&rdquo;</span>'];var i=0;el.style.transition='opacity .55s ease';setInterval(function(){el.style.opacity='0';setTimeout(function(){i=(i+1)%q.length;el.innerHTML=q[i];el.style.opacity='1';},560);},6500);})();</script>
       </div>
     </div>
   </section>
