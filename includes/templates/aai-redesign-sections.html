@@ -54,7 +54,7 @@
 
 <style>
   .aai-rd{--ink:#111;--grey:#5b5b5b;--line:#e8e8e8;--soft:#fafafa;--yellow:#ffdd06;--pink:#f92869;--teal:#60c5b3;--purple:#7a38b4;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:var(--ink);line-height:1.55;background:var(--soft);padding-top:30px;position:relative;z-index:7;}
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:var(--ink);line-height:1.55;background:var(--soft);padding-top:30px;position:relative;z-index:7;overflow-x:clip;}
   .aai-rd *{box-sizing:border-box;margin:0;padding:0;}
   .aai-rd .sec{max-width:1080px;margin:0 auto;padding:62px 28px;}
   .aai-rd .eyebrow{font-size:13px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--pink);margin-bottom:12px;}
@@ -66,6 +66,8 @@
   .aai-rd p{margin:0;}
   .aai-rd .lead{font-size:17px;color:var(--grey);max-width:640px;margin-bottom:36px;}
   .aai-rd .btn{background:var(--ink);color:var(--yellow);font-weight:800;font-size:15px;border:none;border-radius:6px;padding:15px 30px;text-decoration:none;display:inline-block;}
+  .aai-rd .sec.alt{position:relative;z-index:0;background:transparent;}
+  .aai-rd .sec.alt::before{content:"";position:absolute;top:0;bottom:0;left:calc(50% - 50vw);width:100vw;background:#fff;z-index:-1;}
   .aai-rd .alt{background:#fff;}
   .aai-rd .aai-div{max-width:1080px;margin:0 auto;height:1px;background:var(--line);}
 
