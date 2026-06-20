@@ -410,8 +410,35 @@
   .aai-education .programa .text-muted{color:#6b6b6b !important;}
   /* keep all content columns at one consistent width, aligned with the rest of the page */
   html body div.aai-education .container{max-width:1080px !important;width:auto !important;margin-left:auto !important;margin-right:auto !important;padding-left:28px !important;padding-right:28px !important;box-sizing:border-box !important;}
+  /* native education block — replaces the proxied/dark theme content (no dark bleed, controlled 3-col layout) */
+  .aai-rd .aai-edu{max-width:1080px;margin:150px auto 0;padding:0 28px;}
+  .aai-rd .aai-edu .eyebrow{margin-bottom:24px;}
+  .aai-rd .aai-edu-intro{font-size:26px;line-height:1.45;font-weight:600;letter-spacing:-.01em;color:var(--ink);max-width:960px;margin:0 0 56px;}
+  .aai-rd .aai-edu-intro b{color:var(--pink);font-weight:700;}
+  .aai-rd .aai-edu-div{height:1px;background:var(--line);margin:0 0 48px;}
+  .aai-rd .vg-grid{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:48px;align-items:start;}
+  .aai-rd .vg-h{font-size:30px;font-weight:800;line-height:1.18;letter-spacing:-.02em;color:var(--ink);margin:0;}
+  .aai-rd .vg-col h4{font-size:17px;font-weight:800;color:var(--ink);margin:0 0 14px;}
+  .aai-rd .vg-col p{font-size:15px;line-height:1.62;color:var(--grey);margin:0;}
+  @media(max-width:860px){.aai-rd .vg-grid{grid-template-columns:1fr;gap:36px;}.aai-rd .aai-edu{margin-top:90px;}.aai-rd .aai-edu-intro{font-size:22px;}}
 </style>
-<!--EDUCATION-->
+<section class="aai-edu">
+  <div class="eyebrow"><span class="secnum">06</span>Sobre o bootcamp online</div>
+  <p class="aai-edu-intro">O <b>Advanced Artificial Intelligence</b> é um bootcamp prático e intensivo, do básico ao profissional, para dominar os fundamentos e as aplicações avançadas de Inteligência Artificial (IA) no trabalho do dia a dia. Em 40 horas, vais aprender a usar LLMs como copilotos, gerar imagens, vídeos e áudio com IA e automatizar processos com n8n, agentes e vibe coding, sempre com foco em eficiência, ética e impacto real no negócio.</p>
+  <div class="aai-edu-div"></div>
+  <div class="eyebrow"><span class="secnum" style="visibility:hidden">06</span>Visão geral</div>
+  <div class="vg-grid">
+    <h3 class="vg-h">Destinado a profissionais de negócio, analistas/consultores e estudantes de dados que querem aplicar IA para acelerar e enriquecer as suas análises.</h3>
+    <div class="vg-col">
+      <h4>Objetivos</h4>
+      <p>O Bootcamp Advanced Artificial Intelligence tem como objetivo aprofundar o domínio das técnicas e ferramentas mais avançadas de IA, capacitando os participantes a desenvolver e implementar soluções inteligentes em contextos reais de negócio e produto digital.</p>
+    </div>
+    <div class="vg-col">
+      <h4>Perfil</h4>
+      <p>Profissionais do conhecimento em geral (gestão, operações, marketing, produto, vendas, RH, finanças, serviços, educação, saúde, setor público, etc.) e curiosos de tecnologia que queiram incorporar IA no trabalho quotidiano. Não é necessário saber programar; foco prático e acessível para iniciantes e intermédios em IA.</p>
+    </div>
+  </div>
+</section>
 
 <div class="aai-rd">
 
