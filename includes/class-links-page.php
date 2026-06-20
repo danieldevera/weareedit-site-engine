@@ -30,6 +30,24 @@ class EDIT_Links_Page {
 		add_action( 'template_redirect', [ __CLASS__, 'maybe_render' ], 1 );
 		add_action( 'admin_menu', [ __CLASS__, 'register_menu' ] );
 		add_action( 'admin_init', [ __CLASS__, 'register_settings' ] );
+		// /links is a virtual route, so it's absent from RankMath's sitemap.
+		// Serve a dedicated /links.xml sitemap + advertise it in robots.txt so
+		// search engines discover and index the page.
+		add_filter( 'robots_txt', [ __CLASS__, 'robots_sitemap' ], 100, 2 );
+	}
+
+	public static function robots_sitemap( $output, $public ) {
+		if ( ! $public ) return $output;
+		return rtrim( $output ) . "\nSitemap: https://weareedit.io/links.xml\n";
+	}
+
+	private static function render_sitemap() {
+		header( 'Content-Type: application/xml; charset=UTF-8' );
+		status_header( 200 );
+		echo '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+		echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+		echo '  <url><loc>https://weareedit.io/links/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>' . "\n";
+		echo '</urlset>';
 	}
 
 	private static function asset( $file ) {
@@ -157,8 +175,9 @@ class EDIT_Links_Page {
 
 	public static function maybe_render() {
 		if ( is_admin() ) return;
-		$path = trim( (string) parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ), '/' );
-		if ( strtolower( $path ) !== self::SLUG ) return;
+		$path = strtolower( trim( (string) parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ), '/' ) );
+		if ( $path === 'links.xml' ) { self::render_sitemap(); exit; }
+		if ( $path !== self::SLUG ) return;
 		self::render();
 		exit;
 	}
