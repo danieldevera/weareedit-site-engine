@@ -112,6 +112,27 @@ class EDIT_Course_Schema {
             ],
         ];
 
+        // AAI bootcamp: GEO/rich-result enrichment (teaches/about/level). Gated
+        // to this slug so other courses are unaffected.
+        if ( $post->post_name === 'bootcamp-advanced-artificial-intelligence' ) {
+            $schema['teaches'] = [
+                'Inteligência Artificial aplicada ao trabalho',
+                'Modelos de linguagem (LLMs) como copiloto',
+                'Engenharia de prompts e de contexto',
+                'Geração de imagem, vídeo e áudio com IA',
+                'Automação de processos com IA',
+                'Agentes de IA',
+                'Vibe coding (criar ferramentas sem programar)',
+            ];
+            $schema['about'] = [
+                [ '@type' => 'Thing', 'name' => 'Inteligência Artificial' ],
+                [ '@type' => 'Thing', 'name' => 'Automação' ],
+                [ '@type' => 'Thing', 'name' => 'Modelos de linguagem' ],
+                [ '@type' => 'Thing', 'name' => 'Agentes de IA' ],
+            ];
+            $schema['educationalLevel'] = 'Avançado';
+        }
+
         if ( $image ) $schema['image'] = $image;
 
         $hours = self::extract_duration_hours( $post );
@@ -378,7 +399,35 @@ class EDIT_Course_Schema {
      * whether the group wraps a repeater or just contains pergunta/resposta
      * pairs directly. Returns null if nothing usable is found.
      */
+    /**
+     * AAI bootcamp: emit the FAQPage from the 6 Q&As shown on the redesign
+     * (the visible FAQ must match the schema for Google). Overrides the ACF
+     * FAQ for this slug only; other courses keep the ACF-driven FAQ.
+     */
+    private static function aai_faq_schema(): array {
+        $qa = [
+            [ 'Preciso de saber programar?', 'Não. O bootcamp foi desenhado para profissionais sem background técnico, incluindo o módulo de agentes e automação, com abordagem no-code / vibe coding.' ],
+            [ 'O curso é ao vivo ou gravado?', '100% ao vivo, em remoto, com formadores. As sessões são interativas: constróis durante a aula, não vês só slides. Todas as sessões ficam gravadas na tua área pessoal no EDIT Alumni Portal.' ],
+            [ 'Em que horário decorre?', 'Segunda e Quarta, das 19h às 23h (pós-laboral), de 29 de Junho a 20 de Julho de 2026.' ],
+            [ 'Recebo certificado?', 'Sim. A EDIT. é entidade formadora certificada pela DGERT e emite certificado no final do curso.' ],
+            [ 'Como funciona o pagamento?', '€750 no total, em 2 prestações de €375. Fala connosco para condições e faturação.' ],
+            [ 'E se faltar a uma sessão?', 'Não perdes nada: todas as sessões ficam gravadas no EDIT Alumni Portal para reveres ao teu ritmo, e tens acompanhamento dos formadores entre sessões.' ],
+        ];
+        $entities = [];
+        foreach ( $qa as $row ) {
+            $entities[] = [
+                '@type'          => 'Question',
+                'name'           => $row[0],
+                'acceptedAnswer' => [ '@type' => 'Answer', 'text' => $row[1] ],
+            ];
+        }
+        return [ '@context' => 'https://schema.org', '@type' => 'FAQPage', 'mainEntity' => $entities ];
+    }
+
     private static function build_faq_schema( WP_Post $post ): ?array {
+        if ( $post->post_name === 'bootcamp-advanced-artificial-intelligence' ) {
+            return self::aai_faq_schema();
+        }
         if ( ! function_exists( 'get_field' ) ) return null;
 
         $candidates = [
