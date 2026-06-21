@@ -433,6 +433,11 @@
   .aai-programa-band .text-muted{color:#6b6b6b !important;}
   .aai-programa-band .ferramentas,.aai-programa-band .logos-grid{display:none !important;}
   html body.single-formacao .aai-programa-band .programa-curso,html body .aai-programa-band .programa-curso{margin-top:0 !important;}
+  /* default redesign eyebrow (pink + grey number) on the proxied/native labels */
+  .aai-vg .eyebrow,.aai-programa-band .eyebrow{font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#f92869;margin:0 0 16px;line-height:1.2;}
+  .aai-vg .eyebrow .secnum,.aai-programa-band .eyebrow .secnum{font-weight:800;font-size:12px;letter-spacing:.06em;color:#c2c2c2;margin-right:10px;}
+  html body .aai-programa-band h2.text-muted{font-size:12px !important;font-weight:700 !important;letter-spacing:.13em !important;text-transform:uppercase !important;color:#f92869 !important;margin:0 0 16px !important;}
+  html body .aai-programa-band h2.text-muted::before{content:"07";color:#c2c2c2;font-weight:800;letter-spacing:.06em;margin-right:10px;}
   html body div.aai-programa .container{max-width:1080px !important;width:auto !important;margin:0 auto !important;padding-left:0 !important;padding-right:0 !important;box-sizing:border-box !important;}
   /* exact live Visao Geral block (theme .visao-geral CSS styles it); offsets neutralized, on a light band */
   .aai-vg-band{background:#fafafa;width:100%;padding:56px 0 40px;display:flow-root;}
@@ -453,14 +458,14 @@
   <div class="container">
     <div class="row sobre-curso ">
       <div class="col-md-12 ">
-        <div class="text-muted reveal-text">SOBRE O BOOTCAMP ONLINE</div>
+        <div class="eyebrow"><span class="secnum">06</span>Sobre o bootcamp</div>
         <h3 class="wow">O <font color="#f92869"><b>Advanced Artificial Intelligence</b></font> é um bootcamp prático e intensivo, do básico ao profissional, para dominar os fundamentos e as aplicações avançadas de Inteligência Artificial (IA) no trabalho do dia a dia. Em 40 horas, vais aprender a usar LLMs como copilotos, gerar imagens/vídeos/áudio com IA e automatizar processos com n8n, agentes e vibe coding, sempre com foco em eficiência, ética e impacto real no negócio.</h3>
       </div>
     </div>
     <div class="mobileMargin">
       <div class="row">
         <div class="col-md-4 col-md-offset-0 col-sm-12 ">
-          <h2 class="text-muted" id="toc-visao-geral-aai">Visão geral</h2>
+          <div class="eyebrow">Visão geral</div>
         </div>
       </div>
       <div class="row">
@@ -486,7 +491,7 @@
 
   <!-- 8 · INVESTMENT + WHAT'S INCLUDED + RISK REVERSAL -->
   <section class="sec">
-    <div class="eyebrow"><span class="secnum">07</span>Investimento</div>
+    <div class="eyebrow"><span class="secnum">08</span>Investimento</div>
     <h2>40 horas, portefólio real e certificação, <span class="hl">por €375 ×2.</span></h2>
     <p class="lead">Tudo o que está incluído quando te inscreves no Advanced Artificial Intelligence.</p>
     <div class="inv-wrap">
@@ -509,7 +514,7 @@
 
   <!-- 9 · FAQ (objections) -->
   <section class="sec alt">
-    <div class="eyebrow"><span class="secnum">08</span>Perguntas frequentes</div>
+    <div class="eyebrow"><span class="secnum">09</span>Perguntas frequentes</div>
     <h2>Ainda com <span class="hl">dúvidas?</span></h2>
     <div class="faq">
       <details open><summary>Preciso de saber programar?</summary><div class="a">Não. O bootcamp foi desenhado para profissionais sem background técnico, incluindo o módulo de agentes e automação, com abordagem no-code / vibe coding.</div></details>
@@ -523,7 +528,7 @@
 
   <!-- 10 · FINAL CTA (urgency, date fixed) -->
   <section class="sec fin">
-    <div class="eyebrow" style="text-align:center;color:rgba(255,255,255,.5);"><span class="secnum">09</span></div>
+    <div class="eyebrow" style="text-align:center;color:rgba(255,255,255,.5);"><span class="secnum">10</span></div>
     <h2>A próxima turma <span class="hl">começa a 29 de Junho.</span></h2>
     <p>Remote Learning · 40h · pós-laboral (Seg + Qua, 19h às 23h) · certificado DGERT · vagas limitadas.</p>
     <a href="#" class="btn">Quero o meu lugar →</a>
