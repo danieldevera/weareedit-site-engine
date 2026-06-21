@@ -435,14 +435,16 @@
   html body div.aai-programa .container{max-width:1080px !important;width:auto !important;margin:0 auto !important;padding-left:0 !important;padding-right:0 !important;box-sizing:border-box !important;}
   /* exact live Visao Geral block (theme .visao-geral CSS styles it); offsets neutralized, on a light band */
   .aai-vg-band{background:#fafafa;width:100%;padding:56px 0 8px;}
-  .aai-vg .container{max-width:1080px;margin:0 auto;padding:0 28px;}
+  .aai-vg .container{max-width:1120px;margin:0 auto;padding:0 28px;}
   .aai-vg .sobre-curso{margin-top:0 !important;}
   html body.single-formacao .aai-vg .container{transform:none !important;}
   .aai-vg .wow{opacity:1 !important;visibility:visible !important;transform:none !important;animation:none !important;}
-  .aai-vg-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px;}
-  .aai-vg-grid .grid-item{padding:0 !important;}
+  @media(min-width:768px){.aai-vg .row .col-md-4{width:28% !important;}.aai-vg .row .col-md-8{width:72% !important;}}
+  .aai-vg-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;width:100%;}
+  .aai-vg-grid .grid-item{padding:0 !important;margin:0 !important;max-width:none !important;width:auto !important;min-width:0;}
+  .aai-vg .text-block-container,.aai-vg .text-block-container .grid,.aai-vg .text-block-container p,.aai-vg .text-block-container h3{max-width:none !important;width:auto !important;}
   .aai-vg .text-block-container:before,.aai-vg .text-block-container:not(:last-child):before{display:none !important;}
-  @media(max-width:860px){.aai-vg-grid{grid-template-columns:1fr;gap:28px;}}
+  @media(max-width:860px){.aai-vg-grid{grid-template-columns:1fr;gap:28px;}.aai-vg .row .col-md-4,.aai-vg .row .col-md-8{width:100% !important;}}
 </style>
 <div class="aai-vg-band">
 <section class="visao-geral aai-vg">
