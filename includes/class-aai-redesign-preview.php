@@ -184,6 +184,10 @@ class EDIT_AAI_Redesign_Preview {
                     // #info_bar lands right after it as a true sibling.
                     $dates  = self::balance_chunk( $dates );
                     $action = self::balance_chunk( $action );
+                    // PDF download is retired this cohort; add a Duração data column
+                    // to the dates box (before Investimento) to replace it.
+                    $duracao_col = '<div class="col-xs-4 col-sm-3 col-md-2"><label>Duração</label><div class="value">40 horas</div></div>';
+                    $dates = preg_replace( '/(<div class="col-[^"]*">\s*<label>INVESTIMENTO<\/label>)/', $duracao_col . '$1', $dates, 1 );
                     $info_bar = '<div id="aai-infobar">' . $dates . '</div>' . $action;
                 } else {
                     $info_bar = '<div id="aai-infobar">' . self::balance_chunk( $chunk ) . '</div>';
