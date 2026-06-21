@@ -233,6 +233,24 @@ class EDIT_AAI_Redesign_Preview {
         $fragment = str_replace( '<!--PROGRAMA-->', $programa, $fragment );
         $fragment = str_replace( '<!--EDUCATION-->', $education, $fragment );
 
+        // TEST: Alumni "colocados em" logo wall, injected beneath the footer
+        // newsletter block (just above the copyright bar). Self-contained
+        // markup + inline CSS from EDIT_Alumni_Employers::render().
+        if ( class_exists( 'EDIT_Alumni_Employers' ) ) {
+            $wall = EDIT_Alumni_Employers::render( 'wall' );
+            if ( $wall !== '' ) {
+                $band = '<div class="aai-alumni-wall" style="background:#f6f4ef;padding:72px 24px;">'
+                      . '<div style="max-width:1240px;margin:0 auto;">' . $wall . '</div></div>';
+                $cp = strpos( $footer, 'class="copyright"' );
+                if ( $cp !== false ) {
+                    $div = strrpos( substr( $footer, 0, $cp ), '<div' );
+                    if ( $div !== false ) {
+                        $footer = substr( $footer, 0, $div ) . $band . substr( $footer, $div );
+                    }
+                }
+            }
+        }
+
         return $top . "\n<!-- AAI redesign sections (preview) -->\n" . $fragment . "\n" . $footer;
     }
 
