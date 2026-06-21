@@ -75,9 +75,17 @@
   .aai-rd p{margin:0;}
   .aai-rd .lead{font-size:17px;color:var(--grey);max-width:640px;margin-bottom:36px;}
   .aai-rd .btn{background:var(--ink);color:var(--yellow);font-weight:800;font-size:15px;border:none;border-radius:6px;padding:15px 30px;text-decoration:none;display:inline-block;}
-/* Uniform default button: every yellow swipe CTA on the page renders identically (brand font, size, 6px radius, padding) with black rest label that flips to yellow on hover via the global swipe rule. */
-.aai-rd .btn.btn-yellow.swipe-cta{background:var(--yellow) !important;font-family:'SctoGroteskA',-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;font-weight:800;font-size:16px;line-height:1.2;padding:18px 32px;border-radius:6px;}
-.aai-rd .btn.btn-yellow.swipe-cta .swipe-label{color:#0a0a0a;font-family:inherit;}
+/* Uniform default button = site canonical (squared, brand font, 15px/600), with a SELF-CONTAINED swipe so it never depends on external CSS load order: layers off-screen at rest (yellow shows), sweep pink->teal->black on hover, label flips black->yellow. */
+.aai-rd .btn.btn-yellow.swipe-cta{position:relative;overflow:hidden;isolation:isolate;z-index:0;background:#ffdd06 !important;color:#0a0a0a;font-family:inherit;font-size:15px;font-weight:600;letter-spacing:-.005em;line-height:1.2;padding:18px 40px;border-radius:0 !important;display:inline-flex;align-items:center;justify-content:center;}
+.aai-rd .btn.btn-yellow.swipe-cta .swipe-layer{position:absolute;inset:-2px;pointer-events:none;will-change:transform;}
+.aai-rd .btn.btn-yellow.swipe-cta .swipe-pink{background:#f92869;transform:translateX(-105%);transition:transform .18s cubic-bezier(.33,1,.68,1);z-index:1;}
+.aai-rd .btn.btn-yellow.swipe-cta .swipe-teal{background:#60c5b3;transform:translateX(105%);transition:transform .22s cubic-bezier(.65,0,.35,1) .18s;z-index:2;}
+.aai-rd .btn.btn-yellow.swipe-cta .swipe-black{background:#000;transform:translateX(-105%);transition:transform .25s cubic-bezier(.33,1,.68,1) .40s;z-index:3;}
+.aai-rd .btn.btn-yellow.swipe-cta .swipe-label{position:relative;z-index:4;transition:color .18s ease .50s;color:#0a0a0a;font-family:inherit;font-weight:600;}
+.aai-rd .btn.btn-yellow.swipe-cta:hover .swipe-pink{transform:translateX(0);}
+.aai-rd .btn.btn-yellow.swipe-cta:hover .swipe-teal{transform:translateX(0);}
+.aai-rd .btn.btn-yellow.swipe-cta:hover .swipe-black{transform:translateX(0);}
+.aai-rd .btn.btn-yellow.swipe-cta:hover .swipe-label{color:#ffdd06 !important;}
   .aai-rd .sec.alt{position:relative;z-index:0;background:transparent;}
   .aai-rd .sec.alt::before{content:"";position:absolute;top:0;bottom:0;left:calc(50% - 50vw);width:100vw;background:#fff;z-index:-1;}
   .aai-rd .alt{background:#fff;}
