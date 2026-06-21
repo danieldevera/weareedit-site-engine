@@ -449,6 +449,14 @@
   /* mid-page EDIT. para Empresas banner (.ceb-mini self-styled by plugin) */
   .aai-ceb-band{background:#fafafa;width:100%;padding:88px 28px 64px;display:flow-root;}
   .aai-ceb-band .ceb-mini{max-width:1080px;margin:0 auto;}
+  /* Francisco admissions card (reuses .nq2) + hide the big proxied .course-contact (kept in DOM so its side-form trigger still fires) */
+  html body .course-contact{display:none !important;}
+  .aai-rd .fr-card .lead{margin-bottom:28px;}
+  .aai-rd .fr-card .nq2-sign{margin-bottom:24px;}
+  .aai-rd .fr-cta-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .aai-rd .fr-wa{display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;background:#25d366;border-radius:6px;text-decoration:none;transition:filter .18s ease;flex:0 0 auto;cursor:pointer;}
+  .aai-rd .fr-wa:hover{filter:brightness(.93);}
+  .aai-rd .fr-wa svg{width:26px;height:26px;display:block;}
   html body div.aai-programa .container{max-width:1080px !important;width:auto !important;margin:0 auto !important;padding-left:0 !important;padding-right:0 !important;box-sizing:border-box !important;}
   /* exact live Visao Geral block (theme .visao-geral CSS styles it); offsets neutralized, on a light band */
   .aai-vg-band{background:#fafafa;width:100%;padding:56px 0 40px;display:flow-root;}
@@ -553,6 +561,27 @@
       <details><summary>Recebo certificado?</summary><div class="a">Sim. A EDIT. é entidade formadora certificada pela DGERT e emite certificado no final do curso.</div></details>
       <details><summary>Como funciona o pagamento?</summary><div class="a">€750 no total, em 2 prestações de €375. Fala connosco para condições e faturação.</div></details>
       <details><summary>E se faltar a uma sessão?</summary><div class="a">Tens acompanhamento para não perderes o ritmo e podes esclarecer dúvidas com os formadores entre sessões.</div></details>
+    </div>
+  </section>
+
+  <!-- Francisco · admissions contact card (nq2-style) -->
+  <section class="sec">
+    <div class="eyebrow">Fala connosco</div>
+    <div class="nq2 fr-card">
+      <div class="nq2-photo">
+        <img src="https://weareedit.io/wp-content/uploads/2024/08/Francisco-1.jpg" alt="Francisco Freitas">
+        <div class="tag">Head of Admissions</div>
+      </div>
+      <div>
+        <h2>Ajudamos-te a escolher o <span class="hl">curso certo.</span></h2>
+        <p class="lead">Falas diretamente com quem trata das inscrições. Ajudamos-te a perceber se o Advanced Artificial Intelligence é o caminho certo para ti, sem compromisso.</p>
+        <div class="nq2-sign"><div class="bar"></div><div><div class="nq2-nm">Francisco Freitas</div><div class="nq2-rl">Head of Admissions</div></div></div>
+        <div class="fr-cta-row">
+          <a class="btn btn-bootcamp swipe-cta fr-cta-form" href="#"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Enviar mensagem</span></a>
+          <a class="fr-wa" href="https://wa.me/351936508449?text=Ol%C3%A1%21%20Tenho%20uma%20d%C3%BAvida%20sobre%20o%20Bootcamp%20Advanced%20Artificial%20Intelligence." target="_blank" rel="noopener" aria-label="Falar no WhatsApp"><svg viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg"><path d="M19.05 4.91A9.816 9.816 0 0 0 12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21h.004c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01zM12.04 20.15a8.23 8.23 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.51.11-.11.25-.29.37-.43.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42h-.48a.92.92 0 0 0-.66.31c-.23.25-.87.85-.87 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29z"/></svg></a>
+        </div>
+        <script>(function(){var t=document.querySelector('.aai-rd .fr-cta-form');if(!t)return;t.addEventListener('click',function(e){e.preventDefault();var b=document.querySelector('.course-contact .btn-bootcamp')||document.querySelector('.course-contact a.btn');if(b){b.click();}});})();</script>
+      </div>
     </div>
   </section>
 
