@@ -233,21 +233,31 @@ class EDIT_AAI_Redesign_Preview {
         $fragment = str_replace( '<!--PROGRAMA-->', $programa, $fragment );
         $fragment = str_replace( '<!--EDUCATION-->', $education, $fragment );
 
-        // TEST: Alumni "colocados em" logo wall, injected beneath the footer
-        // newsletter block (just above the copyright bar). Self-contained
-        // markup + inline CSS from EDIT_Alumni_Employers::render().
+        // The footer's "Mantém-te a par das novidades / Subscrever Newsletter"
+        // strip is obsolete (superseded by the in-page pink newsletter) — strip
+        // it from the proxied footer, from its <div> up to the copyright bar.
+        $fn = strpos( $footer, 'class="footer-newsletter"' );
+        if ( $fn !== false ) {
+            $fnd = strrpos( substr( $footer, 0, $fn ), '<div' );
+            $cp  = strpos( $footer, 'class="copyright"', $fn );
+            if ( $fnd !== false && $cp !== false ) {
+                $cpd = strrpos( substr( $footer, 0, $cp ), '<div' );
+                if ( $cpd !== false && $cpd > $fnd ) {
+                    $footer = substr( $footer, 0, $fnd ) . substr( $footer, $cpd );
+                }
+            }
+        }
+
+        // TEST: Alumni "colocados em" logo wall, placed directly ABOVE the pink
+        // newsletter section. The newsletter strip is JS-injected just before the
+        // <footer>; by sitting the wall immediately before <footer> too, the JS
+        // strip inserts AFTER the wall, so the wall lands over the newsletter.
         if ( class_exists( 'EDIT_Alumni_Employers' ) ) {
             $wall = EDIT_Alumni_Employers::render( 'wall' );
             if ( $wall !== '' ) {
                 $band = '<div class="aai-alumni-wall" style="background:#f6f4ef;padding:72px 24px;">'
                       . '<div style="max-width:1240px;margin:0 auto;">' . $wall . '</div></div>';
-                $cp = strpos( $footer, 'class="copyright"' );
-                if ( $cp !== false ) {
-                    $div = strrpos( substr( $footer, 0, $cp ), '<div' );
-                    if ( $div !== false ) {
-                        $footer = substr( $footer, 0, $div ) . $band . substr( $footer, $div );
-                    }
-                }
+                $footer = $band . $footer;
             }
         }
 
