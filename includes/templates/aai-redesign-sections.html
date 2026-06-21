@@ -432,18 +432,22 @@
   .aai-programa-band h2,.aai-programa-band h3,.aai-programa-band h4,.aai-programa-band p,.aai-programa-band li,.aai-programa-band span,.aai-programa-band div,.aai-programa-band .titulo-curso{color:#16181d !important;}
   .aai-programa-band .text-muted{color:#6b6b6b !important;}
   .aai-programa-band .ferramentas,.aai-programa-band .logos-grid{display:none !important;}
+  .aai-programa-band hr,.aai-programa-band hr.light-grey{display:none !important;}
   html body.single-formacao .aai-programa-band .programa-curso,html body .aai-programa-band .programa-curso{margin-top:0 !important;}
   /* close the timeline: active lines bridge node-to-node (keep them); the last module's
      plain .vertical-line (no .active) just dangles past the final node, so hide it */
   html body .aai-programa-band .vertical-line:not(.active){display:none !important;}
   html body .aai-programa-band .vertical-line.active{border-radius:3px !important;}
+  /* the last bridge (in the module right before the final one) overshoots past the
+     final node since nothing covers it - trim that one to land at the last donut */
+  html body .aai-programa-band .text-block-container:has(+ .text-block-container .vertical-line:not(.active)) .vertical-line.active{height:calc(100% + 30px) !important;}
   /* default redesign eyebrow (pink + grey number) on the proxied/native labels */
   .aai-vg .eyebrow,.aai-programa-band .eyebrow{font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#f92869;margin:0 0 16px;line-height:1.2;}
   .aai-vg .eyebrow .secnum,.aai-programa-band .eyebrow .secnum{font-weight:800;font-size:12px;letter-spacing:.06em;color:#c2c2c2;margin-right:10px;}
   html body .aai-programa-band h2.text-muted{font-size:12px !important;font-weight:700 !important;letter-spacing:.13em !important;text-transform:uppercase !important;color:#f92869 !important;margin:0 0 16px !important;}
   html body .aai-programa-band h2.text-muted::before{content:"07";color:#c2c2c2;font-weight:800;letter-spacing:.06em;margin-right:10px;}
   /* mid-page EDIT. para Empresas banner (.ceb-mini self-styled by plugin) */
-  .aai-ceb-band{background:#fafafa;width:100%;padding:40px 28px 64px;display:flow-root;}
+  .aai-ceb-band{background:#fafafa;width:100%;padding:88px 28px 64px;display:flow-root;}
   .aai-ceb-band .ceb-mini{max-width:1080px;margin:0 auto;}
   html body div.aai-programa .container{max-width:1080px !important;width:auto !important;margin:0 auto !important;padding-left:0 !important;padding-right:0 !important;box-sizing:border-box !important;}
   /* exact live Visao Geral block (theme .visao-geral CSS styles it); offsets neutralized, on a light band */
