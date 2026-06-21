@@ -450,6 +450,31 @@
   html body .aai-programa-band h2.text-muted::before{content:"07";color:#c2c2c2;font-weight:800;letter-spacing:.06em;margin-right:10px;}
   /* mid-page EDIT. para Empresas banner (.ceb-mini self-styled by plugin) */
   .aai-ceb-band{background:#fafafa;width:100%;padding:88px 28px 64px;display:flow-root;}
+  /* native curriculum (Mix B+C, Alumni-Proof-v3 design language) */
+  .aai-rd .aac-band{background:#e3e1db;width:100vw;max-width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);padding:84px 0;}
+  .aai-rd .aac-inner{max-width:1080px;margin:0 auto;padding:0 28px;}
+  .aai-rd .aac-inner .lead{margin-bottom:40px;}
+  .aai-rd .aac-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;}
+  .aai-rd .aac-card{position:relative;overflow:hidden;background:#fff;border-radius:16px;box-shadow:0 22px 48px rgba(16,16,20,.13);padding:26px;display:flex;flex-direction:column;gap:12px;}
+  .aai-rd .aac-top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+  .aai-rd .aac-num{font-size:42px;font-weight:900;letter-spacing:-1.5px;color:#d8d8d8;line-height:1;}
+  .aai-rd .aac-flag .aac-num{color:var(--pink);}
+  .aai-rd .aac-sess{font-size:13px;font-weight:800;color:var(--ink);background:var(--yellow);border-radius:4px;padding:5px 10px;white-space:nowrap;}
+  .aai-rd .aac-ti{font-size:17px;font-weight:800;line-height:1.22;color:var(--ink);}
+  .aai-rd .aac-tag{align-self:flex-start;font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--pink);border-radius:4px;padding:3px 8px;}
+  .aai-rd .aac-out{font-size:14px;line-height:1.48;color:var(--grey);}
+  .aai-rd .aac-out b{color:var(--ink);font-weight:700;}
+  .aai-rd .aac-accent{position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,#f92869,#ec8172);}
+  .aai-rd .aac-outcomes{position:relative;overflow:hidden;background:#fff;border-radius:16px;box-shadow:0 22px 48px rgba(16,16,20,.13);padding:40px;margin-bottom:18px;}
+  .aai-rd .aac-oc-eye{font-size:13px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--pink);margin-bottom:6px;}
+  .aai-rd .aac-oc-h{font-size:24px;font-weight:800;letter-spacing:-.5px;color:var(--ink);margin-bottom:24px;}
+  .aai-rd .aac-oc-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 30px;}
+  .aai-rd .aac-oc{display:flex;align-items:flex-start;gap:13px;font-size:16px;line-height:1.46;color:var(--ink);}
+  .aai-rd .aac-oc .ck{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:var(--pink);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;}
+  .aai-rd .aac-feat{position:relative;overflow:hidden;background:#fff;border-radius:16px;box-shadow:0 22px 48px rgba(16,16,20,.13);padding:24px 28px;margin-top:18px;}
+  .aai-rd .aac-feat .ft{font-size:17px;font-weight:800;color:var(--ink);margin-bottom:3px;}
+  .aai-rd .aac-feat .fs{font-size:14px;line-height:1.45;color:var(--grey);}
+  @media(max-width:860px){.aai-rd .aac-grid,.aai-rd .aac-oc-grid{grid-template-columns:1fr;}.aai-rd .aac-band{padding:56px 0;}.aai-rd .aac-outcomes{padding:30px;}}
   .aai-ceb-band .ceb-mini{max-width:1080px;margin:0 auto;}
   /* Francisco admissions card (reuses .nq2) + hide the big proxied .course-contact (kept in DOM so its side-form trigger still fires) */
   html body .course-contact{display:none !important;}
@@ -511,7 +536,52 @@
   </div>
 </section>
 </div>
-<div class="aai-programa-band"><!--PROGRAMA--></div>
+<div class="aai-rd">
+<section class="aac-band">
+  <div class="aac-inner">
+    <div class="eyebrow"><span class="secnum">07</span>O que levas contigo deste bootcamp</div>
+    <h2>De &ldquo;ouvi falar de IA&rdquo; a usá-la <span class="hl">todos os dias no trabalho.</span></h2>
+    <p class="lead">Quatro módulos práticos que vão do contexto à construção. Cada um deixa-te com uma capacidade nova, não com slides para arquivar.</p>
+    <div class="aac-grid">
+      <div class="aac-card">
+        <div class="aac-top"><span class="aac-num">01</span><span class="aac-sess">1 sessão</span></div>
+        <div class="aac-ti">Introdução à IA, Contextualização e Tendências de Mercado</div>
+        <div class="aac-out"><b>Sais a saber:</b> onde a IA cria valor real no teu setor, e onde é só ruído.</div>
+      </div>
+      <div class="aac-card">
+        <div class="aac-top"><span class="aac-num">02</span><span class="aac-sess">4 sessões</span></div>
+        <div class="aac-ti">LLMs como Copiloto para Profissionais do Conhecimento</div>
+        <div class="aac-out"><b>Sais a saber:</b> usar LLMs (ChatGPT, Claude, Gemini) como copiloto diário para escrever, analisar e decidir muito mais rápido.</div>
+      </div>
+      <div class="aac-card">
+        <div class="aac-top"><span class="aac-num">03</span><span class="aac-sess">2 sessões</span></div>
+        <div class="aac-ti">Geração de Imagens, Vídeo e Áudio com IA</div>
+        <div class="aac-out"><b>Sais a saber:</b> produzir conteúdo visual e áudio com IA, do conceito ao resultado final.</div>
+      </div>
+      <div class="aac-card aac-flag">
+        <div class="aac-accent"></div>
+        <div class="aac-top"><span class="aac-num">04</span><span class="aac-sess">3 sessões</span></div>
+        <div class="aac-ti">Automatização de Processos, Agentes de IA e Vibe Coding</div>
+        <span class="aac-tag">Nível avançado</span>
+        <div class="aac-out"><b>Sais a saber:</b> automatizar tarefas e construir os teus próprios agentes e fluxos de IA, mesmo sem background técnico.</div>
+      </div>
+    </div>
+    <div class="aac-outcomes">
+      <div class="aac-accent"></div>
+      <div class="aac-oc-eye">O que sais a saber fazer</div>
+      <div class="aac-oc-h">No fim do curso, vais conseguir:</div>
+      <div class="aac-oc-grid">
+        <div class="aac-oc"><span class="ck">&#10003;</span><div>Integrar IA no teu fluxo de trabalho e poupar horas por semana.</div></div>
+        <div class="aac-oc"><span class="ck">&#10003;</span><div>Construir agentes e automações que trabalham por ti.</div></div>
+        <div class="aac-oc"><span class="ck">&#10003;</span><div>Produzir conteúdo (texto, imagem, vídeo, áudio) com IA.</div></div>
+        <div class="aac-oc"><span class="ck">&#10003;</span><div>Liderar a conversa de IA na tua equipa, com critério, não hype.</div></div>
+      </div>
+    </div>
+    <div class="aac-feat"><div class="ft">Termina com um projeto final aplicado ao teu contexto real.</div><div class="fs">Não sais com um certificado, sais com algo construído. Avaliação que vale o teu 20/20.</div></div>
+    <div class="aac-feat"><div class="ft">Todas as sessões ficam gravadas.</div><div class="fs">Disponíveis na tua área pessoal dentro do EDIT Alumni Portal, para reveres ao teu ritmo sempre que precisares. Não perdes uma sessão, mesmo que faltes.</div></div>
+  </div>
+</section>
+</div>
 
 <div class="aai-ceb-band">
 <section class="ceb-mini">
