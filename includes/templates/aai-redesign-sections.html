@@ -75,6 +75,9 @@
   .aai-rd p{margin:0;}
   .aai-rd .lead{font-size:17px;color:var(--grey);max-width:640px;margin-bottom:36px;}
   .aai-rd .btn{background:var(--ink);color:var(--yellow);font-weight:800;font-size:15px;border:none;border-radius:6px;padding:15px 30px;text-decoration:none;display:inline-block;}
+/* Uniform default button: every yellow swipe CTA on the page renders identically (brand font, size, 6px radius, padding) with black rest label that flips to yellow on hover via the global swipe rule. */
+.aai-rd .btn.btn-yellow.swipe-cta{background:var(--yellow) !important;font-family:'SctoGroteskA',-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;font-weight:800;font-size:16px;line-height:1.2;padding:18px 32px;border-radius:6px;}
+.aai-rd .btn.btn-yellow.swipe-cta .swipe-label{color:#0a0a0a;font-family:inherit;}
   .aai-rd .sec.alt{position:relative;z-index:0;background:transparent;}
   .aai-rd .sec.alt::before{content:"";position:absolute;top:0;bottom:0;left:calc(50% - 50vw);width:100vw;background:#fff;z-index:-1;}
   .aai-rd .alt{background:#fff;}
@@ -725,7 +728,7 @@
     <div class="eyebrow" style="text-align:center;color:rgba(255,255,255,.5);"><span class="secnum">10</span></div>
     <h2>A próxima turma <span class="hl">começa a 29 de Junho.</span></h2>
     <p>Remote Learning · 40h · pós-laboral (Seg + Qua, 19h às 23h) · certificado DGERT · vagas limitadas.</p>
-    <a href="#" class="btn">Quero o meu lugar →</a>
+    <a href="#" class="btn btn-yellow swipe-cta"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Quero o meu lugar →</span></a>
   </section>
 
 </div>
