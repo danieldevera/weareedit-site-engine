@@ -455,6 +455,18 @@
   .aai-rd .aac-inner{max-width:1080px;margin:0 auto;padding:0 28px;}
   .aai-rd .aac-inner .lead{margin-bottom:40px;}
   .aai-rd .aac-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;}
+  .aai-rd .aac-mods{margin-bottom:18px;}
+  .aai-rd .aac-mod{position:relative;overflow:hidden;background:#fff;border-radius:16px;box-shadow:0 22px 48px rgba(16,16,20,.13);padding:32px 36px;margin-bottom:18px;}
+  .aai-rd .aac-mod-top{display:flex;align-items:center;gap:18px;margin-bottom:20px;flex-wrap:wrap;}
+  .aai-rd .aac-mod-num{font-size:40px;font-weight:900;letter-spacing:-1.5px;color:#d8d8d8;line-height:1;}
+  .aai-rd .aac-flag .aac-mod-num{color:var(--pink);}
+  .aai-rd .aac-mod-ti{font-size:21px;font-weight:800;letter-spacing:-.3px;line-height:1.2;color:var(--ink);flex:1 1 280px;}
+  .aai-rd .aac-mod-sess{font-size:13px;font-weight:800;color:var(--ink);background:var(--yellow);border-radius:4px;padding:5px 10px;white-space:nowrap;}
+  .aai-rd .aac-mod-tag{font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--pink);border-radius:4px;padding:3px 8px;}
+  .aai-rd .aac-topics{display:grid;grid-template-columns:1fr 1fr;gap:12px 40px;}
+  .aai-rd .aac-topic{display:flex;gap:10px;font-size:14.5px;line-height:1.45;color:var(--grey);}
+  .aai-rd .aac-topic .arr{color:var(--pink);font-weight:800;flex:0 0 auto;}
+  .aai-rd .aac-topic b{color:var(--ink);font-weight:700;}
   .aai-rd .aac-card{position:relative;overflow:hidden;background:#fff;border-radius:16px;box-shadow:0 22px 48px rgba(16,16,20,.13);padding:26px;display:flex;flex-direction:column;gap:12px;}
   .aai-rd .aac-top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
   .aai-rd .aac-num{font-size:42px;font-weight:900;letter-spacing:-1.5px;color:#d8d8d8;line-height:1;}
@@ -474,7 +486,7 @@
   .aai-rd .aac-feat{position:relative;overflow:hidden;background:#fff;border-radius:16px;box-shadow:0 22px 48px rgba(16,16,20,.13);padding:24px 28px;margin-top:18px;}
   .aai-rd .aac-feat .ft{font-size:17px;font-weight:800;color:var(--ink);margin-bottom:3px;}
   .aai-rd .aac-feat .fs{font-size:14px;line-height:1.45;color:var(--grey);}
-  @media(max-width:860px){.aai-rd .aac-grid,.aai-rd .aac-oc-grid{grid-template-columns:1fr;}.aai-rd .aac-band{padding:56px 0;}.aai-rd .aac-outcomes{padding:30px;}}
+  @media(max-width:860px){.aai-rd .aac-grid,.aai-rd .aac-oc-grid,.aai-rd .aac-topics{grid-template-columns:1fr;}.aai-rd .aac-band{padding:56px 0;}.aai-rd .aac-outcomes{padding:30px;}.aai-rd .aac-mod{padding:26px 22px;}}
   .aai-ceb-band .ceb-mini{max-width:1080px;margin:0 auto;}
   /* Francisco admissions card (reuses .nq2) + hide the big proxied .course-contact (kept in DOM so its side-form trigger still fires) */
   html body .course-contact{display:none !important;}
@@ -542,28 +554,53 @@
     <div class="eyebrow"><span class="secnum">07</span>O que levas contigo deste bootcamp</div>
     <h2>De &ldquo;ouvi falar de IA&rdquo; a usá-la <span class="hl">todos os dias no trabalho.</span></h2>
     <p class="lead">Quatro módulos práticos que vão do contexto à construção. Cada um deixa-te com uma capacidade nova, não com slides para arquivar.</p>
-    <div class="aac-grid">
-      <div class="aac-card">
-        <div class="aac-top"><span class="aac-num">01</span><span class="aac-sess">1 sessão</span></div>
-        <div class="aac-ti">Introdução à IA, Contextualização e Tendências de Mercado</div>
-        <div class="aac-out"><b>Sais a saber:</b> onde a IA cria valor real no teu setor, e onde é só ruído.</div>
+    <div class="aac-mods">
+      <div class="aac-mod">
+        <div class="aac-mod-top"><span class="aac-mod-num">01</span><span class="aac-mod-ti">Introdução à IA, Contextualização e Tendências de Mercado</span><span class="aac-mod-sess">1 sessão</span></div>
+        <div class="aac-topics">
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Impacto atual da IA na área de negócios</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Tendências de mudanças no mercado de trabalho</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Habilidades e competências essenciais na Era de IA</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Como implementar transformação de IA nas organizações</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Superando dificuldades e barreiras à adoção</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Preocupações éticas, de segurança, privacidade e ambientais</div>
+        </div>
       </div>
-      <div class="aac-card">
-        <div class="aac-top"><span class="aac-num">02</span><span class="aac-sess">4 sessões</span></div>
-        <div class="aac-ti">LLMs como Copiloto para Profissionais do Conhecimento</div>
-        <div class="aac-out"><b>Sais a saber:</b> usar LLMs (ChatGPT, Claude, Gemini) como copiloto diário para escrever, analisar e decidir muito mais rápido.</div>
+      <div class="aac-mod">
+        <div class="aac-mod-top"><span class="aac-mod-num">02</span><span class="aac-mod-ti">LLMs como Copiloto para Profissionais do Conhecimento</span><span class="aac-mod-sess">4 sessões</span></div>
+        <div class="aac-topics">
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Conceitos básicos de IA, Machine Learning, Deep Learning, NLPs, IA Generativa e LLMs</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Atributos da IA Generativa</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Engenharia de Prompt e de Contexto</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Como evitar alucinações e vícios das LLMs para resultados melhores</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Aprofundamento em todas as funcionalidades e tipos de modelos de LLMs</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Imersão em ChatGPT, Gemini, Claude, Perplexity, Grok, Deepseek, NotebookLM e Manus</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>LLMs na prática: ideação, análise de dados, planeamento, estratégia, decisão, escrita e revisão</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span><b>Projeto 1:</b> Criação de Agentes de IA Básicos</div>
+        </div>
       </div>
-      <div class="aac-card">
-        <div class="aac-top"><span class="aac-num">03</span><span class="aac-sess">2 sessões</span></div>
-        <div class="aac-ti">Geração de Imagens, Vídeo e Áudio com IA</div>
-        <div class="aac-out"><b>Sais a saber:</b> produzir conteúdo visual e áudio com IA, do conceito ao resultado final.</div>
+      <div class="aac-mod">
+        <div class="aac-mod-top"><span class="aac-mod-num">03</span><span class="aac-mod-ti">Geração de Imagens, Vídeo e Áudio com IA</span><span class="aac-mod-sess">2 sessões</span></div>
+        <div class="aac-topics">
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Introdução à IA para Audiovisual</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Engenharia de Prompt para Imagens e Vídeos</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Técnicas avançadas de IA para Audiovisual</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Ferramentas de Imagem: ChatGPT Image, Gemini Imagen + Nano Banana, Midjourney, Recraft</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Ferramentas de Vídeo: Veo 3, Kling 2.5, Runway Gen 3, Higgsfield, HeyGen, Descript, Seedance</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Ferramentas de Áudio: Suno v5, Eleven Labs, Minimax Audio</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span><b>Projeto 2:</b> Criação de Apresentações Profissionais com Gamma e Genspark</div>
+        </div>
       </div>
-      <div class="aac-card aac-flag">
+      <div class="aac-mod aac-flag">
         <div class="aac-accent"></div>
-        <div class="aac-top"><span class="aac-num">04</span><span class="aac-sess">3 sessões</span></div>
-        <div class="aac-ti">Automatização de Processos, Agentes de IA e Vibe Coding</div>
-        <span class="aac-tag">Nível avançado</span>
-        <div class="aac-out"><b>Sais a saber:</b> automatizar tarefas e construir os teus próprios agentes e fluxos de IA, mesmo sem background técnico.</div>
+        <div class="aac-mod-top"><span class="aac-mod-num">04</span><span class="aac-mod-ti">Automatização de Processos, Agentes de IA e Vibe Coding</span><span class="aac-mod-tag">Nível avançado</span><span class="aac-mod-sess">3 sessões</span></div>
+        <div class="aac-topics">
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Vibe Coding para desenvolver plataformas sem saber programar</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span><b>Projeto 3:</b> Desenvolvimento de ferramentas com ChatGPT + Lovable</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Fundamentos técnicos de automatização para eficiência de processos</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Imersão em n8n: do básico ao avançado para automatização no/low-code</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span><b>Projeto 4:</b> A tua primeira automação agêntica no n8n</div>
+        </div>
       </div>
     </div>
     <div class="aac-outcomes">
