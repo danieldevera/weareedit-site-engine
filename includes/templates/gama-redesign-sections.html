@@ -1,0 +1,774 @@
+<style>
+  /* self-contained brand font: the AAI page doesn't reliably get SctoGroteskA from the theme (esp. weight 700), so define it here for all weights */
+  @font-face{font-family:'SctoGroteskA';font-weight:100;font-style:normal;font-display:swap;src:url('https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/fonts/SctoGroteskA-Thin.woff2') format('woff2');}
+  @font-face{font-family:'SctoGroteskA';font-weight:300;font-style:normal;font-display:swap;src:url('https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/fonts/SctoGroteskA-Light.woff2') format('woff2');}
+  @font-face{font-family:'SctoGroteskA';font-weight:400;font-style:normal;font-display:swap;src:url('https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/fonts/SctoGroteskA-Regular.woff2') format('woff2');}
+  @font-face{font-family:'SctoGroteskA';font-weight:500;font-style:normal;font-display:swap;src:url('https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/fonts/SctoGroteskA-Medium.woff2') format('woff2');}
+  @font-face{font-family:'SctoGroteskA';font-weight:700;font-style:normal;font-display:swap;src:url('https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/fonts/SctoGroteskA-Bold.woff2') format('woff2');}
+  @font-face{font-family:'SctoGroteskA';font-weight:900;font-style:normal;font-display:swap;src:url('https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/fonts/SctoGroteskA-Black.woff2') format('woff2');}
+  /* hide proxied chrome we're replacing on the redesign preview */
+  .edit-breadcrumbs,.breadcrumb,#ez-toc-container{display:none !important;}
+  [id^="edit-promo"]{display:none !important;}
+
+  /* GAMA hero — dark brand gradient (pink TR + teal BL glow) */
+  #aai-hero{position:relative;overflow:hidden;background:radial-gradient(120% 120% at 82% -10%,#2a0a1e 0%,#0a0a0a 52%),radial-gradient(90% 90% at -10% 110%,#082019 0%,transparent 58%),#0a0a0a;color:#fff;padding:170px 0 290px;min-height:80vh;display:flex;align-items:flex-start;font-family:'SctoGroteskA',-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;width:100vw;max-width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);margin-top:-110px;}
+  #aai-hero *{box-sizing:border-box;}
+  #aai-hero .vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;transform:scale(1.22);z-index:0;pointer-events:none;filter:hue-rotate(55deg) saturate(1.15) brightness(.82);}
+  #aai-hero .veil{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(10,10,10,.55) 0%,rgba(10,10,10,.42) 45%,rgba(10,10,10,.3) 100%);}
+  #aai-hero .wrap{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:0 28px;width:100%;}
+  #aai-hero .dgert{display:inline-flex;align-items:center;gap:14px;text-decoration:none;color:#fff;margin-bottom:28px;transition:opacity .2s;}
+  #aai-hero .dgert:hover{opacity:.85;}
+  #aai-hero .dgert img{height:42px;width:auto;display:block;}
+  #aai-hero .dgert-txt{font-size:16px;font-weight:600;letter-spacing:-.01em;}
+  #aai-hero .dgert-arrow{font-size:14px;opacity:.7;}
+  #aai-hero .eyebrow{font-size:12px;letter-spacing:.2em;color:#ffdd06;font-weight:700;text-transform:uppercase;margin:0 0 22px;}
+  #aai-hero h1{font-size:clamp(52px,8vw,110px);line-height:1.0;font-weight:500;letter-spacing:-.02em;color:#fff;margin:0 0 30px;}
+  #aai-hero h1 .dp{color:#f92869;}
+  #aai-hero h1 .dt{color:#60c5b3;}
+  #aai-hero .lede{font-size:clamp(19px,1.6vw,25px);line-height:1.4;color:#ffdd06;font-weight:500;max-width:920px;margin:0 0 30px;}
+  #aai-hero .urg{display:inline-flex;align-items:center;gap:10px;font-size:14px;color:#fff;font-weight:500;margin:0 0 28px;}
+  #aai-hero .urg b{color:#ffdd06;font-weight:700;}
+  #aai-hero .dot{width:9px;height:9px;border-radius:50%;background:#60c5b3;box-shadow:0 0 0 0 rgba(96,197,179,.6);animation:aaipulse 2.2s infinite;}
+  @keyframes aaipulse{0%{box-shadow:0 0 0 0 rgba(96,197,179,.55)}70%{box-shadow:0 0 0 9px rgba(96,197,179,0)}100%{box-shadow:0 0 0 0 rgba(96,197,179,0)}}
+  #aai-hero .ctas{display:flex;flex-wrap:wrap;gap:16px;align-items:center;}
+  #aai-hero .btn{display:inline-block;font-weight:800;font-size:17px;text-decoration:none;padding:18px 34px;border-radius:6px;transition:.15s;border:0;cursor:pointer;}
+  #aai-hero .btn-y{background:#ffdd06;color:#0a0a0a;}
+  #aai-hero .btn-y:hover{transform:translateY(-1px);filter:brightness(1.03);}
+  #aai-hero .btn-g{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.55);}
+  #aai-hero .btn-g:hover{background:#fff;color:#0a0a0a;}
+  @media(max-width:760px){#aai-hero{min-height:auto;padding:92px 0 48px;margin-top:0 !important;}#aai-hero h1{font-size:40px;}#aai-hero .dgert img{height:34px;}}
+</style>
+
+<section id="aai-hero">
+  <div class="wrap">
+    <a class="dgert" href="https://www.dgert.gov.pt/entidades-formadoras-certificadas" target="_blank" rel="noopener noreferrer">
+      <img src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/augment/dgert-branco.png" alt="Entidade Formadora Certificada DGERT">
+      <span class="dgert-txt">Entidade Formadora Certificada</span>
+      <span class="dgert-arrow" aria-hidden="true">↗</span>
+    </a>
+    <p class="eyebrow"><span class="secnum">01</span>Bootcamp Online · Performance Marketing</p>
+    <h1>Google Ads &amp;<br>Meta Ads<span class="dp">.</span></h1>
+    <p class="lede">60 horas, ao vivo. Gere campanhas que vendem: Search, Shopping, Display, YouTube e Meta Ads, do primeiro euro ao ROAS positivo. Com Bruno Quintas.</p>
+  </div>
+</section>
+
+<style>html,body{overflow-x:clip !important;max-width:100% !important;}#aai-infobar{position:relative;z-index:30;max-width:1120px;margin:-250px auto 0;padding:40px 30px 26px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:10px;box-shadow:0 26px 64px rgba(0,0,0,.22);}#aai-infobar label{color:#f92869 !important;font-size:12px !important;font-weight:700 !important;letter-spacing:.13em !important;text-transform:uppercase !important;}#aai-infobar .value,#aai-infobar .value span{color:#111 !important;}.formacao-info-bar .cols.download-icon,.formacao-info-bar .download-icon{display:none !important;}#aai-infobar .toolTip .box,#aai-infobar .showToolTip .box{background:#111 !important;color:#fff !important;border-radius:6px !important;padding:9px 13px !important;font-size:12px !important;line-height:1.35 !important;box-shadow:0 10px 28px rgba(0,0,0,.28) !important;}#aai-infobar .toolTip svg path{fill:#f92869 !important;}#aai-infobar,#aai-infobar .formacao-info,#aai-infobar .formacao-info [class*="col-"],#aai-infobar .toolTip,#aai-infobar .showToolTip{overflow:visible !important;}#aai-infobar .formacao-info .value{display:inline-flex !important;align-items:center !important;justify-content:center !important;gap:7px !important;}#aai-infobar .toolTip{position:relative !important;display:inline-flex !important;align-items:center !important;vertical-align:middle !important;margin:0 !important;line-height:1 !important;}#aai-infobar .toolTip svg{position:static !important;top:auto !important;bottom:auto !important;right:auto !important;left:auto !important;margin:0 !important;width:18px !important;height:18px !important;display:block !important;flex:0 0 auto !important;}#aai-infobar .showToolTip{position:absolute !important;bottom:calc(100% + 9px) !important;left:50% !important;transform:translateX(-50%) !important;width:max-content !important;max-width:230px !important;z-index:60 !important;}html body #aai-infobar .toolTip .box,html body #aai-infobar .showToolTip .box{white-space:normal !important;width:auto !important;max-width:230px !important;left:auto !important;right:auto !important;margin-left:0 !important;}.formacao-info-bar .col-btn.swipe-cta{position:relative !important;overflow:hidden !important;background:#f92869 !important;}.formacao-info-bar .col-btn .swipe-label{position:relative;z-index:5;}.formacao-info-bar .col-btn:hover{filter:none !important;}#aai-infobar .formacao-info{margin:0 !important;padding:0 !important;}#aai-infobar .formacao-info .row{margin:0 !important;display:flex !important;flex-wrap:nowrap !important;}#aai-infobar .formacao-info [class*="col-"]{flex:1 1 0 !important;max-width:none !important;width:auto !important;}#aai-infobar .formacao-info .value,#aai-infobar .formacao-info .value *{white-space:nowrap !important;}#info_bar{padding:0 !important;margin:0 auto !important;background:transparent !important;max-width:1120px !important;width:100% !important;min-height:0 !important;height:auto !important;position:relative;z-index:30;display:block !important;}html body.single-formacao #info_bar.info_bar_container{margin-top:0 !important;padding:0 !important;min-height:0 !important;height:auto !important;display:block !important;}.formacao-info-bar{margin:0 auto !important;max-width:1120px !important;width:100% !important;display:flex !important;border-radius:10px !important;overflow:hidden !important;background:#fff !important;box-shadow:0 18px 40px rgba(0,0,0,.18) !important;}.formacao-info-bar > *{flex:1 1 0 !important;}.formacao-info-bar .cols{padding:26px 14px !important;margin:0 !important;display:flex !important;flex-direction:column !important;align-items:center !important;justify-content:center !important;min-height:0 !important;height:auto !important;}.formacao-info-bar .cols .inner{padding:0 !important;margin:0 !important;line-height:1.25 !important;}.formacao-info-bar .cols .drop-inner{display:none !important;}.formacao-info-bar .cols{cursor:pointer;transition:filter .18s ease;}.formacao-info-bar .cols:hover{filter:brightness(.95);}@media(max-width:760px){#aai-infobar{margin:-30px auto 0 !important;padding:18px 14px 12px !important;max-width:100% !important;width:auto !important;}#aai-infobar .formacao-info .row{flex-wrap:wrap !important;}#aai-infobar .formacao-info .row{display:grid !important;grid-template-columns:1fr 1fr !important;gap:22px 18px !important;align-items:start !important;}#aai-infobar .formacao-info [class*="col-"]{flex:none !important;max-width:none !important;width:auto !important;margin:0 !important;text-align:left !important;}#aai-infobar label{display:block !important;text-align:left !important;margin-bottom:5px !important;}#aai-infobar .formacao-info .value,#aai-infobar .formacao-info .value *{white-space:normal !important;font-size:15px !important;}#aai-infobar .formacao-info .value{justify-content:flex-start !important;}.formacao-info-bar{flex-wrap:wrap !important;max-width:100% !important;}#info_bar.sticky_info .formacao-info-bar{flex-wrap:nowrap !important;}}#info_bar.sticky_info{position:fixed !important;left:0 !important;right:0 !important;width:100% !important;max-width:100% !important;margin:0 !important;padding:0 !important;z-index:95 !important;background:transparent !important;}#info_bar.sticky_info .formacao-info-bar{max-width:100% !important;width:100% !important;margin:0 !important;background:#fff !important;border-radius:0 !important;box-shadow:0 12px 24px -6px rgba(0,0,0,.2) !important;}#info_bar.sticky_info .formacao-info-bar .cols{padding:0 16px !important;flex-direction:row !important;gap:8px;}#info_bar.sticky_info .formacao-info-bar .cols.col-btn{padding:0 !important;}</style>
+<!--INFO-BAR-->
+<script>(function(){function w(){var b=document.querySelector('.formacao-info-bar .col-btn');if(!b||b.querySelector('.swipe-label'))return;var t=(b.textContent||'').trim();b.classList.add('swipe-cta');b.innerHTML='<span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">'+t+'</span>';b.style.cursor='pointer';b.addEventListener('click',function(e){e.preventDefault();var p=document.getElementById('falaConnosco');if(p){p.classList.add('open');document.documentElement.classList.add('side-form-open');}else{var x=document.querySelector('.course-contact .contact-form a');if(x)x.click();}});}if(document.readyState!=='loading')w();else document.addEventListener('DOMContentLoaded',w);})();</script>
+<script>(function(){function init(){var bar=document.getElementById('info_bar');if(!bar)return;var s=document.createElement('div');s.setAttribute('aria-hidden','true');s.style.cssText='height:0;width:100%;margin:0;padding:0;';bar.parentNode.insertBefore(s,bar);function getHB(){var h=document.querySelector('.headerDesktop');if(!h)return 0;return Math.max(0,Math.round(h.getBoundingClientRect().bottom));}function f(){var hH=getHB();var stick=s.getBoundingClientRect().top<=hH+1;if(stick){s.style.height=bar.offsetHeight+'px';bar.style.setProperty('top',hH+'px','important');bar.classList.add('sticky_info');}else{bar.classList.remove('sticky_info');bar.style.removeProperty('top');s.style.height='0';}}window.addEventListener('scroll',f,{passive:true});window.addEventListener('resize',f);f();}if(document.readyState!=='loading')init();else document.addEventListener('DOMContentLoaded',init);})();</script>
+
+<style>
+  .aai-rd{--ink:#111;--grey:#5b5b5b;--line:#e8e8e8;--soft:#fafafa;--yellow:#ffdd06;--pink:#f92869;--teal:#60c5b3;--purple:#7a38b4;
+    font-family:'SctoGroteskA',-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:var(--ink);line-height:1.55;background:var(--soft);padding-top:30px;position:relative;z-index:7;overflow-x:clip;}
+  .aai-rd *{box-sizing:border-box;margin:0;padding:0;}
+  .aai-rd .sec{max-width:1080px;margin:0 auto;padding:62px 28px;}
+  .aai-rd .eyebrow{font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--pink);margin-bottom:12px;}
+  #aai-hero .eyebrow .secnum,.aai-rd .secnum{font-weight:800;font-size:12px;letter-spacing:.06em;color:#c2c2c2;margin-right:10px;}
+  .aai-rd .fin .secnum{color:rgba(255,255,255,.5);}
+  .aai-rd h2{font-size:32px;font-weight:700;letter-spacing:-1px;line-height:1.12;margin-bottom:10px;color:var(--ink);}
+  .aai-rd h2 .hl{background:linear-gradient(180deg,transparent 62%,var(--yellow) 62% 92%,transparent 92%);}
+.aai-rd .mh-y{background:linear-gradient(180deg,transparent 62%,var(--yellow) 62% 92%,transparent 92%);}
+.aai-rd .mh-p{background:linear-gradient(180deg,transparent 62%,var(--pink) 62% 92%,transparent 92%);}
+  .aai-rd h3{color:var(--ink);}
+  .aai-rd p{margin:0;}
+  .aai-rd .lead{font-size:17px;color:var(--grey);max-width:640px;margin-bottom:36px;}
+  .aai-rd .btn{background:var(--ink);color:var(--yellow);font-weight:800;font-size:15px;border:none;border-radius:6px;padding:15px 30px;text-decoration:none;display:inline-block;}
+/* Uniform default button = site canonical (squared, brand font, 15px/600), with a SELF-CONTAINED swipe so it never depends on external CSS load order: layers off-screen at rest (yellow shows), sweep pink->teal->black on hover, label flips black->yellow. */
+.aai-rd .btn.btn-yellow.swipe-cta{position:relative;overflow:hidden;isolation:isolate;z-index:0;background:#ffdd06 !important;color:#0a0a0a;font-family:inherit;font-size:15px;font-weight:600;letter-spacing:-.005em;line-height:1.2;padding:18px 40px;border-radius:0 !important;display:inline-flex;align-items:center;justify-content:center;}
+.aai-rd .btn.btn-yellow.swipe-cta .swipe-layer{position:absolute;inset:-2px;pointer-events:none;will-change:transform;}
+.aai-rd .btn.btn-yellow.swipe-cta .swipe-pink{background:#f92869;transform:translateX(-105%);transition:transform .18s cubic-bezier(.33,1,.68,1);z-index:1;}
+.aai-rd .btn.btn-yellow.swipe-cta .swipe-teal{background:#60c5b3;transform:translateX(105%);transition:transform .22s cubic-bezier(.65,0,.35,1) .18s;z-index:2;}
+.aai-rd .btn.btn-yellow.swipe-cta .swipe-black{background:#000;transform:translateX(-105%);transition:transform .25s cubic-bezier(.33,1,.68,1) .40s;z-index:3;}
+.aai-rd .btn.btn-yellow.swipe-cta .swipe-label{position:relative;z-index:4;transition:color .18s ease .50s;color:#0a0a0a;font-family:inherit;font-weight:600;}
+.aai-rd .btn.btn-yellow.swipe-cta:hover .swipe-pink{transform:translateX(0);}
+.aai-rd .btn.btn-yellow.swipe-cta:hover .swipe-teal{transform:translateX(0);}
+.aai-rd .btn.btn-yellow.swipe-cta:hover .swipe-black{transform:translateX(0);}
+.aai-rd .btn.btn-yellow.swipe-cta:hover .swipe-label{color:#ffdd06 !important;}
+  .aai-rd .sec.alt{position:relative;z-index:0;background:transparent;}
+  .aai-rd .sec.alt::before{content:"";position:absolute;top:0;bottom:0;left:calc(50% - 50vw);width:100vw;background:#fff;z-index:-1;}
+  .aai-rd .alt{background:#fff;}
+  .aai-rd .aai-div{max-width:1080px;margin:0 auto;height:1px;background:var(--line);}
+
+  /* 2 · ALUMNI PROOF — light-premium, edge-to-edge band (locked 2026-06-20) */
+  .aai-rd .ap2-band{background:#e3e1db;width:100vw;max-width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);}
+  .aai-rd .ap2-inner{max-width:1080px;margin:0 auto;padding:74px 28px;}
+  .aai-rd .ap2-h2{font-size:32px;font-weight:700;letter-spacing:-1px;line-height:1.14;margin-bottom:14px;color:var(--ink);}
+  .aai-rd .ap2-h2 .hl2{background:var(--yellow);-webkit-box-decoration-break:clone;box-decoration-break:clone;padding:1px 10px;border-radius:4px;}
+  .aai-rd .ap2-lead{font-size:17px;color:var(--grey);max-width:680px;margin-bottom:34px;}
+  .aai-rd .ap2-lead b{color:var(--ink);font-weight:700;}
+  .aai-rd .ap2-stats{display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border-radius:14px;box-shadow:0 16px 40px rgba(16,16,20,.10);padding:30px 0;margin-bottom:34px;}
+  .aai-rd .ap2-stat{padding:0 30px;border-right:1px solid #ededed;}.aai-rd .ap2-stat:last-child{border-right:none;}
+  .aai-rd .ap2-n{font-size:46px;font-weight:500;line-height:1;letter-spacing:-1.5px;}
+  .aai-rd .ap2-n .u{font-size:18px;font-weight:500;color:var(--grey);letter-spacing:0;}
+  .aai-rd .ap2-n.coral{color:#ec8172;}.aai-rd .ap2-n.blue{color:#0090eb;}.aai-rd .ap2-n.pink{color:var(--pink);}.aai-rd .ap2-n.teal{color:#33a08c;}
+  .aai-rd .ap2-ind{display:flex;align-items:center;gap:6px;margin:16px 0;height:18px;}
+  .aai-rd .ap2-bar{width:18px;height:6px;border-radius:3px;}
+  .aai-rd .ap2-dot{width:18px;height:18px;border-radius:50%;border:2px solid #fff;margin-right:-5px;}
+  .aai-rd .ap2-l{font-size:13px;color:var(--grey);}
+  .aai-rd .ap2-cards{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  .aai-rd .ap2-card{position:relative;background:#fff;border-radius:14px;box-shadow:0 22px 48px rgba(16,16,20,.13);padding:36px 36px 30px;overflow:hidden;}
+  .aai-rd .ap2-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#f92869,#ec8172);}
+  .aai-rd .ap2-qm{font-family:Georgia,serif;font-size:62px;line-height:.7;color:var(--pink);height:34px;}
+  .aai-rd .ap2-q{font-family:Georgia,serif;font-style:italic;font-size:20px;line-height:1.5;color:#1a1a1a;margin:6px 0 22px;}
+  .aai-rd .ap2-div{height:1px;background:#ededed;margin-bottom:20px;}
+  .aai-rd .ap2-who{display:flex;align-items:center;gap:14px;}
+  .aai-rd .ap2-ph{width:56px;height:56px;border-radius:50%;object-fit:cover;flex:none;background:#eee;}
+  .aai-rd .ap2-nm{font-weight:700;font-size:18px;display:flex;align-items:center;gap:8px;color:var(--ink);}
+  .aai-rd .ap2-nm a{display:inline-flex;}
+  .aai-rd .ap2-rl{font-size:13.5px;color:var(--grey);margin-top:3px;}
+  .aai-rd .ap2-verif{display:inline-flex;align-items:center;gap:6px;margin-top:9px;font-size:12.5px;font-weight:700;color:#2c3344;text-decoration:none;transition:color .18s;}
+  .aai-rd .ap2-verif svg{width:17px;height:17px;flex:none;}
+  .aai-rd .ap2-verif:hover{color:#0a66c2;}
+  .aai-rd .ap2-badge{position:absolute;top:26px;right:30px;background:var(--ink);color:var(--yellow);font-weight:800;font-size:13px;padding:7px 12px;border-radius:6px;}
+  @media(max-width:760px){.aai-rd .ap2-inner{padding:48px 20px;}.aai-rd .ap2-h2{font-size:28px;}.aai-rd .ap2-stats{grid-template-columns:repeat(2,1fr);gap:24px 0;}.aai-rd .ap2-stat{padding:0 20px;}.aai-rd .ap2-cards{grid-template-columns:1fr;}}
+
+  .aai-rd .cu-mods{display:flex;flex-direction:column;gap:14px;margin-bottom:36px;}
+  .aai-rd .cu-mod{display:grid;grid-template-columns:54px 1fr auto;gap:22px;align-items:start;background:#fff;border:1px solid var(--line);border-radius:6px;padding:24px 26px;}
+  .aai-rd .cu-mod .num{font-size:30px;font-weight:800;color:var(--line);line-height:1;}
+  .aai-rd .cu-mod.flag{border-color:var(--ink);border-left:5px solid var(--pink);}.aai-rd .cu-mod.flag .num{color:var(--pink);}
+  .aai-rd .cu-mod .ti{font-size:18px;font-weight:800;margin-bottom:5px;}
+  .aai-rd .cu-mod .out{font-size:14.5px;color:var(--grey);}.aai-rd .cu-mod .out b{color:var(--ink);}
+  .aai-rd .cu-mod .hrs{font-size:13px;font-weight:800;color:var(--ink);background:var(--yellow);border-radius:4px;padding:5px 10px;white-space:nowrap;}
+  .aai-rd .cu-adv{display:inline-block;font-size:11px;font-weight:800;text-transform:uppercase;color:#fff;background:var(--pink);border-radius:4px;padding:2px 8px;margin-left:8px;vertical-align:middle;}
+  .aai-rd .cu-band{background:var(--ink);color:#fff;border-radius:6px;padding:34px;}
+  .aai-rd .cu-band .lab{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--yellow);font-weight:800;margin-bottom:18px;}
+  .aai-rd .cu-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 34px;}
+  .aai-rd .cu-oc{display:flex;gap:12px;align-items:flex-start;font-size:15px;color:#fff;}
+  .aai-rd .cu-oc .ck{width:22px;height:22px;border-radius:4px;background:var(--teal);color:var(--ink);font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;}
+
+  .aai-rd .sc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  .aai-rd .sc-card{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;transition:.15s;}
+  .aai-rd .sc-card:hover{border-color:var(--ink);transform:translateY(-3px);box-shadow:0 14px 30px rgba(0,0,0,.08);}
+  .aai-rd .sc-thumb{height:150px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:32px;position:relative;}
+  .aai-rd .sc-thumb .ph{position:absolute;left:12px;bottom:10px;font-size:11px;font-weight:700;opacity:.85;}
+  .aai-rd .sc-t1{background:linear-gradient(135deg,#111,#333);}.aai-rd .sc-t2{background:linear-gradient(135deg,var(--teal),#2a8378);}
+  .aai-rd .sc-t3{background:linear-gradient(135deg,var(--pink),#b3164a);}.aai-rd .sc-t4{background:linear-gradient(135deg,var(--purple),#4d1f73);}
+  .aai-rd .sc-t5{background:linear-gradient(135deg,#ec8172,#c85a48);}.aai-rd .sc-t6{background:linear-gradient(135deg,#111,#444);}
+  .aai-rd .sc-meta{padding:16px 18px;}
+  .aai-rd .sc-tool{display:inline-block;font-size:11px;font-weight:800;text-transform:uppercase;color:var(--ink);background:var(--yellow);border-radius:4px;padding:2px 8px;margin-bottom:9px;}
+  .aai-rd .sc-meta h3{font-size:16px;font-weight:800;margin-bottom:4px;}.aai-rd .sc-meta p{font-size:13px;color:var(--grey);}
+  .aai-rd .sc-banner{margin-top:30px;background:var(--ink);color:#fff;border-radius:8px;padding:26px 30px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+  .aai-rd .sc-banner .t{font-size:19px;font-weight:800;}.aai-rd .sc-banner .t span{color:var(--yellow);}.aai-rd .sc-banner .s{font-size:14px;color:#bdbdbd;margin-top:3px;}
+
+  .aai-rd .tl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .aai-rd .tl-logo{background:#fff;border:1px solid var(--line);border-radius:6px;height:96px;display:flex;align-items:center;justify-content:center;padding:18px;transition:.15s;}
+  .aai-rd .tl-logo:hover{border-color:var(--ink);transform:translateY(-2px);}
+  .aai-rd .tl-logo img{max-height:34px;max-width:130px;filter:grayscale(100%);opacity:.78;transition:.15s;}
+  .aai-rd .tl-logo:hover img{filter:none;opacity:1;}
+  .aai-rd .tl-logo .txt{font-size:18px;font-weight:800;color:#444;display:none;}
+  .aai-rd .tl-stat{display:inline-flex;align-items:baseline;gap:8px;margin-bottom:30px;}
+  .aai-rd .tl-stat .n{font-size:22px;font-weight:800;color:var(--pink);}.aai-rd .tl-stat .l{font-size:14px;color:var(--grey);}
+
+  .aai-rd .nq-block{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:8px;padding:44px 48px;}
+  .aai-rd .nq-photo{position:relative;width:170px;flex-shrink:0;}
+  .aai-rd .nq-photo .ph{width:170px;height:170px;border-radius:8px;background:var(--soft);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:#bbb;font-weight:800;font-size:13px;text-align:center;}
+  .aai-rd .nq-photo .ph::after{content:"";position:absolute;left:-8px;top:-8px;width:46px;height:46px;border-top:3px solid var(--pink);border-left:3px solid var(--pink);border-radius:8px 0 0 0;}
+  .aai-rd .nq-photo .tag{position:absolute;left:50%;bottom:-13px;transform:translateX(-50%);background:var(--yellow);color:var(--ink);font-weight:800;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;border-radius:4px;white-space:nowrap;}
+  .aai-rd .nq-q{font-family:Georgia,serif;font-size:24px;line-height:1.44;color:#1a1a1a;margin-bottom:22px;}
+  .aai-rd .nq-q .mark{color:var(--pink);font-weight:800;}
+  .aai-rd .nq-q em{font-style:italic;background:linear-gradient(180deg,transparent 60%,rgba(96,197,179,.45) 60% 92%,transparent 92%);}
+  .aai-rd .nq-sign{display:flex;align-items:center;gap:14px;}.aai-rd .nq-sign .bar{width:32px;height:3px;background:var(--pink);}
+  .aai-rd .nq-sign .nm{font-size:16px;font-weight:800;}.aai-rd .nq-sign .rl{font-size:13px;color:var(--grey);margin-top:2px;}
+
+  .aai-rd .fin{background:transparent;position:relative;z-index:0;color:#fff;text-align:center;}
+  .aai-rd .fin::before{content:"";position:absolute;top:0;bottom:0;left:calc(50% - 50vw);width:100vw;background:var(--ink);z-index:-1;}
+  .aai-rd .fin h2{font-size:32px;font-weight:700;margin-bottom:10px;color:#fff;}.aai-rd .fin h2 .hl{color:var(--yellow);background:none;}.aai-rd .fin h2 .dul{text-decoration:underline;text-decoration-color:var(--pink);text-decoration-thickness:4px;text-underline-offset:6px;}
+  .aai-rd .yul{background:none;text-decoration:underline;text-decoration-color:var(--yellow);text-decoration-thickness:5px;text-underline-offset:5px;}
+  .aai-rd .fin p{color:#bdbdbd;font-size:16px;margin-bottom:24px;}
+  .aai-rd .fin .btn{background:var(--yellow);color:var(--ink);}
+
+  /* para quem é (relevance) */
+  .aai-rd .pq-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:16px;}
+  .aai-rd .pq-card{background:#fff;border-top:4px solid var(--teal);border-radius:16px;padding:30px 28px;box-shadow:0 22px 48px rgba(16,16,20,.13);}
+  .aai-rd .pq-card:nth-child(2){border-top-color:var(--pink);}.aai-rd .pq-card:nth-child(3){border-top-color:var(--yellow);}
+  .aai-rd .pq-card .h{font-size:18px;font-weight:700;margin-bottom:6px;}
+  .aai-rd .pq-card .s{font-size:15px;color:var(--grey);}
+  .aai-rd .pq-not{font-size:15px;color:var(--grey);}.aai-rd .pq-not b{color:var(--ink);}
+
+  /* investimento + risk reversal */
+  .aai-rd .inv-lead{max-width:920px;}
+  .aai-rd .nq2-lead{max-width:1040px;}
+  .aai-rd .inv-card{display:flex;border-radius:24px;overflow:hidden;box-shadow:0 22px 48px rgba(16,16,20,.16);background:#fff;}
+  .aai-rd .inv-incl{flex:1 1 0;background:#2e2e2e;color:#fff;padding:44px;}
+  .aai-rd .inv-incl .lab{font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:#fff;font-weight:700;margin-bottom:22px;}
+  .aai-rd .inv-li{display:flex;gap:14px;align-items:flex-start;font-size:15.5px;line-height:1.4;color:#fff;margin-bottom:18px;}
+  .aai-rd .inv-li:last-child{margin-bottom:0;}.aai-rd .inv-li b{color:#fff;font-weight:700;}
+  .aai-rd .inv-li .ck{width:26px;height:26px;border-radius:7px;background:#fff;color:var(--pink);font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;}
+  .aai-rd .inv-price{flex:0 0 420px;background:#fff;padding:44px 40px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+  .aai-rd .inv-price .plab{font-size:11.5px;letter-spacing:.13em;text-transform:uppercase;color:#9a9a9a;font-weight:700;margin-bottom:14px;}
+  .aai-rd .inv-price .amt{font-size:58px;font-weight:500;line-height:1;letter-spacing:-1.5px;}.aai-rd .inv-price .amt .x{color:var(--pink);}
+  .aai-rd .inv-price .sub{font-size:14.5px;color:var(--grey);margin:14px 0 18px;}
+  .aai-rd .inv-price .pdiv{width:100%;height:1px;background:#e8e8e8;margin:0 0 18px;}
+  .aai-rd .inv-price .btn{width:100%;text-align:center;padding:19px 20px;border-radius:12px;font-size:16px;cursor:pointer;}
+  .aai-rd .inv-price .guar{font-size:13px;color:#9a9a9a;margin-top:14px;line-height:1.4;}
+  @media(max-width:760px){.aai-rd .inv-card{flex-direction:column;}.aai-rd .inv-price{flex:1 1 auto;}}
+
+  /* faq */
+  .aai-rd .faq{max-width:820px;}
+  .aai-rd .faq details{border-bottom:1px solid var(--line);padding:18px 0;}
+  .aai-rd .faq summary{font-size:17px;font-weight:800;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px;}
+  .aai-rd .faq summary::-webkit-details-marker{display:none;}
+  .aai-rd .faq summary::after{content:"+";color:var(--pink);font-weight:800;}
+  .aai-rd .faq details[open] summary::after{content:"\2013";}
+  .aai-rd .faq .a{font-size:15px;color:var(--grey);margin-top:12px;}
+
+  /* tools workflow */
+  .aai-rd .wf{display:flex;align-items:stretch;gap:0;margin-top:6px;}
+  .aai-rd .wf-stage{flex:1;background:#fff;border:1px solid var(--line);border-radius:8px;padding:22px 20px;}
+  .aai-rd .wf-arrow{display:flex;align-items:center;justify-content:center;color:var(--pink);font-size:24px;font-weight:800;padding:0 12px;flex:0 0 auto;}
+  .aai-rd .wf-stage .st{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);margin-bottom:4px;}
+  .aai-rd .wf-stage .sd{font-size:13px;color:var(--grey);margin-bottom:16px;}
+  .aai-rd .wf-logos{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .aai-rd .wf-tool{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:16px 6px;text-align:center;min-height:96px;text-decoration:none;color:inherit;transition:.15s;}
+  .aai-rd .wf-tool:hover{background:#fff;border-color:var(--ink);transform:translateY(-3px);box-shadow:0 12px 26px rgba(0,0,0,.13);}
+  .aai-rd .wf-tool img{width:42px;height:42px;display:block;object-fit:contain;}
+  .aai-rd .wf-tool .nm{font-size:12px;font-weight:700;color:#333;line-height:1.15;}
+
+  /* instructor quote (redesigned) */
+  .aai-rd .nq2{display:grid;grid-template-columns:300px 1fr;gap:48px;align-items:center;background:linear-gradient(180deg,#fff,#fafafa);border:1px solid var(--line);border-radius:12px;padding:44px;}
+  .aai-rd .nq2-photo{position:relative;}
+  .aai-rd .nq2-photo img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block;}
+  .aai-rd .nq2-photo .tag{position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);background:var(--yellow);color:var(--ink);font-weight:800;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:7px 16px;border-radius:4px;white-space:nowrap;}
+  .aai-rd .nq2-q{font-family:Georgia,serif;font-size:26px;line-height:1.42;color:#1a1a1a;margin-bottom:26px;transition:opacity .55s ease;min-height:200px;}
+  .aai-rd .nq2-q .mk{color:var(--pink);font-weight:800;}
+  .aai-rd .nq2-q em{font-style:italic;background:linear-gradient(180deg,transparent 60%,rgba(96,197,179,.4) 60% 92%,transparent 92%);}
+  .aai-rd .nq2-sign{display:flex;align-items:center;gap:14px;}
+  .aai-rd .nq2-sign .bar{width:34px;height:3px;background:var(--pink);flex:0 0 auto;}
+  .aai-rd .nq2-nm{font-size:18px;font-weight:700;}
+  .aai-rd .nq2-rl{font-size:13.5px;color:var(--grey);margin-top:2px;}
+  .aai-rd .nq2-cta{display:inline-flex;align-items:center;gap:7px;margin-top:22px;font-size:14px;font-weight:800;color:var(--ink);text-decoration:none;border-bottom:2px solid var(--pink);padding-bottom:3px;transition:color .18s ease,gap .18s ease;}
+  .aai-rd .nq2-cta:hover{color:var(--pink);gap:11px;}
+  .aai-rd .nq2-dots{display:flex;gap:8px;margin:0 0 26px;}
+  .aai-rd .nq2-dot{width:16px;height:5px;border-radius:3px;background:var(--pink);opacity:.28;transition:width .5s ease,opacity .5s ease;}
+  .aai-rd .nq2-dot.on{width:38px;opacity:1;}
+
+  @media(max-width:780px){
+    .aai-rd .ap-cards,.aai-rd .cu-grid,.aai-rd .nq-block,.aai-rd .tl-grid,.aai-rd .pq-grid,.aai-rd .inv-wrap{grid-template-columns:1fr;}
+    .aai-rd .wf{flex-direction:column;}.aai-rd .wf-arrow{transform:rotate(90deg);padding:10px 0;}
+    .aai-rd .nq2{grid-template-columns:1fr;gap:30px;}.aai-rd .nq2-photo img{max-width:280px;margin:0 auto;}
+    .aai-rd .ap-stats,.aai-rd .ce-trust{grid-template-columns:1fr 1fr;}
+    .aai-rd .sc-grid{grid-template-columns:1fr 1fr;}
+    .aai-rd .cu-mod{grid-template-columns:40px 1fr;}.aai-rd .cu-mod .hrs{grid-column:2;justify-self:start;margin-top:8px;}
+    .aai-rd h2{font-size:28px;}
+  }
+</style>
+
+<div class="aai-rd">
+
+  <!-- 1 · PARA QUEM É (relevance / transformation) -->
+  <section class="sec" style="margin-top:100px">
+    <div class="eyebrow"><span class="secnum">02</span>Para quem é este bootcamp</div>
+    <h2>Para quem quer transformar orçamento em <span class="hl">resultados mensuráveis.</span></h2>
+    <p class="lead">Para quem gere (ou quer gerir) investimento em publicidade digital e precisa de campanhas que geram leads e vendas, com método e dados, não no achismo.</p>
+    <div class="pq-grid">
+      <div class="pq-card"><div class="h">Marketers &amp; gestores de tráfego</div><div class="s">Que querem dominar Google Ads e Meta Ads e provar o ROI de cada campanha.</div></div>
+      <div class="pq-card"><div class="h">Empreendedores &amp; PME</div><div class="s">Que querem captar clientes com paid media sem depender de agências.</div></div>
+      <div class="pq-card"><div class="h">Freelancers &amp; consultores</div><div class="s">Que querem gerir campanhas como serviço e cobrar por resultados.</div></div>
+    </div>
+    <p class="pq-not"><b>Não precisas de experiência prévia em ads.</b> Precisas de querer gerir campanhas a sério, do setup à otimização.</p>
+  </section>
+
+  <!-- 2 · ALUMNI PROOF — hidden until real GAMA alumni testimonials + stats are supplied (team review) -->
+  <section class="ap2-band" style="display:none">
+   <div class="ap2-inner">
+    <div class="eyebrow"><span class="secnum">03</span>Quem participou no Bootcamp</div>
+    <h2 class="ap2-h2">A prova são os nossos alumni.<br><span class="hl">E o que saíram a construir.</span></h2>
+    <p class="ap2-lead">Pessoas que terminaram o <b>Google Ads &amp; Meta Ads</b> e já estão a aplicar IA no dia a dia nas empresas e projetos pessoais.</p>
+    <div class="ap2-stats">
+      <div class="ap2-stat">
+        <div class="ap2-n coral">3</div>
+        <div class="ap2-ind"><span class="ap2-bar" style="background:#ec8172"></span><span class="ap2-bar" style="background:#ec8172"></span><span class="ap2-bar" style="background:#ec8172"></span></div>
+        <div class="ap2-l">edições do bootcamp</div>
+      </div>
+      <div class="ap2-stat">
+        <div class="ap2-n blue">38</div>
+        <div class="ap2-ind"><span class="ap2-bar" style="background:#cfcdc9"></span><span class="ap2-bar" style="background:#cfcdc9"></span><span class="ap2-bar" style="background:#cfcdc9"></span><span class="ap2-bar" style="background:#cfcdc9"></span><span class="ap2-bar" style="background:#0090eb"></span></div>
+        <div class="ap2-l">alumni já formados</div>
+      </div>
+      <div class="ap2-stat">
+        <div class="ap2-n pink">4,8<span class="u">/5</span></div>
+        <div class="ap2-ind"><span class="ap2-bar" style="background:#f92869"></span><span class="ap2-bar" style="background:#f92869"></span><span class="ap2-bar" style="background:#f92869"></span><span class="ap2-bar" style="background:#f92869"></span><span class="ap2-bar" style="background:#f92869;opacity:.26"></span></div>
+        <div class="ap2-l">classificação dos alumni</div>
+      </div>
+      <div class="ap2-stat">
+        <div class="ap2-n teal">5,0<span class="u">/5</span></div>
+        <div class="ap2-ind"><span class="ap2-bar" style="background:#33a08c"></span><span class="ap2-bar" style="background:#33a08c"></span><span class="ap2-bar" style="background:#33a08c"></span><span class="ap2-bar" style="background:#33a08c"></span><span class="ap2-bar" style="background:#33a08c"></span></div>
+        <div class="ap2-l">classificação dos tutores</div>
+      </div>
+    </div>
+    <div class="ap2-cards">
+      <article class="ap2-card">
+        <div class="ap2-badge">20/20</div>
+        <div class="ap2-qm">&#8220;</div>
+        <p class="ap2-q">Uma experiência enriquecedora que me permitiu aprofundar o conhecimento em IA generativa, automação, agentes de IA e na aplicação prática de ferramentas de IA em contexto de negócio.</p>
+        <div class="ap2-div"></div>
+        <div class="ap2-who"><img class="ap2-ph" src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/aai/alumni-martim-d.jpg" alt="Martim D."><div><div class="ap2-nm">Martim D.</div><div class="ap2-rl">Sales Marketing Manager · MariaJoãoBahia</div><a class="ap2-verif" href="https://www.linkedin.com/in/martim-afonso-d-9063b5b5/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="#5b6573" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg><svg viewBox="0 0 24 24" fill="#0a66c2"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 1 1 8.25 6.5 1.75 1.75 0 0 1 6.5 8.25zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0 0 13 14.19a.66.66 0 0 0 0 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 0 1 2.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>LinkedIn Verified</a></div></div>
+      </article>
+      <article class="ap2-card">
+        <div class="ap2-qm">&#8220;</div>
+        <p class="ap2-q">O verdadeiro valor da IA não está em substituir pessoas, está em libertar tempo para o pensamento crítico, a criatividade e a capacidade de encontrar melhores soluções.</p>
+        <div class="ap2-div"></div>
+        <div class="ap2-who"><img class="ap2-ph" src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/aai/alumni-diogo-canudo.jpg" alt="Diogo Canudo"><div><div class="ap2-nm">Diogo Canudo</div><div class="ap2-rl">Gestor de Núcleo de Criatividade e Planeamento</div><a class="ap2-verif" href="https://www.linkedin.com/in/diogo-canudo/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="#5b6573" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg><svg viewBox="0 0 24 24" fill="#0a66c2"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 1 1 8.25 6.5 1.75 1.75 0 0 1 6.5 8.25zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0 0 13 14.19a.66.66 0 0 0 0 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 0 1 2.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>LinkedIn Verified</a></div></div>
+      </article>
+    </div>
+   </div>
+  </section>
+
+  <!-- 3 · WHAT YOU WALK AWAY WITH (deliverables) — HIDDEN (block 04) -->
+  <section class="sec" style="display:none">
+    <div class="eyebrow"><span class="secnum">04</span>O que os alunos constroem</div>
+    <h2>Não sais com apontamentos. <span class="hl">Sais com produtos que construíste.</span></h2>
+    <p class="lead">Ao longo do curso, cada aluno cria projetos reais com IA, de apps a agentes, de vídeo a voz.</p>
+    <div class="sc-grid">
+      <div class="sc-card"><div class="sc-thumb sc-t1">🖥️<span class="ph">[ screenshot do projeto ]</span></div><div class="sc-meta"><span class="sc-tool">Lovable</span><h3>App full-stack funcional</h3><p>Uma aplicação real construída do zero.</p></div></div>
+      <div class="sc-card"><div class="sc-thumb sc-t2">🔗<span class="ph">[ screenshot do fluxo ]</span></div><div class="sc-meta"><span class="sc-tool">n8n</span><h3>Agente de IA + automação</h3><p>Um workflow que executa tarefas sozinho.</p></div></div>
+      <div class="sc-card"><div class="sc-thumb sc-t3">🎬<span class="ph">[ frame do vídeo ]</span></div><div class="sc-meta"><span class="sc-tool">HeyGen</span><h3>Vídeo com avatar IA</h3><p>Conteúdo em vídeo gerado com IA.</p></div></div>
+      <div class="sc-card"><div class="sc-thumb sc-t4">🎨<span class="ph">[ imagem gerada ]</span></div><div class="sc-meta"><span class="sc-tool">Higgsfield</span><h3>Visuais de marca</h3><p>Direção de arte e imagens com IA.</p></div></div>
+      <div class="sc-card"><div class="sc-thumb sc-t5">🎙️<span class="ph">[ player de áudio ]</span></div><div class="sc-meta"><span class="sc-tool">ElevenLabs</span><h3>Voz e locução IA</h3><p>Narração e vozes para os projetos.</p></div></div>
+      <div class="sc-card"><div class="sc-thumb sc-t6">🎯<span class="ph">[ projeto final ]</span></div><div class="sc-meta"><span class="sc-tool">Projeto final</span><h3>Aplicado ao teu negócio</h3><p>O capstone que junta tudo.</p></div></div>
+    </div>
+    <div class="sc-banner"><div><div class="t">No fim, o teu portefólio tem <span>produtos</span>, não certificados.</div><div class="s">É isto que mostras numa entrevista ou a um cliente.</div></div><a href="#" class="btn">Quero construir →</a></div>
+  </section>
+
+  <!-- 4 · HOW YOU GET THERE (curriculum as outcomes) — HIDDEN (block 05) -->
+  <section class="sec alt" style="display:none">
+    <div class="eyebrow"><span class="secnum">05</span>O programa · 60 horas, ao vivo</div>
+    <h2>De "ouvi falar de IA" a <span class="hl">usá-la todos os dias no trabalho.</span></h2>
+    <p class="lead">Quatro módulos práticos que vão do contexto à construção. Cada um deixa-te com uma capacidade nova.</p>
+    <div class="cu-mods">
+      <div class="cu-mod"><div class="num">01</div><div><div class="ti">Introdução à IA, Contextualização e Tendências de Mercado</div><div class="out"><b>Sais a saber:</b> onde a IA cria valor real no teu setor, e onde é só ruído.</div></div><div class="hrs">4h</div></div>
+      <div class="cu-mod"><div class="num">02</div><div><div class="ti">LLMs como Copiloto para Profissionais do Conhecimento</div><div class="out"><b>Sais a saber:</b> usar LLMs (ChatGPT, Claude, Gemini) como copiloto diário para escrever, analisar e decidir muito mais rápido.</div></div><div class="hrs">16h</div></div>
+      <div class="cu-mod"><div class="num">03</div><div><div class="ti">Geração de Imagens, Vídeo e Áudio com IA</div><div class="out"><b>Sais a saber:</b> produzir conteúdo visual e áudio com IA, do conceito ao resultado final.</div></div><div class="hrs">8h</div></div>
+      <div class="cu-mod flag"><div class="num">04</div><div><div class="ti">Automatização de Processos, Agentes de IA e Vibe Coding <span class="cu-adv">Nível avançado</span></div><div class="out"><b>Sais a saber:</b> automatizar tarefas e <b>construir os teus próprios agentes e fluxos de IA</b>, mesmo sem background técnico. É aqui que deixas de <em>usar</em> IA e começas a <em>construir</em> com ela.</div></div><div class="hrs">12h</div></div>
+    </div>
+    <div class="cu-band">
+      <div class="lab">No fim do curso, vais conseguir</div>
+      <div class="cu-grid">
+        <div class="cu-oc"><div class="ck">✓</div><div>Integrar IA no teu fluxo de trabalho e poupar horas por semana.</div></div>
+        <div class="cu-oc"><div class="ck">✓</div><div>Construir agentes e automações que trabalham por ti.</div></div>
+        <div class="cu-oc"><div class="ck">✓</div><div>Produzir conteúdo (texto, imagem, vídeo, áudio) com IA.</div></div>
+        <div class="cu-oc"><div class="ck">✓</div><div>Liderar a conversa de IA na tua equipa, com critério, não hype.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · TOOLS (workflow) -->
+  <section class="sec">
+    <div class="eyebrow"><span class="secnum">04</span>O teu stack de campanhas</div>
+    <h2>As plataformas que vais <span class="hl">dominar.</span></h2>
+    <p class="lead">Mais do que uma lista de apps: as ferramentas de Google e Meta organizadas pela forma como as vais usar, da pesquisa ao reporting.</p>
+    <div class="wf">
+      <div class="wf-stage">
+        <div class="st">1 · Planear &amp; pesquisar</div>
+        <div class="sd">Procura, intenção e concorrência.</div>
+        <div class="wf-logos">
+          <a class="wf-tool" href="https://ads.google.com/home/tools/keyword-planner/" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=ads.google.com&sz=128" alt=""><span class="nm">Keyword Planner</span></a>
+          <a class="wf-tool" href="https://trends.google.com" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=trends.google.com&sz=128" alt=""><span class="nm">Google Trends</span></a>
+          <a class="wf-tool" href="https://www.facebook.com/ads/library/" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=facebook.com&sz=128" alt=""><span class="nm">Meta Ads Library</span></a>
+          <a class="wf-tool" href="https://analytics.google.com" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=analytics.google.com&sz=128" alt=""><span class="nm">Google Analytics</span></a>
+        </div>
+      </div>
+      <div class="wf-arrow">&rarr;</div>
+      <div class="wf-stage">
+        <div class="st">2 · Lançar campanhas</div>
+        <div class="sd">Search, Shopping, Display e Meta.</div>
+        <div class="wf-logos">
+          <a class="wf-tool" href="https://ads.google.com" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=ads.google.com&sz=128" alt=""><span class="nm">Google Ads</span></a>
+          <a class="wf-tool" href="https://business.facebook.com/adsmanager/" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=business.facebook.com&sz=128" alt=""><span class="nm">Meta Ads Manager</span></a>
+          <a class="wf-tool" href="https://www.google.com/retail/solutions/merchant-center/" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=merchants.google.com&sz=128" alt=""><span class="nm">Merchant Center</span></a>
+          <a class="wf-tool" href="https://www.youtube.com" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=youtube.com&sz=128" alt=""><span class="nm">YouTube Ads</span></a>
+        </div>
+      </div>
+      <div class="wf-arrow">&rarr;</div>
+      <div class="wf-stage">
+        <div class="st">3 · Medir &amp; otimizar</div>
+        <div class="sd">Dados, ROAS e reporting.</div>
+        <div class="wf-logos">
+          <a class="wf-tool" href="https://analytics.google.com" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=analytics.google.com&sz=128" alt=""><span class="nm">GA4</span></a>
+          <a class="wf-tool" href="https://lookerstudio.google.com" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=lookerstudio.google.com&sz=128" alt=""><span class="nm">Looker Studio</span></a>
+          <a class="wf-tool" href="https://tagmanager.google.com" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=tagmanager.google.com&sz=128" alt=""><span class="nm">Tag Manager</span></a>
+          <a class="wf-tool" href="https://business.facebook.com/events_manager" target="_blank" rel="noopener"><img src="https://www.google.com/s2/favicons?domain=business.facebook.com&sz=128" alt=""><span class="nm">Meta Pixel</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="aai-div"></div>
+
+  <!-- 6 · WHO TEACHES YOU (authority) -->
+  <section class="sec alt">
+    <div class="eyebrow"><span class="secnum">05</span>Quem te vai formar</div>
+    <h2>Performance marketing não se aprende em teoria. Aprende-se com <span class="mh-y">quem gere budget real.</span></h2>
+    <p class="lead nq2-lead">Anos a planear, lançar e otimizar campanhas de Google e Meta Ads. Quem já o fez com dinheiro real em jogo ensina de outra forma.</p>
+    <div class="nq2">
+      <div class="nq2-photo">
+        <img src="https://weareedit.io/wp-content/uploads/2022/04/Bruno-quintas-1.png" alt="Bruno Quintas">
+        <div class="tag">O teu formador</div>
+      </div>
+      <div>
+        <p class="nq2-q"><span class="mk">&ldquo;</span>Uma boa campanha não é a que gasta mais: é a que <em>transforma cada euro investido em resultado mensurável</em>. É isso que te ensino a fazer, do primeiro setup à otimização diária.<span class="mk">&rdquo;</span></p>
+        <div class="nq2-sign"><div class="bar"></div><div><div class="nq2-nm">Bruno Quintas</div><div class="nq2-rl">Formador · Performance Marketing &amp; Paid Media</div></div></div>
+        <a class="nq2-cta" href="https://weareedit.io/equipa/bruno-quintas/" target="_blank" rel="noopener">Ver perfil completo <span aria-hidden="true">&rarr;</span></a>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- EDUCATION block: verbatim live course-details (Sobre / Visão Geral / O que inclui / DGERT / Mensalidades / Programa), inserted after block 07, standalone so it renders exactly like the live page -->
+<style>
+  .aai-education{position:relative;max-width:1080px;margin:150px auto 0;border-radius:14px;overflow:hidden;padding-top:48px;background:#f2f1ec !important;}
+  .aai-education::before{content:"06";display:block;max-width:1080px;margin:0 auto;padding:0 28px 6px;font-weight:800;font-size:12px;letter-spacing:.06em;color:#c2c2c2;}
+  /* the live intro box pulls itself up to overlap the (dark) section above it on
+     the live page; here it lands on block 07 — reset that so it sits below */
+  .aai-education .visao-geral,.aai-education .sobre-curso,.aai-education .sobre-curso > *{margin-top:0 !important;transform:none !important;}
+  /* drop the duplicate "Ferramentas de trabalho" logo block (covered by block 04) */
+  .aai-education .ferramentas{display:none !important;}
+  /* replace the dark/black sections + bands with the light theme grey */
+  html body .aai-education,html body .aai-education section,html body .aai-education .bg-black,html body .aai-education .programa,html body .aai-education .programa.bg-black,html body .aai-education .bg-light-grey{background-color:#f2f1ec !important;background-image:none !important;}
+  html body .aai-education .programa,html body .aai-education .programa.bg-black{margin-top:0 !important;}
+  html body .aai-education .programa::before,html body .aai-education .programa::after{background:transparent !important;}
+  /* the black band was .programa.bg-black; this is the specificity that actually
+     wins over the theme rule (div/section tags added) */
+  html body div.aai-education section.programa.bg-black{background:#f2f1ec !important;background-color:#f2f1ec !important;background-image:none !important;}
+  .aai-education .programa .titulo-curso,.aai-education .programa h2,.aai-education .programa h3,.aai-education .programa h4,.aai-education .programa p,.aai-education .programa li,.aai-education .programa .text-muted,.aai-education .programa span,.aai-education .programa div{color:#16181d !important;}
+  .aai-education .programa .text-muted{color:#6b6b6b !important;}
+  /* keep all content columns at one consistent width, aligned with the rest of the page */
+  html body div.aai-education .container{max-width:1080px !important;width:auto !important;margin-left:auto !important;margin-right:auto !important;padding-left:28px !important;padding-right:28px !important;box-sizing:border-box !important;}
+  /* native education block — replaces the proxied/dark theme content (no dark bleed, controlled 3-col layout) */
+  .aai-rd .aai-edu{max-width:1080px;margin:150px auto 0;padding:0 28px;}
+  .aai-rd .aai-edu .eyebrow{margin-bottom:24px;}
+  .aai-rd .aai-edu-intro{font-size:30px;line-height:1.33;font-weight:500;letter-spacing:-.94px;color:var(--ink);max-width:920px;margin:0 0 56px;}
+  .aai-rd .aai-edu-intro b{color:var(--pink);font-weight:700;}
+  .aai-rd .aai-edu-div{height:1px;background:var(--line);margin:0 0 48px;}
+  .aai-rd .vg-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:44px;align-items:start;}
+  .aai-rd .vg-h{font-size:30px;font-weight:500;line-height:1.33;letter-spacing:-.94px;color:var(--ink);margin:0;}
+  .aai-rd .vg-col h4{font-size:23px;font-weight:500;line-height:1.33;letter-spacing:-.94px;color:var(--ink);margin:0 0 20px;}
+  .aai-rd .vg-col p{font-size:16px;line-height:1.6;color:var(--grey);margin:0;}
+  @media(max-width:860px){.aai-rd .vg-grid{grid-template-columns:1fr;gap:36px;}.aai-rd .aai-edu{margin-top:90px;}.aai-rd .aai-edu-intro{font-size:24px;}.aai-rd .vg-h{font-size:25px;}.aai-rd .vg-col h4{font-size:21px;}}
+  /* proxied curriculum (.programa) re-injected at <!--PROGRAMA-->, forced onto a light full-width band */
+  .aai-programa-band{background:#fafafa;width:100%;padding-top:80px;}
+  .aai-programa{max-width:1080px;margin:0 auto;padding:0 28px;}
+  html body .aai-programa-band,html body .aai-programa-band section,html body .aai-programa-band .bg-black,html body .aai-programa-band .programa,html body .aai-programa-band .programa.bg-black,html body .aai-programa-band div.aai-programa section.programa.bg-black,html body .aai-programa-band [class*="bg-black"],html body .aai-programa-band [class*="bg-dark"]{background:#fafafa !important;background-color:#fafafa !important;background-image:none !important;}
+  .aai-programa-band .programa::before,.aai-programa-band .programa::after{background:transparent !important;}
+  .aai-programa-band .programa{width:auto !important;max-width:none !important;}
+  .aai-programa-band h2,.aai-programa-band h3,.aai-programa-band h4,.aai-programa-band p,.aai-programa-band li,.aai-programa-band span,.aai-programa-band div,.aai-programa-band .titulo-curso{color:#16181d !important;}
+  .aai-programa-band .text-muted{color:#6b6b6b !important;}
+  .aai-programa-band .ferramentas,.aai-programa-band .logos-grid{display:none !important;}
+  .aai-programa-band hr,.aai-programa-band hr.light-grey{display:none !important;}
+  html body.single-formacao .aai-programa-band .programa-curso,html body .aai-programa-band .programa-curso{margin-top:0 !important;}
+  /* close the timeline: active lines bridge node-to-node (keep them); the last module's
+     plain .vertical-line (no .active) just dangles past the final node, so hide it */
+  html body .aai-programa-band .vertical-line.active{border-radius:3px !important;}
+  /* last segment connects into the final donut from above; mask only the part that
+     overshoots BELOW the donut with the page bg so it ends cleanly at the node */
+  html body .aai-programa-band .vertical-line:not(.active){position:relative !important;border-radius:3px !important;}
+  html body .aai-programa-band .vertical-line:not(.active)::after{content:"";position:absolute;left:-3px;width:10px;bottom:0;height:64px;background:#fafafa;z-index:9;}
+  /* default redesign eyebrow (pink + grey number) on the proxied/native labels */
+  .aai-vg .eyebrow,.aai-programa-band .eyebrow{font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:#f92869;margin:0 0 16px;line-height:1.2;}
+  .aai-vg .eyebrow .secnum,.aai-programa-band .eyebrow .secnum{font-weight:800;font-size:12px;letter-spacing:.06em;color:#c2c2c2;margin-right:10px;}
+  html body .aai-programa-band h2.text-muted{font-size:12px !important;font-weight:700 !important;letter-spacing:.13em !important;text-transform:uppercase !important;color:#f92869 !important;margin:0 0 16px !important;}
+  html body .aai-programa-band h2.text-muted::before{content:"07";color:#c2c2c2;font-weight:800;letter-spacing:.06em;margin-right:10px;}
+  /* mid-page EDIT. para Empresas banner (.ceb-mini self-styled by plugin) */
+  .aai-ceb-band{background:#fafafa;width:100%;padding:88px 28px 64px;display:flow-root;}
+  /* native curriculum (Mix B+C, Alumni-Proof-v3 design language) */
+  .aai-rd .aac-band{background:#e3e1db;width:100vw;max-width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);padding:84px 0;}
+  .aai-rd .aac-inner{max-width:1080px;margin:0 auto;padding:0 28px;}
+  .aai-rd .aac-inner .lead{margin-bottom:40px;}
+  .aai-rd .aac-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;}
+  .aai-rd .aac-mods{margin-bottom:18px;}
+  .aai-rd .aac-mod{position:relative;overflow:hidden;background:#fff;border-radius:16px;box-shadow:0 22px 48px rgba(16,16,20,.13);padding:32px 36px;margin-bottom:18px;}
+  .aai-rd .aac-mod-top{display:flex;align-items:center;gap:18px;margin-bottom:20px;flex-wrap:wrap;}
+  .aai-rd .aac-mod-num{font-size:40px;font-weight:900;letter-spacing:-1.5px;color:var(--pink);line-height:1;}
+  .aai-rd .aac-flag .aac-mod-num{color:var(--pink);}
+  .aai-rd .aac-mod-ti{font-size:22px;font-weight:700;letter-spacing:-.3px;line-height:1.3;color:var(--ink);flex:1 1 280px;}
+  .aai-rd .aac-mod-sess{font-size:13px;font-weight:800;color:var(--ink);background:var(--yellow);border-radius:4px;padding:5px 10px;white-space:nowrap;}
+  .aai-rd .aac-mod-tag{font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--pink);border-radius:4px;padding:3px 8px;}
+  .aai-rd .aac-mod-tag.lvl-starter{background:rgba(249,40,105,.4);color:#9c1340;}
+  .aai-rd .aac-mod-tag.lvl-inter{background:rgba(249,40,105,.7);color:#fff;}
+  .aai-rd .aac-mod-tag.lvl-adv{background:var(--pink);color:#fff;}
+  .aai-rd .aac-topics{display:grid;grid-template-columns:1fr 1fr;gap:0 48px;}
+  .aai-rd .aac-topic{display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.45;color:var(--grey);padding:13px 0;border-bottom:1px solid var(--line);}
+  .aai-rd .aac-topic .arr{color:var(--pink);font-weight:800;flex:0 0 auto;line-height:1.45;font-size:16px;}
+  .aai-rd .aac-topic .aac-pt{flex:1 1 auto;min-width:0;}
+  .aai-rd .aac-topic .aac-pt b{display:block;color:var(--ink);margin-bottom:1px;}
+  .aai-rd .aac-topic b{color:var(--ink);font-weight:700;}
+  .aai-rd .aac-card{position:relative;overflow:hidden;background:#fff;border-radius:16px;box-shadow:0 22px 48px rgba(16,16,20,.13);padding:26px;display:flex;flex-direction:column;gap:12px;}
+  .aai-rd .aac-top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+  .aai-rd .aac-num{font-size:42px;font-weight:900;letter-spacing:-1.5px;color:#d8d8d8;line-height:1;}
+  .aai-rd .aac-flag .aac-num{color:var(--pink);}
+  .aai-rd .aac-sess{font-size:13px;font-weight:800;color:var(--ink);background:var(--yellow);border-radius:4px;padding:5px 10px;white-space:nowrap;}
+  .aai-rd .aac-ti{font-size:17px;font-weight:800;line-height:1.22;color:var(--ink);}
+  .aai-rd .aac-tag{align-self:flex-start;font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#fff;background:var(--pink);border-radius:4px;padding:3px 8px;}
+  .aai-rd .aac-out{font-size:15px;line-height:1.5;color:var(--grey);}
+  .aai-rd .aac-out b{color:var(--ink);font-weight:700;}
+  .aai-rd .aac-accent{position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,#f92869,#ec8172);}
+  .aai-rd .aac-accent.acc-starter{background:rgba(249,40,105,.4);}
+  .aai-rd .aac-accent.acc-inter{background:rgba(249,40,105,.7);}
+  .aai-rd .aac-accent.acc-adv{background:var(--pink);}
+  .aai-rd .aac-outcomes{position:relative;overflow:hidden;background:#fff;border-radius:16px;box-shadow:0 22px 48px rgba(16,16,20,.13);padding:40px;margin-bottom:18px;}
+  .aai-rd .aac-oc-eye{font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--pink);margin-bottom:6px;}
+  .aai-rd .aac-oc-h{font-size:22px;font-weight:700;letter-spacing:-.3px;color:var(--ink);margin-bottom:24px;}
+  .aai-rd .aac-oc-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 30px;}
+  .aai-rd .aac-oc{display:flex;align-items:flex-start;gap:13px;font-size:16px;line-height:1.46;color:var(--ink);}
+  .aai-rd .aac-oc .ck{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:var(--pink);color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;}
+  .aai-rd .aac-feat{position:relative;overflow:hidden;background:#fff;border-radius:16px;box-shadow:0 22px 48px rgba(16,16,20,.13);padding:24px 28px;margin-top:18px;}
+  .aai-rd .aac-feat-eye{font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--pink);margin-bottom:8px;}
+  .aai-rd .aac-rtag{position:absolute;top:22px;right:24px;z-index:2;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--pink);border-radius:4px;padding:4px 9px;}
+.aac-feat .ft .ul{background:linear-gradient(180deg,transparent 68%,var(--yellow) 68% 94%,transparent 94%);padding:0 1px;}
+.aac-feat .ft{font-family:'SctoGroteskA',-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif !important;font-size:19px;font-weight:700;letter-spacing:-.3px;color:var(--ink);margin-bottom:5px;}
+  .aai-rd .aac-feat .fs{font-family:'SctoGroteskA',-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif !important;font-size:15px;line-height:1.5;color:var(--grey);}
+  @media(max-width:860px){.aai-rd .aac-grid,.aai-rd .aac-oc-grid,.aai-rd .aac-topics{grid-template-columns:1fr;}.aai-rd .aac-band{padding:56px 0;}.aai-rd .aac-outcomes{padding:30px;}.aai-rd .aac-mod{padding:26px 22px;}}
+  .aai-ceb-band .ceb-mini{max-width:1080px;margin:0 auto;}
+  /* Francisco admissions card (reuses .nq2) + hide the big proxied .course-contact (kept in DOM so its side-form trigger still fires) */
+  html body .course-contact{display:none !important;}
+  .aai-rd .fr-card .lead{margin-bottom:28px;}
+  .aai-rd .fr-card .nq2-sign{margin-bottom:24px;}
+  .aai-rd .fr-cta-row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .aai-rd .fr-wa{display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;background:#25d366;border-radius:6px;text-decoration:none;transition:filter .18s ease;flex:0 0 auto;cursor:pointer;}
+  .aai-rd .fr-wa:hover{filter:brightness(.93);}
+  .aai-rd .fr-wa svg{width:26px;height:26px;display:block;}
+  html body .aai-rd .fr-cta-form{background:var(--yellow) !important;}
+  .aai-rd .fr-card .nq2-photo img{object-position:50% 12% !important;}
+  /* yellow .hl marker behind the pink 'Google Ads &amp; Meta Ads' phrase in the Sobre intro */
+  .aai-vg .sobre-curso h3 b,.aai-vg .sobre-curso h3 font b{background:linear-gradient(180deg,transparent 60%,#ffdd06 60% 92%,transparent 92%);}
+  html body div.aai-programa .container{max-width:1080px !important;width:auto !important;margin:0 auto !important;padding-left:0 !important;padding-right:0 !important;box-sizing:border-box !important;}
+  /* exact live Visao Geral block (theme .visao-geral CSS styles it); offsets neutralized, on a light band */
+  .aai-vg-band{background:#fafafa;width:100%;padding:56px 0 40px;display:flow-root;}
+  .aai-vg .row{display:flow-root;}
+  .aai-vg .container{max-width:1140px;margin:0 auto;padding:0 28px;}
+  .aai-vg .sobre-curso{margin-top:0 !important;}
+  html body.single-formacao .aai-vg .container{transform:none !important;}
+  .aai-vg .wow{opacity:1 !important;visibility:visible !important;transform:none !important;animation:none !important;}
+  .aai-vg .row .col-md-4{overflow-wrap:break-word;}
+  .aai-vg-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px;width:100%;}
+  .aai-vg-grid .grid-item{padding:0 !important;margin:0 !important;max-width:none !important;width:auto !important;min-width:0;}
+  .aai-vg .text-block-container,.aai-vg .text-block-container .grid,.aai-vg .text-block-container p,.aai-vg .text-block-container h3{max-width:none !important;width:auto !important;}
+  /* harmonize proxied Visao Geral typography to the page scale */
+  html body .aai-vg .sobre-curso h3{font-size:19px !important;font-weight:500 !important;line-height:1.5 !important;letter-spacing:-.2px !important;}
+  html body.single-formacao .aai-vg h3.intro{font-size:22px !important;font-weight:700 !important;line-height:1.3 !important;letter-spacing:-.3px !important;}
+  html body .aai-vg .text-block-container h3{font-size:18px !important;font-weight:700 !important;line-height:1.25 !important;letter-spacing:0 !important;}
+  html body .aai-vg .text-block-container p{font-size:15px !important;line-height:1.55 !important;}
+  .aai-vg .text-block-container:before,.aai-vg .text-block-container:not(:last-child):before{display:none !important;}
+  @media(max-width:860px){.aai-vg-grid{grid-template-columns:1fr;gap:28px;}.aai-vg .row .col-md-4,.aai-vg .row .col-md-8{width:100% !important;}}
+</style>
+<div class="aai-vg-band">
+<section class="visao-geral aai-vg">
+  <div class="container">
+    <div class="row sobre-curso ">
+      <div class="col-md-12 ">
+        <div class="eyebrow"><span class="secnum">06</span>Sobre o bootcamp</div>
+        <h3 class="wow">O <font color="#f92869"><b>Google Ads &amp; Meta Ads</b></font> é um bootcamp prático e intensivo em gestão de campanhas e performance marketing. Em 60 horas, ao longo de 10 semanas, vais aprender a planear, lançar e otimizar campanhas em Google Ads (Search, Shopping, Display e YouTube) e Meta Ads, medir resultados com o Google Analytics e transformar investimento em leads e vendas, sempre com foco em ROI e decisões orientadas por dados.</h3>
+      </div>
+    </div>
+    <div class="mobileMargin">
+      <div class="row">
+        <div class="col-md-4 col-md-offset-0 col-sm-12 ">
+          <div class="eyebrow">Visão geral</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 col-md-offset-0 col-sm-12 ">
+          <h3 class="intro ">Destinado a profissionais de marketing, empreendedores, freelancers e consultores que querem gerir campanhas de publicidade digital orientadas a resultados.</h3>
+        </div>
+        <div class="col-md-8 col-md-offset-0 col-sm-12 ">
+          <div class="text-block-container">
+            <div class="aai-vg-grid">
+              <div class="grid-item"><h3>Objetivos</h3><p>O Bootcamp Google Ads &amp; Meta Ads tem como objetivo capacitar os participantes a planear, implementar e gerir campanhas de publicidade digital orientadas a resultados, dominando as principais plataformas de paid media e a medição de performance.</p></div>
+              <div class="grid-item"><h3>Perfil</h3><p>Profissionais de marketing, gestores, empreendedores, freelancers e consultores que queiram gerir campanhas de Google Ads e Meta Ads com autonomia. Não é necessária experiência prévia em publicidade digital; foco prático e acessível, do setup à otimização.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+<div class="aai-rd">
+<section class="aac-band">
+  <div class="aac-inner">
+    <div class="eyebrow"><span class="secnum">07</span>O que levas contigo deste bootcamp</div>
+    <h2>De campanhas no escuro a <span class="hl">decisões guiadas por dados.</span></h2>
+    <p class="lead">Cinco módulos práticos, de Google Ads a Analytics. Cada um deixa-te com uma competência que aplicas já na próxima campanha.</p>
+    <div class="aac-mods">
+      <div class="aac-mod">
+        <div class="aac-accent acc-starter"></div>
+        <div class="aac-mod-top"><span class="aac-mod-num">01</span><span class="aac-mod-ti">Google Ads</span></div>
+        <div class="aac-topics">
+          <div class="aac-topic"><span class="arr">&rsaquo;</span><span class="aac-pt"><b>Search Engine Advertising</b>estrutura de campanhas de pesquisa, planeador de palavras-chave, leilão e Índice de Qualidade, boas práticas de anúncios.</span></div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span><span class="aac-pt"><b>Google Shopping</b>Merchant Center, feed de dados e guidelines de otimização.</span></div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span><span class="aac-pt"><b>Display Advertising</b>formatos, segmentação, remarketing e campanhas Smart, Demand Gen e Performance Max.</span></div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span><span class="aac-pt"><b>YouTube</b>formatos de anúncio, modelo de compra, planeamento e métricas de otimização.</span></div>
+        </div>
+      </div>
+      <div class="aac-mod">
+        <div class="aac-accent acc-inter"></div>
+        <div class="aac-mod-top"><span class="aac-mod-num">02</span><span class="aac-mod-ti">Meta Ads</span></div>
+        <div class="aac-topics">
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Estrutura de campanhas no Meta Business Manager</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Implementação do Meta Pixel e definição de conversões</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Tipos de segmentação e audiências</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Remarketing, locais de publicação e posicionamentos</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Formatos de anúncios e objetivos de campanha</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Estrutura e criação de uma campanha</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Testes A/B para anúncios</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Dicas de otimização, boas práticas e reporting</div>
+        </div>
+      </div>
+      <div class="aac-mod">
+        <div class="aac-accent acc-inter"></div>
+        <div class="aac-mod-top"><span class="aac-mod-num">03</span><span class="aac-mod-ti">Estratégia &amp; Criação de Conteúdos</span></div>
+        <div class="aac-topics">
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Inspiração e boas práticas</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Adaptação ao objetivo de campanha</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Técnicas de comunicação e persuasão ao público-alvo</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Adaptação da mensagem à jornada do cliente</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>A importância da imagem e do criativo</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Elementos essenciais de um anúncio eficaz</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Casos de sucesso</div>
+        </div>
+      </div>
+      <div class="aac-mod">
+        <div class="aac-accent acc-adv"></div>
+        <div class="aac-mod-top"><span class="aac-mod-num">04</span><span class="aac-mod-ti">Google Analytics</span></div>
+        <div class="aac-topics">
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Introdução e overview do Google Analytics</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Fontes de tráfego</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Principais métricas</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Configuração de conversões</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Avaliação de resultados</div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span>Criação de reports</div>
+        </div>
+      </div>
+      <div class="aac-mod aac-flag">
+        <div class="aac-accent"></div>
+        <div class="aac-mod-top"><span class="aac-mod-num">05</span><span class="aac-mod-ti">Projeto final</span></div>
+        <div class="aac-topics">
+          <div class="aac-topic"><span class="arr">&rsaquo;</span><span class="aac-pt"><b>Google Ads</b>planeias e estruturas campanhas de pesquisa, shopping e display.</span></div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span><span class="aac-pt"><b>Meta Ads</b>crias e segmentas anúncios em Facebook e Instagram.</span></div>
+          <div class="aac-topic"><span class="arr">&rsaquo;</span><span class="aac-pt"><b>Google Analytics</b>medes resultados e apresentas a performance das campanhas.</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="aac-outcomes">
+      <div class="aac-accent"></div>
+      <span class="aac-rtag">Resultado</span>
+      <div class="aac-oc-eye">O que sais a saber fazer</div>
+      <div class="aac-oc-h">No fim do bootcamp, vais conseguir:</div>
+      <div class="aac-oc-grid">
+        <div class="aac-oc"><span class="ck">&#10003;</span><div>Planear e estruturar campanhas de Search, Shopping, Display e YouTube.</div></div>
+        <div class="aac-oc"><span class="ck">&#10003;</span><div>Criar e otimizar campanhas de Meta Ads em Facebook e Instagram.</div></div>
+        <div class="aac-oc"><span class="ck">&#10003;</span><div>Medir performance e ROI das campanhas com o Google Analytics.</div></div>
+        <div class="aac-oc"><span class="ck">&#10003;</span><div>Otimizar orçamento e escalar o que funciona, com base em dados.</div></div>
+      </div>
+    </div>
+    <div class="aac-feat"><span class="aac-rtag">Resultado</span><div class="aac-feat-eye">Projeto final</div><div class="ft">Terminas com campanhas <span class="ul">reais a correr.</span></div><div class="fs">Planeias, lanças e analisas campanhas em Google Ads, Meta Ads e Google Analytics, o portefólio que mostras a um empregador ou cliente.</div></div>
+    <div class="aac-feat"><span class="aac-rtag">Certificação</span><div class="aac-feat-eye">Certificado DGERT</div><div class="ft">Sais com <span class="ul">certificação reconhecida.</span></div><div class="fs">A EDIT. é entidade formadora certificada pela DGERT e emite certificado no final do bootcamp.</div></div>
+  </div>
+</section>
+</div>
+
+<div class="aai-ceb-band">
+<section class="ceb-mini">
+  <div class="ceb-mini__left">
+    <img width="1024" height="483" class="ceb-mini__dgert" data-no-lazy="1" src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/dgert-entidade-formadora-branco.png" alt="Entidade Formadora Certificada DGERT">
+    <span class="ceb-mini__sep"></span>
+    <div class="ceb-mini__txt">
+      <p class="ceb-mini__eyebrow">EDIT. para Empresas</p>
+      <p class="ceb-mini__head">Faça esta formação com a <em>sua equipa</em>.</p>
+    </div>
+  </div>
+  <a class="btn btn-yellow swipe-cta ceb-mini__cta" href="https://empresas.weareedit.io/">
+    <span class="swipe-layer swipe-pink"></span>
+    <span class="swipe-layer swipe-teal"></span>
+    <span class="swipe-layer swipe-black"></span>
+    <span class="swipe-label">Conhecer a EDIT. para Empresas &rarr;</span>
+  </a>
+</section>
+</div>
+
+<div class="aai-rd">
+
+  <!-- 8 · INVESTMENT + WHAT'S INCLUDED + RISK REVERSAL -->
+  <section class="sec">
+    <div class="eyebrow"><span class="secnum">08</span>Investimento</div>
+    <h2>60 horas ao vivo, campanhas reais a correr e certificação DGERT.</h2>
+    <p class="lead inv-lead">Tudo o que está incluído quando te inscreves no Bootcamp Google Ads &amp; Meta Ads.</p>
+    <div class="inv-card">
+      <div class="inv-incl">
+        <div class="lab">Incluído na inscrição</div>
+        <div class="inv-li"><div class="ck">✓</div><div><b>60h de formação ao vivo</b>, em remoto, com formador especialista.</div></div>
+        <div class="inv-li"><div class="ck">✓</div><div><b>Gestão de campanhas reais</b> em Google Ads e Meta Ads durante o curso.</div></div>
+        <div class="inv-li"><div class="ck">✓</div><div><b>Certificado DGERT</b>, entidade formadora certificada.</div></div>
+        <div class="inv-li"><div class="ck">✓</div><div><b>Projeto final</b> com campanhas a correr para o teu portefólio.</div></div>
+        <div class="inv-li"><div class="ck">✓</div><div><b>Acompanhamento</b> e feedback do formador nos teus projetos.</div></div>
+      </div>
+      <div class="inv-price">
+        <div class="plab">Investimento</div>
+        <div class="amt">€400 <span class="x">×2</span></div>
+        <div class="sub">2× €400 (€800 total) · ou 5% de desconto a pronto</div>
+        <div class="pdiv"></div>
+        <a href="#" class="btn btn-yellow swipe-cta inv-cta"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Quero inscrever-me →</span></a>
+        <div class="guar">Em dúvida? Fala connosco antes, 15 min, sem compromisso.</div>
+      </div>
+    </div>
+    <script>(function(){var t=document.querySelector('.aai-rd .inv-cta');if(!t)return;t.addEventListener('click',function(e){e.preventDefault();var p=document.getElementById('falaConnosco');if(p){p.classList.add('open');document.documentElement.classList.add('side-form-open');}else{var b=document.querySelector('.course-contact .contact-form a');if(b)b.click();}});})();</script>
+  </section>
+
+  <!-- 9 · FAQ (objections) -->
+  <section class="sec alt">
+    <div class="eyebrow"><span class="secnum">09</span>Perguntas frequentes</div>
+    <h2>Ainda com <span class="hl">dúvidas?</span></h2>
+    <div class="faq">
+      <details open><summary>Preciso de experiência prévia em publicidade digital?</summary><div class="a">Não. O bootcamp começa do zero e leva-te até à gestão e otimização de campanhas. Basta vontade de aprender e praticar.</div></details>
+      <details><summary>O bootcamp é ao vivo ou gravado?</summary><div class="a">100% ao vivo, em remoto, com formador. As sessões são práticas: configuras e otimizas campanhas durante a aula, não vês só slides.</div></details>
+      <details><summary>Em que horário decorre?</summary><div class="a">Em horário pós-laboral, ao longo de 10 semanas, a partir de 2 de Novembro de 2026. Consulta as datas e o horário detalhado no topo da página.</div></details>
+      <details><summary>Recebo certificado?</summary><div class="a">Sim. A EDIT. é entidade formadora certificada pela DGERT e emite certificado no final do bootcamp.</div></details>
+      <details><summary>Como funciona o pagamento?</summary><div class="a">€800 no total, em 2 prestações de €400, ou com 5% de desconto se pago a pronto. Fala connosco para condições e faturação.</div></details>
+    </div>
+  </section>
+
+  <!-- Francisco · admissions contact card (nq2-style) -->
+  <section class="sec">
+    <div class="eyebrow">Fala connosco</div>
+    <div class="nq2 fr-card">
+      <div class="nq2-photo">
+        <img src="https://weareedit.io/wp-content/uploads/2024/08/Francisco-1.jpg" alt="Francisco Freitas">
+        <div class="tag">Head of Admissions</div>
+      </div>
+      <div>
+        <h2>Ajudamos-te a escolher o <span class="mh-y">curso certo.</span></h2>
+        <p class="lead">Falas diretamente com quem trata das inscrições. Ajudamos-te a perceber se o Google Ads &amp; Meta Ads é o caminho certo para ti, sem compromisso.</p>
+        <div class="nq2-sign"><div class="bar"></div><div><div class="nq2-nm">Francisco Freitas</div><div class="nq2-rl">Head of Admissions</div></div></div>
+        <div class="fr-cta-row">
+          <a class="btn btn-yellow swipe-cta fr-cta-form" href="#"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Enviar mensagem</span></a>
+          <a class="fr-wa" href="https://wa.me/351936508449?text=Ol%C3%A1%21%20Tenho%20uma%20d%C3%BAvida%20sobre%20o%20Bootcamp%20Google%20Ads%20%26%20Meta%20Ads." target="_blank" rel="noopener" aria-label="Falar no WhatsApp"><svg viewBox="0 0 24 24" fill="#ffffff" xmlns="http://www.w3.org/2000/svg"><path d="M19.05 4.91A9.816 9.816 0 0 0 12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21h.004c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01zM12.04 20.15a8.23 8.23 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.51.11-.11.25-.29.37-.43.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.42h-.48a.92.92 0 0 0-.66.31c-.23.25-.87.85-.87 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29z"/></svg></a>
+        </div>
+        <script>(function(){var t=document.querySelector('.aai-rd .fr-cta-form');if(!t)return;t.addEventListener('click',function(e){e.preventDefault();var p=document.getElementById('falaConnosco');if(p){p.classList.add('open');document.documentElement.classList.add('side-form-open');}else{var b=document.querySelector('.course-contact .contact-form a');if(b)b.click();}});})();</script>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 · FINAL CTA (urgency, date fixed) -->
+  <section class="sec fin">
+    <div class="eyebrow" style="text-align:center;color:rgba(255,255,255,.5);"><span class="secnum">10</span></div>
+    <h2><span class="mh-p">A próxima turma</span> <span class="hl">começa a 2 de Novembro.</span></h2>
+    <p>Remote Learning · 60 horas · 10 semanas · pós-laboral · certificado DGERT · vagas limitadas.</p>
+    <a href="#" class="btn btn-yellow swipe-cta"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Quero o meu lugar →</span></a>
+  </section>
+
+</div>
+
+<style>
+  /* LIGHT FOOTER — flip the proxied dark theme footer to a light variant. */
+  footer{background:#ffffff !important;color:#16181d !important;border-top:1px solid #ececec !important;}
+  footer .container,footer .footer-menu,footer .row,footer .col-sm-12,footer .col-md-3,footer [class*="col-"]{background:transparent !important;}
+  footer h2,footer h3,footer h4,footer h5,footer p,footer span,footer li,footer label,footer .title,footer div{color:#16181d !important;}
+  footer a{color:#5b5b5b !important;text-decoration:none !important;}
+  footer a:hover{color:#f92869 !important;}
+  footer hr,footer .separator,footer .line{border-color:#ececec !important;background:#ececec !important;}
+  /* footer logos are white assets — invert so they read on light; the project
+     cards lose their dark fill */
+  footer .footer-logo img,footer .outros-projetos img,footer .partners img,footer img{filter:invert(1) grayscale(1) !important;}
+  footer .outros-projetos a,footer .partners a,footer [class*="outros"] > div{background:transparent !important;border-color:#e8e8e8 !important;}
+</style>
