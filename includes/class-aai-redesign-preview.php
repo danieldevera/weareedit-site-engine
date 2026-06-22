@@ -36,7 +36,7 @@ class EDIT_AAI_Redesign_Preview {
 
     /** Splice markers in the live markup. */
     const HERO_BODY_MARK = 'banner-image"';       // start of the course hero <section> — cut here to drop the real hero + body (we render our own Augment-adapted hero instead)
-    const FOOTER_MARK    = '<footer ';            // site footer start
+    const FOOTER_MARK    = '<footer';             // site footer start (no trailing space: raw output emits "<footer\n", WP-Rocket-optimized emits "<footer ")
 
     const SECTIONS  = 'includes/templates/aai-redesign-sections.html';  // scoped fragment
     const TEMPLATE  = 'includes/templates/aai-redesign-preview.html';   // standalone fallback
