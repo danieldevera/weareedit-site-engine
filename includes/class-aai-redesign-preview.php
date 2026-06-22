@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class EDIT_AAI_Redesign_Preview {
 
-    const STATUS        = 'preview';
+    const STATUS        = 'live';
     const PATH          = '/aai-preview';
     const PREVIEW_TOKEN = 'aai-2026-preview';
 
@@ -45,6 +45,14 @@ class EDIT_AAI_Redesign_Preview {
         if ( self::STATUS === 'off' ) return;
         if ( self::is_target_request() ) {
             add_action( 'template_redirect', [ __CLASS__, 'render_page' ], 0 );
+        } elseif ( self::STATUS === 'live' && self::is_live_target() ) {
+            // Go-live: render the SAME approved redesign on the real course URL.
+            // Priority -1 so we exit BEFORE the plugin's output buffer starts
+            // (template_redirect:0) — that keeps the formacao post-processors
+            // (TOC etc.) from touching our spliced markup, so the live page is
+            // exactly the approved preview. WP Rocket (its buffer starts earlier)
+            // still caches the emitted result.
+            add_action( 'template_redirect', [ __CLASS__, 'render_live' ], -1 );
         }
     }
 
@@ -57,6 +65,32 @@ class EDIT_AAI_Redesign_Preview {
         if ( current_user_can( 'manage_options' ) ) return true;
         $token = isset( $_GET['preview'] ) ? (string) wp_unslash( $_GET['preview'] ) : '';
         return ! empty( self::PREVIEW_TOKEN ) && hash_equals( self::PREVIEW_TOKEN, $token );
+    }
+
+    /**
+     * Live-mode target: the real course URL — but NOT our own internal raw
+     * self-fetch (flagged by ?edit_src or the fetch User-Agent), which must
+     * fall through to the normal theme render so we can splice it.
+     */
+    private static function is_live_target(): bool {
+        if ( isset( $_GET['edit_src'] ) ) return false;
+        $ua = (string) ( $_SERVER['HTTP_USER_AGENT'] ?? '' );
+        if ( strpos( $ua, 'edit-aai-preview' ) !== false ) return false;
+        $path = (string) parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ), PHP_URL_PATH );
+        return rtrim( $path, '/' ) === '/formacao/bootcamp-advanced-artificial-intelligence';
+    }
+
+    /**
+     * Go-live renderer: fetch the raw course page, splice in the redesign,
+     * emit index,follow. Any failure falls through (return) to the untouched
+     * live page — the campaign URL can never break.
+     */
+    public static function render_live(): void {
+        $live = self::live_html();                                   // self-fetch → raw theme page
+        if ( $live === '' ) return;                                  // fallback: normal page
+        $spliced = self::splice( $live, self::sections_fragment(), true );
+        if ( $spliced === '' ) return;                               // fallback: markers missing → normal page
+        self::emit( $spliced, false );                               // 200, index,follow, cacheable
     }
 
     public static function render_page(): void {
@@ -111,7 +145,11 @@ class EDIT_AAI_Redesign_Preview {
             $cached = get_transient( $key );
             if ( is_string( $cached ) && $cached !== '' ) return $cached;
         }
-        $resp = wp_remote_get( self::LIVE_URL, [
+        // Append ?edit_src=raw so (a) our hooks bail and serve the raw theme
+        // page (recursion guard) and (b) WP Rocket bypasses cache on the
+        // self-fetch (query-string URLs aren't cached by default) — so we
+        // always splice fresh markup, never an already-spliced page.
+        $resp = wp_remote_get( add_query_arg( 'edit_src', 'raw', self::LIVE_URL ), [
             'timeout'     => 22,
             'redirection' => 3,
             'sslverify'   => false,
@@ -126,7 +164,7 @@ class EDIT_AAI_Redesign_Preview {
     }
 
     /** Splice: [top..hero] + our sections + [footer..end]. '' on failure. */
-    private static function splice( string $live, string $fragment ): string {
+    private static function splice( string $live, string $fragment, bool $live_mode = false ): string {
         $mark = strpos( $live, self::HERO_BODY_MARK );
         if ( $mark === false ) return '';
         $cut = strrpos( substr( $live, 0, $mark ), '<section' );
@@ -138,9 +176,12 @@ class EDIT_AAI_Redesign_Preview {
         $top    = substr( $live, 0, $cut );
         $footer = substr( $live, $foot );
 
-        // Force noindex on the proxied <head> (defence-in-depth; the route is
-        // already 404 to non-admins/crawlers).
-        $top = preg_replace( '/<head[^>]*>/i', '$0<meta name="robots" content="noindex,nofollow">', $top, 1 );
+        // Force noindex on the proxied <head> for the PREVIEW route only
+        // (defence-in-depth; that route is already 404 to crawlers). On the
+        // live URL we keep the real page's index,follow + all its JSON-LD.
+        if ( ! $live_mode ) {
+            $top = preg_replace( '/<head[^>]*>/i', '$0<meta name="robots" content="noindex,nofollow">', $top, 1 );
+        }
 
         // Hard-strip the EARLY15 promo bar/overlay (JS-built — sets inline
         // styles a CSS rule can't beat) and the breadcrumbs nav, so they're
@@ -283,10 +324,12 @@ class EDIT_AAI_Redesign_Preview {
         return $html;
     }
 
-    private static function emit( string $html ): void {
+    private static function emit( string $html, bool $noindex = true ): void {
         status_header( 200 );
-        nocache_headers();
-        header( 'X-Robots-Tag: noindex, nofollow', true );
+        if ( $noindex ) {
+            nocache_headers();
+            header( 'X-Robots-Tag: noindex, nofollow', true );
+        }
         header( 'Content-Type: text/html; charset=UTF-8' );
         echo $html;
         exit;
