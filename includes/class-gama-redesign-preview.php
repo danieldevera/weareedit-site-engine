@@ -284,7 +284,7 @@ class EDIT_GAMA_Redesign_Preview {
             }
         }
 
-        return $top . "\n<!-- GAMA redesign sections (preview) -->\n" . $fragment . "\n" . $footer;
+        return $top . "\n<!-- GAMA redesign sections -->\n" . $fragment . self::inscription_panel() . "\n" . $footer;
     }
 
     /**
@@ -304,6 +304,27 @@ class EDIT_GAMA_Redesign_Preview {
             $html .= str_repeat( '</div>', $diff );
         }
         return $html;
+    }
+
+    /**
+     * Re-inject the real Inscrição form (CF7 295986) as a side panel — the
+     * splice drops the theme's native one. Reuses the .side-filter-container
+     * open mechanism. Returns '' on failure so CTAs fall back to #falaConnosco.
+     */
+    private static function inscription_panel(): string {
+        if ( ! class_exists( 'WPCF7_ContactForm' ) ) return '';
+        $cf7 = WPCF7_ContactForm::get_instance( 295986 );
+        if ( ! $cf7 ) return '';
+        $form = do_shortcode( $cf7->shortcode() );
+        if ( trim( (string) $form ) === '' ) return '';
+        return '<div class="side-filter-container" id="aai-inscricao">'
+            . '<div class="overlay-side-filter" data-aai-close></div>'
+            . '<div class="side-filter"><div class="filter-content">'
+            . '<a href="#" data-aai-close aria-label="Fechar" style="position:absolute;top:16px;right:20px;font-size:30px;line-height:1;color:#0a0a0a;text-decoration:none;z-index:10;">&times;</a>'
+            . '<p style="font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#f92869;margin:0 0 6px;">Inscri&ccedil;&atilde;o</p>'
+            . '<h3 style="font-size:24px;font-weight:700;margin:0 0 18px;color:#0a0a0a;">Quero o meu lugar</h3>'
+            . $form
+            . '</div></div></div>';
     }
 
     private static function emit( string $html, bool $noindex = true ): void {
