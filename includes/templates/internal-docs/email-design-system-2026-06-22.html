@@ -9,35 +9,23 @@
   :root{--ink:#0a0a0a;--grey:#5b5b5b;--line:#e6e6e6;--bg:#eef0f2;--soft:#f3f3f3;
     --yellow:#ffdd06;--pink:#f92869;--teal:#60c5b3;--blue:#0090eb;--good:#1b9e3e;}
   *{box-sizing:border-box;}
-  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
-    background:var(--bg);color:var(--ink);line-height:1.55;font-size:14px;margin:0;
-    -webkit-font-smoothing:antialiased;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;font-size:14px;margin:0;-webkit-font-smoothing:antialiased;}
   .wrap{max-width:960px;margin:0 auto;padding:44px 28px 90px;}
   header.doc{border-bottom:3px solid var(--ink);padding-bottom:18px;margin-bottom:8px;}
   .eyebrow{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--pink);margin:0 0 8px;}
   h1{font-size:28px;font-weight:800;line-height:1.15;margin:0 0 6px;letter-spacing:-.4px;}
   .sub{color:var(--grey);font-size:14px;margin:0;}
-  h2{font-size:13px;font-weight:800;margin:44px 0 14px;padding-bottom:7px;border-bottom:2px solid var(--line);text-transform:uppercase;letter-spacing:.14em;color:var(--grey);}
+  h2.sec{font-size:13px;font-weight:800;margin:44px 0 14px;padding-bottom:7px;border-bottom:2px solid var(--line);text-transform:uppercase;letter-spacing:.14em;color:var(--grey);}
   .clabel{margin:34px 0 10px;}
   .clabel h3{font-size:17px;font-weight:800;margin:0 0 2px;letter-spacing:-.2px;}
   .clabel p{margin:0;font-size:13px;color:var(--grey);}
   .lk{font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--good);border-radius:4px;padding:2px 7px;margin-left:8px;vertical-align:middle;}
   .lk.open{background:#b0b0b0;}.lk.canon{background:var(--pink);}
-  /* preview frame mimics the email environment */
   .pv{background:#f5f5f5;border:1px solid var(--line);border-radius:10px;padding:24px;overflow-x:auto;}
-  .pv > table, .pv > .heroimg{margin:0 auto;}
-  /* swatches */
+  .pv > table{margin:0 auto;}
   .sw{display:flex;flex-wrap:wrap;gap:10px;margin:4px 0 8px;}
   .sw .c{width:120px;border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:11px;background:#fff;}
   .sw .c .chip{height:46px;}.sw .c .lab{padding:6px 8px;}.sw .c .lab b{display:block;font-size:11px;}.sw .c .lab span{color:#888;}
-  .type p{margin:0 0 10px;}
-  /* email mobile classes (so previews are faithful if window < 680) */
-  @media only screen and (max-width:680px){
-    .container,.row-table,.row-cell{display:block!important;width:100%!important;}
-    .row-cell{padding:0 24px!important;}.row-cell.img-cell{padding:0!important;}
-    .row-img-md{width:100%!important;max-width:none!important;height:auto!important;}
-    .h1{font-size:28px!important;}.h2-em{font-size:28px!important;}.title-md{font-size:22px!important;}
-  }
   footer{margin-top:50px;padding-top:16px;border-top:1px solid var(--line);color:#999;font-size:12px;}
 </style>
 </head>
@@ -47,152 +35,155 @@
 <header class="doc">
   <div class="eyebrow">Documento interno · Design System</div>
   <h1>Email Design System &mdash; biblioteca de componentes</h1>
-  <p class="sub">Fonte única para emails Brevo da EDIT. &middot; v1 (visual) &middot; 2026-06-22</p>
+  <p class="sub">Fonte única para emails Brevo da EDIT. &middot; v2 (alinhado aos editoriais enviados) &middot; 2026-06-22</p>
 </header>
-<p style="color:#5b5b5b;font-size:14px;margin:14px 0 0;">Cada bloco renderizado tal como aparece no email. Cor de formato: <b style="color:#f92869;">bootcamp pink</b>, <b style="color:#1a9e8c;">workshop teal</b>, <b style="color:#0090eb;">curso blue</b>.</p>
+<p style="color:#5b5b5b;font-size:14px;margin:14px 0 0;">Componentes extraídos dos editoriais reais (Disruptive News #1&ndash;3). Cor de formato: <b style="color:#f92869;">bootcamp pink</b>, <b style="color:#1a9e8c;">workshop teal</b>, <b style="color:#0090eb;">curso blue</b>.</p>
 
-<h2>Fundações</h2>
+<h2 class="sec">Fundações</h2>
 <div class="sw">
   <div class="c"><div class="chip" style="background:#0a0a0a;"></div><div class="lab"><b>Ink</b><span>#0a0a0a</span></div></div>
   <div class="c"><div class="chip" style="background:#f92869;"></div><div class="lab"><b>Pink</b><span>#f92869</span></div></div>
   <div class="c"><div class="chip" style="background:#ffdd06;"></div><div class="lab"><b>Yellow</b><span>#ffdd06</span></div></div>
   <div class="c"><div class="chip" style="background:#60c5b3;"></div><div class="lab"><b>Teal</b><span>#60c5b3</span></div></div>
   <div class="c"><div class="chip" style="background:#0090eb;"></div><div class="lab"><b>Blue</b><span>#0090eb</span></div></div>
-  <div class="c"><div class="chip" style="background:#f5f5f5;"></div><div class="lab"><b>BG</b><span>#f5f5f5</span></div></div>
 </div>
-<div class="type" style="background:#fff;border:1px solid var(--line);border-radius:10px;padding:20px 24px;font-family:'Helvetica Neue',Arial,sans-serif;">
-  <p style="font-size:36px;font-weight:700;letter-spacing:-0.025em;line-height:1.1;">H1 hero 36/700 <span style="color:#f92869;">.</span></p>
-  <p style="font-size:30px;font-weight:700;letter-spacing:-0.025em;">H2 secção 30/700 <span style="color:#f92869;">:</span></p>
-  <p style="font-size:24px;font-weight:700;letter-spacing:-0.015em;">H3 título de cartão 24/700</p>
-  <p style="font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#f92869;">Eyebrow 11 / 700 / 0.18em</p>
-  <p style="font-size:15px;color:#444;margin:0;">Corpo 15px / 1.5 &middot; Helvetica Neue. Container 680px, padding lateral 40px.</p>
-</div>
+<p style="font-size:13px;color:#5b5b5b;">Container 680px, Helvetica Neue, padding lateral 40px. H1 36/700, H2-em 30/700 (+ ponto pink), H3 24-26/700, eyebrow 11/700/0.22em. Citações em <b>Georgia itálico</b>.</p>
 
-<h2>Componentes</h2>
+<h2 class="sec">Componentes (reais)</h2>
 
 <!-- HEADER -->
-<div class="clabel"><h3>Header <span class="lk open">Aberto</span></h3><p>Logo 160px + data/label. Trocar: label direito.</p></div>
+<div class="clabel"><h3>Header <span class="lk open">Aberto</span></h3><p>Logo 160 + data/label direito.</p></div>
 <div class="pv">
-  <table role="presentation" width="680" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="width:680px;max-width:680px;background:#fff;" class="container"><tr><td style="padding:30px 40px;" class="px-md">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-      <td valign="middle" align="left"><img src="https://weareedit.io/wp-content/uploads/2026/05/edit-extended-logo.png" alt="EDIT." width="160" style="display:block;width:160px;height:auto;border:0;"></td>
-      <td valign="middle" align="right"><p style="margin:0;font-size:11px;font-weight:700;color:#9a9a9a;letter-spacing:0.22em;text-transform:uppercase;font-family:'Helvetica Neue',Arial,sans-serif;">Novo Bootcamp</p></td>
-    </tr></table>
-  </td></tr></table>
+  <table role="presentation" width="680" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="width:680px;max-width:680px;background:#fff;"><tr><td style="padding:32px 40px 0;"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+    <td valign="middle" align="left"><img src="https://weareedit.io/wp-content/uploads/2026/05/edit-extended-logo.png" alt="EDIT." width="160" style="display:block;width:160px;height:auto;border:0;"></td>
+    <td valign="middle" align="right"><p style="margin:0;font-size:11px;font-weight:700;color:#9a9a9a;letter-spacing:0.22em;text-transform:uppercase;font-family:'Helvetica Neue',Arial,sans-serif;">18 Junho 2026</p></td>
+  </tr></table></td></tr></table>
 </div>
 
-<!-- HERO TEXT -->
-<div class="clabel"><h3>Hero &mdash; texto <span class="lk open">Aberto</span></h3><p>Eyebrow + H1 com highlight + lede.</p></div>
+<!-- FOUNDER NOTE -->
+<div class="clabel"><h3>Founder note (Nota do fundador) <span class="lk">Bloqueado</span></h3><p>Eyebrow + H1 (ponto pink) + corpo (links pink/blue) + PS + signature card (anel pink 3px).</p></div>
 <div class="pv">
-  <table role="presentation" width="680" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="width:680px;max-width:680px;background:#fff;" class="container"><tr><td style="padding:36px 40px;font-family:'Helvetica Neue',Arial,sans-serif;" class="px-md">
-    <p style="margin:0 0 14px;font-size:11px;font-weight:700;color:#f92869;letter-spacing:0.22em;text-transform:uppercase;">Inteligência Artificial · Ao vivo</p>
-    <h1 class="h1" style="margin:0 0 16px;font-size:36px;line-height:1.12;font-weight:700;letter-spacing:-0.025em;color:#0a0a0a;">De &ldquo;ouvi falar de IA&rdquo; a usá-la <span style="background:#ffdd06;padding:0 3px;">todos os dias no trabalho.</span></h1>
-    <p style="margin:0;font-size:17px;line-height:1.55;color:#4a4a4a;">40 horas ao vivo, em remoto, com a Naiara Back. Sais com projetos construídos, não com apontamentos.</p>
-  </td></tr></table>
+  <table role="presentation" width="680" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="width:680px;max-width:680px;background:#fff;font-family:'Helvetica Neue',Arial,sans-serif;color:#0a0a0a;">
+    <tr><td style="padding:36px 40px 8px;"><p style="margin:0;font-size:11px;font-weight:700;color:#f92869;letter-spacing:0.22em;text-transform:uppercase;">Nota do fundador</p></td></tr>
+    <tr><td style="padding:14px 40px 20px;"><h1 style="margin:0;font-size:36px;line-height:1.1;font-weight:700;letter-spacing:-0.025em;">Do prompt ao produto<span style="color:#f92869;">.</span></h1></td></tr>
+    <tr><td style="padding:0 40px 20px;">
+      <p style="margin:0 0 16px;font-size:16px;line-height:1.55;color:#222;">Figma, Framer e Webflow estão a apagar a linha entre <em>desenhar</em> e <em>publicar</em>. Escrevi sobre o que isto muda para quem desenha.</p>
+      <p style="margin:0 0 16px;font-size:16px;line-height:1.55;color:#222;">Faltam poucos dias para fechar o <a href="#" style="color:#f92869;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:2px;font-weight:700;">Early Bird de 15%</a> nos cursos de Setembro.</p>
+      <p style="margin:28px 0 0;padding-top:20px;border-top:1px solid rgba(249,40,105,0.12);font-size:13px;line-height:1.5;font-style:italic;color:#666;"><strong style="color:#f92869;font-style:normal;">PS:</strong> Tens ideias para partilhar? <a href="#" style="color:#f92869;text-decoration:underline;font-weight:600;">Responde a este email</a> &mdash; sou todo ouvidos. :)</p>
+    </td></tr>
+    <tr><td style="padding:8px 40px 40px;"><table cellpadding="0" cellspacing="0" border="0"><tr>
+      <td valign="top" width="84" style="padding-right:18px;"><img src="https://weareedit.io/wp-content/uploads/2026/05/daniel-devera-sign-off.png" alt="Daniel Devera" width="84" height="84" style="display:block;width:84px;height:84px;border-radius:50%;border:3px solid #f92869;box-sizing:border-box;"></td>
+      <td valign="top"><img src="https://weareedit.io/wp-content/uploads/2026/06/daniel-devera-assinatura-cropped.png" alt="Daniel Devera" width="180" style="display:block;width:180px;height:auto;border:0;"><p style="margin:8px 0 0 4px;font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#0a0a0a;">Founder</p><p style="margin:6px 0 0 4px;font-size:12px;color:#0a0a0a;"><a href="#" style="color:#0a0a0a;text-decoration:none;border-bottom:1px solid rgba(10,10,10,0.35);">daniel.devera@weareedit.io</a></p></td>
+    </tr></table></td></tr>
+  </table>
 </div>
 
-<!-- HERO IMAGE -->
-<div class="clabel"><h3>Hero &mdash; imagem <span class="lk open">Aberto</span></h3><p>Criativo do produto, largura total, linkado com UTMs. (Abaixo: representação.)</p></div>
+<!-- EDITORIAL ARTICLE BLOCK -->
+<div class="clabel"><h3>Editorial article block <span class="lk">Bloqueado</span></h3><p>Pull-quote Georgia itálico + aspas pink 60px + retrato 220 (borda preta 3px) + título + corpo + "Ler o artigo ›".</p></div>
 <div class="pv">
-  <table role="presentation" width="680" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="width:680px;max-width:680px;background:#fff;" class="container"><tr><td style="padding:24px 40px;" class="px-md">
-    <div class="heroimg" style="background:#e0466e;border-radius:10px;padding:38px 36px 30px;font-family:'Helvetica Neue',Arial,sans-serif;color:#0a0a0a;max-width:600px;">
-      <div style="width:46px;height:38px;border:3px solid #0a0a0a;border-radius:3px;margin-bottom:64px;"></div>
-      <p style="margin:0 0 10px;font-size:20px;color:#0a0a0a;">Pós-Laboral</p>
-      <p style="margin:0;font-size:34px;font-weight:800;line-height:1.08;letter-spacing:-0.02em;"><span style="color:#fff;">Bootcamp Online</span><br>Advanced Artificial Intelligence</p>
-      <p style="margin:14px 0 0;font-size:18px;font-weight:700;">29 de Junho 2026, Remote</p>
-    </div>
-  </td></tr></table>
+  <table role="presentation" width="680" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="width:680px;max-width:680px;background:#fff;">
+    <tr><td style="padding:40px 40px 24px;"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+      <td valign="middle" width="60%" style="width:60%;padding-right:28px;font-family:'Helvetica Neue',Arial,sans-serif;color:#0a0a0a;">
+        <p style="margin:0 0 18px;font-size:11px;font-weight:700;color:#f92869;letter-spacing:0.22em;text-transform:uppercase;">Artigo &middot; Founder</p>
+        <p style="margin:0;font-family:Georgia,serif;font-size:60px;line-height:0.8;color:#f92869;">&ldquo;</p>
+        <p style="margin:0;font-family:Georgia,serif;font-style:italic;font-size:22px;line-height:1.35;color:#0a0a0a;">O prompt é o novo wireframe &mdash; mas o critério não se prompta.</p>
+        <p style="margin:18px 0 0;font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#717171;">Daniel Devera &middot; Founder</p>
+      </td>
+      <td valign="middle" width="40%" align="center" style="width:40%;"><img src="https://weareedit.io/wp-content/uploads/2026/06/editorial_3_newsletter-preview.png" alt="" width="220" height="220" style="display:block;width:220px;height:220px;border-radius:4px;border:3px solid #0a0a0a;box-sizing:border-box;object-fit:cover;"></td>
+    </tr></table></td></tr>
+    <tr><td style="padding:0 40px 12px;font-family:'Helvetica Neue',Arial,sans-serif;"><h2 style="margin:0;font-size:24px;line-height:1.22;font-weight:700;letter-spacing:-0.015em;color:#0a0a0a;">Do prompt ao produto: o design já não termina num ficheiro<span style="color:#f92869;">.</span></h2></td></tr>
+    <tr><td style="padding:8px 40px 20px;font-family:'Helvetica Neue',Arial,sans-serif;"><p style="margin:0;font-size:16px;line-height:1.55;color:#222;">Durante vinte anos, o trabalho de um designer terminava num ficheiro. Hoje, esse ficheiro deixou de ser o destino. Isto não é o fim do designer: é o fim de uma <em>definição</em> de designer.</p></td></tr>
+    <tr><td style="padding:0 40px 40px;"><a href="#" style="display:inline-block;font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#f92869;text-decoration:underline;text-decoration-color:#f92869;text-underline-offset:4px;text-decoration-thickness:2px;font-family:'Helvetica Neue',Arial,sans-serif;">Ler o artigo &rsaquo;</a></td></tr>
+  </table>
+</div>
+
+<!-- NEWS BLOCK -->
+<div class="clabel"><h3>News block (Notícia) <span class="lk canon">Canónico</span></h3><p>Eyebrow pink + borda esquerda 6px + título + corpo + imagem + "▶ Ver vídeo ›".</p></div>
+<div class="pv">
+  <table role="presentation" width="680" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="width:680px;max-width:680px;background:#fff;font-family:'Helvetica Neue',Arial,sans-serif;">
+    <tr><td style="padding:8px 40px 8px;"><p style="margin:0 0 8px;font-size:11px;font-weight:700;color:#f92869;letter-spacing:0.22em;text-transform:uppercase;">Notícia</p></td></tr>
+    <tr><td style="padding:0 40px 28px;"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+      <td valign="top" width="6" style="width:6px;background:#f92869;line-height:0;font-size:0;">&nbsp;</td>
+      <td valign="top" style="padding-left:20px;color:#0a0a0a;">
+        <h3 style="margin:0 0 12px;font-size:24px;line-height:1.2;font-weight:700;letter-spacing:-0.015em;">Framer 3.0 &mdash; a IA entra na tela.</h3>
+        <p style="margin:0 0 16px;font-size:15px;line-height:1.55;color:#444;">A Framer lançou a <strong>3.0</strong>: <strong>Agents</strong> que desenham páginas e escrevem código, e abertura a agentes externos via <strong>MCP</strong>. Desenhar passou a ser dirigir agentes.</p>
+        <a href="#" style="display:block;text-decoration:none;border:0;margin:6px 0 14px;"><img src="https://img.youtube.com/vi/j4WW4bwWhPk/maxresdefault.jpg" alt="" width="600" style="display:block;width:100%;max-width:600px;height:auto;border-radius:6px;border:1px solid #e5e5e5;"></a>
+        <a href="#" style="display:inline-block;font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#f92869;text-decoration:underline;text-decoration-color:#f92869;text-underline-offset:4px;text-decoration-thickness:2px;">&#9654;&nbsp; Ver o vídeo completo &rsaquo;</a>
+      </td>
+    </tr></table></td></tr>
+  </table>
+</div>
+
+<!-- AI SPOTLIGHT -->
+<div class="clabel"><h3>AI Spotlight band <span class="lk canon">Canónico</span></h3><p>Banda preta + eyebrow azul + citação Georgia itálico + atribuição + CTA.</p></div>
+<div class="pv">
+  <table role="presentation" width="680" cellpadding="0" cellspacing="0" border="0" bgcolor="#0a0a0a" style="width:680px;max-width:680px;background:#0a0a0a;font-family:'Helvetica Neue',Arial,sans-serif;">
+    <tr><td style="padding:44px 40px;">
+      <p style="margin:0 0 18px;font-size:11px;font-weight:700;color:#0090eb;letter-spacing:0.22em;text-transform:uppercase;">AI Spotlight</p>
+      <p style="margin:0;font-family:Georgia,serif;font-style:italic;font-size:24px;line-height:1.4;color:#fff;">&ldquo;Hoje, ser um profissional híbrido &mdash; capaz de unir estratégia humana e IA &mdash; é um diferencial. Daqui a uns meses, será o mínimo.&rdquo;</p>
+      <p style="margin:20px 0 0;font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.55);">Naiara Back &middot; Tutora de IA Aplicada &middot; EDIT.</p>
+      <p style="margin:22px 0 0;font-size:14px;line-height:1.5;color:rgba(255,255,255,0.78);">Queres ser esse profissional híbrido? O <strong style="color:#fff;">Bootcamp Advanced AI</strong> forma-te em IA aplicada, do prompt à automação real.</p>
+      <a href="#" style="display:inline-block;margin-top:14px;font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#0090eb;text-decoration:underline;text-decoration-color:#0090eb;text-underline-offset:4px;text-decoration-thickness:2px;">Ver Bootcamp Advanced AI &rsaquo;</a>
+    </td></tr>
+  </table>
+</div>
+
+<!-- DGERT BAND -->
+<div class="clabel"><h3>Banda DGERT <span class="lk">Bloqueado</span></h3></div>
+<div class="pv">
+  <table role="presentation" width="680" cellpadding="0" cellspacing="0" border="0" bgcolor="#0a0a0a" style="width:680px;max-width:680px;background:#0a0a0a;"><tr><td style="padding:28px 40px;"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+    <td valign="middle" align="left" width="120" style="padding-right:24px;"><img src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/dgert-entidade-formadora-branco.png" alt="DGERT" width="84" style="display:block;width:84px;height:auto;"></td>
+    <td valign="middle"><p style="margin:0;font-size:18px;font-weight:700;color:#fff;font-family:'Helvetica Neue',Arial,sans-serif;letter-spacing:-0.01em;">Entidade Formadora Certificada</p><p style="margin:4px 0 0;font-size:12px;color:rgba(255,255,255,0.6);font-family:'Helvetica Neue',Arial,sans-serif;">DGERT nº 18391</p></td>
+    <td valign="middle" align="right" width="40"><span style="color:#fff;font-size:22px;font-family:'Helvetica Neue',Arial,sans-serif;">&#8599;</span></td>
+  </tr></table></td></tr></table>
 </div>
 
 <!-- SECTION HEADING -->
-<div class="clabel"><h3>Section heading <span class="lk open">Aberto</span></h3><p>H2 + ponto/dois-pontos pink.</p></div>
+<div class="clabel"><h3>Section heading <span class="lk open">Aberto</span></h3><p>Eyebrow pequeno pink + H2 (ponto pink).</p></div>
 <div class="pv">
-  <table role="presentation" width="680" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="width:680px;max-width:680px;background:#fff;" class="container"><tr><td align="center" style="padding:40px 32px 16px;font-family:'Helvetica Neue',Arial,sans-serif;" class="px-md">
-    <h2 class="h2-em" style="margin:0;font-size:34px;line-height:1.1;font-weight:700;letter-spacing:-0.025em;color:#0a0a0a;border:0;padding:0;text-transform:none;">Em destaque agora<span style="color:#f92869;">:</span></h2>
-  </td></tr></table>
-</div>
-
-<!-- COURSE CARD PINK -->
-<div class="clabel"><h3>Course card &mdash; Bootcamp (pink) <span class="lk canon">Canónico</span></h3><p>Foto 280, eyebrow+título+sub+tutor+CTA. Foto à esquerda.</p></div>
-<div class="pv">
-  <table role="presentation" width="680" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="width:680px;max-width:680px;background:#fff;" class="container"><tr><td style="padding:8px 32px 24px;">
-    <table role="presentation" class="row-table" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-      <td valign="top" class="row-cell img-cell" width="48%" style="width:48%;padding-right:24px;"><img class="row-img-md" src="https://weareedit.io/wp-content/uploads/2026/05/naiara-back-280x280-1.png" alt="" width="280" style="display:block;width:100%;max-width:280px;height:280px;border-radius:4px;object-fit:cover;"></td>
-      <td valign="middle" class="row-cell text-cell" width="52%" style="width:52%;font-family:'Helvetica Neue',Arial,sans-serif;color:#0a0a0a;">
-        <div style="font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#f92869;margin-bottom:10px;">Bootcamp · 29 Junho</div>
-        <h3 class="title-md" style="margin:0 0 12px;font-size:24px;line-height:1.18;font-weight:700;letter-spacing:-0.015em;">Advanced Artificial Intelligence &mdash; usa IA todos os dias no trabalho.</h3>
-        <p style="margin:0 0 16px;font-size:14px;line-height:1.45;color:#444;">40h ao vivo · Remote · Certificado DGERT.</p>
-        <div style="font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#f92869;margin-bottom:4px;">Tutora</div>
-        <div style="font-size:14px;font-weight:700;line-height:1.2;"><a href="#" style="color:#0a0a0a;text-decoration:underline;text-decoration-color:#f92869;text-underline-offset:2px;">Naiara Back</a></div>
-        <div style="font-size:12px;color:#717171;margin-bottom:20px;">18+ anos em IA aplicada</div>
-        <a href="#" style="display:inline-block;font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#f92869;text-decoration:underline;text-decoration-color:#f92869;text-underline-offset:4px;text-decoration-thickness:2px;">Ver programa ›</a>
-      </td>
-    </tr></table>
-  </td></tr></table>
-</div>
-
-<!-- COURSE CARD TEAL -->
-<div class="clabel"><h3>Course card &mdash; Workshop (teal) <span class="lk canon">Canónico</span></h3><p>Mesma estrutura, cor teal, foto à direita (alterna).</p></div>
-<div class="pv">
-  <table role="presentation" width="680" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="width:680px;max-width:680px;background:#fff;" class="container"><tr><td style="padding:8px 32px 24px;">
-    <table role="presentation" class="row-table" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-      <td valign="middle" class="row-cell text-cell" width="52%" style="width:52%;padding-right:24px;font-family:'Helvetica Neue',Arial,sans-serif;color:#0a0a0a;">
-        <div style="font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#1a9e8c;margin-bottom:10px;">Workshop · Online</div>
-        <h3 class="title-md" style="margin:0 0 12px;font-size:24px;line-height:1.18;font-weight:700;letter-spacing:-0.015em;">Ethics by Design &mdash; ética em IA aplicada.</h3>
-        <p style="margin:0 0 16px;font-size:14px;line-height:1.45;color:#444;">16h · 100% online · IA com critério e conformidade.</p>
-        <a href="#" style="display:inline-block;font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#1a9e8c;text-decoration:underline;text-decoration-color:#60c5b3;text-underline-offset:4px;text-decoration-thickness:2px;">Ver programa ›</a>
-      </td>
-      <td valign="top" class="row-cell img-cell" width="48%" style="width:48%;"><img class="row-img-md" src="https://weareedit.io/wp-content/uploads/2026/05/miguel-rao-280x280-1.png" alt="" width="280" style="display:block;width:100%;max-width:280px;height:280px;border-radius:4px;object-fit:cover;"></td>
-    </tr></table>
+  <table role="presentation" width="680" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="width:680px;max-width:680px;background:#fff;"><tr><td style="padding:48px 40px 24px;font-family:'Helvetica Neue',Arial,sans-serif;">
+    <p style="margin:0 0 8px;font-size:11px;font-weight:700;color:#f92869;letter-spacing:0.22em;text-transform:uppercase;">Em destaque agora</p>
+    <h2 style="margin:0;font-size:30px;line-height:1.1;font-weight:700;letter-spacing:-0.025em;color:#0a0a0a;">Para a tua próxima decisão<span style="color:#f92869;">.</span></h2>
   </td></tr></table>
 </div>
 
 <!-- COURSE CARD BLUE -->
-<div class="clabel"><h3>Course card &mdash; Curso (blue) <span class="lk canon">Canónico</span></h3><p>Variante curso, cor blue.</p></div>
+<div class="clabel"><h3>Course card &mdash; Curso (blue) <span class="lk canon">Canónico</span></h3><p>Borda esquerda 6px + tag pill + eyebrow data + título (link) + meta + linha EARLY15 (preço) + "Ver programa ›".</p></div>
 <div class="pv">
-  <table role="presentation" width="680" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="width:680px;max-width:680px;background:#fff;" class="container"><tr><td style="padding:8px 32px 24px;">
-    <table role="presentation" class="row-table" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-      <td valign="top" class="row-cell img-cell" width="48%" style="width:48%;padding-right:24px;"><img class="row-img-md" src="https://weareedit.io/wp-content/uploads/2026/05/carla-cardoso-280x280-1.png" alt="" width="280" style="display:block;width:100%;max-width:280px;height:280px;border-radius:4px;object-fit:cover;"></td>
-      <td valign="middle" class="row-cell text-cell" width="52%" style="width:52%;font-family:'Helvetica Neue',Arial,sans-serif;color:#0a0a0a;">
-        <div style="font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#0090eb;margin-bottom:10px;">Curso · Remote</div>
-        <h3 class="title-md" style="margin:0 0 12px;font-size:24px;line-height:1.18;font-weight:700;letter-spacing:-0.015em;">UX/UI Design Remote &mdash; do zero ao portfólio.</h3>
-        <p style="margin:0 0 16px;font-size:14px;line-height:1.45;color:#444;">Pós-laboral · ao vivo · certificado DGERT.</p>
-        <a href="#" style="display:inline-block;font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#0090eb;text-decoration:underline;text-decoration-color:#0090eb;text-underline-offset:4px;text-decoration-thickness:2px;">Ver programa ›</a>
-      </td>
-    </tr></table>
-  </td></tr></table>
+  <table role="presentation" width="680" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="width:680px;max-width:680px;background:#fff;"><tr><td style="padding:8px 40px 28px;"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+    <td valign="top" width="6" style="width:6px;background:#0090eb;line-height:0;font-size:0;">&nbsp;</td>
+    <td valign="top" style="padding-left:20px;font-family:'Helvetica Neue',Arial,sans-serif;color:#0a0a0a;">
+      <p style="margin:0 0 14px;font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#0090eb;"><span style="display:inline-block;background:#0090eb;color:#fff;padding:3px 8px;border-radius:3px;font-size:10px;font-weight:800;letter-spacing:0.14em;margin-right:8px;">Curso Online</span> Setembro 2026 &middot; Remote</p>
+      <h3 style="margin:0 0 14px;font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-0.015em;"><a href="#" style="color:#0a0a0a;text-decoration:none;">UX/UI Design &mdash; research, prototipagem e design de interfaces. O critério que não se prompta.</a></h3>
+      <p style="margin:0 0 18px;font-size:14px;line-height:1.5;color:#444;">Remote &middot; Pós-Laboral &middot; Seg/Qua/Qui 19h-23h &middot; 6 meses &middot; +1000 alunos/ano.</p>
+      <p style="margin:0 0 18px;font-size:13px;line-height:1.4;color:#717171;"><strong style="font-size:14px;font-weight:800;letter-spacing:0.06em;color:#0090eb;">EARLY15</strong> <span>&middot; -15% &middot; &euro;337,50 &rarr; <strong style="color:#0a0a0a;">&euro;286,88 &times;8</strong> &middot; até 30 Junho</span></p>
+      <a href="#" style="display:inline-block;font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#0090eb;text-decoration:underline;text-decoration-color:#0090eb;text-underline-offset:4px;text-decoration-thickness:2px;">Ver programa &rsaquo;</a>
+    </td>
+  </tr></table></td></tr></table>
 </div>
 
-<!-- SIGNATURE CARD -->
-<div class="clabel"><h3>Signature card (Founder) <span class="lk">Bloqueado</span></h3><p>Foto 84 + assinatura + FOUNDER.</p></div>
+<!-- COURSE CARD PINK -->
+<div class="clabel"><h3>Course card &mdash; Bootcamp (pink) <span class="lk canon">Canónico</span></h3><p>Mesma estrutura, cor de formato pink.</p></div>
 <div class="pv">
-  <table role="presentation" width="680" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="width:680px;max-width:680px;background:#fff;" class="container"><tr><td style="padding:24px 40px 40px;font-family:'Helvetica Neue',Arial,sans-serif;" class="px-md">
-    <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
-      <td valign="top" width="84" style="padding-right:18px;"><img src="https://weareedit.io/wp-content/uploads/2026/05/daniel-devera-sign-off.png" alt="Daniel Devera" width="84" height="84" style="display:block;width:84px;height:84px;border-radius:50%;border:0;"></td>
-      <td valign="top"><img src="https://weareedit.io/wp-content/uploads/2026/05/DANIEL-DEVERA-ASSINATURA.png" alt="Daniel Devera" width="180" style="display:block;width:180px;height:auto;border:0;margin-top:-30px;"><p style="margin:-6px 0 0 4px;font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#0a0a0a;">Founder</p></td>
-    </tr></table>
-  </td></tr></table>
-</div>
-
-<!-- DGERT BAND -->
-<div class="clabel"><h3>Banda DGERT <span class="lk">Bloqueado</span></h3><p>Prova de autoridade, banda preta.</p></div>
-<div class="pv">
-  <table role="presentation" width="680" cellpadding="0" cellspacing="0" border="0" bgcolor="#0a0a0a" style="width:680px;max-width:680px;background:#0a0a0a;" class="container"><tr><td style="padding:28px 40px;" class="px-md">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-      <td valign="middle" align="left" width="120" style="padding-right:24px;"><img src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/dgert-entidade-formadora-branco.png" alt="DGERT" width="84" style="display:block;width:84px;height:auto;"></td>
-      <td valign="middle" align="left"><p style="margin:0;font-size:18px;font-weight:700;color:#fff;line-height:1.3;font-family:'Helvetica Neue',Arial,sans-serif;letter-spacing:-0.01em;">Entidade Formadora Certificada</p><p style="margin:4px 0 0;font-size:12px;color:rgba(255,255,255,0.6);font-family:'Helvetica Neue',Arial,sans-serif;">DGERT nº 18391</p></td>
-      <td valign="middle" align="right" width="40"><span style="color:#fff;font-size:22px;font-family:'Helvetica Neue',Arial,sans-serif;">&#8599;</span></td>
-    </tr></table>
-  </td></tr></table>
+  <table role="presentation" width="680" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="width:680px;max-width:680px;background:#fff;"><tr><td style="padding:8px 40px 28px;"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+    <td valign="top" width="6" style="width:6px;background:#f92869;line-height:0;font-size:0;">&nbsp;</td>
+    <td valign="top" style="padding-left:20px;font-family:'Helvetica Neue',Arial,sans-serif;color:#0a0a0a;">
+      <p style="margin:0 0 14px;font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#f92869;"><span style="display:inline-block;background:#f92869;color:#fff;padding:3px 8px;border-radius:3px;font-size:10px;font-weight:800;letter-spacing:0.14em;margin-right:8px;">Bootcamp</span> 29 Junho &middot; Remote</p>
+      <h3 style="margin:0 0 14px;font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-0.015em;"><a href="#" style="color:#0a0a0a;text-decoration:none;">Advanced Artificial Intelligence &mdash; usa IA todos os dias no trabalho.</a></h3>
+      <p style="margin:0 0 18px;font-size:14px;line-height:1.5;color:#444;">40h ao vivo &middot; Pós-Laboral &middot; Seg + Qua, 19h às 23h &middot; Certificado DGERT.</p>
+      <p style="margin:0 0 18px;font-size:13px;line-height:1.4;color:#717171;"><strong style="font-size:14px;font-weight:800;letter-spacing:0.06em;color:#f92869;">€375 ×2</strong> <span>&middot; €750 total, em 2 prestações</span></p>
+      <a href="#" style="display:inline-block;font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#f92869;text-decoration:underline;text-decoration-color:#f92869;text-underline-offset:4px;text-decoration-thickness:2px;">Ver programa &rsaquo;</a>
+    </td>
+  </tr></table></td></tr></table>
 </div>
 
 <!-- PROMO BANNER -->
-<div class="clabel"><h3>Promo banner (campanha) <span class="lk">Bloqueado</span></h3><p>Amarelo, borda preta 3px, PROMO azul, figura pink, CTA preto.</p></div>
+<div class="clabel"><h3>Promo banner (campanha) <span class="lk">Bloqueado</span></h3></div>
 <div class="pv">
-  <table role="presentation" width="680" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="width:680px;max-width:680px;background:#fff;" class="container"><tr><td style="padding:24px 40px;" class="px-md">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffdd06" style="background:#ffdd06;border:3px solid #0a0a0a;"><tr><td align="center" style="padding:36px 32px 32px;font-family:'Helvetica Neue',Arial,sans-serif;color:#0a0a0a;">
+  <table role="presentation" width="680" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="width:680px;max-width:680px;background:#fff;"><tr><td style="padding:24px 40px;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffdd06" style="background:#ffdd06;border:3px solid #0a0a0a;"><tr><td align="center" style="padding:36px 32px 32px;font-family:'Helvetica Neue',Arial,sans-serif;color:#0a0a0a;">
       <p style="margin:0 0 14px;font-size:11px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;"><span style="color:#0090eb;">PROMO</span> &middot; Setembro 2026</p>
-      <h2 style="margin:0 0 14px;font-size:54px;line-height:0.95;font-weight:800;letter-spacing:-0.03em;color:#0a0a0a;border:0;padding:0;text-transform:none;">Early <span style="color:#f92869;">15%</span></h2>
+      <h2 style="margin:0 0 14px;font-size:54px;line-height:0.95;font-weight:800;letter-spacing:-0.03em;">Early <span style="color:#f92869;">15%</span></h2>
       <p style="margin:0 0 24px;font-size:16px;line-height:1.45;">15% de desconto nos cursos de Setembro com o código EARLY15.<br>Inscrições até <strong>30 de Junho</strong>.</p>
       <a href="#" style="display:inline-block;background:#0a0a0a;color:#ffdd06;padding:14px 28px;font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;">Ver cursos ›</a>
     </td></tr></table>
@@ -200,37 +191,30 @@
 </div>
 
 <!-- FOOTER -->
-<div class="clabel"><h3>Footer (white) <span class="lk">Bloqueado</span></h3><p>Logo, social, WhatsApp, 4 colunas, campus, DGERT, legal. (Existe variante dark.)</p></div>
+<div class="clabel"><h3>Footer (white) <span class="lk">Bloqueado</span></h3><p>Logo, social, WhatsApp, 4 colunas, campus, DGERT, legal. Variante dark disponível. Fonte: <code>_locked-footer-white.html</code>.</p></div>
 <div class="pv">
-  <table role="presentation" width="680" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="width:680px;max-width:680px;background:#fff;" class="container">
-    <tr><td align="center" style="padding:40px 40px 28px;" class="px-md">
+  <table role="presentation" width="680" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="width:680px;max-width:680px;background:#fff;font-family:'Helvetica Neue',Arial,sans-serif;">
+    <tr><td align="center" style="padding:40px 40px 24px;">
       <img src="https://weareedit.io/wp-content/uploads/2026/05/edit-extended-logo.png" alt="EDIT." width="200" style="display:block;margin:0 auto 16px;width:200px;height:auto;">
-      <p style="margin:0 0 24px;font-size:12px;color:#9a9a9a;font-family:'Helvetica Neue',Arial,sans-serif;letter-spacing:0.08em;text-transform:uppercase;">Disruptive Digital Education &middot; Desde 2011</p>
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center"><tr>
-        <td style="padding:0 10px;"><img src="https://img.icons8.com/ios-filled/100/0a0a0a/instagram-new.png" width="28" height="28" alt="Instagram" style="display:block;border:0;"></td>
-        <td style="padding:0 10px;"><img src="https://img.icons8.com/ios-filled/100/0a0a0a/facebook-new.png" width="28" height="28" alt="Facebook" style="display:block;border:0;"></td>
-        <td style="padding:0 10px;"><img src="https://img.icons8.com/ios-filled/100/0a0a0a/linkedin.png" width="28" height="28" alt="LinkedIn" style="display:block;border:0;"></td>
-        <td style="padding:0 10px;"><img src="https://img.icons8.com/ios-filled/100/0a0a0a/youtube-play.png" width="28" height="28" alt="YouTube" style="display:block;border:0;"></td>
-        <td style="padding:0 10px;"><img src="https://img.icons8.com/ios-filled/100/0a0a0a/tiktok.png" width="28" height="28" alt="TikTok" style="display:block;border:0;"></td>
+      <p style="margin:0 0 22px;font-size:12px;color:#9a9a9a;letter-spacing:0.08em;text-transform:uppercase;">Disruptive Digital Education &middot; Desde 2011</p>
+      <table cellpadding="0" cellspacing="0" border="0" align="center"><tr>
+        <td style="padding:0 10px;"><img src="https://img.icons8.com/ios-filled/100/0a0a0a/instagram-new.png" width="28" height="28" alt="IG" style="display:block;"></td>
+        <td style="padding:0 10px;"><img src="https://img.icons8.com/ios-filled/100/0a0a0a/linkedin.png" width="28" height="28" alt="in" style="display:block;"></td>
+        <td style="padding:0 10px;"><img src="https://img.icons8.com/ios-filled/100/0a0a0a/youtube-play.png" width="28" height="28" alt="YT" style="display:block;"></td>
       </tr></table>
     </td></tr>
-    <tr><td style="padding:0 40px 14px;" class="px-md"><p style="margin:0;font-size:24px;font-weight:700;color:#0a0a0a;letter-spacing:-0.02em;font-family:'Helvetica Neue',Arial,sans-serif;">Conversa direta pelo WhatsApp<span style="color:#25D366;">.</span></p></td></tr>
-    <tr><td style="padding:0 40px 32px;" class="px-md"><a href="https://wa.me/351936508449" style="font-family:'Helvetica Neue',Arial,sans-serif;font-size:18px;font-weight:600;color:#0a0a0a;text-decoration:underline;text-decoration-color:#25D366;text-underline-offset:5px;text-decoration-thickness:2px;">+351 936 508 449 &rarr;</a></td></tr>
+    <tr><td style="padding:0 40px 14px;"><p style="margin:0;font-size:24px;font-weight:700;letter-spacing:-0.02em;">Conversa direta pelo WhatsApp<span style="color:#25D366;">.</span></p></td></tr>
+    <tr><td style="padding:0 40px 28px;"><a href="#" style="font-size:18px;font-weight:600;color:#0a0a0a;text-decoration:underline;text-decoration-color:#25D366;text-underline-offset:5px;text-decoration-thickness:2px;">+351 936 508 449 &rarr;</a></td></tr>
     <tr><td style="padding:0 40px;"><div style="border-top:1px solid #e5e5e5;height:1px;font-size:0;">&nbsp;</div></td></tr>
-    <tr><td style="padding:28px 40px;" class="px-md">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
-        <td valign="top" width="33%" class="stack-md" style="font-family:'Helvetica Neue',Arial,sans-serif;"><p style="margin:0 0 12px;font-size:10px;font-weight:700;color:#f92869;letter-spacing:0.2em;text-transform:uppercase;">Cursos</p><p style="margin:0 0 8px;font-size:13px;"><a href="#" style="color:#717171;text-decoration:none;">Marketing Digital</a></p><p style="margin:0 0 8px;font-size:13px;"><a href="#" style="color:#717171;text-decoration:none;">Data Science</a></p><p style="margin:0;font-size:13px;"><a href="#" style="color:#717171;text-decoration:none;">Inteligência Artificial</a></p></td>
-        <td valign="top" width="33%" class="stack-md" style="font-family:'Helvetica Neue',Arial,sans-serif;"><p style="margin:0 0 12px;font-size:10px;font-weight:700;color:#f92869;letter-spacing:0.2em;text-transform:uppercase;">EDIT.</p><p style="margin:0 0 8px;font-size:13px;"><a href="#" style="color:#717171;text-decoration:none;">Equipa</a></p><p style="margin:0 0 8px;font-size:13px;"><a href="#" style="color:#717171;text-decoration:none;">Para Empresas</a></p><p style="margin:0;font-size:13px;"><a href="#" style="color:#717171;text-decoration:none;">Avaliações</a></p></td>
-        <td valign="top" width="33%" class="stack-md" style="font-family:'Helvetica Neue',Arial,sans-serif;"><p style="margin:0 0 12px;font-size:10px;font-weight:700;color:#60c5b3;letter-spacing:0.2em;text-transform:uppercase;">Campus</p><p style="margin:0 0 8px;font-size:13px;color:#717171;">Lisboa<br>Porto</p></td>
-      </tr></table>
-    </td></tr>
-    <tr><td style="padding:0 40px;"><div style="border-top:1px solid #e5e5e5;height:1px;font-size:0;">&nbsp;</div></td></tr>
-    <tr><td style="padding:24px 40px;" class="px-md"><a href="#" style="text-decoration:none;display:block;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td valign="middle" width="130" style="padding-right:20px;"><img src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/dgert-entidade-formadora-negro.png" alt="DGERT" width="110" style="display:block;width:110px;height:auto;"></td><td valign="middle"><p style="margin:0;font-size:15px;font-weight:700;color:#0a0a0a;font-family:'Helvetica Neue',Arial,sans-serif;">Entidade Formadora Certificada</p><p style="margin:3px 0 0;font-size:12px;color:#717171;font-family:'Helvetica Neue',Arial,sans-serif;">DGERT nº 18391 &middot; desde 2014</p></td></tr></table></a></td></tr>
-    <tr><td align="center" style="padding:20px 40px 36px;" class="px-md"><p style="margin:0;font-size:11px;color:#9a9a9a;font-family:'Helvetica Neue',Arial,sans-serif;">&copy; 2026 EDIT. &middot; <a href="#" style="color:#717171;">Privacy</a> &middot; <a href="#" style="color:#717171;">Termos</a> &middot; <a href="#" style="color:#717171;">Unsubscribe</a></p></td></tr>
+    <tr><td style="padding:24px 40px;"><a href="#" style="text-decoration:none;display:block;"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td valign="middle" width="130" style="padding-right:20px;"><img src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/dgert-entidade-formadora-negro.png" alt="DGERT" width="110" style="display:block;width:110px;height:auto;"></td><td valign="middle"><p style="margin:0;font-size:15px;font-weight:700;color:#0a0a0a;">Entidade Formadora Certificada</p><p style="margin:3px 0 0;font-size:12px;color:#717171;">DGERT nº 18391 &middot; desde 2014</p></td></tr></table></a></td></tr>
+    <tr><td align="center" style="padding:18px 40px 36px;"><p style="margin:0;font-size:11px;color:#9a9a9a;">&copy; 2026 EDIT. &middot; <a href="#" style="color:#717171;">Privacy</a> &middot; <a href="#" style="color:#717171;">Unsubscribe</a></p></td></tr>
   </table>
 </div>
 
-<footer>EDIT. Disruptive Digital Education &middot; Email Design System v1 (visual) &middot; 2026-06-22 &middot; fontes canónicas: _sales-section-default, _locked-footer-white, _promo-banner-variants, _welcome-email-locked</footer>
+<h2 class="sec">Montagem (editorial)</h2>
+<p style="font-size:14px;color:#5b5b5b;">Header &rarr; Founder note (+ signature) &rarr; Banda DGERT &rarr; Editorial article block &rarr; News block &rarr; AI Spotlight band &rarr; Section heading &rarr; Course cards (cor por formato, com EARLY15) &rarr; Promo banner &rarr; Footer.</p>
+
+<footer>EDIT. Email Design System v2 (real) &middot; 2026-06-22 &middot; fonte: _editorial-issue-03-brevo, _locked-footer-white, _promo-banner-variants</footer>
 
 </div>
 </body>
