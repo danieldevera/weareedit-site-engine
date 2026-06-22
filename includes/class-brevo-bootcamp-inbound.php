@@ -28,8 +28,11 @@ class EDIT_Brevo_Bootcamp_Inbound {
 	const PIPELINE_NAME = 'Bootcamps Inbound';
 	const STAGE_NAME    = 'Novo Lead';
 
-	/** Course slugs whose lead forms feed this pipeline (extensible). */
-	const SLUGS = array( 'bootcamp-advanced-artificial-intelligence' );
+	/** Course slugs whose lead forms feed this pipeline → deal label + amount (EUR). Extensible. */
+	const COURSES = array(
+		'bootcamp-advanced-artificial-intelligence' => array( 'label' => 'AAI Bootcamp',          'amount' => 750 ),
+		'bootcamp-online-google-ads-meta-ads'       => array( 'label' => 'Google Ads & Meta Ads', 'amount' => 800 ),
+	);
 
 	/** Deal value (EUR) stamped on the deal. */
 	const DEAL_AMOUNT = 750;
@@ -54,12 +57,12 @@ class EDIT_Brevo_Bootcamp_Inbound {
 
 		$url = (string) $submission->get_meta( 'url' );
 
-		// Scope strictly to bootcamp course pages.
-		$matched = false;
-		foreach ( self::SLUGS as $slug ) {
-			if ( strpos( $url, $slug ) !== false ) { $matched = true; break; }
+		// Scope strictly to bootcamp course pages; capture which course matched.
+		$course = null;
+		foreach ( self::COURSES as $slug => $info ) {
+			if ( strpos( $url, $slug ) !== false ) { $course = $info; break; }
 		}
-		if ( ! $matched ) { return; }
+		if ( ! $course ) { return; }
 
 		$data = $submission->get_posted_data();
 		if ( ! is_array( $data ) ) { return; }
@@ -78,7 +81,7 @@ class EDIT_Brevo_Bootcamp_Inbound {
 		$ids = self::discover_pipeline( $api_key );
 		if ( ! $ids ) { self::log( 'pipeline_not_found (create "' . self::PIPELINE_NAME . '" in Brevo)' ); return; }
 
-		$deal_id = self::create_deal( $api_key, 'AAI Bootcamp · ' . $name, $ids, $contact_id );
+		$deal_id = self::create_deal( $api_key, $course['label'] . ' · ' . $name, $ids, $contact_id, (int) $course['amount'] );
 		if ( $deal_id === '' ) { self::log( 'deal_create_failed' ); return; }
 
 		self::add_note( $api_key, $deal_id, $data, $url );
@@ -168,13 +171,13 @@ class EDIT_Brevo_Bootcamp_Inbound {
 	}
 
 	/** Create deal via /v3/crm/deals. Returns deal ID ('' on failure). */
-	private static function create_deal( string $api_key, string $name, array $ids, int $contact_id ): string {
+	private static function create_deal( string $api_key, string $name, array $ids, int $contact_id, int $amount = 0 ): string {
 		$payload = array(
 			'name'       => $name,
 			'attributes' => array(
 				'pipeline'   => $ids['pipeline'],
 				'deal_stage' => $ids['stage'],
-				'amount'     => self::DEAL_AMOUNT,
+				'amount'     => $amount > 0 ? $amount : self::DEAL_AMOUNT,
 			),
 		);
 		if ( $contact_id > 0 ) { $payload['linkedContactsIds'] = array( $contact_id ); }
