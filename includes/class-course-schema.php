@@ -133,6 +133,29 @@ class EDIT_Course_Schema {
             $schema['educationalLevel'] = 'Avançado';
         }
 
+        // GAMA bootcamp (Google Ads & Meta Ads): GEO/rich-result enrichment.
+        // Gated to this slug; FAQ schema stays ACF-driven until the redesign is
+        // live (so head FAQ matches the page's currently-visible FAQ).
+        if ( $post->post_name === 'bootcamp-online-google-ads-meta-ads' ) {
+            $schema['teaches'] = [
+                'Gestão de campanhas de Google Ads',
+                'Search Engine Advertising (anúncios de pesquisa)',
+                'Google Shopping e Merchant Center',
+                'Display Advertising e Performance Max',
+                'Anúncios em YouTube',
+                'Gestão de campanhas de Meta Ads (Facebook e Instagram)',
+                'Estratégia e criação de conteúdos para anúncios',
+                'Medição e análise de resultados com Google Analytics',
+            ];
+            $schema['about'] = [
+                [ '@type' => 'Thing', 'name' => 'Google Ads' ],
+                [ '@type' => 'Thing', 'name' => 'Meta Ads' ],
+                [ '@type' => 'Thing', 'name' => 'Performance Marketing' ],
+                [ '@type' => 'Thing', 'name' => 'Google Analytics' ],
+            ];
+            $schema['educationalLevel'] = 'Iniciante a Intermédio';
+        }
+
         if ( $image ) $schema['image'] = $image;
 
         $hours = self::extract_duration_hours( $post );
