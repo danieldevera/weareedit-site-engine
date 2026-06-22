@@ -302,7 +302,7 @@ class EDIT_AAI_Redesign_Preview {
             }
         }
 
-        return $top . "\n<!-- AAI redesign sections -->\n" . $fragment . self::inscription_panel( $live ) . "\n" . $footer;
+        return $top . "\n<!-- AAI redesign sections -->\n" . $fragment . "\n" . $footer;
     }
 
     /**

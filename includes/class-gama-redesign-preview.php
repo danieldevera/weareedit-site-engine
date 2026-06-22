@@ -284,7 +284,7 @@ class EDIT_GAMA_Redesign_Preview {
             }
         }
 
-        return $top . "\n<!-- GAMA redesign sections -->\n" . $fragment . self::inscription_panel( $live ) . "\n" . $footer;
+        return $top . "\n<!-- GAMA redesign sections -->\n" . $fragment . "\n" . $footer;
     }
 
     /**
