@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class EDIT_GAMA_Redesign_Preview {
 
-    const STATUS        = 'preview';
+    const STATUS        = 'live';
     const PATH          = '/gama-preview';
     const PREVIEW_TOKEN = 'gama-2026-preview';
 
@@ -45,6 +45,11 @@ class EDIT_GAMA_Redesign_Preview {
         if ( self::STATUS === 'off' ) return;
         if ( self::is_target_request() ) {
             add_action( 'template_redirect', [ __CLASS__, 'render_page' ], 0 );
+        } elseif ( self::STATUS === 'live' && self::is_live_target() ) {
+            // Go-live: same approved redesign on the real GAMA URL. Priority -1
+            // so we exit before the output buffer starts (keeps formacao
+            // post-processors off our markup). Defensive fallback on any error.
+            add_action( 'template_redirect', [ __CLASS__, 'render_live' ], -1 );
         }
     }
 
@@ -57,6 +62,24 @@ class EDIT_GAMA_Redesign_Preview {
         if ( current_user_can( 'manage_options' ) ) return true;
         $token = isset( $_GET['preview'] ) ? (string) wp_unslash( $_GET['preview'] ) : '';
         return ! empty( self::PREVIEW_TOKEN ) && hash_equals( self::PREVIEW_TOKEN, $token );
+    }
+
+    /** Live-mode target: the real GAMA URL — not our own internal raw self-fetch. */
+    private static function is_live_target(): bool {
+        if ( isset( $_GET['edit_src'] ) ) return false;
+        $ua = (string) ( $_SERVER['HTTP_USER_AGENT'] ?? '' );
+        if ( strpos( $ua, 'edit-aai-preview' ) !== false ) return false;
+        $path = (string) parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ), PHP_URL_PATH );
+        return rtrim( $path, '/' ) === '/formacao/bootcamp-online-google-ads-meta-ads';
+    }
+
+    /** Go-live renderer: fetch raw page, splice, emit index,follow. Fallback = untouched page. */
+    public static function render_live(): void {
+        $live = self::live_html();
+        if ( $live === '' ) return;
+        $spliced = self::splice( $live, self::sections_fragment(), true );
+        if ( $spliced === '' ) return;
+        self::emit( $spliced, false );
     }
 
     public static function render_page(): void {
@@ -111,7 +134,7 @@ class EDIT_GAMA_Redesign_Preview {
             $cached = get_transient( $key );
             if ( is_string( $cached ) && $cached !== '' ) return $cached;
         }
-        $resp = wp_remote_get( self::LIVE_URL, [
+        $resp = wp_remote_get( add_query_arg( 'edit_src', 'raw', self::LIVE_URL ), [
             'timeout'     => 22,
             'redirection' => 3,
             'sslverify'   => false,
@@ -126,7 +149,7 @@ class EDIT_GAMA_Redesign_Preview {
     }
 
     /** Splice: [top..hero] + our sections + [footer..end]. '' on failure. */
-    private static function splice( string $live, string $fragment ): string {
+    private static function splice( string $live, string $fragment, bool $live_mode = false ): string {
         $mark = strpos( $live, self::HERO_BODY_MARK );
         if ( $mark === false ) return '';
         $cut = strrpos( substr( $live, 0, $mark ), '<section' );
@@ -138,9 +161,11 @@ class EDIT_GAMA_Redesign_Preview {
         $top    = substr( $live, 0, $cut );
         $footer = substr( $live, $foot );
 
-        // Force noindex on the proxied <head> (defence-in-depth; the route is
-        // already 404 to non-admins/crawlers).
-        $top = preg_replace( '/<head[^>]*>/i', '$0<meta name="robots" content="noindex,nofollow">', $top, 1 );
+        // Force noindex on the proxied <head> for the PREVIEW route only. On the
+        // live URL we keep the real page's index,follow + all its JSON-LD.
+        if ( ! $live_mode ) {
+            $top = preg_replace( '/<head[^>]*>/i', '$0<meta name="robots" content="noindex,nofollow">', $top, 1 );
+        }
 
         // Hard-strip the EARLY15 promo bar/overlay (JS-built — sets inline
         // styles a CSS rule can't beat) and the breadcrumbs nav, so they're
@@ -281,10 +306,12 @@ class EDIT_GAMA_Redesign_Preview {
         return $html;
     }
 
-    private static function emit( string $html ): void {
+    private static function emit( string $html, bool $noindex = true ): void {
         status_header( 200 );
-        nocache_headers();
-        header( 'X-Robots-Tag: noindex, nofollow', true );
+        if ( $noindex ) {
+            nocache_headers();
+            header( 'X-Robots-Tag: noindex, nofollow', true );
+        }
         header( 'Content-Type: text/html; charset=UTF-8' );
         echo $html;
         exit;
