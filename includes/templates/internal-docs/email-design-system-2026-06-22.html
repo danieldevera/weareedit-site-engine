@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>EDIT. — Email Design System: biblioteca de componentes · 2026-06-22</title>
+<style>
+  :root{--ink:#0a0a0a;--grey:#5b5b5b;--line:#e6e6e6;--bg:#fafafa;--soft:#f3f3f3;
+    --yellow:#ffdd06;--pink:#f92869;--teal:#60c5b3;--blue:#0090eb;--good:#1b9e3e;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.55;font-size:14px;
+    max-width:920px;margin:0 auto;padding:44px 28px 80px;-webkit-font-smoothing:antialiased;}
+  header.doc{border-bottom:3px solid var(--ink);padding-bottom:18px;margin-bottom:24px;}
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--pink);margin-bottom:8px;}
+  h1{font-size:28px;font-weight:800;line-height:1.15;margin-bottom:6px;letter-spacing:-.4px;}
+  .sub{color:var(--grey);font-size:14px;}
+  h2{font-size:20px;font-weight:800;margin:36px 0 12px;padding-bottom:8px;border-bottom:2px solid var(--line);}
+  h2 .n{color:var(--pink);margin-right:8px;}
+  h3{font-size:15px;font-weight:800;margin:22px 0 6px;}
+  h3 .lk{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--good);border-radius:4px;padding:2px 7px;margin-left:8px;vertical-align:middle;}
+  h3 .lk.open{background:#b0b0b0;}
+  p{margin:0 0 12px;}
+  .lead{font-size:15.5px;color:#1a1a1a;}
+  code{background:#f0f0f0;border-radius:3px;padding:1px 5px;font-size:12.5px;font-family:ui-monospace,Menlo,Consolas,monospace;}
+  table.t{width:100%;border-collapse:collapse;margin:8px 0 16px;background:#fff;border:1px solid var(--line);border-radius:6px;overflow:hidden;font-size:13px;}
+  table.t th{background:var(--soft);color:var(--grey);text-align:left;padding:9px 12px;font-size:11px;text-transform:uppercase;letter-spacing:.4px;}
+  table.t td{padding:9px 12px;border-top:1px solid var(--line);vertical-align:top;}
+  table.t td.k{font-weight:700;white-space:nowrap;}
+  .sw{display:inline-block;width:13px;height:13px;border-radius:3px;border:1px solid rgba(0,0,0,.15);vertical-align:middle;margin-right:6px;}
+  .comp{border:1px solid var(--line);border-radius:8px;padding:16px 20px;margin:12px 0;background:#fff;}
+  .comp .src{font-size:12px;color:var(--grey);margin-top:8px;}
+  .comp .src b{color:var(--ink);}
+  ul{margin:0 0 12px;padding-left:0;list-style:none;}
+  ul li{position:relative;padding:5px 0 5px 22px;}
+  ul li:before{content:"\203A";position:absolute;left:0;color:var(--pink);font-weight:800;}
+  .pill{display:inline-block;font-size:10px;font-weight:800;border-radius:4px;padding:2px 8px;text-transform:uppercase;letter-spacing:.04em;color:#fff;}
+  footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);color:#999;font-size:12px;}
+</style>
+</head>
+<body>
+
+<header class="doc">
+  <div class="eyebrow">Documento interno · Design System</div>
+  <h1>Email Design System &mdash; biblioteca de componentes</h1>
+  <p class="sub">Fonte única para emails Brevo da EDIT. &middot; v1 &middot; 2026-06-22</p>
+</header>
+
+<p class="lead">Catálogo dos blocos reutilizáveis dos nossos emails: fundações (tokens, tipografia, grelha, regras mobile) e cada componente com a sua função, variáveis a trocar, estado (bloqueado ou aberto) e o ficheiro-fonte canónico para copiar. Objetivo: todos os emails montam-se a partir destes blocos, sem reinventar layout.</p>
+
+<h2><span class="n">00</span>Fundações (tokens)</h2>
+
+<h3>Cores</h3>
+<table class="t">
+  <tr><th>Token</th><th>Hex</th><th>Uso</th></tr>
+  <tr><td class="k"><span class="sw" style="background:#0a0a0a;"></span>Ink</td><td>#0a0a0a</td><td>Texto principal, CTAs, banda DGERT</td></tr>
+  <tr><td class="k"><span class="sw" style="background:#f92869;"></span>Pink</td><td>#f92869</td><td>Eyebrows, acentos, bootcamp (cor de formato)</td></tr>
+  <tr><td class="k"><span class="sw" style="background:#ffdd06;"></span>Yellow</td><td>#ffdd06</td><td>Promo banner, texto de CTA sobre preto, highlights</td></tr>
+  <tr><td class="k"><span class="sw" style="background:#60c5b3;"></span>Teal</td><td>#60c5b3</td><td>Workshop (cor de formato), acentos secundários</td></tr>
+  <tr><td class="k"><span class="sw" style="background:#0090eb;"></span>Blue</td><td>#0090eb</td><td>Curso remoto (cor de formato), palavra PROMO</td></tr>
+  <tr><td class="k"><span class="sw" style="background:#5b5b5b;"></span>Grey</td><td>#5b5b5b / #717171 / #9a9a9a</td><td>Texto secundário, meta, legendas</td></tr>
+  <tr><td class="k"><span class="sw" style="background:#f5f5f5;"></span>BG</td><td>#f5f5f5</td><td>Fundo exterior do email</td></tr>
+  <tr><td class="k"><span class="sw" style="background:#e5e5e5;"></span>Line</td><td>#e5e5e5</td><td>Divisores, bordas de cartão</td></tr>
+</table>
+
+<h3>Cor de formato (regra)</h3>
+<p>O eyebrow e os acentos do cartão seguem o tipo de produto: <span class="pill" style="background:#f92869;">Bootcamp = Pink</span> &nbsp; <span class="pill" style="background:#60c5b3;">Workshop = Teal</span> &nbsp; <span class="pill" style="background:#0090eb;">Curso = Blue</span>.</p>
+
+<h3>Tipografia</h3>
+<table class="t">
+  <tr><th>Estilo</th><th>Spec</th></tr>
+  <tr><td class="k">Família</td><td><code>'Helvetica Neue', Helvetica, Arial, sans-serif</code> (email). SctoGroteskA no site; nos emails usa-se o stack de sistema para compatibilidade.</td></tr>
+  <tr><td class="k">H1 (hero)</td><td>36px / 700 / line-height 1.1 / letter-spacing -0.025em (mobile 28px via <code>.h1</code>)</td></tr>
+  <tr><td class="k">H2 (secção)</td><td>30&ndash;34px / 700 / -0.025em, com ponto/dois-pontos em pink. Classe <code>.h2-em</code> (mobile 28px)</td></tr>
+  <tr><td class="k">H3 (título de cartão)</td><td>24px / 700 / 1.18 / -0.015em. Classe <code>.title-md</code> (mobile 22px)</td></tr>
+  <tr><td class="k">Eyebrow</td><td>11px / 700 / 0.18&ndash;0.22em tracking / uppercase</td></tr>
+  <tr><td class="k">Corpo</td><td>14&ndash;17px / 1.45&ndash;1.55 / cor #444 ou #4a4a4a</td></tr>
+  <tr><td class="k">Meta / legenda</td><td>12px / #717171 ou #9a9a9a</td></tr>
+</table>
+
+<h3>Grelha &amp; mobile</h3>
+<ul>
+  <li>Container central <b>680px</b>, branco sobre <code>#f5f5f5</code>. Todas as secções repetem este container.</li>
+  <li>Padding lateral padrão <code>40px</code> (classe <code>.px-md</code>, cai para 24px em mobile).</li>
+  <li>Classes de empilhamento mobile: <code>.container</code>, <code>.px-md</code>, <code>.stack-md</code> (colunas 50%/50% empilham), <code>.row-table/.row-cell/.img-cell/.text-cell</code> (cartões de produto empilham), <code>.h1/.h2-em/.title-md</code> (tamanhos mobile).</li>
+  <li>Padrões mobile documentados em memória: <code>feedback_email_mobile_patterns</code>.</li>
+</ul>
+
+<h2><span class="n">01</span>Componentes</h2>
+
+<div class="comp">
+  <h3>Shell / container <span class="lk open">Aberto</span></h3>
+  <p>Wrapper exterior (#f5f5f5) + container 680px branco. Abre e fecha cada email; todas as secções são tabelas-filhas de 680px.</p>
+  <p class="src"><b>Fonte:</b> qualquer template (ex.: <code>_welcome-email-locked.html</code> linhas 35&ndash;42)</p>
+</div>
+
+<div class="comp">
+  <h3>Header <span class="lk open">Aberto</span></h3>
+  <p>Logo EDIT. (160px) à esquerda + data de edição <code>{{ISSUE_DATE}}</code> ou label à direita.</p>
+  <p><b>Trocar:</b> label direito (ex.: "Novo Bootcamp", data).</p>
+  <p class="src"><b>Fonte:</b> <code>_welcome-email-locked.html</code> (header)</p>
+</div>
+
+<div class="comp">
+  <h3>Hero &mdash; texto <span class="lk open">Aberto</span></h3>
+  <p>Eyebrow (cor de formato) + H1 com acento pink + lede. Para lançamentos com criativo, usar a variante imagem (abaixo).</p>
+  <p><b>Trocar:</b> eyebrow, H1 (palavra/frase em highlight), lede.</p>
+</div>
+
+<div class="comp">
+  <h3>Hero &mdash; imagem <span class="lk open">Aberto</span></h3>
+  <p>Criativo quadrado/retangular do produto (ex.: o creative AAI), largura total do container, linkado à página com UTMs. Usar quando há arte dedicada.</p>
+  <p><b>Trocar:</b> <code>src</code> da imagem (alojar no Brevo ou WP media), <code>alt</code>, URL+UTM.</p>
+</div>
+
+<div class="comp">
+  <h3>Signature card (Founder) <span class="lk">Bloqueado</span></h3>
+  <p>Foto 84px circular + assinatura cortada 180w + label FOUNDER. Liga ao perfil do fundador. Usado em cartas/editoriais.</p>
+  <p class="src"><b>Fonte:</b> <code>_welcome-email-locked.html</code> (signature card) &middot; spec: <code>locked_founder_signature_card</code></p>
+</div>
+
+<div class="comp">
+  <h3>Banda DGERT (prova de autoridade) <span class="lk">Bloqueado</span></h3>
+  <p>Banda preta (#0a0a0a) com badge DGERT branco + "Entidade Formadora Certificada · DGERT nº 18391". Existe versão grande (84px, hero) e compacta (44px, dentro da secção de vendas).</p>
+  <p class="src"><b>Fonte:</b> grande &rarr; <code>_welcome-email-locked.html</code>; compacta &rarr; <code>_sales-section-default.html</code></p>
+</div>
+
+<div class="comp">
+  <h3>Section heading <span class="lk open">Aberto</span></h3>
+  <p>H2 grande (30&ndash;34px) com ponto/dois-pontos em pink. Ex.: "Em destaque agora<span style="color:#f92869;">:</span>" / "As próximas edições<span style="color:#f92869;">.</span>"</p>
+  <p><b>Trocar:</b> texto do título.</p>
+</div>
+
+<div class="comp">
+  <h3>Course card (pick) <span class="lk">Canónico</span></h3>
+  <p>Cartão de produto em linha: imagem 280&times;280 (foto do tutor ou criativo) + texto, alternando esquerda/direita entre cartões. Eyebrow + título + 1 linha + tutor + "Ver programa ›". <b>Cor segue o formato</b> (pink/teal/blue). Colapsa em mobile via <code>.row-table</code>.</p>
+  <table class="t">
+    <tr><th>Variável</th><th>O que é</th></tr>
+    <tr><td class="k">Imagem</td><td>Foto tutor 280&times;280 (radius 4, object-fit cover) ou criativo do curso (og:image)</td></tr>
+    <tr><td class="k">Eyebrow</td><td>Tipo + data, na cor de formato (ex.: "Bootcamp · 6 Julho")</td></tr>
+    <tr><td class="k">Título</td><td>H3 24px</td></tr>
+    <tr><td class="k">Sub</td><td>1 linha de contexto (formato, lugares, duração)</td></tr>
+    <tr><td class="k">Tutor + link</td><td>Nome (link ao perfil) + papel; CTA "Ver programa ›" na cor de formato</td></tr>
+    <tr><td class="k">Lado da foto</td><td>Alternar L/R entre cartões consecutivos</td></tr>
+  </table>
+  <p class="src"><b>Fonte canónica:</b> <code>_sales-section-default.html</code> (entre <code>&lt;!-- SALES-SECTION-START --&gt;</code> e <code>END</code>)</p>
+</div>
+
+<div class="comp">
+  <h3>Promo banner (campanha) <span class="lk">Bloqueado</span></h3>
+  <p>Cartão amarelo, borda preta 3px, eyebrow PROMO azul, figura de desconto em pink, CTA preto. Posição: entre a secção de vendas e o footer. Variantes de timer disponíveis.</p>
+  <p><b>Trocar:</b> <code>EYEBROW_CONTEXT</code>, <code>HEADLINE_ACCENT</code> (ex.: 15%), <code>SUB_DEADLINE</code>, <code>CTA_URL</code> (+UTM), <code>CTA_LABEL</code>.</p>
+  <p class="src"><b>Fonte:</b> <code>_promo-banner-variants.html</code> &middot; spec: <code>locked_email_campaign_promo_banner</code></p>
+</div>
+
+<div class="comp">
+  <h3>Footer (white / dark) <span class="lk">Bloqueado</span></h3>
+  <p>Logo, tagline, redes sociais, WhatsApp, 4 colunas de links, moradas dos campus, badge DGERT, legal + unsubscribe. Duas variantes (fundo branco ou preto).</p>
+  <p><b>Trocar:</b> nada (bloqueado). Unsubscribe usa a tag Brevo <code>{{ unsubscribe }}</code>.</p>
+  <p class="src"><b>Fonte:</b> <code>_locked-footer-white.html</code> / <code>_locked-footer-dark.html</code> &middot; spec: <code>project_newsletter_footer_locked</code></p>
+</div>
+
+<div class="comp">
+  <h3>Blocos editoriais <span class="lk">Bloqueado</span></h3>
+  <ul>
+    <li><b>Editorial article block</b> &mdash; pull-quote + retrato quadrado 220px (borda preta 3px) + corpo + CTA. Spec: <code>locked_editorial_article_block</code></li>
+    <li><b>Author bio block</b> &mdash; bleed escuro + foto circular 148px + papel + CTAs (Perfil/LinkedIn/Wikidata). Spec: <code>locked_disruptive_news_author_bio</code></li>
+    <li><b>PS block</b> &mdash; assinatura/PS de fecho. Spec: <code>locked_editorial_newsletter_ps</code></li>
+  </ul>
+</div>
+
+<h2><span class="n">02</span>Montagem (ordem típica)</h2>
+<p>Newsletter / email de produto monta-se nesta ordem:</p>
+<ul>
+  <li>Shell (abre) &rarr; <b>Header</b></li>
+  <li><b>Hero</b> (texto ou imagem) &rarr; lede &rarr; CTA principal</li>
+  <li>(editorial) <b>Signature card</b> + <b>Banda DGERT</b></li>
+  <li><b>Section heading</b> ("Em destaque agora:") &rarr; <code>[SALES-SECTION-AUTO-START]</code></li>
+  <li><b>Course cards</b> &times;N (cor por formato, foto alternada) &rarr; <code>[SALES-SECTION-AUTO-END]</code></li>
+  <li><b>Promo banner</b> (se campanha ativa)</li>
+  <li><b>Footer</b> (white) &rarr; Shell (fecha)</li>
+</ul>
+
+<h2><span class="n">03</span>Regras</h2>
+<ul>
+  <li><b>Cor de formato</b> sempre: bootcamp pink, workshop teal, curso blue.</li>
+  <li><b>Sem travessões (&mdash;)</b> na copy. Usar vírgula/dois-pontos. Sem ranges com en-dash ("19h às 23h", não "19h&ndash;23h").</li>
+  <li><b>Fills planos</b>, sem gradientes (compatibilidade de clientes de email).</li>
+  <li><b>Botões de estado único</b> (sem animação swipe; isso é só web).</li>
+  <li><b>UTMs obrigatórios</b> em todos os CTAs: <code>utm_source=brevo&amp;utm_medium=email&amp;utm_campaign=&lt;chave&gt;</code>.</li>
+  <li><b>680px</b> de largura, padding lateral 40px, classes mobile aplicadas.</li>
+  <li><b>Não modificar componentes bloqueados</b> sem pedido explícito.</li>
+</ul>
+
+<h2><span class="n">04</span>Próximo passo (proposta)</h2>
+<p>Esta v1 é o catálogo + fontes canónicas. Para fechar o sistema, consolidar os snippets num único <b>kit Brevo</b> (um ficheiro por componente, com variáveis documentadas) e, idealmente, servi-lo pelo plugin como os docs internos &mdash; assim deixa de haver cópias espalhadas em <code>_sort_/</code>.</p>
+
+<footer>EDIT. Disruptive Digital Education &middot; Email Design System v1 &middot; 2026-06-22</footer>
+
+</body>
+</html>
