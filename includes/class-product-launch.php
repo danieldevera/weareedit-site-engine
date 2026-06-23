@@ -133,24 +133,43 @@ class EDIT_Product_Launch {
 		if ( $s === false || $e === false || $e <= $s ) return '';
 		$sections = substr( $full, $s, $e - $s );
 
+		// Our scoped <style> lives in the template <head> (OUTSIDE the section
+		// markers) — it must be carried into the spliced head or the sections
+		// render unstyled.
+		$style = '';
+		if ( preg_match( '#<style\b[^>]*>.*?</style>#is', $full, $mm ) ) $style = $mm[0];
+
 		// Fetch raw donor chrome (?edit_src=raw → our AAI/GAMA hooks bail, WP Rocket bypasses).
 		$donor = self::fetch_donor( $donor_url );
 		if ( $donor === '' ) return '';
 
-		$cut  = strpos( $donor, '<section' );
-		$foot = strpos( $donor, '<footer' );
-		if ( $cut === false || $foot === false || $foot <= $cut ) return '';
-		$top    = substr( $donor, 0, $cut );
+		// Keep [head + site <header> nav] and [<footer> … </html>]; drop the
+		// donor's entire course body in between (its breadcrumb, hero, info-bar,
+		// sections) — we render our own. The theme has no <main> wrapper and the
+		// header is self-contained, so this cut stays div-balanced.
+		$he = stripos( $donor, '</header>' );
+		if ( $he === false ) return '';
+		$he += strlen( '</header>' );
+		$foot = stripos( $donor, '<footer' );
+		if ( $foot === false || $foot <= $he ) return '';
+		$top    = substr( $donor, 0, $he );
 		$footer = substr( $donor, $foot );
 
-		// Swap the donor's <head> SEO (title/canonical/og) for ours; add robots + JSON-LD.
+		// Swap the donor's <head> SEO (title/canonical/og) for ours.
 		$top = preg_replace( '#<title\b[^>]*>.*?</title>#is', '', $top, 1 );
 		$top = preg_replace( '#<link\b[^>]*rel=["\']canonical["\'][^>]*>#i', '', $top );
-		$top = preg_replace( '#<meta\b[^>]*property=["\']og:(title|description|url)["\'][^>]*>#i', '', $top );
-		$head_inject = self::seo_head( $cfg, $is_live );
-		$top = preg_replace( '/<head[^>]*>/i', '$0' . "\n" . str_replace( '$', '\$', $head_inject ), $top, 1 );
+		$top = preg_replace( '#<meta\b[^>]*property=["\']og:(title|description|url|image)["\'][^>]*>#i', '', $top );
 
-		// Balance any wrappers left open by cutting the donor body.
+		// Inject our SEO head + scoped styles right after <head> (plain string
+		// insert — avoids preg replacement-string escaping pitfalls with $/\\).
+		$inject = self::seo_head( $cfg, $is_live ) . $style;
+		$hp = stripos( $top, '<head' );
+		if ( $hp !== false ) {
+			$gt = strpos( $top, '>', $hp );
+			if ( $gt !== false ) $top = substr( $top, 0, $gt + 1 ) . "\n" . $inject . substr( $top, $gt + 1 );
+		}
+
+		// Defensive: balance any wrappers left open (expected 0 with this cut).
 		$open = substr_count( $top, '<div' ) - substr_count( $top, '</div>' );
 		if ( $open > 0 ) $top .= str_repeat( '</div>', $open );
 
