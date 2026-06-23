@@ -76,6 +76,9 @@
   .aai-rd .eyebrow{font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--pink);margin-bottom:12px;}
   #aai-hero .eyebrow .secnum,.aai-rd .secnum{font-weight:800;font-size:12px;letter-spacing:.06em;color:#c2c2c2;margin-right:10px;}
   .aai-rd .fin .secnum{color:rgba(255,255,255,.5);}
+  /* eyebrow section numbers removed (Daniel, 23 Jun) */
+  #aai-hero .secnum,.aai-rd .secnum,.aai-vg .secnum,.aai-programa-band .secnum,.aac-band .secnum,.sec .secnum{display:none !important;}
+  .aai-education::before{display:none !important;}
   .aai-rd h2{font-size:32px;font-weight:700;letter-spacing:-1px;line-height:1.12;margin-bottom:10px;color:var(--ink);}
   .aai-rd h2 .hl{background:linear-gradient(180deg,transparent 62%,var(--yellow) 62% 92%,transparent 92%);}
 .aai-rd .mh-y{background:linear-gradient(180deg,transparent 62%,var(--yellow) 62% 92%,transparent 92%);}
@@ -381,6 +384,43 @@
     </div>
   </section>
 
+  <!-- 6 · WHO TEACHES YOU (authority) -->
+  <section class="sec alt">
+    <div class="eyebrow"><span class="secnum">05</span>Quem te vai formar</div>
+    <h2>IA não se aprende em slides. Aprende-se com <span class="mh-y">quem a vive.</span></h2>
+    <p class="lead nq2-lead">18+ anos de Inteligência Artificial aplicada ao negócio. Quem já a teve em sala, percebe a diferença.</p>
+    <div class="nq2 nq2-vid">
+      <div class="nq2-vidwrap">
+        <div class="nq2-video">
+          <video id="naiaraVid" autoplay muted loop playsinline preload="auto" data-no-minify="1" data-no-optimize="1" data-cfasync="false">
+            <source src="https://weareedit.io/wp-content/uploads/2026/06/naiara-back-aai-studio.mp4" type="video/mp4">
+          </video>
+          <div class="nq2-live"><span class="dot"></span>Estúdio de broadcast EDIT.</div>
+        </div>
+        <div class="nq2-tag">A tua formadora · Naiara Back</div>
+      </div>
+      <div class="nq2-side">
+        <p class="nq2-q" id="naiaraQuote"><span class="mk">&ldquo;</span>O meu objetivo não é ensinar-te a usar ferramentas. É <em>desafiar a tua forma de pensar</em>. A IA não veio substituir o teu valor: veio amplificá-lo. No fim, não levas só prompts. Levas uma nova forma de trabalhar.<span class="mk">&rdquo;</span></p>
+        <div class="nq2-dots"><span class="nq2-dot on"></span><span class="nq2-dot"></span><span class="nq2-dot"></span><span class="nq2-dot"></span><span class="nq2-dot"></span></div>
+        <div class="nq2-sign"><div class="bar"></div><div><div class="nq2-nm">Naiara Back</div><div class="nq2-rl">Especialista em IA aplicada ao negócio · 18+ anos</div></div></div>
+        <a class="nq2-cta" href="https://weareedit.io/equipa/naiara-back/" target="_blank" rel="noopener">Ver perfil completo <span aria-hidden="true">&rarr;</span></a>
+        <script>(function(){var el=document.getElementById('naiaraQuote');if(!el)return;var dots=document.querySelectorAll('.aai-rd .nq2-dots .nq2-dot');var q=['<span class="mk">&ldquo;</span>O meu objetivo não é ensinar-te a usar ferramentas. É <em>desafiar a tua forma de pensar</em>. A IA não veio substituir o teu valor: veio amplificá-lo. No fim, não levas só prompts. Levas uma nova forma de trabalhar.<span class="mk">&rdquo;</span>','<span class="mk">&ldquo;</span>Ainda estamos no momento em que ser um <em>profissional híbrido</em>, capaz de unir estratégia humana e IA, é um diferencial. Daqui a uns meses, será apenas o básico.<span class="mk">&rdquo;</span>','<span class="mk">&ldquo;</span>Tal como o digital mudou a comunicação, a IA está a mudar a lógica do trabalho. Vivemos uma <em>nova alfabetização profissional</em>: aprender a pesquisar, criar e decidir com IA.<span class="mk">&rdquo;</span>','<span class="mk">&ldquo;</span>Antes, aprendíamos uma ferramenta e esse conhecimento acompanhava-nos durante anos. Agora, precisamos de <em>reaprender enquanto trabalhamos</em>.<span class="mk">&rdquo;</span>','<span class="mk">&ldquo;</span>O conhecimento profissional passou a ter um prazo de validade menor. A IA tornou a <em>aprendizagem contínua</em> uma competência de mercado.<span class="mk">&rdquo;</span>'];var i=0;el.style.transition='opacity .55s ease';setInterval(function(){el.style.opacity='0';setTimeout(function(){i=(i+1)%q.length;el.innerHTML=q[i];el.style.opacity='1';for(var d=0;d<dots.length;d++)dots[d].classList.toggle('on',d===i);},560);},6500);})();</script>
+      </div>
+    </div>
+
+    <div class="nq2-studio">
+      <div class="ns-h">Porque é que isto importa: <span>aulas em estúdio, não em webcam.</span></div>
+      <div class="ns-grid">
+        <div class="ns-item"><div class="ns-ic">🎥</div><div><strong>Estúdio de broadcast profissional</strong><span>Câmaras, luz e som de nível televisivo. Não é uma simples chamada de vídeo.</span></div></div>
+        <div class="ns-item"><div class="ns-ic">🔴</div><div><strong>Realização ao vivo</strong><span>Aulas dirigidas em tempo real, com a produção de um programa de televisão.</span></div></div>
+        <div class="ns-item"><div class="ns-ic">🎯</div><div><strong>Foco total na aprendizagem</strong><span>A atenção fica na formadora e no conteúdo, sem o ruído de um setup caseiro.</span></div></div>
+      </div>
+    </div>
+    <script data-no-minify="1" data-no-optimize="1" data-cfasync="false">(function(){var v=document.getElementById('naiaraVid');if(!v)return;if('IntersectionObserver' in window){new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){v.play().catch(function(){});}else{v.pause();}});},{threshold:.25}).observe(v);}})();</script>
+  </section>
+
+  <div class="aai-div"></div>
+
   <!-- 5 · TOOLS (workflow) -->
   <section class="sec">
     <div class="eyebrow"><span class="secnum">04</span>O teu arsenal de IA</div>
@@ -420,43 +460,6 @@
         </div>
       </div>
     </div>
-  </section>
-
-  <div class="aai-div"></div>
-
-  <!-- 6 · WHO TEACHES YOU (authority) -->
-  <section class="sec alt">
-    <div class="eyebrow"><span class="secnum">05</span>Quem te vai formar</div>
-    <h2>IA não se aprende em slides. Aprende-se com <span class="mh-y">quem a vive.</span></h2>
-    <p class="lead nq2-lead">18+ anos de Inteligência Artificial aplicada ao negócio. Quem já a teve em sala, percebe a diferença.</p>
-    <div class="nq2 nq2-vid">
-      <div class="nq2-vidwrap">
-        <div class="nq2-video">
-          <video id="naiaraVid" autoplay muted loop playsinline preload="auto" data-no-minify="1" data-no-optimize="1" data-cfasync="false">
-            <source src="https://weareedit.io/wp-content/uploads/2026/06/naiara-back-aai-studio.mp4" type="video/mp4">
-          </video>
-          <div class="nq2-live"><span class="dot"></span>Estúdio de broadcast EDIT.</div>
-        </div>
-        <div class="nq2-tag">A tua formadora · Naiara Back</div>
-      </div>
-      <div class="nq2-side">
-        <p class="nq2-q" id="naiaraQuote"><span class="mk">&ldquo;</span>O meu objetivo não é ensinar-te a usar ferramentas. É <em>desafiar a tua forma de pensar</em>. A IA não veio substituir o teu valor: veio amplificá-lo. No fim, não levas só prompts. Levas uma nova forma de trabalhar.<span class="mk">&rdquo;</span></p>
-        <div class="nq2-dots"><span class="nq2-dot on"></span><span class="nq2-dot"></span><span class="nq2-dot"></span><span class="nq2-dot"></span><span class="nq2-dot"></span></div>
-        <div class="nq2-sign"><div class="bar"></div><div><div class="nq2-nm">Naiara Back</div><div class="nq2-rl">Especialista em IA aplicada ao negócio · 18+ anos</div></div></div>
-        <a class="nq2-cta" href="https://weareedit.io/equipa/naiara-back/" target="_blank" rel="noopener">Ver perfil completo <span aria-hidden="true">&rarr;</span></a>
-        <script>(function(){var el=document.getElementById('naiaraQuote');if(!el)return;var dots=document.querySelectorAll('.aai-rd .nq2-dots .nq2-dot');var q=['<span class="mk">&ldquo;</span>O meu objetivo não é ensinar-te a usar ferramentas. É <em>desafiar a tua forma de pensar</em>. A IA não veio substituir o teu valor: veio amplificá-lo. No fim, não levas só prompts. Levas uma nova forma de trabalhar.<span class="mk">&rdquo;</span>','<span class="mk">&ldquo;</span>Ainda estamos no momento em que ser um <em>profissional híbrido</em>, capaz de unir estratégia humana e IA, é um diferencial. Daqui a uns meses, será apenas o básico.<span class="mk">&rdquo;</span>','<span class="mk">&ldquo;</span>Tal como o digital mudou a comunicação, a IA está a mudar a lógica do trabalho. Vivemos uma <em>nova alfabetização profissional</em>: aprender a pesquisar, criar e decidir com IA.<span class="mk">&rdquo;</span>','<span class="mk">&ldquo;</span>Antes, aprendíamos uma ferramenta e esse conhecimento acompanhava-nos durante anos. Agora, precisamos de <em>reaprender enquanto trabalhamos</em>.<span class="mk">&rdquo;</span>','<span class="mk">&ldquo;</span>O conhecimento profissional passou a ter um prazo de validade menor. A IA tornou a <em>aprendizagem contínua</em> uma competência de mercado.<span class="mk">&rdquo;</span>'];var i=0;el.style.transition='opacity .55s ease';setInterval(function(){el.style.opacity='0';setTimeout(function(){i=(i+1)%q.length;el.innerHTML=q[i];el.style.opacity='1';for(var d=0;d<dots.length;d++)dots[d].classList.toggle('on',d===i);},560);},6500);})();</script>
-      </div>
-    </div>
-
-    <div class="nq2-studio">
-      <div class="ns-h">Porque é que isto importa: <span>aulas em estúdio, não em webcam.</span></div>
-      <div class="ns-grid">
-        <div class="ns-item"><div class="ns-ic">🎥</div><div><strong>Estúdio de broadcast profissional</strong><span>Câmaras, luz e som de nível televisivo. Não é uma simples chamada de vídeo.</span></div></div>
-        <div class="ns-item"><div class="ns-ic">🔴</div><div><strong>Realização ao vivo</strong><span>Aulas dirigidas em tempo real, com a produção de um programa de televisão.</span></div></div>
-        <div class="ns-item"><div class="ns-ic">🎯</div><div><strong>Foco total na aprendizagem</strong><span>A atenção fica na formadora e no conteúdo, sem o ruído de um setup caseiro.</span></div></div>
-      </div>
-    </div>
-    <script data-no-minify="1" data-no-optimize="1" data-cfasync="false">(function(){var v=document.getElementById('naiaraVid');if(!v)return;if('IntersectionObserver' in window){new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){v.play().catch(function(){});}else{v.pause();}});},{threshold:.25}).observe(v);}})();</script>
   </section>
 
 </div>
