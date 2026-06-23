@@ -853,4 +853,9 @@
      cards lose their dark fill */
   footer .footer-logo img,footer .outros-projetos img,footer .partners img,footer img{filter:invert(1) grayscale(1) !important;}
   footer .outros-projetos a,footer .partners a,footer [class*="outros"] > div{background:transparent !important;border-color:#e8e8e8 !important;}
+  /* "Outros projetos" partner logos: drop the vertical separator lines, put a single dot between logos */
+  footer .other-projects .logos-grid [class^="col-"]{border-right:none !important;position:relative;}
+  @media(min-width:992px){
+    footer .other-projects .logos-grid [class^="col-"]:not(:last-child)::after{content:"\2022";position:absolute;right:0;top:50%;transform:translate(50%,-50%);color:#c4c4c4;font-size:14px;line-height:0;pointer-events:none;}
+  }
 </style>
