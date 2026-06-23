@@ -403,6 +403,13 @@ body.page-template-page-marketing-digital .post-edit-link { display:none !import
 .md-pillar--light .md-intro__block-body ul li::before { color:#0a0a0a !important; }
 .md-pillar--light .md-intro__block { border-top:none; }
 .md-pillar--light .md-intro__cta-lead { color:#2a2a2a !important; border-top-color:rgba(10,10,10,.10) !important; }
+/* Intro prose links (manual + InLinks auto-links) were inheriting white -> invisible on the light bg. Brand pink, underlined. */
+.md-pillar--light .md-intro__lead a,
+.md-pillar--light .md-intro__block-body a,
+.md-pillar--light .md-intro__cta-lead a { color:#f92869 !important; text-decoration:underline; text-underline-offset:2px; text-decoration-thickness:1px; }
+.md-pillar--light .md-intro__lead a:hover,
+.md-pillar--light .md-intro__block-body a:hover,
+.md-pillar--light .md-intro__cta-lead a:hover { color:#c2134c !important; }
 
 /* Catalog section header */
 .md-pillar--light .md-catalog { background:#f7f5f0; }
