@@ -87,9 +87,12 @@ class EDIT_AAI_Redesign_Preview {
      */
     public static function render_live(): void {
         $live = self::live_html();                                   // self-fetch → raw theme page
-        if ( $live === '' ) return;                                  // fallback: normal page
+        // On any fallback, DON'T let the native page get cached — otherwise a
+        // transient self-fetch failure sticks the old design in WP Rocket. Not
+        // caching the fallback means the next request retries render_live.
+        if ( $live === '' ) { if ( ! defined( 'DONOTCACHEPAGE' ) ) define( 'DONOTCACHEPAGE', true ); return; }
         $spliced = self::splice( $live, self::sections_fragment(), true );
-        if ( $spliced === '' ) return;                               // fallback: markers missing → normal page
+        if ( $spliced === '' ) { if ( ! defined( 'DONOTCACHEPAGE' ) ) define( 'DONOTCACHEPAGE', true ); return; }
         self::emit( $spliced, false );                               // 200, index,follow, cacheable
     }
 
@@ -302,7 +305,7 @@ class EDIT_AAI_Redesign_Preview {
             }
         }
 
-        return $top . "\n<!-- AAI redesign sections -->\n" . $fragment . self::inscription_panel() . "\n" . $footer;
+        return $top . "\n<!-- AAI redesign sections -->\n" . $fragment . self::inscription_panel( $live ) . "\n" . $footer;
     }
 
     /**
@@ -331,22 +334,24 @@ class EDIT_AAI_Redesign_Preview {
      * Returns '' on any failure so the CTA JS falls back to #falaConnosco —
      * the page can never break on this.
      */
-    private static function inscription_panel(): string {
-        // Render the REAL inscrição form (CF7 295986) IN-PAGE via do_shortcode so
-        // CF7 processes the submit (→ Pipedrive + confirmation email). An extracted
-        // form does NOT submit. Wrapped in a #pedirInfo .side-filter-container so the
-        // CTA .open mechanism shows it. '' on failure → CTA falls back to falaConnosco.
-        if ( ! class_exists( 'WPCF7_ContactForm' ) ) return '';
-        $cf7 = WPCF7_ContactForm::get_instance( 295986 );
-        if ( ! $cf7 ) return '';
-        $form = do_shortcode( $cf7->shortcode() );
-        if ( trim( (string) $form ) === '' ) return '';
-        return '<div class="side-filter-container" id="pedirInfo"><div class="overlay-side-filter" data-aai-close></div>'
-            . '<div class="side-filter"><div class="filter-content">'
-            . '<a href="#" data-aai-close aria-label="Fechar" style="position:absolute;top:16px;right:20px;font-size:30px;line-height:1;color:#0a0a0a;text-decoration:none;z-index:10;">&times;</a>'
-            . '<p style="font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#f92869;margin:0 0 6px;">Inscri&ccedil;&atilde;o</p>'
-            . '<h3 style="font-size:24px;font-weight:700;margin:0 0 18px;color:#0a0a0a;">Quero o meu lugar</h3>'
-            . $form . '</div></div></div>';
+    private static function inscription_panel( string $live ): string {
+        // Re-place the REAL native #pedirInfo panel (course Detalhes + working CF7
+        // form 295986) extracted VERBATIM from the live page — the splice drops it.
+        // Balanced div-count so the chunk is self-contained (submits like the
+        // verbatim #falaConnosco). '' if not found → CTA falls back to falaConnosco.
+        $i = strpos( $live, 'id="pedirInfo"' );
+        if ( $i === false ) return '';
+        $start = strrpos( substr( $live, 0, $i ), '<div' );
+        if ( $start === false ) return '';
+        $depth = 0; $p = $start; $len = strlen( $live );
+        while ( $p < $len ) {
+            $od = strpos( $live, '<div', $p );
+            $cd = strpos( $live, '</div>', $p );
+            if ( $cd === false ) break;
+            if ( $od !== false && $od < $cd ) { $depth++; $p = $od + 4; }
+            else { $depth--; $p = $cd + 6; if ( $depth === 0 ) return substr( $live, $start, $p - $start ); }
+        }
+        return '';
     }
 
     private static function emit( string $html, bool $noindex = true ): void {
