@@ -75,11 +75,21 @@ class EDIT_GAMA_Redesign_Preview {
 
     /** Go-live renderer: fetch raw page, splice, emit index,follow. Fallback = untouched page. */
     public static function render_live(): void {
-        $live = self::live_html();
-        if ( $live === '' ) { if ( ! defined( 'DONOTCACHEPAGE' ) ) define( 'DONOTCACHEPAGE', true ); return; }
-        $spliced = self::splice( $live, self::sections_fragment(), true );
-        if ( $spliced === '' ) { if ( ! defined( 'DONOTCACHEPAGE' ) ) define( 'DONOTCACHEPAGE', true ); return; }
-        self::emit( $spliced, false );
+        $lg_key = 'edit_gama_spliced_lastgood';
+        $live   = self::live_html();
+        if ( $live !== '' ) {
+            $spliced = self::splice( $live, self::sections_fragment(), true );
+            if ( $spliced !== '' ) {
+                set_transient( $lg_key, $spliced, WEEK_IN_SECONDS );  // remember last good render
+                self::emit( $spliced, false );
+                return;
+            }
+        }
+        // Serve the LAST GOOD redesign on self-fetch/splice failure so the live
+        // URL never reverts to the native page (see AAI class for rationale).
+        $lg = get_transient( $lg_key );
+        if ( is_string( $lg ) && $lg !== '' ) { self::emit( $lg, false ); return; }
+        if ( ! defined( 'DONOTCACHEPAGE' ) ) define( 'DONOTCACHEPAGE', true );
     }
 
     public static function render_page(): void {

@@ -86,14 +86,24 @@ class EDIT_AAI_Redesign_Preview {
      * live page — the campaign URL can never break.
      */
     public static function render_live(): void {
-        $live = self::live_html();                                   // self-fetch → raw theme page
-        // On any fallback, DON'T let the native page get cached — otherwise a
-        // transient self-fetch failure sticks the old design in WP Rocket. Not
-        // caching the fallback means the next request retries render_live.
-        if ( $live === '' ) { if ( ! defined( 'DONOTCACHEPAGE' ) ) define( 'DONOTCACHEPAGE', true ); return; }
-        $spliced = self::splice( $live, self::sections_fragment(), true );
-        if ( $spliced === '' ) { if ( ! defined( 'DONOTCACHEPAGE' ) ) define( 'DONOTCACHEPAGE', true ); return; }
-        self::emit( $spliced, false );                               // 200, index,follow, cacheable
+        $lg_key = 'edit_aai_spliced_lastgood';
+        $live   = self::live_html();                                 // self-fetch → raw theme page
+        if ( $live !== '' ) {
+            $spliced = self::splice( $live, self::sections_fragment(), true );
+            if ( $spliced !== '' ) {
+                set_transient( $lg_key, $spliced, WEEK_IN_SECONDS );  // remember last good render
+                self::emit( $spliced, false );                        // 200, index,follow, cacheable
+                return;
+            }
+        }
+        // Self-fetch or splice failed: serve the LAST GOOD redesign instead of
+        // the native (old) page, so the live campaign URL never reverts. The
+        // last-good is itself cacheable, so WP Rocket caches the redesign (never
+        // the native page). Only if we have NEVER rendered successfully do we let
+        // the native page through — and then uncached, so the next hit retries.
+        $lg = get_transient( $lg_key );
+        if ( is_string( $lg ) && $lg !== '' ) { self::emit( $lg, false ); return; }
+        if ( ! defined( 'DONOTCACHEPAGE' ) ) define( 'DONOTCACHEPAGE', true );
     }
 
     public static function render_page(): void {
