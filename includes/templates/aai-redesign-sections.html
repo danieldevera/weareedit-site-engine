@@ -778,8 +778,9 @@
       .aai-rd .arts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:10px;}
       .aai-rd .art-card{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;text-decoration:none;color:inherit;box-shadow:0 8px 22px -12px rgba(0,0,0,.28);transition:transform .2s ease,box-shadow .2s ease;}
       .aai-rd .art-card:hover{transform:translateY(-5px);box-shadow:0 26px 52px -18px rgba(0,0,0,.5);}
-      /* Square editorial thumbnails (1080x1080): show the FULL creative incl. the "Por <autor>" byline. Images are square, so height:auto+width:100% yields a uniform square even if a global img rule beats aspect-ratio. */
-      .aai-rd .art-card .art-thumb{aspect-ratio:1/1!important;height:auto!important;width:calc(100% - 40px)!important;max-width:calc(100% - 40px)!important;object-fit:cover!important;object-position:center!important;display:block;background:#f2f1ec;border:0;margin:20px!important;border-radius:6px!important;}
+      /* Square editorial thumbnails (1080x1080). The source PNGs carry a ~3-4px dark edge ring; the wrapper clips the outer ~10px of the image on every side so that ring is cropped off and the gradient fills the tile cleanly. Square wrapper keeps cards uniform height + the "Por <autor>" byline visible. */
+      .aai-rd .art-card .art-thumb-wrap{display:block;width:100%;aspect-ratio:1/1;overflow:hidden;background:#f2f1ec;line-height:0;}
+      .aai-rd .art-card .art-thumb{width:calc(100% + 20px)!important;max-width:none!important;height:calc(100% + 20px)!important;margin:-10px!important;object-fit:cover!important;object-position:center!important;display:block;background:#f2f1ec;border:0!important;border-radius:0!important;aspect-ratio:auto!important;}
       .aai-rd .art-body{padding:15px 17px 17px;display:flex;flex-direction:column;flex:1;}
       .aai-rd .art-kicker{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--pink);margin-bottom:8px;}
       .aai-rd .art-title{font-size:14.5px;font-weight:700;line-height:1.34;color:var(--ink);margin-bottom:14px;}
@@ -794,15 +795,15 @@
     <p class="lead">Antes de o bootcamp começar, mergulha nas ideias da EDIT. sobre Inteligência Artificial e o que ela muda no dia a dia de quem trabalha.</p>
     <div class="arts-grid">
       <a class="art-card" href="https://weareedit.io/blog/do-prompt-ao-produto/" target="_blank" rel="noopener">
-        <img class="art-thumb" loading="lazy" src="https://weareedit.io/wp-content/uploads/2026/06/editorial_3_website_preview.png" alt="Do prompt ao produto">
+        <span class="art-thumb-wrap"><img class="art-thumb" loading="lazy" src="https://weareedit.io/wp-content/uploads/2026/06/editorial_3_website_preview.png" alt="Do prompt ao produto"></span>
         <div class="art-body"><div class="art-kicker">Disruptive News</div><div class="art-title">Do prompt ao produto: o design já não termina num ficheiro</div><span class="art-more">Ler artigo <span aria-hidden="true">&rarr;</span></span></div>
       </a>
       <a class="art-card" href="https://weareedit.io/blog/vinte-e-cinco-cabecas-dois-pensamentos-o-paradoxo-da-criatividade-aumentada/" target="_blank" rel="noopener">
-        <img class="art-thumb" loading="lazy" src="https://weareedit.io/wp-content/uploads/2026/06/artigo_website_thumbnail_carla-geraldes-1.png" alt="O paradoxo da criatividade aumentada">
+        <span class="art-thumb-wrap"><img class="art-thumb" loading="lazy" src="https://weareedit.io/wp-content/uploads/2026/06/artigo_website_thumbnail_carla-geraldes-1.png" alt="O paradoxo da criatividade aumentada"></span>
         <div class="art-body"><div class="art-kicker">Criatividade</div><div class="art-title">Vinte e cinco cabeças, dois pensamentos: o paradoxo da criatividade aumentada</div><span class="art-more">Ler artigo <span aria-hidden="true">&rarr;</span></span></div>
       </a>
       <a class="art-card" href="https://weareedit.io/blog/os-agentes-nao-tiveram-infancia-branding-na-era-da-ia/" target="_blank" rel="noopener">
-        <img class="art-thumb" loading="lazy" src="https://weareedit.io/wp-content/uploads/2026/06/artigo_website_thumb_agentes_ia.png" alt="Branding na era da IA">
+        <span class="art-thumb-wrap"><img class="art-thumb" loading="lazy" src="https://weareedit.io/wp-content/uploads/2026/06/artigo_website_thumb_agentes_ia.png" alt="Branding na era da IA"></span>
         <div class="art-body"><div class="art-kicker">Branding</div><div class="art-title">Branding na era da IA: 3 critérios que mudam o jogo</div><span class="art-more">Ler artigo <span aria-hidden="true">&rarr;</span></span></div>
       </a>
     </div>
