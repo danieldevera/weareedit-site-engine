@@ -160,6 +160,15 @@ class EDIT_Product_Launch {
 		$top = preg_replace( '#<link\b[^>]*rel=["\']canonical["\'][^>]*>#i', '', $top );
 		$top = preg_replace( '#<meta\b[^>]*property=["\']og:(title|description|url|image)["\'][^>]*>#i', '', $top );
 
+		// Strip ALL donor JSON-LD. The donor (e.g. AAI) carries its OWN
+		// Course/FAQPage/BreadcrumbList describing a *different* product — left in,
+		// it pollutes our page with a wrong, conflicting Course entity pointing at
+		// the donor's URL (kills rich results + GEO). We own this page's schema via
+		// seo_head() (Agentic Course/FAQ/Breadcrumb, live mode only).
+		$ld = '#<script\b[^>]*type=["\']application/ld\+json["\'][^>]*>.*?</script>#is';
+		$top    = preg_replace( $ld, '', $top );
+		$footer = preg_replace( $ld, '', $footer );
+
 		// Inject our SEO head + scoped styles right after <head> (plain string
 		// insert — avoids preg replacement-string escaping pitfalls with $/\\).
 		$inject = self::seo_head( $cfg, $is_live ) . $style;
