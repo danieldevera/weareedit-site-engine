@@ -5,8 +5,8 @@
  * One file per product: this is the streamlined "new product launch" unit.
  *
  * status: 'preview' (token-gated, noindex) | 'live' (index,follow + schema) | 'off'
- * Fields marked [A CONFIRMAR] are placeholders pending Daniel's launch data
- * (price, dates, instructor). Schema omits offers/startDate while those are blank.
+ * [A CONFIRMAR] = placeholders pending the team's launch data (price, dates,
+ * schedule, instructor). Schema omits offers/startDate while those are blank.
  */
 if ( ! defined( 'ABSPATH' ) ) exit;
 
@@ -14,21 +14,30 @@ return [
 	'slug'          => 'agentic-ai',
 	'status'        => 'preview',
 	'preview_token' => 'agentic-2026-preview',
-	'live_path'     => '/formacao/bootcamp-agentic-ai/', // future canonical course URL
-	'format_color'  => 'pink', // bootcamp = pink (format-type colour rule)
+	'live_path'     => '/formacao/bootcamp-agentic-ai/',
+	'donor_url'     => 'https://weareedit.io/formacao/bootcamp-advanced-artificial-intelligence/', // proxied for header/footer chrome only
+	'format_color'  => 'pink',
 	'name'          => 'Agentic AI: Da Arquitetura à Implementação',
+	'has_alumni'    => false, // brand-new bootcamp: no alumni cohort yet -> hide alumni-proof section
 
 	'hero' => [
-		'eyebrow'  => 'Agentic AI · Bootcamp Remote Learning',
-		'h1_html'  => 'Constrói agentes de IA que <span class="hl">planeiam, decidem e executam.</span>',
-		'sub'      => 'Da arquitetura de agentes ao deployment em produção. 27 horas ao vivo, em remoto, para profissionais técnicos que já dominam Generative AI. Sais a implementar, não só a usar.',
-		'facts'    => [
-			[ '27h', 'ao vivo' ],
-			[ 'Remote', 'Learning' ],
-			[ 'DGERT', 'certificado' ],
-			[ 'avançado', 'nível' ],
-			[ '[A CONFIRMAR]', 'início' ],
+		'badge'   => 'Entidade Formadora Certificada',
+		'eyebrow' => 'Remote Learning · Bootcamp',
+		'h1_html' => 'Agentic AI<span class="dp">.</span>',
+		'sub'     => '27 horas, ao vivo. Da arquitetura de agentes ao deployment em produção. Para profissionais técnicos que já dominam Generative AI e querem construir, não só usar.',
+	],
+
+	// Floating info-card (mirrors the AAI dates/action bar). Values [A CONFIRMAR].
+	'info_card' => [
+		'cols' => [
+			[ 'INÍCIO', '[A CONFIRMAR]' ],
+			[ 'FIM', '[A CONFIRMAR]' ],
+			[ 'DURAÇÃO', '27 horas' ],
+			[ 'INVESTIMENTO', '[A CONFIRMAR]' ],
+			[ 'HORÁRIOS', '[A CONFIRMAR]' ],
 		],
+		'tags'    => [ 'Remote', 'Avançado' ],
+		'cta'     => 'Quero-me inscrever',
 	],
 
 	'whatis' => [
@@ -38,35 +47,30 @@ return [
 			'A Agentic AI foca-se na construção de sistemas que planeiam, decidem, utilizam ferramentas, interagem com outros sistemas e executam tarefas de forma controlada. É uma abordagem que se está a tornar central no desenvolvimento de produtos e workflows autónomos baseados em LLMs.',
 			'Este bootcamp parte de uma base já consolidada em Generative AI e evolui para padrões de agent architecture, tool design, integração com MCP, memória, guardrails, avaliação, observabilidade e multi-agent workflows. Combina fundamentos arquiteturais com implementação prática e termina com um projeto final orientado para produção.',
 		],
-		'para_quem' => [
-			'Software engineers, AI engineers e data scientists com foco em automação e sistemas inteligentes.',
-			'Profissionais técnicos que já dominam os fundamentos de Generative AI e querem aprofundar a construção de agentes.',
-			'Quem pretende desenvolver soluções com tools, orchestration e agentes em contexto empresarial.',
-			'Participantes que procuram uma formação aplicada, orientada para implementação e não apenas para o uso de ferramentas já feitas.',
-		],
 	],
 
-	'stats' => [
-		[ '27', 'h', 'ao vivo, em remoto', '' ],
-		[ '9', '', 'módulos, da arquitetura à produção', 'pink' ],
-		[ '1', '', 'projeto final integrador', 'teal' ],
-		[ 'DGERT', '', 'entidade formadora certificada', '' ],
+	// "Para quem é" persona cards (AAI-style, accent-topped).
+	'personas' => [
+		[ 'Software e AI engineers', 'Que querem construir agentes e integrá-los com tools, APIs e o protocolo MCP.' ],
+		[ 'Data scientists', 'Que já dominam Generative AI e querem evoluir para sistemas agentic estruturados.' ],
+		[ 'Builders de produto', 'Que querem automação e workflows autónomos com agentes em contexto empresarial.' ],
 	],
+	'persona_foot' => 'Este é um bootcamp avançado. Precisas de base técnica, não de a construir do zero.',
 
 	'curriculum' => [
 		'eyebrow' => 'O programa · 27 horas, ao vivo',
 		'h2_html' => 'Da arquitetura de agentes ao <span class="hl">deployment em produção.</span>',
 		'lead'    => 'Nove módulos práticos que vão dos fundamentos arquiteturais à implementação real, com um projeto final orientado para produção.',
 		'modules' => [
-			[ '01', 'Agent Architectures e PydanticAI', 'Diferença entre pipelines e agentes. Padrões como ReAct, plan-and-execute e reflection. Construção do primeiro agente com PydanticAI.', false ],
-			[ '02', 'Tool Design e Integração com APIs Reais', 'Boas práticas no desenho de tools. Integração com APIs externas, ficheiros e bases de dados. Gestão de erros e composição de ferramentas.', false ],
-			[ '03', 'MCP, Model Context Protocol', 'Conceitos base do protocolo. Construção de servidores MCP. Integração de MCP com agentes.', false ],
-			[ '04', 'Memory e Conversation Management', 'Memória de curto e longo prazo. Gestão de histórico, sessões e contexto. Estratégias para agentes com memória.', false ],
-			[ '05', 'Guardrails, Safety e Hooks', 'Validação de inputs e outputs. Prompt injection e mitigação. Hooks, middleware e controlo de comportamento do agente.', false ],
-			[ '06', 'Evaluation, Testing e LLMOps', 'Testes para tools, loops de agente e cenários end-to-end. Observabilidade, tracing e cost tracking. Avaliação da qualidade de resposta e uso de ferramentas.', false ],
-			[ '07', 'Coding Agents e Code Execution', 'Agentes que escrevem e executam código. Sandboxing e segurança na execução. Loops de correção, iteração e uso de ficheiros de contexto.', false ],
-			[ '08', 'Multi-Agent Workflows', 'Quando usar múltiplos agentes. Orquestração, delegação e comunicação entre agentes. Trade-offs entre single-agent e multi-agent systems.', false ],
-			[ '09', 'Production Deployment e Projeto Final', 'Estrutura de um sistema agentic em produção. Containerização, configuração e componentes de runtime. Encerramento com projeto final integrador.', true ],
+			[ 'num' => '01', 'title' => 'Agent Architectures e PydanticAI', 'level' => 'Avançado', 'bullets' => [ 'Diferença entre pipelines e agentes', 'Padrões como ReAct, plan-and-execute e reflection', 'Construção do primeiro agente com PydanticAI' ] ],
+			[ 'num' => '02', 'title' => 'Tool Design e Integração com APIs Reais', 'level' => 'Avançado', 'bullets' => [ 'Boas práticas no desenho de tools', 'Integração com APIs externas, ficheiros e bases de dados', 'Gestão de erros e composição de ferramentas' ] ],
+			[ 'num' => '03', 'title' => 'MCP, Model Context Protocol', 'level' => 'Avançado', 'bullets' => [ 'Conceitos base do protocolo', 'Construção de servidores MCP', 'Integração de MCP com agentes' ] ],
+			[ 'num' => '04', 'title' => 'Memory e Conversation Management', 'level' => 'Avançado', 'bullets' => [ 'Memória de curto e longo prazo', 'Gestão de histórico, sessões e contexto', 'Estratégias para agentes com memória' ] ],
+			[ 'num' => '05', 'title' => 'Guardrails, Safety e Hooks', 'level' => 'Avançado', 'bullets' => [ 'Validação de inputs e outputs', 'Prompt injection e mitigação', 'Hooks, middleware e controlo de comportamento' ] ],
+			[ 'num' => '06', 'title' => 'Evaluation, Testing e LLMOps', 'level' => 'Avançado', 'bullets' => [ 'Testes para tools, loops de agente e cenários end-to-end', 'Observabilidade, tracing e cost tracking', 'Avaliação da qualidade de resposta e uso de ferramentas' ] ],
+			[ 'num' => '07', 'title' => 'Coding Agents e Code Execution', 'level' => 'Avançado', 'bullets' => [ 'Agentes que escrevem e executam código', 'Sandboxing e segurança na execução', 'Loops de correção, iteração e ficheiros de contexto' ] ],
+			[ 'num' => '08', 'title' => 'Multi-Agent Workflows', 'level' => 'Avançado', 'bullets' => [ 'Quando usar múltiplos agentes', 'Orquestração, delegação e comunicação entre agentes', 'Trade-offs entre single-agent e multi-agent systems' ] ],
+			[ 'num' => '09', 'title' => 'Production Deployment e Projeto Final', 'level' => 'Avançado', 'flag' => true, 'project' => 'Projeto final integrador, orientado para produção', 'bullets' => [ 'Estrutura de um sistema agentic em produção', 'Containerização, configuração e componentes de runtime' ] ],
 		],
 		'outcomes' => [
 			'Distinguir aplicações baseadas em prompts, pipelines e agentes.',
@@ -80,7 +84,17 @@ return [
 		],
 	],
 
-	'stack' => [ 'Python', 'PydanticAI', 'MCP', 'LLM APIs', 'Git', 'VS Code', 'Embeddings / RAG', 'Tracing / LLMOps' ],
+	// "O teu arsenal" — grouped tool columns (AAI-style).
+	'arsenal' => [
+		'eyebrow' => 'O teu arsenal',
+		'h2_html' => 'O stack que vais usar para <span class="hl">construir.</span>',
+		'lead'    => 'Um stack técnico orientado para a implementação real de agentes em produção.',
+		'groups'  => [
+			[ '1 · Construir', [ 'Python', 'PydanticAI' ] ],
+			[ '2 · Integrar', [ 'MCP', 'LLM APIs', 'Embeddings / RAG' ] ],
+			[ '3 · Operar', [ 'Tracing / LLMOps', 'Git', 'VS Code' ] ],
+		],
+	],
 
 	'admission' => [
 		[ 'Idade mínima 18 anos', 'Aberto a profissionais e estudantes com a base técnica indicada.' ],
@@ -96,6 +110,12 @@ return [
 		'role'  => 'Especialista em Agentic AI e engenharia de LLMs',
 		'quote' => 'Construir agentes não é juntar prompts. É arquitetura, tool design, memória, guardrails e avaliação. Neste bootcamp sais a implementar sistemas agentic de forma estruturada, prontos para produção.',
 		'photo' => '',
+	],
+
+	'outcomes_cards' => [
+		[ 'RESULTADO', 'O que sais a saber fazer', 'Implementar agentes do zero: arquitetura, tools, MCP, memória, guardrails, avaliação e deployment.' ],
+		[ 'RESULTADO', 'Projeto final', 'Terminas com um sistema agentic integrador, orientado para produção. Não sais com apontamentos, sais com algo construído.' ],
+		[ 'PÓS-BOOTCAMP', 'Documentação e recrutamento', 'Acesso a documentação de apoio e à rede de parceiros de recrutamento da EDIT.' ],
 	],
 
 	'investment' => [
@@ -135,7 +155,7 @@ return [
 		'about'             => [ 'Agentic AI', 'Large Language Models', 'AI agents', 'LLMOps' ],
 		'credential'        => 'Certificado DGERT',
 		'currency'          => 'EUR',
-		'price'             => '',  // fill when known -> enables Offer schema
-		'start_date'        => '',  // ISO 8601 when known -> enables CourseInstance startDate
+		'price'             => '',
+		'start_date'        => '',
 	],
 ];
