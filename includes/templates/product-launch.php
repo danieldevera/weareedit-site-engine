@@ -18,6 +18,11 @@ $accent  = $accentMap[ $C['format_color'] ?? 'pink' ] ?? '#f92869';
 $has_instructor = ! empty( $C['instructor']['name'] ) && strpos( $C['instructor']['name'], '[A CONFIRMAR]' ) === false;
 $is_tba = function ( $v ) { return strpos( (string) $v, '[A CONFIRMAR]' ) !== false || strpos( (string) $v, 'confirmar' ) !== false; };
 $tba = '<span class="tba">a confirmar</span>';
+$assets      = 'https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/';
+$fonts       = $assets . 'fonts/';
+$hero_vid    = $C['hero']['video']  ?? $assets . 'augment/augment-hero-loop-v5.mp4';
+$hero_poster = $C['hero']['poster'] ?? '';
+$dgert_img   = $assets . 'augment/dgert-branco.png';
 ?><!DOCTYPE html>
 <html lang="pt-PT">
 <head>
@@ -37,17 +42,25 @@ $tba = '<span class="tba">a confirmar</span>';
   .prd-pvbar{background:var(--ink);color:#fff;font-size:12.5px;text-align:center;padding:9px 16px;}.prd-pvbar b{color:var(--yellow);}
   .prd-fhdr{display:flex;align-items:center;justify-content:space-between;padding:16px 28px;border-bottom:1px solid var(--line);}
   .prd-fhdr .lg{font-weight:800;letter-spacing:.18em;font-size:18px;}.prd-fhdr .lg span{color:var(--accent);}
-  /* hero */
-  #prd .hero{position:relative;overflow:hidden;background:#0a0613;color:#fff;background-image:radial-gradient(120% 130% at 12% 6%,rgba(122,56,180,.55),transparent 42%),radial-gradient(120% 120% at 90% 16%,rgba(249,40,105,.5),transparent 46%),radial-gradient(150% 130% at 72% 102%,rgba(96,197,179,.4),transparent 52%);}
-  #prd .hero-in{max-width:1080px;margin:0 auto;padding:72px 28px 0;}
-  #prd .hero .badge{font-size:12px;font-weight:700;letter-spacing:.04em;color:rgba(255,255,255,.85);margin-bottom:26px;display:inline-flex;align-items:center;gap:9px;}
-  #prd .hero .badge::before{content:"";width:18px;height:18px;border-radius:50%;border:2px solid rgba(255,255,255,.6);}
-  #prd .hero .eyebrow{color:var(--teal);}
-  #prd .hero h1{font-size:62px;font-weight:800;letter-spacing:-2px;line-height:1.02;margin-bottom:16px;}
+  /* hero — AAI-parity: neon-waves video, full-bleed, floating info card */
+  @font-face{font-family:'SctoGroteskA';font-weight:500;font-style:normal;font-display:swap;src:url('<?php echo $fonts; ?>SctoGroteskA-Medium.woff2') format('woff2');}
+  @font-face{font-family:'SctoGroteskA';font-weight:700;font-style:normal;font-display:swap;src:url('<?php echo $fonts; ?>SctoGroteskA-Bold.woff2') format('woff2');}
+  #prd .hero{position:relative;overflow:hidden;background:#0a0a0a;color:#fff;width:100vw;max-width:100vw;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);margin-top:-110px;padding:168px 0 256px;min-height:78vh;display:flex;align-items:flex-start;font-family:'SctoGroteskA',-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;}
+  #prd .hero .vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;transform:scale(1.22);z-index:0;pointer-events:none;filter:hue-rotate(55deg) saturate(1.15) brightness(.82);}
+  #prd .hero .veil{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(10,10,10,.55) 0%,rgba(10,10,10,.42) 45%,rgba(10,10,10,.34) 100%);}
+  #prd .hero-in{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:0 28px;width:100%;}
+  #prd .hero .dgert{display:inline-flex;align-items:center;gap:13px;text-decoration:none;color:#fff;margin-bottom:26px;transition:opacity .2s;}
+  #prd .hero .dgert:hover{opacity:.85;}
+  #prd .hero .dgert img{height:40px;width:auto;display:block;}
+  #prd .hero .dgert .t{font-size:15px;font-weight:600;letter-spacing:-.01em;}
+  #prd .hero .dgert .ar{font-size:13px;opacity:.7;}
+  #prd .hero .eyebrow{font-size:12px;letter-spacing:.2em;color:var(--yellow);font-weight:700;text-transform:uppercase;margin-bottom:20px;}
+  #prd .hero h1{font-size:clamp(48px,7.6vw,98px);font-weight:500;letter-spacing:-.02em;line-height:1.01;margin-bottom:24px;}
   #prd .hero h1 .dp{color:var(--accent);}
-  #prd .hero p{font-size:18px;color:rgba(255,255,255,.82);max-width:660px;padding-bottom:64px;}
-  /* info-card */
-  #prd .infocard{max-width:1024px;margin:-40px auto 0;position:relative;z-index:3;border-radius:8px;overflow:hidden;box-shadow:0 30px 60px -24px rgba(0,0,0,.5);}
+  #prd .hero h1 .dt{color:var(--teal);}
+  #prd .hero p{font-size:clamp(18px,1.5vw,23px);line-height:1.4;color:var(--yellow);font-weight:500;max-width:780px;padding-bottom:0;}
+  /* info-card — floats up over the lower neon waves (AAI treatment) */
+  #prd .infocard{max-width:1024px;margin:-200px auto 0;position:relative;z-index:5;border-radius:8px;overflow:hidden;box-shadow:0 40px 80px -30px rgba(0,0,0,.7);}
   #prd .ic-dates{display:grid;grid-template-columns:repeat(5,1fr);background:#1c1c1c;color:#fff;}
   #prd .ic-col{padding:20px 22px;border-right:1px solid rgba(255,255,255,.08);}#prd .ic-col:last-child{border-right:none;}
   #prd .ic-col label{display:block;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:7px;}
@@ -125,7 +138,8 @@ $tba = '<span class="tba">a confirmar</span>';
   @media(max-width:860px){
     #prd .pz-grid,#prd .oc-grid,#prd .nq,#prd .inv,#prd .mod-b,#prd .fc{grid-template-columns:1fr;}
     #prd .ar-grid{grid-template-columns:1fr;}#prd .ar-arrow{display:none;}
-    #prd .ic-dates{grid-template-columns:1fr 1fr;}#prd .hero h1{font-size:40px;}#prd h2{font-size:27px;}
+    #prd .ic-dates{grid-template-columns:1fr 1fr;}#prd .hero h1{font-size:42px;}#prd h2{font-size:27px;}
+    #prd .hero{padding:128px 0 168px;margin-top:-90px;min-height:0;}#prd .infocard{margin:-130px auto 0;}
   }
 </style>
 </head>
@@ -135,12 +149,16 @@ $tba = '<span class="tba">a confirmar</span>';
 <header class="prd-fhdr"><div class="lg">EDIT<span>.</span></div><a class="btn" href="#inscrever">Fala connosco</a></header>
 
 <!--PRD:SECTIONS-START-->
-<section class="hero"><div class="hero-in">
-  <?php if ( ! empty( $C['hero']['badge'] ) ) : ?><div class="badge"><?php echo esc_html( $C['hero']['badge'] ); ?></div><?php endif; ?>
-  <div class="eyebrow"><?php echo esc_html( $C['hero']['eyebrow'] ); ?></div>
-  <h1><?php echo wp_kses_post( $C['hero']['h1_html'] ); ?></h1>
-  <p><?php echo esc_html( $C['hero']['sub'] ); ?></p>
-</div></section>
+<section class="hero">
+  <video class="vid" autoplay muted loop playsinline preload="auto"<?php echo $hero_poster ? ' poster="' . esc_url( $hero_poster ) . '"' : ''; ?>><source src="<?php echo esc_url( $hero_vid ); ?>" type="video/mp4"></video>
+  <div class="veil"></div>
+  <div class="hero-in">
+    <a class="dgert" href="https://www.dgert.gov.pt/entidades-formadoras-certificadas" target="_blank" rel="noopener"><img src="<?php echo esc_url( $dgert_img ); ?>" alt="DGERT — Entidade Formadora Certificada"><span class="t"><?php echo esc_html( $C['hero']['badge'] ?? 'Entidade Formadora Certificada' ); ?></span><span class="ar">&#8599;</span></a>
+    <div class="eyebrow"><?php echo esc_html( $C['hero']['eyebrow'] ); ?></div>
+    <h1><?php echo wp_kses_post( $C['hero']['h1_html'] ); ?></h1>
+    <p><?php echo esc_html( $C['hero']['sub'] ); ?></p>
+  </div>
+</section>
 <?php if ( ! empty( $C['info_card'] ) ) : $ic = $C['info_card']; ?>
 <div class="infocard">
   <div class="ic-dates"><?php foreach ( $ic['cols'] as $col ) : ?><div class="ic-col"><label><?php echo esc_html( $col[0] ); ?></label><div class="v"><?php echo $is_tba( $col[1] ) ? $tba : esc_html( $col[1] ); ?></div></div><?php endforeach; ?></div>
