@@ -247,7 +247,7 @@
   .aai-rd .nq2-video .nq2-live{position:absolute;top:14px;left:14px;display:inline-flex;align-items:center;gap:7px;background:rgba(10,10,10,.74);backdrop-filter:blur(4px);color:#fff;font-weight:800;font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:7px 12px;border-radius:5px;}
   .aai-rd .nq2-video .nq2-live .dot{width:8px;height:8px;border-radius:50%;background:var(--pink);animation:nq2pulse 1.8s infinite;}
   @keyframes nq2pulse{0%{box-shadow:0 0 0 0 rgba(249,40,105,.55);}70%{box-shadow:0 0 0 9px rgba(249,40,105,0);}100%{box-shadow:0 0 0 0 rgba(249,40,105,0);}}
-  .aai-rd .nq2-video .tag{position:absolute;left:14px;bottom:14px;background:var(--yellow);color:var(--ink);font-weight:800;font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:7px 14px;border-radius:5px;white-space:nowrap;}
+  .aai-rd .nq2-tag{display:inline-block;margin-top:14px;background:var(--yellow);color:var(--ink);font-weight:800;font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:8px 16px;border-radius:5px;}
   .aai-rd .nq2-studio{display:none;margin-top:26px;background:#0e0e0e;border-radius:12px;padding:30px 34px;color:#fff;}
   .aai-rd .nq2-studio .ns-h{font-size:19px;font-weight:800;letter-spacing:-.2px;margin-bottom:22px;}
   .aai-rd .nq2-studio .ns-h span{color:var(--yellow);}
@@ -427,14 +427,16 @@
   <section class="sec alt">
     <div class="eyebrow"><span class="secnum">05</span>Quem te vai formar</div>
     <h2>IA não se aprende em slides. Aprende-se com <span class="mh-y">quem a vive.</span></h2>
-    <p class="lead nq2-lead">18+ anos de Inteligência Artificial aplicada ao negócio. E aulas ao vivo, gravadas no nosso estúdio de broadcast profissional. Quem já a teve em sala, percebe a diferença.</p>
+    <p class="lead nq2-lead">18+ anos de Inteligência Artificial aplicada ao negócio. Quem já a teve em sala, percebe a diferença.</p>
     <div class="nq2">
-      <div class="nq2-video">
-        <video id="naiaraVid" autoplay muted loop playsinline preload="auto" data-no-minify="1" data-no-optimize="1" data-cfasync="false">
-          <source src="https://weareedit.io/wp-content/uploads/2026/06/naiara-back-aai-studio.mp4" type="video/mp4">
-        </video>
-        <div class="nq2-live"><span class="dot"></span>Estúdio de broadcast EDIT.</div>
-        <div class="tag">A tua formadora · Naiara Back</div>
+      <div class="nq2-vidwrap">
+        <div class="nq2-video">
+          <video id="naiaraVid" autoplay muted loop playsinline preload="auto" data-no-minify="1" data-no-optimize="1" data-cfasync="false">
+            <source src="https://weareedit.io/wp-content/uploads/2026/06/naiara-back-aai-studio.mp4" type="video/mp4">
+          </video>
+          <div class="nq2-live"><span class="dot"></span>Estúdio de broadcast EDIT.</div>
+        </div>
+        <div class="nq2-tag">A tua formadora · Naiara Back</div>
       </div>
       <div class="nq2-side">
         <p class="nq2-q" id="naiaraQuote"><span class="mk">&ldquo;</span>O meu objetivo não é ensinar-te a usar ferramentas. É <em>desafiar a tua forma de pensar</em>. A IA não veio substituir o teu valor: veio amplificá-lo. No fim, não levas só prompts. Levas uma nova forma de trabalhar.<span class="mk">&rdquo;</span></p>
