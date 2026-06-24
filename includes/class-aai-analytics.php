@@ -37,7 +37,7 @@ class EDIT_AAI_Analytics {
 	];
 
 	public static function init(): void {
-		add_action( 'init', [ __CLASS__, 'maybe_install' ] );
+		self::maybe_install();   // we are already on the 'init' hook → call directly (a late add_action('init') would not fire reliably)
 		add_action( 'rest_api_init', [ __CLASS__, 'register_routes' ] );
 		add_action( 'template_redirect', [ __CLASS__, 'maybe_dashboard' ], 0 );
 	}
@@ -49,8 +49,22 @@ class EDIT_AAI_Analytics {
 		return $wpdb->prefix . 'edit_bootcamp_events';
 	}
 
+	/** Fast path for init: create the table once (skipped after the option is set). */
 	public static function maybe_install(): void {
 		if ( (int) get_option( self::SCHEMA_OPTION ) === self::SCHEMA_VERSION ) return;
+		self::create_table();
+	}
+
+	/** Robust: create the table if it is actually missing (covers a stale option). */
+	private static function ensure_table(): bool {
+		global $wpdb;
+		$sql = $wpdb->prepare( 'SHOW TABLES LIKE %s', self::table() );
+		if ( (bool) $wpdb->get_var( $sql ) ) return true;
+		self::create_table();
+		return (bool) $wpdb->get_var( $sql );
+	}
+
+	private static function create_table(): void {
 		global $wpdb;
 		$table   = self::table();
 		$charset = $wpdb->get_charset_collate();
@@ -126,6 +140,7 @@ class EDIT_AAI_Analytics {
 			];
 		}
 		if ( empty( $rows ) ) return [ 'ok' => true, 'stored' => 0 ];
+		self::ensure_table();   // create on first event if init somehow missed it
 
 		global $wpdb;
 		$fmt = [ '%s','%s','%s','%s','%s','%s','%s','%d','%s','%s' ];
@@ -182,8 +197,7 @@ class EDIT_AAI_Analytics {
 		$since = gmdate( 'Y-m-d H:i:s', time() - $days * DAY_IN_SECONDS );
 		$w    = $wpdb->prepare( ' WHERE page=%s AND ts>=%s ', $page, $since );
 
-		$exists = $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $t ) );
-		if ( ! $exists ) return self::shell( $page, $days, '<p style="padding:40px">No data table yet — instrumentation will create it on first event.</p>' );
+		if ( ! self::ensure_table() ) return self::shell( $page, $days, '<p style="padding:40px">Could not create the events table (check DB permissions). Once instrumentation runs, data appears here.</p>' );
 
 		// Headline numbers.
 		$sessions = (int) $wpdb->get_var( "SELECT COUNT(DISTINCT session) FROM $t $w" );
