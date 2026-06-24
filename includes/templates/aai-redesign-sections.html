@@ -347,8 +347,8 @@
     </div>
     <!-- alumni video stories (Vimeo · on-page overlay modal) -->
     <style>
-      .aai-rd .ap2-vhead{margin:50px 0 0;font-size:15px;font-weight:800;letter-spacing:.01em;color:var(--ink);}
-      .aai-rd .ap2-vhead .mk{color:var(--pink);}
+      .aai-rd .ap2-vtitle{margin:56px 0 12px;font-size:23px;font-weight:700;letter-spacing:-.5px;line-height:1.2;color:var(--ink);}
+      .aai-rd .ap2-vdesc{font-size:16px;line-height:1.6;color:var(--grey);max-width:640px;margin:0 0 4px;}
       .aai-rd .ap2-videos{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:18px;}
       .aai-rd .ap2-vid{display:block;border:0;padding:0;margin:0;background:none;text-align:left;cursor:pointer;font:inherit;color:inherit;width:100%;}
       .aai-rd .ap2-vthumb{position:relative;display:block;width:100%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:#000;box-shadow:0 12px 28px -16px rgba(0,0,0,.5);transition:transform .25s ease,box-shadow .25s ease;}
@@ -359,9 +359,9 @@
       .aai-rd .ap2-vplay{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.94);display:flex;align-items:center;justify-content:center;transition:transform .25s ease,background .25s ease;}
       .aai-rd .ap2-vid:hover .ap2-vplay{transform:translate(-50%,-50%) scale(1.09);background:#fff;}
       .aai-rd .ap2-vplay::before{content:"";display:block;width:0;height:0;border-style:solid;border-width:11px 0 11px 18px;border-color:transparent transparent transparent #f92869;margin-left:4px;}
-      .aai-rd .ap2-vcap{margin-top:13px;}
-      .aai-rd .ap2-vnm{display:block;font-size:16px;font-weight:800;color:var(--ink);}
-      .aai-rd .ap2-vrl{display:block;font-size:13.5px;color:var(--grey);margin-top:2px;}
+      .aai-rd .ap2-vcap{margin-top:18px;}
+      .aai-rd .ap2-vnm{display:block;font-size:17px;font-weight:600;letter-spacing:-.2px;color:var(--ink);}
+      .aai-rd .ap2-vrl{display:block;font-size:14px;color:var(--grey);margin-top:5px;}
       .aai-vmodal{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;padding:24px;}
       .aai-vmodal.open{display:flex;}
       .aai-vmodal-bd{position:absolute;inset:0;background:rgba(8,8,10,.86);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);}
@@ -372,7 +372,8 @@
       .aai-vmodal-close:hover{background:rgba(255,255,255,.3);}
       @media(max-width:760px){.aai-rd .ap2-videos{grid-template-columns:1fr;max-width:420px;}}
     </style>
-    <p class="ap2-vhead">Ouve quem já passou por cá: <span class="mk">histórias em vídeo.</span></p>
+    <h3 class="ap2-vtitle">Histórias na primeira pessoa.</h3>
+    <p class="ap2-vdesc">Alumni que passaram pela EDIT. e hoje aplicam o que aprenderam no dia a dia. Carrega em cada vídeo para ouvir o testemunho.</p>
     <div class="ap2-videos">
       <button type="button" class="ap2-vid" data-vimeo="497606679" aria-label="Ver vídeo de Maria Marcos">
         <span class="ap2-vthumb"><img loading="lazy" src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/aai/vid-maria-marcos.jpg" alt="Maria Marcos — Vanguard Properties"><span class="ap2-vplay"></span></span>
