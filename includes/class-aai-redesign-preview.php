@@ -287,6 +287,22 @@ class EDIT_AAI_Redesign_Preview {
         $fragment = str_replace( '<!--PROGRAMA-->', $programa, $fragment );
         $fragment = str_replace( '<!--EDUCATION-->', $education, $fragment );
 
+        // Related theme courses — 4 AI/data course cards, pixel-identical to the
+        // /formacao/ archive (typology colours, EDIT mark, date). Reuses the
+        // shared pillar card-map transient, so no extra scrape on a warm cache.
+        $related = '';
+        if ( class_exists( 'EDIT_Pillar_Courses' ) ) {
+            foreach ( [
+                'agentes-inteligentes-para-marketing',
+                'bootcamp-generative-ai-aplicado-ao-marketing-digital',
+                'bootcamp-dataops',
+                'curso-data-science-business-analytics-online',
+            ] as $rc_slug ) {
+                $related .= EDIT_Pillar_Courses::render_card( $rc_slug );
+            }
+        }
+        $fragment = str_replace( '<!--RELATED-COURSES-->', $related, $fragment );
+
         // The footer's "Mantém-te a par das novidades / Subscrever Newsletter"
         // strip is obsolete (superseded by the in-page pink newsletter) — strip
         // it from the proxied footer, from its <div> up to the copyright bar.
