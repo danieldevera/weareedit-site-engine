@@ -5,34 +5,8 @@
 #pedirInfo textarea:focus{outline:none !important;border-color:#f92869 !important;}
 #pedirInfo input[type=submit],#pedirInfo .wpcf7-submit{background:#0a0a0a !important;color:#ffdd06 !important;font-weight:800 !important;border:0 !important;border-radius:6px !important;padding:15px 32px !important;cursor:pointer !important;margin-top:18px !important;font-size:15px !important;width:auto !important;}</style>
 <script>(function(){function c(){var p=document.getElementById('pedirInfo');if(p)p.classList.remove('open');document.documentElement.classList.remove('side-form-open');}document.addEventListener('click',function(e){var t=e.target;if(t&&t.closest&&t.closest('#pedirInfo [data-aai-close]')){e.preventDefault();c();}});document.addEventListener('keydown',function(e){if(e.key==='Escape')c();});})();</script>
-<!-- AAI on-scroll reveal · "Rise + settle" (motion spec). Hides sections via a JS-set
-     html.aai-anim class added early (no flash); fails safe to fully-visible if JS never runs. -->
-<style id="aai-rv-css">
-html.aai-anim .aai-rd>section,
-html.aai-anim .aai-programa,
-html.aai-anim .aai-education,
-html.aai-anim .aai-alumni-wall{opacity:0;transform:translateY(10px) scale(.99);will-change:opacity,transform;}
-html.aai-anim .aai-rd>section.aai-rv,
-html.aai-anim .aai-programa.aai-rv,
-html.aai-anim .aai-education.aai-rv,
-html.aai-anim .aai-alumni-wall.aai-rv{opacity:1;transform:none;transition:opacity .65s ease,transform .8s cubic-bezier(.22,1,.36,1);}
-@media(prefers-reduced-motion:reduce){
-html.aai-anim .aai-rd>section,
-html.aai-anim .aai-programa,
-html.aai-anim .aai-education,
-html.aai-anim .aai-alumni-wall{opacity:1!important;transform:none!important;transition:none!important;}
-}
-</style>
-<script data-no-minify="1" data-no-optimize="1" data-cfasync="false">
-/* Arm the reveal as early as possible so sections never paint-then-hide (no flash).
-   Reduced motion: don't arm (stays fully visible). Safety: if the trigger script below
-   never runs (e.g. stripped/optimized away), this timeout un-hides everything. */
-(function(){try{
-  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-  document.documentElement.classList.add('aai-anim');
-  window.__aaiRvFS=setTimeout(function(){try{document.documentElement.classList.remove('aai-anim');}catch(e){}},4500);
-}catch(e){}})();
-</script>
+<!-- AAI on-scroll reveal: per-item "Rise + settle". Hide + trigger handled by one script before
+     the footer (inline hide, so any JS failure leaves all content visible). -->
 <style>
   /* self-contained brand font: the AAI page doesn't reliably get SctoGroteskA from the theme (esp. weight 700), so define it here for all weights */
   @font-face{font-family:'SctoGroteskA';font-weight:100;font-style:normal;font-display:swap;src:url('https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/fonts/SctoGroteskA-Thin.woff2') format('woff2');}
@@ -999,43 +973,49 @@ html.aai-anim .aai-alumni-wall{opacity:1!important;transform:none!important;tran
 <!-- first-party engagement tracker (anonymous, no cookies) -->
 <script src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/aai-analytics.js?v=1" data-page="aai" data-no-optimize="1" data-no-minify="1" data-cfasync="false" defer></script>
 
-<!-- AAI on-scroll reveal · trigger logic ("Rise + settle"): each section/band lifts 38px while
-     easing up from 95% scale + fades in once its top crosses 88% of the viewport. Once per element. -->
+<!-- AAI on-scroll reveal - per-ITEM "Rise + settle" incl. the hero: every item (eyebrow, heading,
+     lead, each card/stat, CTA, hero blocks) lifts 48px + eases up from .94 scale + fades once its top
+     crosses 88% vh. Once per item; items entering together cascade (100ms). Inline hide so a JS
+     failure leaves all content visible. Respects prefers-reduced-motion. -->
 <script data-no-minify="1" data-no-optimize="1" data-cfasync="false">
 (function(){
-  var d=document.documentElement;
-  try{clearTimeout(window.__aaiRvFS);}catch(e){}            /* take over from the arming failsafe */
-  if(!d.classList.contains('aai-anim'))return;              /* reduced-motion or not armed */
   try{
-    var sel='.aai-rd>section,.aai-programa,.aai-education,.aai-alumni-wall';
-    var els=[].slice.call(document.querySelectorAll(sel));
-    if(!els.length){d.classList.remove('aai-anim');return;}
-    var SAFETY=1100;
-    function show(el,delay){
-      if(el.getAttribute('data-aai-rv')==='1')return;
-      el.setAttribute('data-aai-rv','1');
-      el.style.transitionDelay=(delay||0)+'ms';
-      requestAnimationFrame(function(){el.classList.add('aai-rv');});
-      /* hard-commit after the transition window so content is never left stuck hidden */
-      setTimeout(function(){el.classList.add('aai-rv');},(delay||0)+SAFETY);
+    if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+    var roots=[].slice.call(document.querySelectorAll('#aai-hero,.aai-rd>section,.aai-programa,.aai-education,.aai-alumni-wall'));
+    if(!roots.length)return;
+    var SKIP=/^(STYLE|SCRIPT|BR|HR)$/;
+    function vis(el){ if(!el||el.nodeType!==1||SKIP.test(el.tagName))return false; var r=el.getBoundingClientRect(); return r.width>0||r.height>0; }
+    var CONT=/(grid|cards|stats|videos|logos|row|list|chips)/i;
+    function unwrap(n){ var g=0; while(n&&g<4){ var ch=[].slice.call(n.children).filter(vis); if(ch.length===1&&/^(DIV|SECTION)$/.test(ch[0].tagName)&&ch[0].children.length){ n=ch[0]; g++; } else break; } return n; }
+    function items(sec){
+      var base=unwrap(sec), out=[], kids=[].slice.call(base.children).filter(vis);
+      for(var i=0;i<kids.length;i++){
+        var c=kids[i], cls=(''+(c.className||'')), gk=[].slice.call(c.children).filter(vis);
+        if(gk.length>=2&&CONT.test(cls)){ out.push.apply(out,gk); } else { out.push(c); }
+      }
+      return out.length?out:[sec];
     }
-    var first=true;
+    var els=[];
+    for(var i=0;i<roots.length;i++){ els=els.concat(items(roots[i])); }
+    if(!els.length)return;
+    var TRANS='opacity .65s ease,transform .8s cubic-bezier(.22,1,.36,1)', SAFETY=1100;
+    for(var i=0;i<els.length;i++){ var e=els[i]; e.style.transition='none'; e.style.willChange='opacity,transform'; e.style.opacity='0'; e.style.transform='translateY(48px) scale(.94)'; }
+    function show(el,delay){
+      if(el.getAttribute('data-aai-i')==='1')return; el.setAttribute('data-aai-i','1');
+      el.style.transition=TRANS; el.style.transitionDelay=(delay||0)+'ms';
+      requestAnimationFrame(function(){ el.style.opacity='1'; el.style.transform='none'; });
+      setTimeout(function(){ el.style.transition='none'; el.style.opacity='1'; el.style.transform='none'; },(delay||0)+SAFETY);
+    }
     function scan(){
       var vh=window.innerHeight||document.documentElement.clientHeight, t=vh*0.88, b=0;
-      for(var i=0;i<els.length;i++){
-        var el=els[i];
-        if(el.getAttribute('data-aai-rv')==='1')continue;
-        var r=el.getBoundingClientRect();
-        if(r.top<t&&r.bottom>0){show(el, first?b*60:0); b++;}  /* stagger only the on-load batch */
-      }
-      first=false;
+      for(var i=0;i<els.length;i++){ var el=els[i]; if(el.getAttribute('data-aai-i')==='1')continue; var r=el.getBoundingClientRect(); if(r.top<t&&r.bottom>0){ show(el,b*100); b++; } }
     }
     var on=function(){scan();};
     addEventListener('scroll',on,{passive:true});
     addEventListener('resize',on,{passive:true});
-    scan();
-    requestAnimationFrame(scan);
-    setTimeout(scan,300);                                   /* catch late layout/lazy content */
-  }catch(e){try{d.classList.remove('aai-anim');}catch(_){}}  /* any failure → reveal everything */
+    scan(); requestAnimationFrame(scan); setTimeout(scan,300);
+  }catch(e){
+    try{ var a=document.querySelectorAll('#aai-hero *,.aai-rd>section *,.aai-programa *,.aai-education *,.aai-alumni-wall *'); for(var i=0;i<a.length;i++){ a[i].style.opacity=''; a[i].style.transform=''; a[i].style.transition=''; } }catch(_){}
+  }
 })();
 </script>
