@@ -11,7 +11,7 @@
 html.aai-anim .aai-rd>section,
 html.aai-anim .aai-programa,
 html.aai-anim .aai-education,
-html.aai-anim .aai-alumni-wall{opacity:0;transform:translateY(38px) scale(.95);will-change:opacity,transform;}
+html.aai-anim .aai-alumni-wall{opacity:0;transform:translateY(10px) scale(.99);will-change:opacity,transform;}
 html.aai-anim .aai-rd>section.aai-rv,
 html.aai-anim .aai-programa.aai-rv,
 html.aai-anim .aai-education.aai-rv,
@@ -1026,7 +1026,7 @@ html.aai-anim .aai-alumni-wall{opacity:1!important;transform:none!important;tran
         var el=els[i];
         if(el.getAttribute('data-aai-rv')==='1')continue;
         var r=el.getBoundingClientRect();
-        if(r.top<t&&r.bottom>0){show(el, first?b*90:0); b++;}  /* stagger only the on-load batch */
+        if(r.top<t&&r.bottom>0){show(el, first?b*60:0); b++;}  /* stagger only the on-load batch */
       }
       first=false;
     }
