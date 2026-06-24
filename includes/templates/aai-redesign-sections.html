@@ -817,6 +817,24 @@
       .aai-rd .relc-grid .course{float:none !important;padding:0 10px;margin-bottom:20px;flex:0 0 50%;max-width:50%;}
       @media(min-width:992px){.aai-rd .relc-grid .course{flex:0 0 25% !important;max-width:25% !important;}}
       @media(max-width:600px){.aai-rd .relc-grid .course{flex:0 0 100% !important;max-width:100% !important;}}
+      /* Course tile — exact homepage "Formação" card, theme markup re-styled self-contained
+         (theme .course-box rules are scoped to .filter-result/.courses-container, absent here). */
+      .aai-rd .relc-grid .course-box{position:relative;display:block;width:100%;aspect-ratio:1/1.02;background-size:cover;background-position:center;background-repeat:no-repeat;overflow:hidden;text-decoration:none;}
+      .aai-rd .relc-grid .course-box.text-black{color:#000;}
+      .aai-rd .relc-grid .course-box.text-white{color:#fff;}
+      .aai-rd .relc-grid .course-box .course-icon{position:absolute;top:28px;left:30px;z-index:2;display:flex;margin:0;}
+      .aai-rd .relc-grid .course-box .course-icon img{width:42px;height:42px;display:block;}
+      .aai-rd .relc-grid .course-box .special-labels-container{position:absolute;top:27px;right:24px;z-index:3;display:flex;flex-direction:column;align-items:flex-end;gap:7px;}
+      .aai-rd .relc-grid .course-box .special-labels-container .course-promo-code{font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;border:1.5px solid currentColor;padding:5px 9px;line-height:1;white-space:nowrap;background:transparent;}
+      .aai-rd .relc-grid .course-box .course-text{position:absolute;left:30px;right:26px;bottom:28px;z-index:2;transition:transform .35s ease;}
+      .aai-rd .relc-grid .course-text .course-time{font-size:15px;font-weight:400;line-height:1.4;letter-spacing:-.3px;margin-bottom:10px;}
+      .aai-rd .relc-grid .course-text .course-title{font-size:20px;font-weight:700;line-height:1.13;letter-spacing:-.5px;margin:0 0 12px;}
+      .aai-rd .relc-grid .course-text .course-date{font-size:15px;font-weight:700;line-height:1.35;letter-spacing:-.3px;}
+      .aai-rd .relc-grid .course-text .course-date .inner{display:inline;}
+      .aai-rd .relc-grid .course-box .course-view{position:absolute;left:30px;bottom:28px;opacity:0;z-index:2;transition:opacity .35s ease;}
+      .aai-rd .relc-grid .course-box .course-view span{font-size:15px;font-weight:700;text-decoration:underline;}
+      .aai-rd .relc-grid .course-box:hover .course-text{transform:translateY(-30px);}
+      .aai-rd .relc-grid .course-box:hover .course-view{opacity:1;}
     </style>
     <div class="eyebrow">Continua a tua formação</div>
     <h2>Cursos <span class="hl">relacionados.</span></h2>
