@@ -3,7 +3,7 @@
  * Plugin Name: * weareedit.io Site Engine
  * Plugin URI:  https://github.com/danieldevera/weareedit-site-engine
  * Description: Custom site engine for weareedit.io — SEO (meta tags, OG, schema.org, sitemap, hreflang), GEO/LLM optimization (llms.txt, AI crawler rules, Wikidata-linked Person/Organization schema), brand customization (hero typography, dot accents, CTA hover animations), Google Reviews aggregation, output-buffer HTML rewrites, virtual pages, WP Rocket cache integration, and one-time data fixes.
- * Version:     1.5.835
+ * Version:     1.5.836
  * Author:      Daniel Devera
  * License:     GPL-2.0+
  * Text Domain: weareedit-site-engine
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.835' );
+define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.836' );
 
 // Reset PHP opcache after plugin updates so new class bytecode is loaded
 // immediately instead of on the next opcache TTL. Mitigates v1.5.391/392
@@ -64,6 +64,15 @@ function weareedit_warm_caches() {
             'headers'   => [ 'User-Agent' => 'edit-cache-warmer/1.0 (+weareedit.io)' ],
         ] );
     }
+    // Refresh the AAI/GAMA last-good splice from the current fragment. The self-
+    // fetch is intermittent, so retrying here (warm runs +30s after update and
+    // daily) gives the rebuild several chances to land after a fragment edit.
+    if ( class_exists( 'EDIT_AAI_Redesign_Preview' ) && method_exists( 'EDIT_AAI_Redesign_Preview', 'rebuild_lastgood' ) ) {
+        EDIT_AAI_Redesign_Preview::rebuild_lastgood();
+    }
+    if ( class_exists( 'EDIT_GAMA_Redesign_Preview' ) && method_exists( 'EDIT_GAMA_Redesign_Preview', 'rebuild_lastgood' ) ) {
+        EDIT_GAMA_Redesign_Preview::rebuild_lastgood();
+    }
 }
 add_action( 'weareedit_warm_caches_cron', 'weareedit_warm_caches' );
 add_action( 'init', function () {
@@ -81,6 +90,18 @@ add_action( 'upgrader_process_complete', function ( $upgrader, $hook_extra ) {
                 // Bust the empresas output cache (the render changed) + refresh
                 // the mu-plugin to the shipped version, then warm everything.
                 delete_transient( 'edit_empresas_html' );
+                // The AAI/GAMA live render serves a WEEK-long "last-good" splice.
+                // Without a refresh on update, a stale render (built from the OLD
+                // fragment) keeps serving and fragment edits never show. REBUILD
+                // (not just delete) the last-good with the current fragment — if
+                // the self-fetch fails the OLD last-good is kept, so the live
+                // launch URL never reverts to the native page.
+                if ( class_exists( 'EDIT_AAI_Redesign_Preview' ) && method_exists( 'EDIT_AAI_Redesign_Preview', 'rebuild_lastgood' ) ) {
+                    EDIT_AAI_Redesign_Preview::rebuild_lastgood();
+                }
+                if ( class_exists( 'EDIT_GAMA_Redesign_Preview' ) && method_exists( 'EDIT_GAMA_Redesign_Preview', 'rebuild_lastgood' ) ) {
+                    EDIT_GAMA_Redesign_Preview::rebuild_lastgood();
+                }
                 if ( function_exists( 'weareedit_install_empresas_mu' ) ) {
                     weareedit_install_empresas_mu();
                 }

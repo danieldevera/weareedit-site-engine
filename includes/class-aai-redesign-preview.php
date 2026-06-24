@@ -176,6 +176,24 @@ class EDIT_AAI_Redesign_Preview {
         return $body;
     }
 
+    /**
+     * Re-splice with the CURRENT fragment and refresh the week-long last-good
+     * cache. Called on plugin update (weareedit-site-engine.php) so fragment
+     * edits take effect — render_live otherwise keeps serving a last-good built
+     * from the OLD fragment until it expires. Best-effort: if the self-fetch
+     * fails the existing last-good is kept, so the live URL never reverts to the
+     * native page.
+     */
+    public static function rebuild_lastgood(): void {
+        delete_transient( 'edit_aai_live_html' );                       // force a fresh self-fetch
+        $live = self::live_html();
+        if ( $live === '' ) return;                                     // self-fetch failed → keep old
+        $spliced = self::splice( $live, self::sections_fragment(), true );
+        if ( $spliced !== '' ) {
+            set_transient( 'edit_aai_spliced_lastgood', $spliced, WEEK_IN_SECONDS );
+        }
+    }
+
     /** Splice: [top..hero] + our sections + [footer..end]. '' on failure. */
     private static function splice( string $live, string $fragment, bool $live_mode = false ): string {
         $mark = strpos( $live, self::HERO_BODY_MARK );

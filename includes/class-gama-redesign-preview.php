@@ -158,6 +158,19 @@ class EDIT_GAMA_Redesign_Preview {
         return $body;
     }
 
+    /** Rebuild the week-long last-good splice with the CURRENT fragment (called
+     *  on plugin update). Best-effort: keeps the old last-good if the self-fetch
+     *  fails, so the live URL never reverts to the native page. */
+    public static function rebuild_lastgood(): void {
+        delete_transient( 'edit_gama_live_html' );
+        $live = self::live_html();
+        if ( $live === '' ) return;
+        $spliced = self::splice( $live, self::sections_fragment(), true );
+        if ( $spliced !== '' ) {
+            set_transient( 'edit_gama_spliced_lastgood', $spliced, WEEK_IN_SECONDS );
+        }
+    }
+
     /** Splice: [top..hero] + our sections + [footer..end]. '' on failure. */
     private static function splice( string $live, string $fragment, bool $live_mode = false ): string {
         $mark = strpos( $live, self::HERO_BODY_MARK );
