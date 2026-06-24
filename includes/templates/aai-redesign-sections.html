@@ -5,6 +5,34 @@
 #pedirInfo textarea:focus{outline:none !important;border-color:#f92869 !important;}
 #pedirInfo input[type=submit],#pedirInfo .wpcf7-submit{background:#0a0a0a !important;color:#ffdd06 !important;font-weight:800 !important;border:0 !important;border-radius:6px !important;padding:15px 32px !important;cursor:pointer !important;margin-top:18px !important;font-size:15px !important;width:auto !important;}</style>
 <script>(function(){function c(){var p=document.getElementById('pedirInfo');if(p)p.classList.remove('open');document.documentElement.classList.remove('side-form-open');}document.addEventListener('click',function(e){var t=e.target;if(t&&t.closest&&t.closest('#pedirInfo [data-aai-close]')){e.preventDefault();c();}});document.addEventListener('keydown',function(e){if(e.key==='Escape')c();});})();</script>
+<!-- AAI on-scroll reveal · "Rise + settle" (motion spec). Hides sections via a JS-set
+     html.aai-anim class added early (no flash); fails safe to fully-visible if JS never runs. -->
+<style id="aai-rv-css">
+html.aai-anim .aai-rd>section,
+html.aai-anim .aai-programa,
+html.aai-anim .aai-education,
+html.aai-anim .aai-alumni-wall{opacity:0;transform:translateY(38px) scale(.95);will-change:opacity,transform;}
+html.aai-anim .aai-rd>section.aai-rv,
+html.aai-anim .aai-programa.aai-rv,
+html.aai-anim .aai-education.aai-rv,
+html.aai-anim .aai-alumni-wall.aai-rv{opacity:1;transform:none;transition:opacity .65s ease,transform .8s cubic-bezier(.22,1,.36,1);}
+@media(prefers-reduced-motion:reduce){
+html.aai-anim .aai-rd>section,
+html.aai-anim .aai-programa,
+html.aai-anim .aai-education,
+html.aai-anim .aai-alumni-wall{opacity:1!important;transform:none!important;transition:none!important;}
+}
+</style>
+<script data-no-minify="1" data-no-optimize="1" data-cfasync="false">
+/* Arm the reveal as early as possible so sections never paint-then-hide (no flash).
+   Reduced motion: don't arm (stays fully visible). Safety: if the trigger script below
+   never runs (e.g. stripped/optimized away), this timeout un-hides everything. */
+(function(){try{
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  document.documentElement.classList.add('aai-anim');
+  window.__aaiRvFS=setTimeout(function(){try{document.documentElement.classList.remove('aai-anim');}catch(e){}},4500);
+}catch(e){}})();
+</script>
 <style>
   /* self-contained brand font: the AAI page doesn't reliably get SctoGroteskA from the theme (esp. weight 700), so define it here for all weights */
   @font-face{font-family:'SctoGroteskA';font-weight:100;font-style:normal;font-display:swap;src:url('https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/fonts/SctoGroteskA-Thin.woff2') format('woff2');}
@@ -970,3 +998,44 @@
 
 <!-- first-party engagement tracker (anonymous, no cookies) -->
 <script src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/aai-analytics.js?v=1" data-page="aai" data-no-optimize="1" data-no-minify="1" data-cfasync="false" defer></script>
+
+<!-- AAI on-scroll reveal · trigger logic ("Rise + settle"): each section/band lifts 38px while
+     easing up from 95% scale + fades in once its top crosses 88% of the viewport. Once per element. -->
+<script data-no-minify="1" data-no-optimize="1" data-cfasync="false">
+(function(){
+  var d=document.documentElement;
+  try{clearTimeout(window.__aaiRvFS);}catch(e){}            /* take over from the arming failsafe */
+  if(!d.classList.contains('aai-anim'))return;              /* reduced-motion or not armed */
+  try{
+    var sel='.aai-rd>section,.aai-programa,.aai-education,.aai-alumni-wall';
+    var els=[].slice.call(document.querySelectorAll(sel));
+    if(!els.length){d.classList.remove('aai-anim');return;}
+    var SAFETY=1100;
+    function show(el,delay){
+      if(el.getAttribute('data-aai-rv')==='1')return;
+      el.setAttribute('data-aai-rv','1');
+      el.style.transitionDelay=(delay||0)+'ms';
+      requestAnimationFrame(function(){el.classList.add('aai-rv');});
+      /* hard-commit after the transition window so content is never left stuck hidden */
+      setTimeout(function(){el.classList.add('aai-rv');},(delay||0)+SAFETY);
+    }
+    var first=true;
+    function scan(){
+      var vh=window.innerHeight||document.documentElement.clientHeight, t=vh*0.88, b=0;
+      for(var i=0;i<els.length;i++){
+        var el=els[i];
+        if(el.getAttribute('data-aai-rv')==='1')continue;
+        var r=el.getBoundingClientRect();
+        if(r.top<t&&r.bottom>0){show(el, first?b*90:0); b++;}  /* stagger only the on-load batch */
+      }
+      first=false;
+    }
+    var on=function(){scan();};
+    addEventListener('scroll',on,{passive:true});
+    addEventListener('resize',on,{passive:true});
+    scan();
+    requestAnimationFrame(scan);
+    setTimeout(scan,300);                                   /* catch late layout/lazy content */
+  }catch(e){try{d.classList.remove('aai-anim');}catch(_){}}  /* any failure → reveal everything */
+})();
+</script>
