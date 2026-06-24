@@ -22,8 +22,10 @@ class EDIT_AAI_Analytics {
 
 	const SCHEMA_VERSION = 1;
 	const SCHEMA_OPTION  = 'edit_bootcamp_events_schema';
-	const DASH_TOKEN     = 'aai-insights-2026';                 // /bootcamp-analytics/?key=...
 	const REST_NS        = 'edit-analytics/v1';
+	// Dashboard access: logged-in admins always. An OPTIONAL shareable link works
+	// only if EDIT_ANALYTICS_TOKEN is defined in wp-config.php — never hardcode a
+	// token here (this plugin's source is a PUBLIC repo). No constant => login-only.
 	const MAX_BATCH      = 40;                                  // events per POST
 	const RATE_PER_MIN   = 240;                                 // POSTs per IP per minute
 
@@ -154,10 +156,15 @@ class EDIT_AAI_Analytics {
 		$path = trim( (string) parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH ), '/' );
 		if ( $path !== 'bootcamp-analytics' ) return;
 
+		$ok  = current_user_can( 'manage_options' );
 		$key = (string) ( $_GET['key'] ?? '' );
-		if ( ! current_user_can( 'manage_options' ) && ! hash_equals( self::DASH_TOKEN, $key ) ) {
+		if ( ! $ok && defined( 'EDIT_ANALYTICS_TOKEN' ) && EDIT_ANALYTICS_TOKEN !== '' && $key !== '' ) {
+			$ok = hash_equals( (string) EDIT_ANALYTICS_TOKEN, $key );
+		}
+		if ( ! $ok ) {
 			status_header( 404 ); nocache_headers();
-			echo '<!doctype html><meta name="robots" content="noindex,nofollow"><title>404</title>';
+			header( 'X-Robots-Tag: noindex, nofollow', true );
+			echo '<!doctype html><meta name="robots" content="noindex,nofollow"><title>Em breve</title>';
 			exit;
 		}
 		nocache_headers();
@@ -275,10 +282,12 @@ class EDIT_AAI_Analytics {
 	}
 
 	private static function shell( string $page, int $days, string $body ): string {
+		$key  = (string) ( $_GET['key'] ?? '' );
+		$keyq = $key !== '' ? '&key=' . rawurlencode( $key ) : '';
 		$switch = '';
 		foreach ( [ 7, 30, 90 ] as $d ) {
 			$cls = $d === $days ? ' on' : '';
-			$switch .= '<a class="rng' . $cls . '" href="?page=' . esc_attr( $page ) . '&days=' . $d . '&key=' . self::DASH_TOKEN . '">' . $d . 'd</a>';
+			$switch .= '<a class="rng' . $cls . '" href="?page=' . esc_attr( $page ) . '&days=' . $d . $keyq . '">' . $d . 'd</a>';
 		}
 		$css = '
 		*{box-sizing:border-box}body{margin:0;background:#0e0e12;color:#e9e9ee;font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif;font-size:14px}
