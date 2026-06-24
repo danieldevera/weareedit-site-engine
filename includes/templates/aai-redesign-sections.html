@@ -345,8 +345,79 @@
         <div class="ap2-who"><img class="ap2-ph" src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/aai/alumni-diogo-canudo.jpg" alt="Diogo Canudo"><div><div class="ap2-nm">Diogo Canudo</div><div class="ap2-rl">Gestor de Núcleo de Criatividade e Planeamento</div><a class="ap2-verif" href="https://www.linkedin.com/in/diogo-canudo/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="#5b6573" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg><svg viewBox="0 0 24 24" fill="#0a66c2"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3zM6.5 8.25A1.75 1.75 0 1 1 8.25 6.5 1.75 1.75 0 0 1 6.5 8.25zM19 19h-3v-4.74c0-1.42-.6-1.93-1.38-1.93A1.74 1.74 0 0 0 13 14.19a.66.66 0 0 0 0 .14V19h-3v-9h2.9v1.3a3.11 3.11 0 0 1 2.7-1.4c1.55 0 3.36.86 3.36 3.66z"/></svg>LinkedIn Verified</a></div></div>
       </article>
     </div>
+    <!-- alumni video stories (Vimeo · on-page overlay modal) -->
+    <style>
+      .aai-rd .ap2-vhead{margin:50px 0 0;font-size:15px;font-weight:800;letter-spacing:.01em;color:var(--ink);}
+      .aai-rd .ap2-vhead .mk{color:var(--pink);}
+      .aai-rd .ap2-videos{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:18px;}
+      .aai-rd .ap2-vid{display:block;border:0;padding:0;margin:0;background:none;text-align:left;cursor:pointer;font:inherit;color:inherit;width:100%;}
+      .aai-rd .ap2-vthumb{position:relative;display:block;width:100%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:#000;box-shadow:0 12px 28px -16px rgba(0,0,0,.5);transition:transform .25s ease,box-shadow .25s ease;}
+      .aai-rd .ap2-vthumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s ease;}
+      .aai-rd .ap2-vthumb::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.04),rgba(0,0,0,.34));}
+      .aai-rd .ap2-vid:hover .ap2-vthumb{transform:translateY(-5px);box-shadow:0 24px 48px -18px rgba(0,0,0,.62);}
+      .aai-rd .ap2-vid:hover .ap2-vthumb img{transform:scale(1.05);}
+      .aai-rd .ap2-vplay{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:2;width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.94);display:flex;align-items:center;justify-content:center;transition:transform .25s ease,background .25s ease;}
+      .aai-rd .ap2-vid:hover .ap2-vplay{transform:translate(-50%,-50%) scale(1.09);background:#fff;}
+      .aai-rd .ap2-vplay::before{content:"";display:block;width:0;height:0;border-style:solid;border-width:11px 0 11px 18px;border-color:transparent transparent transparent #f92869;margin-left:4px;}
+      .aai-rd .ap2-vcap{margin-top:13px;}
+      .aai-rd .ap2-vnm{display:block;font-size:16px;font-weight:800;color:var(--ink);}
+      .aai-rd .ap2-vrl{display:block;font-size:13.5px;color:var(--grey);margin-top:2px;}
+      .aai-vmodal{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;padding:24px;}
+      .aai-vmodal.open{display:flex;}
+      .aai-vmodal-bd{position:absolute;inset:0;background:rgba(8,8,10,.86);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);}
+      .aai-vmodal-box{position:relative;z-index:1;width:100%;max-width:960px;}
+      .aai-vmodal-frame{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden;box-shadow:0 40px 90px -30px rgba(0,0,0,.8);}
+      .aai-vmodal-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+      .aai-vmodal-close{position:absolute;top:-48px;right:0;width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;font-size:24px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s ease;}
+      .aai-vmodal-close:hover{background:rgba(255,255,255,.3);}
+      @media(max-width:760px){.aai-rd .ap2-videos{grid-template-columns:1fr;max-width:420px;}}
+    </style>
+    <p class="ap2-vhead">Ouve quem já passou por cá: <span class="mk">histórias em vídeo.</span></p>
+    <div class="ap2-videos">
+      <button type="button" class="ap2-vid" data-vimeo="497606679" aria-label="Ver vídeo de Maria Marcos">
+        <span class="ap2-vthumb"><img loading="lazy" src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/aai/vid-maria-marcos.jpg" alt="Maria Marcos — Vanguard Properties"><span class="ap2-vplay"></span></span>
+        <span class="ap2-vcap"><span class="ap2-vnm">Maria Marcos</span><span class="ap2-vrl">Vanguard Properties</span></span>
+      </button>
+      <button type="button" class="ap2-vid" data-vimeo="396433913" aria-label="Ver vídeo de João Paisana">
+        <span class="ap2-vthumb"><img loading="lazy" src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/aai/vid-joao-paisana.jpg" alt="João Paisana — StoreWise"><span class="ap2-vplay"></span></span>
+        <span class="ap2-vcap"><span class="ap2-vnm">João Paisana</span><span class="ap2-vrl">StoreWise</span></span>
+      </button>
+      <button type="button" class="ap2-vid" data-vimeo="389047399" aria-label="Ver vídeo de Mariana Simões">
+        <span class="ap2-vthumb"><img loading="lazy" src="https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/aai/vid-mariana-simoes.jpg" alt="Mariana Simões — ITSector"><span class="ap2-vplay"></span></span>
+        <span class="ap2-vcap"><span class="ap2-vnm">Mariana Simões</span><span class="ap2-vrl">ITSector</span></span>
+      </button>
+    </div>
    </div>
   </section>
+
+  <!-- Vimeo overlay modal (shared by the alumni video cards) -->
+  <div class="aai-vmodal" id="aaiVModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="aai-vmodal-bd" data-vclose></div>
+    <div class="aai-vmodal-box">
+      <button type="button" class="aai-vmodal-close" data-vclose aria-label="Fechar vídeo">&times;</button>
+      <div class="aai-vmodal-frame"><iframe id="aaiVFrame" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div>
+    </div>
+  </div>
+  <script data-no-optimize="1" data-no-minify="1" data-cfasync="false">
+  (function(){
+    var modal=document.getElementById('aaiVModal'), frame=document.getElementById('aaiVFrame');
+    if(!modal||!frame) return;
+    function openV(id){
+      frame.src='https://player.vimeo.com/video/'+id+'?autoplay=1&title=0&byline=0&portrait=0&dnt=1';
+      modal.classList.add('open'); modal.setAttribute('aria-hidden','false');
+      document.documentElement.style.overflow='hidden';
+    }
+    function closeV(){
+      modal.classList.remove('open'); modal.setAttribute('aria-hidden','true');
+      frame.src=''; document.documentElement.style.overflow='';
+    }
+    document.querySelectorAll('.ap2-vid[data-vimeo]').forEach(function(b){
+      b.addEventListener('click',function(){openV(b.getAttribute('data-vimeo'));});
+    });
+    modal.querySelectorAll('[data-vclose]').forEach(function(c){c.addEventListener('click',closeV);});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&modal.classList.contains('open'))closeV();});
+  })();
+  </script>
 
   <!-- 3 · WHAT YOU WALK AWAY WITH (deliverables) — HIDDEN (block 04) -->
   <section class="sec" style="display:none">
