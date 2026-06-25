@@ -769,8 +769,18 @@ HTML;
                 ),
             );
             $blog_slug = get_post_field( 'post_name', get_queried_object_id() );
-            if ( isset( $blog_hero[ $blog_slug ] ) ) {
-                $h = $blog_hero[ $blog_slug ];
+            $h = isset( $blog_hero[ $blog_slug ] ) ? $blog_hero[ $blog_slug ] : null;
+            // Editorial #4 (Afonso) — substring match so a slug variant
+            // ('...de-performance' vs '...de-performanc') still triggers the plain
+            // <img> swap. The "dance" = the .about-image background-cover div is
+            // left in place; replacing it with a plain img kills it for good.
+            if ( null === $h && false !== strpos( (string) $blog_slug, 'verdadeira-vitima' ) ) {
+                $h = array(
+                    'src' => WEAREDIT_SITE_ENGINE_URL . 'assets/img/editorial-4-hero.png',
+                    'alt' => 'A verdadeira vítima da IA no marketing de performance | EDIT. Disruptive Blog',
+                );
+            }
+            if ( null !== $h ) {
                 $html = preg_replace(
                     '#<div\b[^>]*\bclass="about-image\b[^"]*"[^>]*>\s*</div>#',
                     '<img src="' . esc_url( $h['src'] ) . '" alt="' . esc_attr( $h['alt'] ) . '" style="display:block;width:100%;max-width:1200px;height:auto;margin:0 auto;">',
