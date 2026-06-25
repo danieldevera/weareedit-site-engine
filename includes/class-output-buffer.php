@@ -725,13 +725,22 @@ HTML;
             // Hero handled by the $blog_hero map below. Substring match so a minor
             // slug variation still triggers.
             if ( false !== strpos( (string) get_post_field( 'post_name', get_queried_object_id() ), 'verdadeira-vitima' ) ) {
-                $author_bio = '<aside class="edit-author-bio" style="background:transparent;color:#fff;padding:48px 0 56px 0;font-family:\'Helvetica Neue\',Arial,sans-serif;border-top:1px solid rgba(255,255,255,0.15);margin-top:48px;">'
+                // Inline authority links (external) woven onto named tools/concepts.
+                $ed4_links = array(
+                    'Smart Bidding'             => '<a href="https://support.google.com/google-ads/answer/7065882" target="_blank" rel="noopener">Smart Bidding</a>',
+                    'Performance Max'           => '<a href="https://support.google.com/google-ads/answer/10724817" target="_blank" rel="noopener">Performance Max</a>',
+                    'Google Tag Manager (GTM)'  => '<a href="https://tagmanager.google.com/" target="_blank" rel="noopener">Google Tag Manager (GTM)</a>',
+                    'GA4 avançado'              => '<a href="https://support.google.com/analytics/answer/10089681" target="_blank" rel="noopener">GA4</a> avançado',
+                    'básicas de Google Ads'     => 'básicas de <a href="https://ads.google.com/" target="_blank" rel="noopener">Google Ads</a>',
+                );
+                $html = str_replace( array_keys( $ed4_links ), array_values( $ed4_links ), $html );
+                $author_bio = '<aside class="edit-author-bio" style="background:transparent;color:#fff;padding:8px 0 56px 0;font-family:\'Helvetica Neue\',Arial,sans-serif;margin-top:0;">'
                     . '<div style="display:flex;gap:36px;align-items:flex-start;flex-wrap:wrap;">'
-                    . '<span style="flex-shrink:0;display:inline-block;border:2px solid #f92869;border-radius:50%;padding:5px;line-height:0;"><img src="https://weareedit.io/wp-content/uploads/2022/03/Afonso_Monteiro_Vert.png" alt="Afonso Monteiro, Senior Performance Marketing Specialist" style="width:138px;height:138px;border-radius:50%;object-fit:cover;object-position:center;display:block;"></span>'
+                    . '<span style="flex-shrink:0;display:inline-block;border:2px solid #f92869;border-radius:50%;padding:5px;line-height:0;"><img src="https://weareedit.io/wp-content/uploads/2022/03/Afonso_Monteiro_Vert.png" alt="Afonso Monteiro, Senior Performance Marketing Specialist" style="width:138px;height:138px;border-radius:50%;object-fit:cover;object-position:center top;display:block;"></span>'
                     . '<div style="flex:1;min-width:280px;">'
                     . '<p style="margin:0 0 14px 0;font-size:12px;font-weight:700;color:#f92869;letter-spacing:0.22em;text-transform:uppercase;">Sobre o autor</p>'
                     . '<h3 style="margin:0 0 10px 0;font-size:38px;font-weight:800;color:#fff;letter-spacing:-0.02em;line-height:1.05;">Afonso Monteiro</h3>'
-                    . '<p style="margin:0 0 26px 0;font-size:15px;color:rgba(255,255,255,0.65);font-weight:600;">Senior Performance Marketing Specialist na Ageas Group &middot; Tutor de Marketing Digital na EDIT.</p>'
+                    . '<p style="margin:0 0 26px 0;font-size:15px;color:rgba(255,255,255,0.65);font-weight:600;">Senior Performance Marketing Specialist na Ageas Group &middot; Tutor de <a href="https://weareedit.io/formacao/curso-marketing-digital-online/?utm_source=blog&amp;utm_medium=article&amp;utm_campaign=editorial_04&amp;utm_content=author_md" style="color:#fff;text-decoration:underline;text-decoration-color:#0090eb;text-decoration-thickness:2px;text-underline-offset:3px;">Marketing Digital</a> na EDIT.</p>'
                     . '<p style="margin:0 0 20px 0;font-size:16px;line-height:1.65;color:rgba(255,255,255,0.85);">Especialista em marketing de performance, com a gest&atilde;o de paid media e tr&aacute;fego pago como terreno de todos os dias. Na EDIT. &eacute; tutor de Marketing Digital, onde ensina o que aplica: estrat&eacute;gia, dados e criatividade ao servi&ccedil;o de resultados reais.</p>'
                     . '<p style="margin:0 0 32px 0;font-size:16px;line-height:1.65;color:rgba(255,255,255,0.85);">Escreve sobre: marketing de performance, paid media, Google Ads e Meta Ads, e IA aplicada ao marketing.</p>'
                     . '<p style="margin:0;font-size:15px;font-weight:700;color:#fff;"><a href="https://www.linkedin.com/in/afonso-monteiro123" style="color:#fff;text-decoration:underline;text-decoration-color:#f92869;text-decoration-thickness:2px;text-underline-offset:5px;">LinkedIn</a></p>'
@@ -757,10 +766,6 @@ HTML;
                 'os-agentes-nao-tiveram-infancia-branding-na-era-da-ia' => array(
                     'src' => 'https://weareedit.io/wp-content/uploads/2026/06/og-image-padded.png',
                     'alt' => 'Os agentes não tiveram infância: branding na era da IA — EDIT. Disruptive Blog',
-                ),
-                'a-verdadeira-vitima-da-ia-no-marketing-de-performance' => array(
-                    'src' => WEAREDIT_SITE_ENGINE_URL . 'assets/img/editorial-4-hero.png',
-                    'alt' => 'A verdadeira vítima da IA no marketing de performance | EDIT. Disruptive Blog',
                 ),
             );
             $blog_slug = get_post_field( 'post_name', get_queried_object_id() );
