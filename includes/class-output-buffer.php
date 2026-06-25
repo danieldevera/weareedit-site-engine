@@ -734,6 +734,19 @@ HTML;
                     'básicas de Google Ads'     => 'básicas de <a href="https://ads.google.com/" target="_blank" rel="noopener">Google Ads</a>',
                 );
                 $html = str_replace( array_keys( $ed4_links ), array_values( $ed4_links ), $html );
+
+                // Force a 1200x630 share image. RankMath's og:image was the 2.23:1
+                // wide hero, which Facebook/LinkedIn crop to 1.91:1 and cut the left
+                // text. Rewrite the og:image / twitter:image URLs + dimensions in
+                // RankMath's <head> output to the bundled, pre-cropped 1200x630.
+                $ed4_og = WEAREDIT_SITE_ENGINE_URL . 'assets/img/editorial-4-og.png';
+                $html = preg_replace(
+                    '#(<meta\s+(?:property|name)="(?:og:image|og:image:secure_url|twitter:image|twitter:image:src)"\s+content=")[^"]*(")#i',
+                    '${1}' . $ed4_og . '${2}',
+                    $html
+                );
+                $html = preg_replace( '#(<meta\s+property="og:image:width"\s+content=")[^"]*(")#i', '${1}1200${2}', $html );
+                $html = preg_replace( '#(<meta\s+property="og:image:height"\s+content=")[^"]*(")#i', '${1}630${2}', $html );
                 $author_bio = '<aside class="edit-author-bio" style="background:transparent;color:#fff;padding:8px 0 56px 0;font-family:\'Helvetica Neue\',Arial,sans-serif;margin-top:0;">'
                     . '<div style="display:flex;gap:36px;align-items:flex-start;flex-wrap:wrap;">'
                     . '<span style="flex-shrink:0;display:inline-block;border:2px solid #f92869;border-radius:50%;padding:5px;line-height:0;"><img src="https://weareedit.io/wp-content/uploads/2022/03/Afonso_Monteiro_Vert.png" alt="Afonso Monteiro, Senior Performance Marketing Specialist" style="width:138px;height:138px;border-radius:50%;object-fit:cover;object-position:center top;display:block;"></span>'
