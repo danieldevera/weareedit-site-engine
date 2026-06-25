@@ -25,10 +25,21 @@ class EDIT_Title_Spacing {
     }
 
     public static function add_word_boundary( $title ) {
-        if ( ! is_string( $title ) || false === strpos( $title, '</font></br>' ) ) {
+        if ( ! is_string( $title ) ) {
             return $title;
         }
 
-        return str_replace( '</font></br>', '</font> </br>', $title );
+        // Original case: styled prefix break "<font>Curso Online</font></br>Name".
+        $title = str_replace( '</font></br>', '</font> </br>', $title );
+
+        // General case: any line-break tag glued directly between two words, e.g.
+        // "...de Performance</br>Não Foi..." (Editorial #4). Visually it's a line
+        // break, but once tags are stripped (links page, breadcrumbs, og:title,
+        // NLP extractors) it collapses to "PerformanceNão". Insert a space before
+        // the break unless one is already there. Idempotent (the rewritten form
+        // has a leading space, so it is never re-matched), zero visual change.
+        $title = preg_replace( '#(?<!\s)(<\s*/?\s*br\s*/?\s*>)#i', ' $1', $title );
+
+        return $title;
     }
 }
