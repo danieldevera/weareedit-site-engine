@@ -43,6 +43,10 @@ class EDIT_Link_Shortener {
             'vitima-fb'  => 'https://weareedit.io/blog/a-verdadeira-vitima-da-ia-no-marketing-de-performance/?utm_source=facebook&utm_medium=social&utm_campaign=editorial_04',
             'vitima-li'  => 'https://weareedit.io/blog/a-verdadeira-vitima-da-ia-no-marketing-de-performance/?utm_source=linkedin&utm_medium=social&utm_campaign=editorial_04',
             'vitima-ig'  => 'https://weareedit.io/blog/a-verdadeira-vitima-da-ia-no-marketing-de-performance/?utm_source=instagram&utm_medium=bio&utm_campaign=editorial_04',
+            // Early Bird -15% — cursos com início em Setembro 2026 (deadline 30 Jun)
+            'early-fb'   => 'https://weareedit.io/formacao/?campanha=early15&utm_source=facebook&utm_medium=social&utm_campaign=early_bird_15',
+            'early-li'   => 'https://weareedit.io/formacao/?campanha=early15&utm_source=linkedin&utm_medium=social&utm_campaign=early_bird_15',
+            'early-ig'   => 'https://weareedit.io/formacao/?campanha=early15&utm_source=instagram&utm_medium=bio&utm_campaign=early_bird_15',
         ];
     }
 
