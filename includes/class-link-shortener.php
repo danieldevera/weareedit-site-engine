@@ -39,6 +39,10 @@ class EDIT_Link_Shortener {
             // GAMA — Google Ads & Meta Ads bootcamp
             'gama-fb'    => 'https://weareedit.io/formacao/bootcamp-online-google-ads-meta-ads/?utm_source=facebook&utm_medium=social&utm_campaign=google_meta_ads',
             'gama-li'    => 'https://weareedit.io/formacao/bootcamp-online-google-ads-meta-ads/?utm_source=linkedin&utm_medium=social&utm_campaign=google_meta_ads',
+            // Editorial #4 — "A verdadeira vítima da IA no marketing de performance" (Afonso Monteiro)
+            'vitima-fb'  => 'https://weareedit.io/blog/a-verdadeira-vitima-da-ia-no-marketing-de-performance/?utm_source=facebook&utm_medium=social&utm_campaign=editorial_04',
+            'vitima-li'  => 'https://weareedit.io/blog/a-verdadeira-vitima-da-ia-no-marketing-de-performance/?utm_source=linkedin&utm_medium=social&utm_campaign=editorial_04',
+            'vitima-ig'  => 'https://weareedit.io/blog/a-verdadeira-vitima-da-ia-no-marketing-de-performance/?utm_source=instagram&utm_medium=bio&utm_campaign=editorial_04',
         ];
     }
 

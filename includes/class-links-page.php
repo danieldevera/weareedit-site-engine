@@ -78,7 +78,7 @@ class EDIT_Links_Page {
 			// Per-slug author override (the blog's WP post_author is "Daniel" on
 			// every post, so guest authors like Carla need correcting here).
 			// Format per line:  post-slug | Author Name | photo URL
-			'article_authors' => "do-prompt-ao-produto | Daniel Devera | {$base}links-author-daniel.png\nvinte-e-cinco-cabecas-dois-pensamentos-o-paradoxo-da-criatividade-aumentada | Carla Geraldes | {$base}links-author-carla.png\nos-agentes-nao-tiveram-infancia-branding-na-era-da-ia | Daniel Devera | {$base}links-author-daniel.png",
+			'article_authors' => "a-verdadeira-vitima-da-ia-no-marketing-de-performance | Afonso Monteiro | https://weareedit.io/wp-content/uploads/2022/03/Afonso_Monteiro_Vert.png\ndo-prompt-ao-produto | Daniel Devera | {$base}links-author-daniel.png\nvinte-e-cinco-cabecas-dois-pensamentos-o-paradoxo-da-criatividade-aumentada | Carla Geraldes | {$base}links-author-carla.png\nos-agentes-nao-tiveram-infancia-branding-na-era-da-ia | Daniel Devera | {$base}links-author-daniel.png",
 		];
 	}
 
