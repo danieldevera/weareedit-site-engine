@@ -3,7 +3,7 @@
  * Plugin Name: * weareedit.io Site Engine
  * Plugin URI:  https://github.com/danieldevera/weareedit-site-engine
  * Description: Custom site engine for weareedit.io — SEO (meta tags, OG, schema.org, sitemap, hreflang), GEO/LLM optimization (llms.txt, AI crawler rules, Wikidata-linked Person/Organization schema), brand customization (hero typography, dot accents, CTA hover animations), Google Reviews aggregation, output-buffer HTML rewrites, virtual pages, WP Rocket cache integration, and one-time data fixes.
- * Version:     1.5.853
+ * Version:     1.5.854
  * Author:      Daniel Devera
  * License:     GPL-2.0+
  * Text Domain: weareedit-site-engine
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.853' );
+define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.854' );
 
 // Reset PHP opcache after plugin updates so new class bytecode is loaded
 // immediately instead of on the next opcache TTL. Mitigates v1.5.391/392
@@ -406,6 +406,7 @@ require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-blog-post-og-image.php'
 require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-blog-cpt-author-support.php';
 require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-search-ajax.php';
 require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-search-index.php';
+require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-search-insights.php';
 require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-breadcrumbs.php';
 require_once WEAREDIT_SITE_ENGINE_PATH . 'includes/class-pillar-tutors.php';
 EDIT_Pillar_Tutors::init();
@@ -476,6 +477,7 @@ function weareedit_site_engine_init() {
     EDIT_Blog_CPT_Author_Support::init();
     EDIT_Search_Ajax::init();
     EDIT_Search_Index::init();
+    EDIT_Search_Insights::init();
     EDIT_Breadcrumbs::init();
     EDIT_Pillar_Courses::init();
     EDIT_Marketing_Digital_Page::init();

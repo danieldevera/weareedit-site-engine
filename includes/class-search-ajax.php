@@ -91,6 +91,11 @@ class EDIT_Search_Ajax {
         $cache_key = 'edit_search_v1_' . md5( strtolower( $keyword ) );
         $cached    = get_transient( $cache_key );
         if ( $cached !== false ) {
+            // Log even cache hits — popular repeat queries skip WP_Query but
+            // still represent real demand. Result count = number of rendered rows.
+            if ( class_exists( 'EDIT_Search_Insights' ) ) {
+                EDIT_Search_Insights::log( $keyword, substr_count( (string) $cached, '<h2>' ), (string) wp_get_referer() );
+            }
             echo $cached;
             wp_die();
         }
@@ -124,6 +129,12 @@ class EDIT_Search_Ajax {
             wp_reset_postdata();
         }
         $html = ob_get_clean();
+
+        // Log the query + its result count (Search Insights). post_count is
+        // capped at MAX_RESULTS, but only the 0-vs->0 distinction is relied on.
+        if ( class_exists( 'EDIT_Search_Insights' ) ) {
+            EDIT_Search_Insights::log( $keyword, (int) $query->post_count, (string) wp_get_referer() );
+        }
 
         // Cache even empty results — a query that returns nothing should
         // also be instant on the second call.
