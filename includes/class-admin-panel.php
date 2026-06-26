@@ -421,6 +421,26 @@ class EDIT_Admin_Panel {
             </form>
 
             <hr>
+            <h2>Dashboards</h2>
+            <p class="description">First-party analytics — no cookies, admin-only. Opens directly while you're logged in.</p>
+            <table class="form-table">
+                <tr>
+                    <th>Search Insights</th>
+                    <td>
+                        <a href="<?php echo esc_url( home_url( '/search-insights/' ) ); ?>" target="_blank" class="button button-primary">Open Search Insights →</a>
+                        <p class="description">What visitors search for on-site. Leads with <strong>zero-result queries</strong> — the demand gaps: courses and content people look for but can't find.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Bootcamp Analytics</th>
+                    <td>
+                        <a href="<?php echo esc_url( home_url( '/bootcamp-analytics/?page=aai' ) ); ?>" target="_blank" class="button">Open Bootcamp Analytics →</a>
+                        <p class="description">Engagement on bootcamp product pages — section reach, scroll depth, video, CTA clicks.</p>
+                    </td>
+                </tr>
+            </table>
+
+            <hr>
             <h2>Tools</h2>
             <p class="description">One-time actions to fix server-side files.</p>
             <table class="form-table">
