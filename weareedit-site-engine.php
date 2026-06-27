@@ -3,7 +3,7 @@
  * Plugin Name: * weareedit.io Site Engine
  * Plugin URI:  https://github.com/danieldevera/weareedit-site-engine
  * Description: Custom site engine for weareedit.io — SEO (meta tags, OG, schema.org, sitemap, hreflang), GEO/LLM optimization (llms.txt, AI crawler rules, Wikidata-linked Person/Organization schema), brand customization (hero typography, dot accents, CTA hover animations), Google Reviews aggregation, output-buffer HTML rewrites, virtual pages, WP Rocket cache integration, and one-time data fixes.
- * Version:     1.5.856
+ * Version:     1.5.857
  * Author:      Daniel Devera
  * License:     GPL-2.0+
  * Text Domain: weareedit-site-engine
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.856' );
+define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.857' );
 
 // Reset PHP opcache after plugin updates so new class bytecode is loaded
 // immediately instead of on the next opcache TTL. Mitigates v1.5.391/392
@@ -279,6 +279,16 @@ add_action( 'wp_head', function () {
   body.single-formacao [id^="toc-"],
   body.single-formacao .section-financiamento,
   body.single-formacao .programa{scroll-margin-top:140px;}
+  /* ACTUAL "content is cut" fix. WP Rocket's "Automatic Lazy Rendering"
+     (wpr_automatic_lazy_rendering) injects `[data-wpr-lazyrender]{content-
+     visibility:auto}` on every section. content-visibility:auto IMPLIES
+     paint containment, which clips anything overflowing the section's box.
+     The financing box's large price (.section-financiamento .value span,
+     60px) overflows its line box slightly and had its top sheared off
+     ("8x €337.5" cut). Restore normal rendering on course-page sections so
+     overflow paints instead of being clipped. Scoped to single-formacao;
+     keeps lazy-render everywhere else. */
+  body.single-formacao [data-wpr-lazyrender]{content-visibility:visible !important;contain-intrinsic-size:auto !important;}
 </style>
 <script id="weareedit-search-fetch2">
 /* Search-as-you-type via STATIC JSON INDEX. No admin-ajax.php call,
