@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class EDIT_Promo_Overlay {
 
     /** Flip to false to disable the overlay without removing the file. */
-    const ACTIVE        = false; // campaign paused 2026-07-02 (Daniel: hide site-wide); Early Bird 15% ended 30 Jun
+    const ACTIVE        = true; // v2 campaign: Early Bird 10% ate 31 Julho (Daniel, 2026-07-02)
 
     /** Test mode: restrict rendering to the path below. Set to '' (empty
      *  string) to render site-wide. Useful for staging a campaign before
@@ -26,7 +26,7 @@ class EDIT_Promo_Overlay {
     const TEST_PATH     = '';
 
     /** localStorage key — bump to force the overlay to show again to all users. */
-    const STORAGE_KEY   = 'edit_promo_early15_seen';
+    const STORAGE_KEY   = 'edit_promo_early10_seen';
 
     /** Delay before the modal fades in, milliseconds.
      *  Lowered to 2s during QA — bump back to 10000 before site-wide rollout. */
@@ -36,7 +36,7 @@ class EDIT_Promo_Overlay {
     const AUTO_MARK_MS  = 30000;
 
     /** Hard kill date — modal hides itself after this regardless of cookie. */
-    const KILL_DATE     = '2026-09-30 23:59:59';
+    const KILL_DATE     = '2026-07-31 23:59:59';
 
     public static function init(): void {
         if ( ! self::ACTIVE ) return;
@@ -144,9 +144,9 @@ class EDIT_Promo_Overlay {
     <div id="edit-promo-overlay__card">
         <button type="button" id="edit-promo-overlay__close" data-edit-promo-dismiss aria-label="Fechar promoção">&times;</button>
         <p id="edit-promo-overlay__eyebrow" class="edit-promo-stagger" data-stagger="1"><span class="promo">PROMO</span> &middot; Setembro 2026</p>
-        <h2 id="edit-promo-overlay__headline" class="edit-promo-stagger" data-stagger="2">Early Bird <span class="pct">15%</span></h2>
-        <p id="edit-promo-overlay__sub" class="edit-promo-stagger" data-stagger="3">-15% nos cursos de Setembro.<br>Inscrições até <strong>30 Junho</strong>.</p>
-        <a href="<?php echo esc_url( home_url( '/formacao/?campanha=early15' ) ); ?>" id="edit-promo-overlay__cta" class="swipe-cta edit-promo-stagger" data-stagger="4" data-edit-promo-cta>
+        <h2 id="edit-promo-overlay__headline" class="edit-promo-stagger" data-stagger="2">Early Bird <span class="pct">10%</span></h2>
+        <p id="edit-promo-overlay__sub" class="edit-promo-stagger" data-stagger="3">-10% nos cursos de Setembro.<br>Inscrições até <strong>31 Julho</strong>.</p>
+        <a href="<?php echo esc_url( home_url( '/formacao/?campanha=early10' ) ); ?>" id="edit-promo-overlay__cta" class="swipe-cta edit-promo-stagger" data-stagger="4" data-edit-promo-cta>
             <span class="swipe-layer swipe-pink"></span>
             <span class="swipe-layer swipe-teal"></span>
             <span class="swipe-layer swipe-black"></span>
