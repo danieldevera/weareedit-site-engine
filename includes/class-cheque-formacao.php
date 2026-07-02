@@ -31,6 +31,11 @@ class EDIT_Cheque_Formacao {
         // landing page 301s to /formacao/. Remove this block if the program ever returns.
         add_filter( 'wp_nav_menu_objects', [ __CLASS__, 'hide_menu_items' ] );
         add_action( 'template_redirect', [ __CLASS__, 'redirect_landing' ] );
+        // The Semplice theme renders its nav itself (primaryNavItem__*), bypassing WP menu
+        // filters — hide the item at the DOM level too (CSS catches dynamically-rendered
+        // nodes instantly; the observer removes wrappers so no empty gap remains).
+        add_action( 'wp_head', [ __CLASS__, 'hide_menu_css' ], 99 );
+        add_action( 'wp_footer', [ __CLASS__, 'hide_menu_js' ], 99 );
         return;
 
         // -- dormant pre-sunset behaviour below (unreachable) --
@@ -47,6 +52,34 @@ class EDIT_Cheque_Formacao {
             if ( stripos( $url, 'cheque' ) !== false ) unset( $items[ $k ] );
         }
         return $items;
+    }
+
+    /** CSS first line of defence — hides the link wherever it appears, incl. late-rendered nav. */
+    public static function hide_menu_css(): void {
+        echo '<style id="edit-cheque-sunset">a[href*="/cheque-digital"]{display:none!important;}</style>' . "\n";
+    }
+
+    /** Remove the (possibly animated) wrapper so the hidden item leaves no gap. */
+    public static function hide_menu_js(): void {
+        ?>
+<script id="edit-cheque-sunset-js">
+(function () {
+    'use strict';
+    function zap( root ) {
+        ( root.querySelectorAll ? root : document ).querySelectorAll( 'a[href*="/cheque-digital"]' ).forEach( function ( a ) {
+            var w = a.closest( 'li' ) || a.parentElement || a;
+            // only collapse the wrapper when the link is its sole content
+            if ( w !== a && w.textContent.trim() !== a.textContent.trim() ) w = a;
+            w.style.display = 'none';
+        } );
+    }
+    zap( document );
+    if ( window.MutationObserver && document.body ) {
+        new MutationObserver( function () { zap( document ); } ).observe( document.body, { childList: true, subtree: true } );
+    }
+})();
+</script>
+        <?php
     }
 
     /** 301 the retired landing page to the catalog hub. */
