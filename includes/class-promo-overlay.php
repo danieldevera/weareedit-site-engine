@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class EDIT_Promo_Overlay {
 
     /** Flip to false to disable the overlay without removing the file. */
-    const ACTIVE        = true;
+    const ACTIVE        = false; // campaign paused 2026-07-02 (Daniel: hide site-wide); Early Bird 15% ended 30 Jun
 
     /** Test mode: restrict rendering to the path below. Set to '' (empty
      *  string) to render site-wide. Useful for staging a campaign before
