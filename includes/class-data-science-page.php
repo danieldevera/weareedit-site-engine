@@ -59,10 +59,6 @@ class EDIT_Data_Science_Page {
             'a' => 'Bootcamps Remote duram 8 a 12 semanas em formato intensivo. Cursos completos (DSBA Lisboa, Porto, Data Engineering) têm 120 a 180 horas distribuídas por 4 a 6 meses em regime pós-laboral. Workshops são módulos curtos (16 a 32 horas) sobre tópicos específicos como Analytics with AI.',
         ],
         [
-            'q' => 'Posso usar o Cheque Formação + Digital?',
-            'a' => 'Sim. Todos os cursos de Data Science da EDIT. são elegíveis ao Cheque Formação + Digital até <strong>30 de Junho de 2026</strong>. A EDIT. é entidade formadora certificada pela DGERT (nº 18391). Após essa data, aguardam-se novidades sobre o programa de substituição.',
-        ],
-        [
             'q' => 'A EDIT. ajuda na colocação profissional?',
             'a' => 'Sim. A EDIT. tem uma agência de recrutamento dedicada — a <a href="https://disruptivejobs.io/" target="_blank" rel="noopener">Disruptive Jobs</a> — focada em ligar alunos de Data Science e Engenharia a marcas como Farfetch, NOS, Sonae, Worten, Banco BPI, EDP e outras empresas que recrutam talento data.',
         ],
@@ -163,7 +159,7 @@ class EDIT_Data_Science_Page {
 
     private static function set_rank_math_meta( int $page_id ): void {
         update_post_meta( $page_id, 'rank_math_title',       'Curso Data Science Bootcamp Portugal | EDIT. — 11 Programas DGERT' );
-        update_post_meta( $page_id, 'rank_math_description', '11 formações em Data Science, Engineering e Machine Learning. DGERT certificada, Cheque Formação + Digital elegível. Lisboa, Porto e remote. Alumni colocados na Farfetch, NOS, Sonae.' );
+        update_post_meta( $page_id, 'rank_math_description', '11 formações em Data Science, Engineering e Machine Learning. DGERT certificada, financiamento sem juros. Lisboa, Porto e remote. Alumni colocados na Farfetch, NOS, Sonae.' );
         update_post_meta( $page_id, 'rank_math_focus_keyword', 'curso data science' );
         update_post_meta( $page_id, 'rank_math_robots',      [ 'index', 'follow' ] );
     }
@@ -357,7 +353,7 @@ class EDIT_Data_Science_Page {
 
             <div class="md-final-cta">
                 <h2>Pronto para a próxima formação em <span>Data Science</span>?</h2>
-                <p>Os nossos consultores ajudam-te a escolher o percurso certo — Data Science, Engineering ou Machine Learning — e a tirar partido do Cheque Formação + Digital antes de 30 de Junho 2026.</p>
+                <p>Os nossos consultores ajudam-te a escolher o percurso certo — Data Science, Engineering ou Machine Learning — e a encontrar as melhores condições de financiamento.</p>
                 <button type="button" class="md-btn md-btn--primary md-btn--lg swipe-cta" data-contact="true"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Falar com um consultor</span></button>
             </div>
         </section>

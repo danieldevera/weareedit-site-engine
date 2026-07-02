@@ -88,7 +88,7 @@ Official site: https://weareedit.io
 ### Read corporate information
 - About: https://weareedit.io/escola/
 - Methodology: https://weareedit.io/metodologia/ (Remote Learning model)
-- Tax-deductible / financing: https://weareedit.io/cheque-digital/
+- Financing: 6x/8x sem juros, IVA isento, dedutivel no IRS — details on each course page
 
 ## Content language
 Primary: Portuguese (PT-PT). Some Remote Learning material also delivered in English. UI in PT-PT only.

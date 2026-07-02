@@ -26,10 +26,37 @@ class EDIT_Cheque_Formacao {
     const DEFAULT_LINK = 'https://www.iefp.pt/cheque-formacao';
 
     public static function init() {
+        // SUNSET (2026-07-02, Daniel): the Cheque-Formacao + Digital program ended 30 Jun 2026.
+        // Notices are hard-off regardless of the stored toggle; the nav item is hidden and the
+        // landing page 301s to /formacao/. Remove this block if the program ever returns.
+        add_filter( 'wp_nav_menu_objects', [ __CLASS__, 'hide_menu_items' ] );
+        add_action( 'template_redirect', [ __CLASS__, 'redirect_landing' ] );
+        return;
+
+        // -- dormant pre-sunset behaviour below (unreachable) --
         $settings = get_option( 'edit_seo_fix_settings', [] );
         if ( empty( $settings['cheque_formacao_enabled'] ) ) return;
 
         add_filter( 'the_content', [ __CLASS__, 'maybe_inject_notice' ] );
+    }
+
+    /** Drop any nav item pointing at the retired cheque pages (mega-menu incl.). */
+    public static function hide_menu_items( $items ) {
+        foreach ( $items as $k => $item ) {
+            $url = isset( $item->url ) ? (string) $item->url : '';
+            if ( stripos( $url, 'cheque' ) !== false ) unset( $items[ $k ] );
+        }
+        return $items;
+    }
+
+    /** 301 the retired landing page to the catalog hub. */
+    public static function redirect_landing() {
+        if ( is_admin() ) return;
+        $path = isset( $_SERVER['REQUEST_URI'] ) ? strtok( (string) $_SERVER['REQUEST_URI'], '?' ) : '';
+        if ( rtrim( $path, '/' ) === '/cheque-digital' ) {
+            wp_redirect( home_url( '/formacao/' ), 301 );
+            exit;
+        }
     }
 
     public static function maybe_inject_notice( string $content ): string {

@@ -71,7 +71,7 @@ class EDIT_Structured_Data {
             $entity['foundingDate']        = $entity['foundingDate']        ?? '2013';
             $entity['slogan']              = $entity['slogan']              ?? 'Future Proof Education';
             $entity['currenciesAccepted']  = $entity['currenciesAccepted']  ?? 'EUR';
-            $entity['description']         = $entity['description']         ?? 'EDIT. é uma escola de educação digital disruptiva em Portugal, certificada DGERT, com formação em UX/UI Design, Inteligência Artificial, Data Science, Marketing Digital, Programação e Gestão de Negócios. Mais de 1000 alunos por ano. Campus em Lisboa e Porto. Toda a formação é elegível para Cheque-Formação e dedutível no IRS.';
+            $entity['description']         = $entity['description']         ?? 'EDIT. é uma escola de educação digital disruptiva em Portugal, certificada DGERT, com formação em UX/UI Design, Inteligência Artificial, Data Science, Marketing Digital, Programação e Gestão de Negócios. Mais de 2000 alunos por ano. Campus em Lisboa e Porto. Toda a formação é dedutível no IRS.';
 
             $entity['knowsAbout'] = $entity['knowsAbout'] ?? [
                 'Marketing Digital',

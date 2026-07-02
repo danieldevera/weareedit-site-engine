@@ -62,10 +62,6 @@ class EDIT_Inteligencia_Artificial_Page {
             'a' => 'Sim — essa é a diferenciação face a cursos genéricos. Temos percursos dedicados a <strong>IA no Cinema e Audiovisual</strong>, <strong>IA no Marketing Digital</strong>, <strong>IA no UX Research</strong>, e <strong>IA na criação de produtos digitais</strong>. Cada um trabalha casos reais da indústria com tutores em activo na área.',
         ],
         [
-            'q' => 'Posso usar o Cheque Formação + Digital?',
-            'a' => 'Sim. Todos os cursos de Inteligência Artificial da EDIT. são elegíveis ao Cheque Formação + Digital até <strong>30 de Junho de 2026</strong>. A EDIT. é entidade formadora certificada pela DGERT (nº 18391).',
-        ],
-        [
             'q' => 'Aprendo a construir agentes e automações?',
             'a' => 'Sim. O <strong>Bootcamp Prompt Engineering</strong> cobre os fundamentos; o curso de <strong>Agentes Inteligentes para Marketing</strong> trabalha automações end-to-end com n8n, Zapier, Make e LLMs orquestrados; o <strong>SEO Engineering + Automação com Claude Code</strong> ensina a usar agentes em workflows reais de desenvolvimento.',
         ],
@@ -164,7 +160,7 @@ class EDIT_Inteligencia_Artificial_Page {
 
     private static function set_rank_math_meta( int $page_id ): void {
         update_post_meta( $page_id, 'rank_math_title',       'Curso Inteligência Artificial Bootcamp Portugal | EDIT. — 11 Programas DGERT' );
-        update_post_meta( $page_id, 'rank_math_description', '11 formações em Inteligência Artificial: bootcamps avançados, IA aplicada (Marketing, Cinema, UX, Web), Prompt Engineering, Ética e Agentes. DGERT certificada, Cheque Formação + Digital elegível.' );
+        update_post_meta( $page_id, 'rank_math_description', '11 formações em Inteligência Artificial: bootcamps avançados, IA aplicada (Marketing, Cinema, UX, Web), Prompt Engineering, Ética e Agentes. DGERT certificada, financiamento sem juros.' );
         update_post_meta( $page_id, 'rank_math_focus_keyword', 'curso inteligência artificial' );
         update_post_meta( $page_id, 'rank_math_robots',      [ 'index', 'follow' ] );
     }
@@ -358,7 +354,7 @@ class EDIT_Inteligencia_Artificial_Page {
 
             <div class="md-final-cta">
                 <h2>Pronto para a próxima formação em <span>Inteligência Artificial</span>?</h2>
-                <p>Os nossos consultores ajudam-te a escolher o percurso certo — bootcamp avançado, IA aplicada à tua indústria ou workshop pontual — e a tirar partido do Cheque Formação + Digital antes de 30 de Junho 2026.</p>
+                <p>Os nossos consultores ajudam-te a escolher o percurso certo — bootcamp avançado, IA aplicada à tua indústria ou workshop pontual — e a encontrar as melhores condições de financiamento.</p>
                 <button type="button" class="md-btn md-btn--primary md-btn--lg swipe-cta" data-contact="true"><span class="swipe-layer swipe-pink"></span><span class="swipe-layer swipe-teal"></span><span class="swipe-layer swipe-black"></span><span class="swipe-label">Falar com um consultor</span></button>
             </div>
         </section>

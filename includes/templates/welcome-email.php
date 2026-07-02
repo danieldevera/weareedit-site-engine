@@ -257,7 +257,7 @@ foreach ( $picks_data as $idx => $pick ) {
           <p style="margin:0 0 10px 0;font-size:13px;line-height:1.5;font-family:'Helvetica Neue',Arial,sans-serif;"><a href="https://weareedit.io/equipa/" style="color:#717171;text-decoration:none;">Equipa</a></p>
           <p style="margin:0 0 10px 0;font-size:13px;line-height:1.5;font-family:'Helvetica Neue',Arial,sans-serif;"><a href="https://weareedit.io/formacao-digital-para-empresas/" style="color:#717171;text-decoration:none;">Para Empresas</a></p>
           <p style="margin:0 0 10px 0;font-size:13px;line-height:1.5;font-family:'Helvetica Neue',Arial,sans-serif;"><a href="https://weareedit.io/avaliacoes-google/" style="color:#717171;text-decoration:none;">Avalia&ccedil;&otilde;es</a></p>
-          <p style="margin:0;font-size:13px;line-height:1.5;font-family:'Helvetica Neue',Arial,sans-serif;"><a href="https://weareedit.io/cheque-digital/" style="color:#717171;text-decoration:none;">Cheque Forma&ccedil;&atilde;o</a></p>
+          <p style="margin:0;font-size:13px;line-height:1.5;font-family:'Helvetica Neue',Arial,sans-serif;"><a href="https://weareedit.io/formacao/" style="color:#717171;text-decoration:none;">Forma&ccedil;&atilde;o</a></p>
         </td>
         <td valign="top" width="25%" class="stack-md" style="padding-right:16px;">
           <p style="margin:0 0 16px 0;font-size:10px;font-weight:700;color:#f92869;letter-spacing:0.2em;text-transform:uppercase;font-family:'Helvetica Neue',Arial,sans-serif;">Recursos</p>
