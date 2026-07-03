@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.863 — 2026-07-03 (/go/ shortener — add Data Science short links)
+Added `dsba-fb` and `dsba-li` to the branded link shortener, both pointing at /data-science-business-analytics/ with utm_source facebook/linkedin, utm_medium=social, utm_campaign=data_science. Pairs with the existing uxui-fb/uxui-li for the 22 Set (DSBA) + 21 Set (UX/UI) course-launch social posts. IG uses link-na-bio (no short link).
+
 ## v1.5.599 — 2026-06-18 (Editorial #3 — shorten slug + 301 redirect)
 Editorial #3 slug shortened to /blog/do-prompt-ao-produto/ (Rank Math URL-length fix, 84→short). (1) Output-buffer enrichment now keys off the new slug 'do-prompt-ao-produto'. (2) Added a loop-safe 301 (old long slug → new) that only fires on a genuine 404, as a backup to WP core wp_old_slug_redirect. Email article link updated to the short URL (UTMs preserved). Daniel changes the post slug in WP + Atualizar.
 

@@ -36,6 +36,9 @@ class EDIT_Link_Shortener {
             // UX/UI curso (online)
             'uxui-fb'    => 'https://weareedit.io/formacao/curso-uxui-online/?utm_source=facebook&utm_medium=social&utm_campaign=uxui',
             'uxui-li'    => 'https://weareedit.io/formacao/curso-uxui-online/?utm_source=linkedin&utm_medium=social&utm_campaign=uxui',
+            // Data Science & AI Analytics curso (online)
+            'dsba-fb'    => 'https://weareedit.io/data-science-business-analytics/?utm_source=facebook&utm_medium=social&utm_campaign=data_science',
+            'dsba-li'    => 'https://weareedit.io/data-science-business-analytics/?utm_source=linkedin&utm_medium=social&utm_campaign=data_science',
             // GAMA — Google Ads & Meta Ads bootcamp
             'gama-fb'    => 'https://weareedit.io/formacao/bootcamp-online-google-ads-meta-ads/?utm_source=facebook&utm_medium=social&utm_campaign=google_meta_ads',
             'gama-li'    => 'https://weareedit.io/formacao/bootcamp-online-google-ads-meta-ads/?utm_source=linkedin&utm_medium=social&utm_campaign=google_meta_ads',
