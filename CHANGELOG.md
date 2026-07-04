@@ -1,4 +1,7 @@
 # Changelog
+## v1.5.865 — 2026-07-04 (CF7 anti-bot — content heuristics, not just honeypot)
+The "Fale Conosco" spam flood (mail.ru/bk.ru/list.ru senders, camelCase/gibberish names, several/hr) got through because the bots POST a hardcoded payload DIRECTLY to `origin.weareedit.io/wp-json/contact-form-7/…/feedback` (bypassing the Cloudflare edge entirely) and never load the form — so the honeypot field stays empty and never trips. `EDIT_CF7_AntiBot::detect_bot()` now inspects the actual submission and marks it spam (silently dropped, no mail) on any high-signal bot pattern: Cyrillic, links in fields, `.ru`/free-mail spam domains, mostly-numeric email local part (au8834386@…), and camelCase/low-vowel single-token names. Honeypot kept as the first layer. Tuned for near-zero false positives on a PT-language audience (real names have spaces + normal vowels, PT/EU emails). Permanent belt-and-suspenders remains a CAPTCHA (Cloudflare Turnstile) on the form. NOTE: `origin.weareedit.io` is publicly reachable and accepts CF7 POSTs directly — worth locking to Cloudflare-only at the host/DNS to close the bypass.
+
 ## v1.5.863 — 2026-07-03 (/go/ shortener — add Data Science short links)
 Added `dsba-fb` and `dsba-li` to the branded link shortener, both pointing at /data-science-business-analytics/ with utm_source facebook/linkedin, utm_medium=social, utm_campaign=data_science. Pairs with the existing uxui-fb/uxui-li for the 22 Set (DSBA) + 21 Set (UX/UI) course-launch social posts. IG uses link-na-bio (no short link).
 
