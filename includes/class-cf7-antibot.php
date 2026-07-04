@@ -4,27 +4,42 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * CF7 Anti-Bot — silent honeypot for the "Fale Conosco" contact forms.
+ * CF7 Anti-Bot — content heuristics + honeypot for the "Fale Conosco" forms.
  *
- * Background (2026-07-04): automated spam escalated on the WordPress CF7
- * contact form — mail.ru / inbox.ru / list.ru senders, gibberish names, and
- * the literal CF7 "[your-subject]" placeholder left unfilled. These bots POST
- * every field, so a hidden honeypot field they can't help filling drops them
- * with ZERO user friction and ZERO captcha — and zero false positives, since
- * a real person never sees (let alone fills) a visually + a11y hidden field.
+ * Background (2026-07-04): automated spam escalated on the WordPress CF7 contact form
+ * (mail.ru / bk.ru / list.ru senders, camelCase/gibberish names, several per hour). The bots
+ * POST a hardcoded payload straight to origin.weareedit.io/wp-json/contact-form-7/…/feedback,
+ * bypassing the Cloudflare edge, and never load the form — so the honeypot stays empty.
  *
- * Defence in depth: this runs UNDER the Cloudflare edge rate-limit rule on the
- * CF7 endpoint and (recommended) Cloudflare Turnstile on the form itself.
+ * IMPORTANT (verified by live test): in CF7 6.1.6 the `wpcf7_spam` filter returning true DOES
+ * mark the message as spam (Flamingo) but NO LONGER prevents the mail from being sent. The mail
+ * is only reliably stopped by setting $abort in `wpcf7_before_send_mail`. So this class does BOTH:
+ *   - wpcf7_spam           -> mark as spam (record-keeping / Flamingo)
+ *   - wpcf7_before_send_mail -> $abort = true  (the actual, effective mail block)
+ *
+ * Detection (tuned for near-zero false positives on a PT-language DGERT audience — real names
+ * carry a space + normal vowels, PT/EU emails, no Cyrillic/links): Cyrillic, links in fields,
+ * .ru/free-mail domains, mostly-numeric email local part, camelCase/low-vowel single-token names,
+ * and the honeypot. Permanent belt-and-suspenders remains a CAPTCHA (Turnstile/reCAPTCHA).
  */
 class EDIT_CF7_AntiBot {
 
-	/** Honeypot field name — looks like a real field so bots fill it; humans never see it. */
+	/** Honeypot field name — looks like a real field so scraper-bots fill it; humans never see it. */
 	const HP_FIELD = 'edit-website-url';
+
+	/** Russian / free-mail spam domains (plus any *.ru). */
+	const BAD_DOMAINS = array( 'mail.ru', 'bk.ru', 'list.ru', 'inbox.ru', 'internet.ru', 'rambler.ru', 'yandex.ru', 'ya.ru', 'mail.ua' );
+
+	/** Per-submission memo so is_bot() runs once even though two hooks consult it. */
+	private $memo_key = null;
+	private $memo_reason = '';
 
 	public function __construct() {
 		add_filter( 'wpcf7_form_elements', array( $this, 'inject_honeypot' ) );
-		// Priority 9 so it runs before other spam filters and short-circuits cheaply.
+		// Mark as spam (Flamingo log). Does NOT block mail on CF7 6.1.6 — see class docblock.
 		add_filter( 'wpcf7_spam', array( $this, 'detect_bot' ), 9, 2 );
+		// The effective block: abort the mail before it is sent.
+		add_action( 'wpcf7_before_send_mail', array( $this, 'maybe_abort' ), 9, 3 );
 	}
 
 	/**
@@ -38,25 +53,52 @@ class EDIT_CF7_AntiBot {
 		return $content . $hp;
 	}
 
-	/**
-	 * Flag the submission as spam if the honeypot was filled. CF7 then blocks the
-	 * mail and records it under Flamingo/spam rather than delivering it.
-	 *
-	 * @param bool  $spam       Current spam verdict from earlier filters.
-	 * @param mixed $submission WPCF7_Submission (optional; not present on older CF7).
-	 */
+	/** wpcf7_spam: flag as spam for the record (Flamingo). Not the mail block. */
 	public function detect_bot( $spam, $submission = null ) {
 		if ( $spam ) {
 			return $spam;
 		}
+		if ( '' !== $this->is_bot( $submission ) ) {
+			return true;
+		}
+		return $spam;
+	}
 
-		// Prefer the parsed CF7 submission fields; fall back to raw $_POST.
+	/** wpcf7_before_send_mail: the reliable block — abort the mail for a detected bot. */
+	public function maybe_abort( $contact_form, &$abort, $submission ) {
+		$reason = $this->is_bot( $submission );
+		if ( '' !== $reason ) {
+			$abort = true;
+			if ( is_object( $submission ) && method_exists( $submission, 'add_spam_log' ) ) {
+				$submission->add_spam_log( array( 'agent' => 'edit_cf7_antibot', 'reason' => $reason ) );
+			}
+		}
+	}
+
+	/** Memoised per submission. Returns the trip reason, or '' if the submission looks human. */
+	private function is_bot( $submission ) {
+		$key = is_object( $submission ) ? spl_object_id( $submission ) : 0;
+		if ( $this->memo_key === $key ) {
+			return $this->memo_reason;
+		}
+		$this->memo_key    = $key;
+		$this->memo_reason = $this->evaluate( $submission );
+		return $this->memo_reason;
+	}
+
+	private function evaluate( $submission ) {
+		// The injected honeypot is not a registered field, so it is ABSENT from get_posted_data();
+		// merge raw $_POST so the honeypot (and any raw field) is always visible.
 		$data = array();
-		if ( $submission && method_exists( $submission, 'get_posted_data' ) ) {
+		if ( is_object( $submission ) && method_exists( $submission, 'get_posted_data' ) ) {
 			$data = (array) $submission->get_posted_data();
 		}
-		if ( empty( $data ) ) {
-			$data = (array) wp_unslash( $_POST ); // phpcs:ignore WordPress.Security.NonceVerification
+		$data = array_merge( (array) wp_unslash( $_POST ), $data ); // phpcs:ignore WordPress.Security.NonceVerification
+
+		// Honeypot filled -> scraper bot that fills every field.
+		$hp = isset( $data[ self::HP_FIELD ] ) ? trim( (string) $data[ self::HP_FIELD ] ) : '';
+		if ( '' !== $hp ) {
+			return 'honeypot';
 		}
 
 		// Flatten visible field values (skip the honeypot + CF7 internals `_wpcf7*`).
@@ -72,89 +114,51 @@ class EDIT_CF7_AntiBot {
 		}
 		$blob = implode( "\n", $values );
 
-		$reason = '';
-
-		// 1. Honeypot filled — catches bots that scrape the form and fill every field.
-		$hp = isset( $data[ self::HP_FIELD ] ) ? trim( (string) $data[ self::HP_FIELD ] ) : '';
-		if ( '' !== $hp ) {
-			$reason = 'honeypot field filled (' . self::HP_FIELD . ')';
+		if ( preg_match( '/\p{Cyrillic}/u', $blob ) ) {
+			return 'cyrillic';
+		}
+		if ( preg_match( '#https?://|www\.[a-z0-9-]|\[url|<a\s#i', $blob ) ) {
+			return 'link';
 		}
 
-		// 2. Cyrillic anywhere — a PT-language DGERT audience never submits Cyrillic.
-		if ( '' === $reason && preg_match( '/\p{Cyrillic}/u', $blob ) ) {
-			$reason = 'cyrillic';
-		}
-
-		// 3. Links in any field — real contact leads almost never paste URLs.
-		if ( '' === $reason && preg_match( '#https?://|www\.[a-z0-9-]|\[url|<a\s#i', $blob ) ) {
-			$reason = 'link';
-		}
-
-		// 4. Russian / free-mail spam domains (.ru & co.) — zero legit for this audience.
-		if ( '' === $reason ) {
-			$bad = array( 'mail.ru', 'bk.ru', 'list.ru', 'inbox.ru', 'internet.ru', 'rambler.ru', 'yandex.ru', 'ya.ru', 'mail.ua' );
-			if ( preg_match_all( '/[\w.+-]+@([a-z0-9.-]+\.[a-z]{2,})/i', $blob, $m ) ) {
-				foreach ( $m[1] as $dom ) {
-					$dom = strtolower( $dom );
-					if ( '.ru' === substr( $dom, -3 ) || in_array( $dom, $bad, true ) ) {
-						$reason = 'spam-email-domain';
-						break;
-					}
+		// Email domain / local-part checks.
+		if ( preg_match_all( '/([a-z0-9.+_-]+)@([a-z0-9.-]+\.[a-z]{2,})/i', $blob, $m, PREG_SET_ORDER ) ) {
+			foreach ( $m as $match ) {
+				$local  = $match[1];
+				$domain = strtolower( $match[2] );
+				if ( '.ru' === substr( $domain, -3 ) || in_array( $domain, self::BAD_DOMAINS, true ) ) {
+					return 'spam-email-domain';
 				}
-			}
-		}
-
-		// 5. Mostly-numeric email local part (au8834386@gmail.com) — bot mailbox pattern.
-		if ( '' === $reason && preg_match_all( '/([a-z0-9.+_-]+)@[a-z0-9.-]+\.[a-z]{2,}/i', $blob, $m ) ) {
-			foreach ( $m[1] as $local ) {
 				$len = strlen( $local );
-				if ( $len >= 7 ) {
-					$digits = preg_match_all( '/[0-9]/', $local );
-					if ( ( $digits / $len ) > 0.6 ) {
-						$reason = 'numeric-email';
-						break;
-					}
+				if ( $len >= 7 && ( preg_match_all( '/[0-9]/', $local ) / $len ) > 0.6 ) {
+					return 'numeric-email';
 				}
 			}
 		}
 
-		// 6. Gibberish / camelCase single-token name (RobertDyela, ThomasPelia, phuktjpa, Lloydcax).
-		if ( '' === $reason ) {
-			$name = '';
-			foreach ( array( 'nome', 'your-name', 'name', 'nome-completo', 'fullname', 'nome-completo-2' ) as $nk ) {
-				if ( ! empty( $values[ $nk ] ) ) {
-					$name = trim( $values[ $nk ] );
-					break;
-				}
+		// Gibberish / camelCase single-token name (RobertDyela, ThomasPelia, phuktjpa, Lloydcax).
+		$name = '';
+		foreach ( array( 'your-name', 'nome', 'name', 'nome-completo', 'fullname' ) as $nk ) {
+			if ( ! empty( $values[ $nk ] ) ) {
+				$name = trim( $values[ $nk ] );
+				break;
 			}
-			// Real full names carry a space; only inspect single tokens to avoid false positives.
-			if ( '' !== $name && false === strpbrk( $name, " \t" ) ) {
-				if ( preg_match( '/\p{Ll}\p{Lu}/u', $name ) ) {
-					$reason = 'camelcase-name';
-				} else {
-					$len = function_exists( 'mb_strlen' ) ? mb_strlen( $name ) : strlen( $name );
-					if ( $len >= 7 ) {
-						$vowels = preg_match_all( '/[aeiouáàâãéêíóôõúü]/iu', $name );
-						if ( ( $vowels / $len ) < 0.32 ) {
-							$reason = 'gibberish-name';
-						}
-					}
+		}
+		// Real full names carry a space; only inspect single tokens to avoid false positives.
+		if ( '' !== $name && false === strpbrk( $name, " \t" ) ) {
+			if ( preg_match( '/\p{Ll}\p{Lu}/u', $name ) ) {
+				return 'camelcase-name';
+			}
+			$len = function_exists( 'mb_strlen' ) ? mb_strlen( $name ) : strlen( $name );
+			if ( $len >= 7 ) {
+				$vowels = preg_match_all( '/[aeiouáàâãéêíóôõúü]/iu', $name );
+				if ( ( $vowels / $len ) < 0.32 ) {
+					return 'gibberish-name';
 				}
 			}
 		}
 
-		if ( '' !== $reason ) {
-			if ( $submission && method_exists( $submission, 'add_spam_log' ) ) {
-				$submission->add_spam_log(
-					array(
-						'agent'  => 'edit_cf7_antibot',
-						'reason' => $reason,
-					)
-				);
-			}
-			return true;
-		}
-		return $spam;
+		return '';
 	}
 }
 
