@@ -20,7 +20,7 @@ $is_tba = function ( $v ) { return strpos( (string) $v, '[A CONFIRMAR]' ) !== fa
 $tba = '<span class="tba">a confirmar</span>';
 $assets      = 'https://weareedit.io/wp-content/plugins/weareedit-site-engine/assets/';
 $fonts       = $assets . 'fonts/';
-$hero_vid    = $C['hero']['video']  ?? $assets . 'augment/augment-hero-loop-v5.mp4';
+$hero_vid    = $C['hero']['video']  ?? 'https://weareedit.io/wse/augment-hero-loop-v5.mp4';
 $hero_poster = $C['hero']['poster'] ?? '';
 $dgert_img   = $assets . 'augment/dgert-branco.png';
 ?><!DOCTYPE html>
