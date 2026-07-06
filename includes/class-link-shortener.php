@@ -42,6 +42,7 @@ class EDIT_Link_Shortener {
             // Digital Marketing & Strategy curso (online)
             'dms-fb'     => 'https://weareedit.io/digital-marketing-strategy/?utm_source=facebook&utm_medium=social&utm_campaign=dms',
             'dms-li'     => 'https://weareedit.io/digital-marketing-strategy/?utm_source=linkedin&utm_medium=social&utm_campaign=dms',
+            'dms-feed'   => 'https://weareedit.io/digital-marketing-strategy/?utm_source=facebook&utm_medium=social&utm_campaign=dms_feed',
             // GAMA — Google Ads & Meta Ads bootcamp
             'gama-fb'    => 'https://weareedit.io/formacao/bootcamp-online-google-ads-meta-ads/?utm_source=facebook&utm_medium=social&utm_campaign=google_meta_ads',
             'gama-li'    => 'https://weareedit.io/formacao/bootcamp-online-google-ads-meta-ads/?utm_source=linkedin&utm_medium=social&utm_campaign=google_meta_ads',
