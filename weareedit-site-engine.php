@@ -3,7 +3,7 @@
  * Plugin Name: * weareedit.io Site Engine
  * Plugin URI:  https://github.com/danieldevera/weareedit-site-engine
  * Description: Custom site engine for weareedit.io — SEO (meta tags, OG, schema.org, sitemap, hreflang), GEO/LLM optimization (llms.txt, AI crawler rules, Wikidata-linked Person/Organization schema), brand customization (hero typography, dot accents, CTA hover animations), Google Reviews aggregation, output-buffer HTML rewrites, virtual pages, WP Rocket cache integration, and one-time data fixes.
- * Version:     1.5.868
+ * Version:     1.5.869
  * Author:      Daniel Devera
  * License:     GPL-2.0+
  * Text Domain: weareedit-site-engine
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.868' );
+define( 'WEAREDIT_SITE_ENGINE_VERSION', '1.5.869' );
 
 // Reset PHP opcache after plugin updates so new class bytecode is loaded
 // immediately instead of on the next opcache TTL. Mitigates v1.5.391/392
@@ -147,6 +147,38 @@ add_action( 'plugins_loaded', function () {
         exit;
     }
 }, 0 );
+
+/**
+ * origin.weareedit.io → 301 to the public host (v1.5.869, 10 Set 2026 — PTISP decommission).
+ *
+ * The premium build on Cloudflare Pages is the site; this WordPress install only backs the
+ * hybrid proxy for the URLs not migrated yet. The origin host was still answering browsers and
+ * crawlers directly (Google indexed it: 730 impr/28d on one URL, brand queries at position 1),
+ * so every direct hit now 301s to https://weareedit.io<same path>, which also tells Google
+ * which copy is canonical. Proxy subrequests are spared: the Pages middleware
+ * (functions/_middleware.js, proxyToWordPress) stamps X-Forwarded-Host with the public host;
+ * browsers never do. Admin, login, cron, REST and POSTs are left alone (WP admin lives here;
+ * CF7 bots POST here and the anti-bot must keep seeing them). A 301 on a proxy subrequest
+ * would trip the middleware's hostloop guard (503 wordpress-origin-hostloop): that is exactly
+ * why the header check exists. Runs before the empresas early-serve below.
+ */
+add_action( 'plugins_loaded', function () {
+    if ( php_sapi_name() === 'cli' ) return;
+    $host = strtolower( $_SERVER['HTTP_HOST'] ?? '' );
+    if ( $host !== 'origin.weareedit.io' ) return;
+    $fwd = strtolower( trim( (string) ( $_SERVER['HTTP_X_FORWARDED_HOST'] ?? '' ) ) );
+    if ( in_array( $fwd, [ 'weareedit.io', 'www.weareedit.io', 'empresas.weareedit.io' ], true ) ) return; // Pages proxy
+    if ( ( $_SERVER['REQUEST_METHOD'] ?? 'GET' ) === 'POST' ) return;
+    $uri = (string) ( $_SERVER['REQUEST_URI'] ?? '/' );
+    $uri = '/' . ltrim( $uri, '/' );                               // never emit a protocol-relative Location
+    if ( preg_match( '#^/(wp-admin|wp-login\.php|wp-cron\.php|wp-json/|xmlrpc\.php)#', $uri ) ) return;
+    if ( headers_sent() ) return;
+    header( 'Cache-Control: no-store' );
+    header( 'X-Robots-Tag: noindex' );
+    header( 'X-EDIT-Origin-Redirect: 1' );
+    header( 'Location: https://weareedit.io' . $uri, true, 301 );
+    exit;
+}, -10 );
 
 /**
  * mu-plugin early-serve (v1.5.542). The in-plugin `plugins_loaded` serve above
